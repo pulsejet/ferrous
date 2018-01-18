@@ -1,0 +1,57 @@
+﻿.room {
+    height:35px;
+    width:30px;
+    background-color:beige;
+    margin:2px;
+    color:white;
+    font-size:11pt;
+    line-height:85%;
+    text-align:center;
+    padding-top:6px;
+
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+.room span {
+    font-size: 8pt;
+}
+
+.pseudo {
+    height:35px;width:30px;
+    margin:2px;
+    font-size:15pt;
+    padding:6px;
+}
+
+.room.empty {
+    background-color:blue;
+    cursor:pointer;
+
+}
+.room.unavailable {background-color:lightgray;}
+.room.already {background-color:magenta;}
+.room.notready {background-color:pink;}
+
+.room.occupied {background-color:red;}
+
+.room.partial {
+    background-color:gold;
+    cursor:pointer;
+}
+
+.room.sel {
+    background-color:green;
+    outline-color:skyblue;
+    outline-style: solid;
+    outline-width: 1.5px;
+    cursor:pointer;
+}
+
+table, th, td {
+    padding:0;
+    border: 1px solid black;
+}

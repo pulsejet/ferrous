@@ -1,0 +1,30 @@
+﻿<link href="/roomTemplates/room.css" rel="stylesheet" type="text/css" />
+
+<h1>Room Layout</h1>
+
+<div #roomsLayout>
+    BLAHBLAH
+</div>
+
+<ul class="list-group">
+    <ng-container *ngFor="let room of rooms">
+        <ng-container *ngIf="room.selected">
+            <li *ngFor="let roomA of room.roomAllocation" class="list-group-item">
+                <span>
+                    <b>{{ room.location }} - {{ room.room1 }}</b> - <b>{{ roomA.contingentLeaderNo }}</b>
+                </span>
+                <span *ngIf="roomA.partial">(partial)</span>
+                <a (click)="unallocateRoom(roomA, room);" class="pull-right btn btn-danger btn-xs">Unallocate</a>
+            </li>
+        </ng-container>
+    </ng-container>
+</ul>
+
+<div class="checkbox">
+    <label><input [(ngModel)]="marking" type="checkbox" value="">Marking</label>
+</div>
+
+<a (click)="Allot();" class="btn btn-success">Allot Rooms</a>
+<a (click)="Mark(0);" class="btn btn-danger">Mark Unavailable</a>
+<a (click)="Mark(1);" class="btn btn-danger">Mark Empty</a>
+<a (click)="Mark(4);" class="btn btn-danger">Mark Not Ready</a>

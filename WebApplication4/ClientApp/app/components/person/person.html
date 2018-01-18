@@ -1,0 +1,29 @@
+<h1>Person</h1>
+
+<a [routerLink]="['/personDetails/', '0', 1]" class="btn btn-success pull-right"> Create </a>
+
+<p *ngIf="!people"><em>Loading...</em></p>
+
+<table class='table' *ngIf="people">
+    <thead>
+        <tr>
+            <th>MI No.</th>
+            <th>Name</th>
+            <th>CL No.</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let person of people;  let rowIndex = index">
+            <td>{{ person.mino }}</td>
+            <td>{{ person.name }}</td>
+            <td>{{ person.contingentLeaderNo }}</td>
+
+            <td>
+                <a [routerLink]="['/personDetails/', person.mino]" class="btn btn-primary">Detail </a>
+                <a [routerLink]="['/personDetails/', person.mino, 1]" class="btn btn-info">Edit </a>
+                <a (click)="delete(person.mino, rowIndex);" class="btn btn-danger">Delete </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

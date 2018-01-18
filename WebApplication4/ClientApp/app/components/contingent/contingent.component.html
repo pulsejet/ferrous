@@ -1,0 +1,32 @@
+<h1>Contingents</h1>
+
+<a [routerLink]="['/contingentDetails/', '0', 1]" class="btn btn-success pull-right"> Create </a>
+
+<p *ngIf="!contingents"><em>Loading...</em></p>
+
+<table class='table' *ngIf="contingents">
+    <thead>
+        <tr>
+            <th>CL No.</th>
+            <th>Male</th>
+            <th>Female</th>
+            <th>Arrived (M)</th>
+            <th>Arrived (F)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let contingent of contingents;  let rowIndex = index">
+            <td>{{ contingent.contingentLeaderNo }}</td>
+            <td>{{ contingent.male }}</td>
+            <td>{{ contingent.female }}</td>
+            <td>{{ contingent.arrivedM }}</td>
+            <td>{{ contingent.arrivedF }}</td>
+            <td>
+                <a [routerLink]="['/contingentDetails/', contingent.contingentLeaderNo]" class="btn btn-primary">Detail </a>
+                <a [routerLink]="['/contingentDetails/', contingent.contingentLeaderNo, 1]" class="btn btn-info">Edit </a>
+                <a (click)="delete(contingent.contingentLeaderNo, rowIndex);" class="btn btn-danger">Delete </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

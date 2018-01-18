@@ -1,0 +1,87 @@
+﻿<h1>Contingent Details</h1>
+
+<div [hidden]="editing">
+    <div class="col-md-3"><b>Contingent Leader No:</b></div>
+    <div class="col-md-3"> {{ contingent.contingentLeaderNo }} </div><br />
+
+    <div class="col-md-3"><b>Males:</b></div>
+    <div class="col-md-3"> {{ contingent.male }} </div><br />
+
+    <div class="col-md-3"><b>Females:</b></div>
+    <div class="col-md-3"> {{ contingent.female }} </div><br />
+
+    <div class="col-md-3"><b>Arrived Males:</b></div>
+    <div class="col-md-3"> {{ contingent.arrivedM }} </div><br />
+
+    <div class="col-md-3"><b>Arrived Females:</b></div>
+    <div class="col-md-3"> {{ contingent.arrivedF }} </div><br />
+
+    <div class="col-md-3"><b>Allocated Rooms:</b></div>
+    <div class="col-md-3"> {{ contingent.allocatedRooms }} </div><br />
+
+    <br />
+    <a (click)="edit();" class="btn btn-primary"> Edit </a>
+    <a (click)="delete();" class="btn btn-danger"> Delete </a>
+</div>
+
+<form [hidden]="!editing" class="form-horizontal">
+    <div class="col-md-3"><b>Contingent Leader No:</b></div>
+    <div class="col-md-3"> {{ contingent.contingentLeaderNo }} </div>
+    <br />
+
+    <div class="form-group">
+        <label for="male-input" class="col-sm-1 control-label">Males:</label>
+        <div class="col-sm-4"><input name="male" [(ngModel)]="contingent.male" id="male-input" type="text" class="form-control"></div>
+    </div>
+    <div class="form-group">
+        <label for="female-input" class="col-sm-1 control-label">Females:</label>
+        <div class="col-sm-4"><input name="female" [(ngModel)]="contingent.female" id="female-input" type="text" class="form-control"></div>
+    </div>
+    <div class="form-group">
+        <label for="arrivedM-input" class="col-sm-1 control-label">Arrived Males:</label>
+        <div class="col-sm-4"><input name="arrivedM" [(ngModel)]="contingent.arrivedM" id="arrivedM-input" type="text" class="form-control"></div>
+    </div>
+    <div class="form-group">
+        <label for="arrivedF-input" class="col-sm-1 control-label">Females:</label>
+        <div class="col-sm-4"><input name="arrivedF" [(ngModel)]="contingent.arrivedF" id="arrivedF-input" type="text" class="form-control"></div>
+    </div>
+    <a (click)="save();" class="btn btn-success">Save</a>
+    <a (click)="edit();" class="btn btn-warning"> Cancel </a>
+</form>
+
+<br />
+
+<a [routerLink]="['/roomLayout/', contingent.contingentLeaderNo]" class="btn btn-warning">Allocate Rooms </a>
+
+<h3 *ngIf="(contingent.roomAllocation.length > 0)">Allocated Rooms</h3>
+<ul  class="list-group">
+    <li *ngFor="let roomA of contingent.roomAllocation" class="list-group-item">
+        <span><b>{{ roomA.room.location }} - {{ roomA.room.room1 }}</b> - {{ roomA.room.capacity}} </span>
+        <span *ngIf="roomA.partial">(partial)</span>
+        <a (click)="unallocateRoom(roomA);" class="pull-right btn btn-danger btn-xs">Unallocate</a>
+    </li>
+</ul>
+
+<h3 *ngIf="(id != '0')">People in this contingent</h3>
+
+<p *ngIf="(!contingent.person)&&(id != '0')"><em>Loading...</em></p>
+
+<table style="cursor:pointer;" class='table table-hover' *ngIf="contingent.person">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>MI No.</th>
+            <th>College</th>
+            <th>Sex</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr [routerLink]="['/personDetails/', person.mino]" *ngFor="let person of contingent.person">
+            <td>{{ person.name }}</td>
+            <td>{{ person.mino }}</td>
+            <td>{{ person.college }}</td>
+            <td>{{ person.sex }}</td>
+        </tr>
+    </tbody>
+</table>
+

@@ -1,0 +1,52 @@
+﻿<h1>Person Details</h1>
+
+<div [hidden]="editing">
+    <div class="col-md-3"><b>MI No:</b></div>
+    <div class="col-md-3"> {{ person.mino }} </div><br />
+
+    <div class="col-md-3"><b>Name:</b></div>
+    <div class="col-md-3"> {{ person.name }} </div><br />
+
+    <div class="col-md-3"><b>College:</b></div>
+    <div class="col-md-3"> {{ person.college }} </div><br />
+
+    <div class="col-md-3"><b>Contingent Leader No:</b></div>
+    <div class="col-md-3"> {{ person.contingentLeaderNo }} </div><br />
+    
+    <div class="col-md-3"><b>Sex:</b></div>
+    <div class="col-md-3"> {{ person.sex }} </div><br />
+
+    <br />
+    <a (click)="edit();" class="btn btn-primary"> Edit </a>
+    <a (click)="delete();" class="btn btn-danger"> Delete </a>
+</div>
+
+<form [hidden]="!editing" class="form-horizontal">
+    <div class="form-group">
+        <label for="mino-input" class="col-sm-1 control-label">MI No:</label>
+        <div class="col-sm-4"><input name="mino" [(ngModel)]="person.mino" id="mino-input" type="text" class="form-control"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="name-input" class="col-sm-1 control-label">Name:</label>
+        <div class="col-sm-4"><input name="name" [(ngModel)]="person.name" id="name-input" type="text" class="form-control"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="college-input" class="col-sm-1 control-label">College:</label>
+        <div class="col-sm-4"><input name="college" [(ngModel)]="person.college" id="college-input" type="text" class="form-control"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="cl-input" class="col-sm-1 control-label">CL No:</label>
+        <div class="col-sm-4"><input name="contingentLeaderNo" [(ngModel)]="person.contingentLeaderNo" id="cl-input" type="text" class="form-control"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="sex-input" class="col-sm-1 control-label">Sex:</label>
+        <div class="col-sm-4"><input name="sex" [(ngModel)]="person.sex" id="sex-input" type="text" class="form-control"></div>
+    </div>
+
+    <a (click)="save();" class="btn btn-success">Save</a>
+    <a (click)="edit();" class="btn btn-warning"> Cancel </a>
+</form>
