@@ -13,10 +13,25 @@
                 <span>
                     <b>{{ room.location }} - {{ room.room1 }}</b> - <b>{{ roomA.contingentLeaderNo }}</b>
                 </span>
-                <span *ngIf="roomA.partial">(partial)</span>
+                <span *ngIf="roomA.partial">(partial, {{roomA.partial}})</span>
                 <a (click)="unallocateRoom(roomA, room);" class="pull-right btn btn-danger btn-xs">Unallocate</a>
             </li>
         </ng-container>
+    </ng-container>
+</ul>
+
+<ul class="list-group">
+    <ng-container *ngFor="let room of rooms">
+        <li *ngIf="room.selected" class="list-group-item">
+            <div *ngIf="CheckPartial(room)">
+                Partial - <b>{{ room.location }} - {{ room.room1 }}</b> - {{ room.capacity }}
+                <input name="partialsel" [(ngModel)]="room.partialsel" type="number" class="form-control input-sm">
+            </div>
+
+            <div *ngIf="!CheckPartial(room)">
+                <b>{{ room.location }} - {{ room.room1 }}</b> - {{ room.capacity }}
+            </div>
+        </li>
     </ng-container>
 </ul>
 
@@ -25,6 +40,7 @@
 </div>
 
 <a (click)="Allot();" class="btn btn-success">Allot Rooms</a>
+<a (click)="Allot(2);" class="btn btn-warning">Partially Allot</a>
 <a (click)="Mark(0);" class="btn btn-danger">Mark Unavailable</a>
 <a (click)="Mark(1);" class="btn btn-danger">Mark Empty</a>
 <a (click)="Mark(4);" class="btn btn-danger">Mark Not Ready</a>

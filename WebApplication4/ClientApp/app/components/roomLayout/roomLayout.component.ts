@@ -39,7 +39,11 @@ export class RoomLayoutComponent {
             let ctrl = str.replace(/\s+/, "");
 
             $(ctrl).click(function () {
-                if ((room.status == 1 && room.roomAllocation.length == 0) || room.selected || self.marking) { 
+                if ((room.status == 1 && room.roomAllocation.length == 0)
+                    || self.GetRoomClass(room) == "room partial"
+                    || room.selected
+                    || self.marking) { 
+
                     room.selected = !room.selected;
                 }
                 self.AssignRooms();
@@ -75,10 +79,13 @@ export class RoomLayoutComponent {
         }
     }
 
-    public Allot() {
+    public Allot(partial: boolean = false) {
         for (let room of this.rooms) {
             if (room.selected) {
-                this.http.get(this.baseUrl + '/api/Rooms/allot/' + room.id + '/' + this.clno).subscribe(result => {
+                let url = this.baseUrl + '/api/Rooms/allot/' + room.id + '/' + this.clno;
+                if (room.partialsel == null && partial) continue;
+                if (partial) url += '/' + room.partialsel;
+                this.http.get(url).subscribe(result => {
                     if (result.ok) {
                         room.status = 5; room.selected = false; this.AssignRoom(room);
                     }
@@ -87,13 +94,21 @@ export class RoomLayoutComponent {
         }
     }
 
+    public CheckPartial(room: Room): boolean {
+        if (room.roomAllocation.length == 0) return false;
+        for (let roomA of room.roomAllocation) {
+            if (roomA.partial <= 0 || roomA.partial == null) return false;
+        }
+        return true;
+    }
+
     public GetRoomClass(room: Room): string {
         if (room.selected) return "room sel";
 
         let partial = false;
         for (let roomA of room.roomAllocation) {
             if (roomA.contingentLeaderNo == this.clno) return "room already";
-            if (!roomA.partial || roomA.partial == null) return "room occupied";
+            if (roomA.partial <= 0 || roomA.partial == null) return "room occupied";
             partial = true;
         }
         if (partial) return "room partial";

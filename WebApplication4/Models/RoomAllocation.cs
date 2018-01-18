@@ -8,7 +8,7 @@ namespace Xunk_Ferrous.Models
         public int Sno { get; set; }
         public int RoomId { get; set; }
         public string ContingentLeaderNo { get; set; }
-        public bool? Partial { get; set; }
+        public int Partial { get; set; }
 
         public Contingents ContingentLeaderNoNavigation { get; set; }
         public Room Room { get; set; }

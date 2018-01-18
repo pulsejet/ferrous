@@ -133,17 +133,21 @@ namespace WebApplication4.Controllers
         // GET: api/Rooms/allot/CLNo
         [HttpGet("allot/{id}")]
         [HttpGet("allot/{id}/{CLNo}")]
-        public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string CLNo)
+        [HttpGet("allot/{id}/{CLNo}/{partialno}")]
+        public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string CLNo, [FromRoute] int partialno = -1)
         {
             Room room = _context.Room.Where(m => m.Id == id)
                                     .Include(m => m.RoomAllocation)
                                     .SingleOrDefault();
             if (room == null) return BadRequest();
 
+            bool partial = partialno > 0;
             bool empty = true;
+
             foreach (var roomA in room.RoomAllocation)
             {
-                if (!(bool)roomA.Partial) empty = false;
+                if (!(roomA.Partial > 0)) empty = false;
+                if (!partial) empty = false;
             }
 
             if (!empty || room.Status != 1) return BadRequest( "Not Empty");
@@ -151,7 +155,7 @@ namespace WebApplication4.Controllers
             RoomAllocation roomAllocation = new RoomAllocation();
             roomAllocation.ContingentLeaderNo = CLNo;
             roomAllocation.RoomId = id;
-            roomAllocation.Partial = false;
+            roomAllocation.Partial = partialno;
             _context.Update(roomAllocation);
 
             _context.Update(room);

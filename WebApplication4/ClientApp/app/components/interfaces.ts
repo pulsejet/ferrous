@@ -31,8 +31,10 @@ export interface Room {
     remark1: string;
     remark2: string;
     reasonUnavailable: string;
-    selected: boolean;
     roomAllocation: RoomAllocation[];
+
+    selected: boolean;
+    partialsel: number;
 }
 
 export interface RoomAllocation {
@@ -41,5 +43,5 @@ export interface RoomAllocation {
     contingentLeaderNo: string;
     contingentLeaderNoNavigation: Contingent;
     room: Room;
-    partial: boolean;
+    partial: number;
 }

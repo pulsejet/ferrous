@@ -57,7 +57,7 @@
 <ul  class="list-group">
     <li *ngFor="let roomA of contingent.roomAllocation" class="list-group-item">
         <span><b>{{ roomA.room.location }} - {{ roomA.room.room1 }}</b> - {{ roomA.room.capacity}} </span>
-        <span *ngIf="roomA.partial">(partial)</span>
+        <span *ngIf="roomA.partial">(partial, {{roomA.partial}})</span>
         <a (click)="unallocateRoom(roomA);" class="pull-right btn btn-danger btn-xs">Unallocate</a>
     </li>
 </ul>
