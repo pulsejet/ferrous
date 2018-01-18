@@ -5,7 +5,6 @@
 <div #roomsLayout>
     BLAHBLAH
 </div>
-
 <ul class="list-group">
     <ng-container *ngFor="let room of rooms">
         <ng-container *ngIf="room.selected">
@@ -13,7 +12,7 @@
                 <span>
                     <b>{{ room.location }} - {{ room.room1 }}</b> - <b>{{ roomA.contingentLeaderNo }}</b>
                 </span>
-                <span *ngIf="roomA.partial">(partial, {{roomA.partial}})</span>
+                <span *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</span>
                 <a (click)="unallocateRoom(roomA, room);" class="pull-right btn btn-danger btn-xs">Unallocate</a>
             </li>
         </ng-container>
@@ -23,13 +22,15 @@
 <ul class="list-group">
     <ng-container *ngFor="let room of rooms">
         <li *ngIf="room.selected" class="list-group-item">
-            <div *ngIf="CheckPartial(room)">
-                Partial - <b>{{ room.location }} - {{ room.room1 }}</b> - {{ room.capacity }}
+            <div *ngIf="CheckPartial(room) || room.partialallot">
+                <b>{{ room.location }} - {{ room.room1 }}</b> - {{ room.capacity }} - Partial
+                <a *ngIf="room.partialallot" (click)="room.partialallot = false;" class="pull-right btn btn-warning btn-xs">Partial</a>
                 <input name="partialsel" [(ngModel)]="room.partialsel" type="number" class="form-control input-sm">
             </div>
 
-            <div *ngIf="!CheckPartial(room)">
+            <div *ngIf="!CheckPartial(room) && !room.partialallot">
                 <b>{{ room.location }} - {{ room.room1 }}</b> - {{ room.capacity }}
+                <a (click)="room.partialallot = true;" class="pull-right btn btn-warning btn-xs">Partial</a>
             </div>
         </li>
     </ng-container>

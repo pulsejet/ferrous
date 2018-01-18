@@ -35,6 +35,7 @@ export interface Room {
 
     selected: boolean;
     partialsel: number;
+    partialallot: boolean;
 }
 
 export interface RoomAllocation {

@@ -66,22 +66,23 @@
 
 <p *ngIf="(!contingent.person)&&(id != '0')"><em>Loading...</em></p>
 
-<table style="cursor:pointer;" class='table table-hover' *ngIf="contingent.person">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>MI No.</th>
-            <th>College</th>
-            <th>Sex</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr [routerLink]="['/personDetails/', person.mino]" *ngFor="let person of contingent.person">
-            <td>{{ person.name }}</td>
-            <td>{{ person.mino }}</td>
-            <td>{{ person.college }}</td>
-            <td>{{ person.sex }}</td>
-        </tr>
-    </tbody>
-</table>
-
+<div class='table-responsive'>
+    <table style="cursor:pointer;" class='table table-hover table-striped' *ngIf="contingent.person">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>MI No.</th>
+                <th>College</th>
+                <th>Sex</th>
+            </tr>
+        </thead>    
+        <tbody>
+            <tr [routerLink]="['/personDetails/', person.mino]" *ngFor="let person of contingent.person">
+                <td>{{ person.name }}</td>
+                <td>{{ person.mino }}</td>
+                <td>{{ person.college }}</td>
+                <td>{{ person.sex }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

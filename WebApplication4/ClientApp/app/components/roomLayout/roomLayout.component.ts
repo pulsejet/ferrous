@@ -63,8 +63,19 @@ export class RoomLayoutComponent {
         let str = "#room-" + room.location + "-" + room.room1;
         let ctrl = str.replace(/\s+/, "");
 
-        $(ctrl).html(room.capacity.toString() + "<br><span>" + room.room1.toString() + "</span>");
-        $(ctrl).attr("class", this.GetRoomClass(room));
+        let clss: string = this.GetRoomClass(room);
+        let capacity: string;
+
+        if (this.CheckOccupied(room)) {
+            capacity = "0";
+        } else if (this.CheckPartial(room)) {
+            capacity = (room.capacity - this.GetPartialNo(room)).toString();
+        } else {
+            capacity = room.capacity.toString();
+        }
+
+        $(ctrl).html(capacity + "<br><span>" + room.room1.toString() + "</span>");
+        $(ctrl).attr("class", clss);
     }
 
     public Mark(Status: number) {
@@ -94,16 +105,26 @@ export class RoomLayoutComponent {
         }
     }
 
+    public CheckOccupied(room: Room): boolean {
+        return this.GetPartialNo(room) < 0;
+    }
+
     public CheckPartial(room: Room): boolean {
-        if (room.roomAllocation.length == 0) return false;
+        return this.GetPartialNo(room) > 0;
+    }
+
+    public GetPartialNo(room: Room): number {
+        let count: number = 0;
         for (let roomA of room.roomAllocation) {
-            if (roomA.partial <= 0 || roomA.partial == null) return false;
+            if (roomA.partial != null) count += roomA.partial;
         }
-        return true;
+        return count;
     }
 
     public GetRoomClass(room: Room): string {
+        let status = room.status;
         if (room.selected) return "room sel";
+        if (status == 5) return "room already";
 
         let partial = false;
         for (let roomA of room.roomAllocation) {
@@ -113,13 +134,11 @@ export class RoomLayoutComponent {
         }
         if (partial) return "room partial";
 
-        let status = room.status;
         if (status == 0) return "room unavailable";
         else if (status == 1) return "room empty";
         else if (status == 2) return "room occupied";
         else if (status == 3) return "room partial";
         else if (status == 4) return "room notready";
-        else if (status == 5) return "room already";
         return "room";
     }
 
