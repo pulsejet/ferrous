@@ -2,8 +2,20 @@
     ViewData["Title"] = "Home Page";
 }
 
-<app>Loading...</app>
-<link rel="stylesheet" href="~/am-theme/indigo-pink.css"/>
+<style>
+    #load {
+        position: fixed;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        height:140px; width:140px;
+    }
+</style>
+
+<app>
+    <img id="load" src="~/assets/md-spinner.svg" />
+</app>
+
+<link rel="stylesheet" href="~/am-theme/indigo-pink.css" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <script src="~/dist/vendor.js" asp-append-version="true"></script>
