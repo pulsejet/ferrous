@@ -51,8 +51,8 @@
 <button mat-raised-button color="accent" [routerLink]="['/roomLayout/', contingent.contingentLeaderNo]">Allocate Rooms </button>
 
 <br /><br />
-<h3 *ngIf="(contingent.roomAllocation.length > 0)">Allocated Rooms</h3>
-<ul  class="list-group">
+<h3 *ngIf="(contingent)&&(contingent.roomAllocation)&&(contingent.roomAllocation.length>0)">Allocated Rooms</h3>
+<ul *ngIf="(contingent)&&(contingent.roomAllocation)&&(contingent.roomAllocation.length>0)" class="list-group">
     <li *ngFor="let roomA of contingent.roomAllocation" class="list-group-item">
         <span><b>{{ roomA.room.location }} - {{ roomA.room.room1 }}</b> - {{ roomA.room.capacity}} </span>
         <span *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</span>
@@ -64,8 +64,10 @@
 
 <p *ngIf="(!contingent.person)&&(id != '0')"><em>Loading...</em></p>
 
-<div class='table-responsive'>
-    <table style="cursor:pointer;" class='table table-hover table-striped' *ngIf="contingent.person">
+<div *ngIf="(contingent.person)&&(id != '0')" class='table-responsive' style="
+                                    margin:10px;  
+                                    box-shadow: 3px 3px 7px grey;">
+    <table style="cursor:pointer;" class='table table-hover' *ngIf="contingent.person">
         <thead>
             <tr>
                 <th>Name</th>

@@ -1,29 +1,33 @@
-<h1>Person</h1>
+<span class="h1-inline">Person</span>
 
-<a [routerLink]="['/personDetails/', '0', 1]" class="btn btn-success pull-right"> Create </a>
+<button mat-raised-button color="primary" 
+        [routerLink]="['/personDetails/', '0', 1]" 
+        class="xunk-table-button-margin"> Create </button>
 
 <p *ngIf="!people"><em>Loading...</em></p>
 
-<table class='table' *ngIf="people">
-    <thead>
-        <tr>
-            <th>MI No.</th>
-            <th>Name</th>
-            <th>CL No.</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let person of people;  let rowIndex = index">
-            <td>{{ person.mino }}</td>
-            <td>{{ person.name }}</td>
-            <td>{{ person.contingentLeaderNo }}</td>
+<div class='xunk-table table-responsive'>
+    <table class='table table-hover' *ngIf="people">
+        <thead>
+            <tr>
+                <th>MI No.</th>
+                <th>Name</th>
+                <th>CL No.</th>
+                <th class="xunk-hide-mobile"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let person of people;  let rowIndex = index" (click)="handleTableClick(person)">
+                <td>{{ person.mino }}</td>
+                <td>{{ person.name }}</td>
+                <td>{{ person.contingentLeaderNo }}</td>
 
-            <td>
-                <a [routerLink]="['/personDetails/', person.mino]" class="btn btn-primary">Detail </a>
-                <a [routerLink]="['/personDetails/', person.mino, 1]" class="btn btn-info">Edit </a>
-                <a (click)="delete(person.mino, rowIndex);" class="btn btn-danger">Delete </a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                <td class="xunk-hide-mobile">
+                    <button class="xunk-table-button" style="float:right" mat-raised-button color="primary" [routerLink]="['/personDetails/', person.mino]">Details </button>
+                    <button class="xunk-table-button" style="float:right" mat-button color="accent" [routerLink]="['/personDetails/', person.mino, 1]">Edit </button>
+                    <button class="xunk-table-button" style="float:right" mat-button color="warn" (click)="delete(person.mino, rowIndex);">Delete </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

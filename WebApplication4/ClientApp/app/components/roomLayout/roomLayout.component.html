@@ -21,18 +21,17 @@
 
 <ul class="list-group">
     <ng-container *ngFor="let room of rooms">
-        <li *ngIf="room.selected" class="list-group-item">
+        <li *ngIf="room.selected && canAllocate(room)" class="list-group-item">
             <div *ngIf="CheckPartial(room) || room.partialallot">
-                <b>{{ room.location }} - {{ room.room1 }}</b> - {{ room.capacity }} &nbsp;
+                <b>{{ room.location }} - {{ room.room1 }}</b> - {{ this.GetCapacity(room) }} &nbsp;
                 <button *ngIf="room.partialallot" style="float:right" mat-button color="accent" (click)="room.partialallot = false;">Partial</button>
-                <!--<input name="partialsel" [(ngModel)]="room.partialsel" type="number" class="form-control input-sm">-->
                 <mat-form-field>
                     <input matInput name="partialsel" [(ngModel)]="room.partialsel" placeholder="Partial">
                 </mat-form-field>
             </div>
 
             <div *ngIf="!CheckPartial(room) && !room.partialallot">
-                <b>{{ room.location }} - {{ room.room1 }}</b> - {{ room.capacity }}
+                <b>{{ room.location }} - {{ room.room1 }}</b> - {{ this.GetCapacity(room) }}
                 <button style="float:right" mat-button color="accent" (click)="room.partialallot = true;">Partial</button>
             </div>
         </li>
@@ -42,10 +41,9 @@
 <div class="containerX">
     <div class="container"
          fxLayout
-         fxLayout.sm="column"
+         fxLayout.xs="column"
          fxLayoutGap="8px"
-         fxLayoutGap.sm="5px"
-         fxLayoutAlign="start center">
+         fxLayoutGap.xs="5px">
         <mat-slide-toggle [(ngModel)]="marking">Mark</mat-slide-toggle>
         <button fxFlex="auto" (click)="Allot();" mat-raised-button color="primary">Allot Rooms</button>
         <button fxFlex="auto" (click)="Allot(2);" mat-raised-button color="accent">Partially Allot</button>

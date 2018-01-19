@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'person',
-    templateUrl: './person.html'
+    templateUrl: './person.html',
+    styleUrls: ['../../Custom.css']
 })
 export class PersonComponent {
     public people: Person[];
@@ -23,6 +24,11 @@ export class PersonComponent {
                 this.people.splice(rowNumber, 1);
             });
         }
+    }
+
+    public handleTableClick(person: Person) {
+        if (window.innerWidth <= 768)
+            this.router.navigate(['/personDetails/' + person.mino]);
     }
 }
 

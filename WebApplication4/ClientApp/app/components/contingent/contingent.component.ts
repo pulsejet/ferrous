@@ -7,28 +7,29 @@ import { MatTableDataSource } from '@angular/material';
 
 @Component({
     selector: 'contingent',
-    templateUrl: './contingent.component.html'
+    templateUrl: './contingent.component.html',
+    styleUrls: ['../../Custom.css']
 })
 export class ContingentComponent {
     public contingents: Contingent[];
-    public dataSource: any;
-    displayedColumns = ['contingentLeaderNo', 'male', 'female', 'arrivedM', 'arrivedF', 'delete', 'edit', 'details'];
 
     constructor(public router: Router, public http: Http, @Inject('BASE_URL') baseUrl: string) {
         http.get(baseUrl + 'api/Contingents').subscribe(result => {
             this.contingents = result.json() as Contingent[];
-            this.dataSource = new MatTableDataSource(this.contingents);
         }, error => console.error(error));
     }
 
-    public delete(elem: Contingent) {
+    public delete(id = "", rowNumber: number) {
         if (confirm("Are you sure to delete?")) {
-            this.http.delete('/api/Contingents/' + elem.contingentLeaderNo).subscribe(result => {
-                let index = this.contingents.indexOf(elem);
-                this.contingents.splice(index, 1);
-                this.dataSource = new MatTableDataSource(this.contingents);
+            this.http.delete('/api/Contingents/' + id).subscribe(result => {
+                this.contingents.splice(rowNumber, 1);
             });
         }
+    }
+
+    public handleTableClick(contingent: Contingent) {
+        if (window.innerWidth <= 768)
+            this.router.navigate(['/contingentDetails/' + contingent.contingentLeaderNo]);
     }
 }
 

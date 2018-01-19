@@ -64,17 +64,8 @@ export class RoomLayoutComponent {
         let ctrl = str.replace(/\s+/, "");
 
         let clss: string = this.GetRoomClass(room);
-        let capacity: string;
 
-        if (this.CheckOccupied(room)) {
-            capacity = "0";
-        } else if (this.CheckPartial(room)) {
-            capacity = (room.capacity - this.GetPartialNo(room)).toString();
-        } else {
-            capacity = room.capacity.toString();
-        }
-
-        $(ctrl).html(capacity + "<br><span>" + room.room1.toString() + "</span>");
+        $(ctrl).html(this.GetCapacity(room) + "<br><span>" + room.room1.toString() + "</span>");
         $(ctrl).attr("class", clss);
     }
 
@@ -87,6 +78,16 @@ export class RoomLayoutComponent {
                     }
                 });
             }
+        }
+    }
+
+    public GetCapacity(room: Room): number {
+        if (this.CheckOccupied(room)) {
+            return 0;
+        } else if (this.CheckPartial(room)) {
+            return (room.capacity - this.GetPartialNo(room));
+        } else {
+            return room.capacity;
         }
     }
 
@@ -148,6 +149,10 @@ export class RoomLayoutComponent {
             room.roomAllocation.splice(index, 1)
             this.AssignRoom(room);
         });
+    }
+
+    public canAllocate(room: Room): boolean {
+        return ((room.status == 1) || (room.status == 3)) && (!this.CheckOccupied(room));
     }
 
 }

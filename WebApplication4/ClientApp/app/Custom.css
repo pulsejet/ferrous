@@ -1,0 +1,29 @@
+﻿.xunk-table {
+    margin: 10px;
+    overflow-x: auto;
+    box-shadow: 3px 3px 7px grey;
+}
+
+.xunk-table-button {
+    float: right;
+}
+.xunk-table-button-margin {
+    float: right;
+    margin: 10px;
+}
+
+.h1-inline {
+    font-size: 21pt;
+}   
+
+@media screen and (max-width: 768px) {
+    .xunk-table {
+        margin: 3px;
+        cursor: pointer;
+    }
+
+    .xunk-hide-mobile {
+        display:none;
+        width: 0px;
+    }
+}
