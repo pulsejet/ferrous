@@ -1,33 +1,51 @@
 <h1>Contingents</h1>
 
-<a [routerLink]="['/contingentDetails/', '0', 1]" class="btn btn-success pull-right"> Create </a>
+<button mat-raised-button color="primary" 
+        [routerLink]="['/contingentDetails/', '0', 1]"> Create </button>
 
-<p *ngIf="!contingents"><em>Loading...</em></p>
-<div class='table-responsive'>
-    <table class='table table-striped' *ngIf="contingents">
-        <thead>
-            <tr>
-                <th>CL No.</th>
-                <th>Male</th>
-                <th>Female</th>
-                <th>Arrived (M)</th>
-                <th>Arrived (F)</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let contingent of contingents;  let rowIndex = index">
-                <td>{{ contingent.contingentLeaderNo }}</td>
-                <td>{{ contingent.male }}</td>
-                <td>{{ contingent.female }}</td>
-                <td>{{ contingent.arrivedM }}</td>
-                <td>{{ contingent.arrivedF }}</td>
-                <td>
-                    <a [routerLink]="['/contingentDetails/', contingent.contingentLeaderNo]" class="btn btn-primary">Details </a>
-                    <a [routerLink]="['/contingentDetails/', contingent.contingentLeaderNo, 1]" class="btn btn-info">Edit </a>
-                    <a (click)="delete(contingent.contingentLeaderNo, rowIndex);" class="btn btn-danger">Delete </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div style="margin:10px;  box-shadow: 7px 7px 6px grey;">
+    <mat-table #table [dataSource]="dataSource">
+        <!-- Position Column -->
+        <ng-container matColumnDef="contingentLeaderNo">
+            <mat-header-cell *matHeaderCellDef>CL No. </mat-header-cell>
+            <mat-cell *matCellDef="let contingent"> {{contingent.contingentLeaderNo}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="male">
+            <mat-header-cell *matHeaderCellDef>Male </mat-header-cell>
+            <mat-cell *matCellDef="let contingent"> {{contingent.male}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="female">
+            <mat-header-cell *matHeaderCellDef>Female </mat-header-cell>
+            <mat-cell *matCellDef="let contingent"> {{contingent.female}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="arrivedM">
+            <mat-header-cell *matHeaderCellDef>Arrived (M) </mat-header-cell>
+            <mat-cell *matCellDef="let contingent"> {{contingent.arrivedM}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="arrivedF">
+            <mat-header-cell *matHeaderCellDef>Arrived (F) </mat-header-cell>
+            <mat-cell *matCellDef="let contingent"> {{contingent.arrivedF}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="delete">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let contingent">
+                <button mat-button color="warn" (click)="delete(contingent);">Delete </button>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="edit">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let contingent">
+                <button mat-button color="primary" [routerLink]="['/contingentDetails/', contingent.contingentLeaderNo, 1]">Edit </button>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="details">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let contingent">
+                <button mat-raised-button color="primary" [routerLink]="['/contingentDetails/', contingent.contingentLeaderNo]">Details </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
 </div>

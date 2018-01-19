@@ -28,11 +28,13 @@
   <ItemGroup>
     <None Remove="ClientApp\app\components\contingent\contingentDetails.component.ts" />
     <None Remove="ClientApp\app\components\interfaces.ts" />
+    <None Remove="ClientApp\app\components\material-angular.ts" />
     <None Remove="ClientApp\app\components\person\personDetails.ts" />
     <None Remove="ClientApp\app\components\roomLayout\roomLayout.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\material-angular.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\person\personDetails.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\contingent\contingentDetails.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\interfaces.ts" />

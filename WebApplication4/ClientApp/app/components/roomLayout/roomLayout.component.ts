@@ -146,6 +146,7 @@ export class RoomLayoutComponent {
         this.http.delete('/api/RoomAllocations/' + roomA.sno).subscribe(result => {
             var index = room.roomAllocation.indexOf(roomA, 0);
             room.roomAllocation.splice(index, 1)
+            this.AssignRoom(room);
         });
     }
 

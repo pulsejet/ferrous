@@ -13,7 +13,7 @@
                     <b>{{ room.location }} - {{ room.room1 }}</b> - <b>{{ roomA.contingentLeaderNo }}</b>
                 </span>
                 <span *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</span>
-                <a (click)="unallocateRoom(roomA, room);" class="pull-right btn btn-danger btn-xs">Unallocate</a>
+                <button style="float:right" mat-button color="warn" (click)="unallocateRoom(roomA, room);"><mat-icon>delete</mat-icon></button>
             </li>
         </ng-container>
     </ng-container>
@@ -23,25 +23,41 @@
     <ng-container *ngFor="let room of rooms">
         <li *ngIf="room.selected" class="list-group-item">
             <div *ngIf="CheckPartial(room) || room.partialallot">
-                <b>{{ room.location }} - {{ room.room1 }}</b> - {{ room.capacity }} - Partial
-                <a *ngIf="room.partialallot" (click)="room.partialallot = false;" class="pull-right btn btn-warning btn-xs">Partial</a>
-                <input name="partialsel" [(ngModel)]="room.partialsel" type="number" class="form-control input-sm">
+                <b>{{ room.location }} - {{ room.room1 }}</b> - {{ room.capacity }} &nbsp;
+                <button *ngIf="room.partialallot" style="float:right" mat-button color="accent" (click)="room.partialallot = false;">Partial</button>
+                <!--<input name="partialsel" [(ngModel)]="room.partialsel" type="number" class="form-control input-sm">-->
+                <mat-form-field>
+                    <input matInput name="partialsel" [(ngModel)]="room.partialsel" placeholder="Partial">
+                </mat-form-field>
             </div>
 
             <div *ngIf="!CheckPartial(room) && !room.partialallot">
                 <b>{{ room.location }} - {{ room.room1 }}</b> - {{ room.capacity }}
-                <a (click)="room.partialallot = true;" class="pull-right btn btn-warning btn-xs">Partial</a>
+                <button style="float:right" mat-button color="accent" (click)="room.partialallot = true;">Partial</button>
             </div>
         </li>
     </ng-container>
 </ul>
-
-<div class="checkbox">
-    <label><input [(ngModel)]="marking" type="checkbox" value="">Marking</label>
+<br>
+<div class="containerX">
+    <div class="container"
+         fxLayout
+         fxLayout.sm="column"
+         fxLayoutGap="8px"
+         fxLayoutGap.sm="5px"
+         fxLayoutAlign="start center">
+        <mat-slide-toggle [(ngModel)]="marking">Mark</mat-slide-toggle>
+        <button fxFlex="auto" (click)="Allot();" mat-raised-button color="primary">Allot Rooms</button>
+        <button fxFlex="auto" (click)="Allot(2);" mat-raised-button color="accent">Partially Allot</button>
+        <button fxFlex="auto" (click)="Mark(0);" mat-raised-button color="warn">Mark Unavailable</button>
+        <button fxFlex="auto" (click)="Mark(1);" mat-raised-button color="warn">Mark Empty</button>
+        <button fxFlex="auto" (click)="Mark(4);" mat-raised-button color="warn">Mark Not Ready</button>
+    </div>
 </div>
-
-<a (click)="Allot();" class="btn btn-success">Allot Rooms</a>
-<a (click)="Allot(2);" class="btn btn-warning">Partially Allot</a>
-<a (click)="Mark(0);" class="btn btn-danger">Mark Unavailable</a>
-<a (click)="Mark(1);" class="btn btn-danger">Mark Empty</a>
-<a (click)="Mark(4);" class="btn btn-danger">Mark Not Ready</a>
+<!--
+<button (click)="Allot();" mat-raised-button color="primary">Allot Rooms</button>
+<button (click)="Allot(2);" mat-raised-button color="accent">Partially Allot</button>
+<button (click)="Mark(0);" mat-raised-button color="warn">Mark Unavailable</button>
+<button (click)="Mark(1);" mat-raised-button color="warn">Mark Empty</button>
+<button (click)="Mark(4);" mat-raised-button color="warn">Mark Not Ready</button>
+    -->

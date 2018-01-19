@@ -16,18 +16,15 @@
     <div class="col-md-3"><b>Arrived Females:</b></div>
     <div class="col-md-3"> {{ contingent.arrivedF }} </div><br />
 
-    <div class="col-md-3"><b>Allocated Rooms:</b></div>
-    <div class="col-md-3"> {{ contingent.allocatedRooms }} </div><br />
-
-    <br />
-    <a (click)="edit();" class="btn btn-primary"> Edit </a>
-    <a (click)="delete();" class="btn btn-danger"> Delete </a>
+    <button mat-raised-button color="primary" (click)="edit();"> Edit </button>
+    <button mat-button color="warn" (click)="delete();"> Delete </button>
 </div>
 
 <form [hidden]="!editing" class="form-horizontal">
-    <div class="col-md-3"><b>Contingent Leader No:</b></div>
-    <div class="col-md-3"> {{ contingent.contingentLeaderNo }} </div>
-    <br />
+    <div class="form-group">
+        <label for="cl-input" class="col-sm-1 control-label">CL No:</label>
+        <div class="col-sm-4"><input name="cl" [(ngModel)]="contingent.contingentLeaderNo" id="cl-input" type="text" class="form-control"></div>
+    </div>
 
     <div class="form-group">
         <label for="male-input" class="col-sm-1 control-label">Males:</label>
@@ -45,20 +42,21 @@
         <label for="arrivedF-input" class="col-sm-1 control-label">Females:</label>
         <div class="col-sm-4"><input name="arrivedF" [(ngModel)]="contingent.arrivedF" id="arrivedF-input" type="text" class="form-control"></div>
     </div>
-    <a (click)="save();" class="btn btn-success">Save</a>
-    <a (click)="edit();" class="btn btn-warning"> Cancel </a>
+    <button mat-raised-button color="primary" (click)="save();" >Save</button>
+    <button mat-raised-button color="warn" (click)="edit();"> Cancel </button>
 </form>
 
 <br />
 
-<a [routerLink]="['/roomLayout/', contingent.contingentLeaderNo]" class="btn btn-warning">Allocate Rooms </a>
+<button mat-raised-button color="accent" [routerLink]="['/roomLayout/', contingent.contingentLeaderNo]">Allocate Rooms </button>
 
+<br /><br />
 <h3 *ngIf="(contingent.roomAllocation.length > 0)">Allocated Rooms</h3>
 <ul  class="list-group">
     <li *ngFor="let roomA of contingent.roomAllocation" class="list-group-item">
         <span><b>{{ roomA.room.location }} - {{ roomA.room.room1 }}</b> - {{ roomA.room.capacity}} </span>
-        <span *ngIf="roomA.partial">(partial, {{roomA.partial}})</span>
-        <a (click)="unallocateRoom(roomA);" class="pull-right btn btn-danger btn-xs">Unallocate</a>
+        <span *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</span>
+        <button style="float:right" mat-button color="warn" (click)="unallocateRoom(roomA);"><mat-icon>delete</mat-icon></button>
     </li>
 </ul>
 

@@ -17,6 +17,7 @@ import { PersonDetailsComponent } from './components/person/personDetails';
 import { RoomLayoutComponent } from './components/roomLayout/roomLayout.component';
 
 import { CounterComponent } from './components/counter/counter.component';
+import { MyMaterialClass } from './components/material-angular'
 
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import { CounterComponent } from './components/counter/counter.component';
         CommonModule,
         HttpModule,
         FormsModule,
+        MyMaterialClass,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },

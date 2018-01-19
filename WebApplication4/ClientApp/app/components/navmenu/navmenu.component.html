@@ -1,4 +1,4 @@
-<div class='main-nav'>
+<!--<div class='main-nav'>
     <div class='navbar navbar-inverse'>
         <div class='navbar-header'>
             <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
@@ -41,3 +41,9 @@
         </div>
     </div>
 </div>
+    -->
+<a mat-list-item [routerLink]="['/home']"> <mat-icon>home</mat-icon> &nbsp; Home</a>
+<a mat-list-item [routerLink]="['/counter']"> <mat-icon>queue</mat-icon> &nbsp; Counter</a>
+<a mat-list-item [routerLink]="['/contingent']"> <mat-icon>list</mat-icon> &nbsp; Contingents</a>
+<a mat-list-item [routerLink]="['/person']"> <mat-icon>list</mat-icon> &nbsp; People</a>
+<a mat-list-item [routerLink]="['/roomLayout/mark']"> <mat-icon>assignment</mat-icon> &nbsp; Rooms</a>
