@@ -91,12 +91,16 @@ export class RoomLayoutComponent {
         }
     }
 
-    public Allot(partial: boolean = false) {
+    public Allot() {
         for (let room of this.rooms) {
             if (room.selected) {
                 let url = this.baseUrl + '/api/Rooms/allot/' + room.id + '/' + this.clno;
-                if (room.partialsel == null && partial) continue;
-                if (partial) url += '/' + room.partialsel;
+
+                if (room.partialallot || this.CheckPartial(room)) {
+                    if (room.partialsel == null) continue;
+                    url += '/' + room.partialsel;
+                }
+
                 this.http.get(url).subscribe(result => {
                     if (result.ok) {
                         room.status = 5; room.selected = false; this.AssignRoom(room);
