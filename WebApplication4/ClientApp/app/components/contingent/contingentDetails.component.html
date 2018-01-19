@@ -15,42 +15,61 @@
 
     <div class="col-md-3"><b>Arrived Females:</b></div>
     <div class="col-md-3"> {{ contingent.arrivedF }} </div><br />
+</div>
+<div [hidden]="!editing"
+     class="container"
+     fxLayout="column"
+     fxLayoutGap="8px"
+     fxLayoutAlign="left left">
 
-    <button mat-raised-button color="primary" (click)="edit();"> Edit </button>
-    <button mat-button color="warn" (click)="delete();"> Delete </button>
+    <mat-form-field>
+        <input fxFlex matInput name="cclno" [(ngModel)]="contingent.contingentLeaderNo" placeholder="Contingent Leader No.">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input fxFlex matInput name="cmale" [(ngModel)]="contingent.male" placeholder="Male">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input fxFlex matInput name="cfemale" [(ngModel)]="contingent.female" placeholder="Female">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input fxFlex matInput name="carrivedM" [(ngModel)]="contingent.arrivedM" placeholder="Arrived (M)">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input fxFlex matInput name="carrivedF" [(ngModel)]="contingent.arrivedF" placeholder="Arrived (F)">
+    </mat-form-field>
 </div>
 
-<form [hidden]="!editing" class="form-horizontal">
-    <div class="form-group">
-        <label for="cl-input" class="col-sm-1 control-label">CL No:</label>
-        <div class="col-sm-4"><input name="cl" [(ngModel)]="contingent.contingentLeaderNo" id="cl-input" type="text" class="form-control"></div>
-    </div>
-
-    <div class="form-group">
-        <label for="male-input" class="col-sm-1 control-label">Males:</label>
-        <div class="col-sm-4"><input name="male" [(ngModel)]="contingent.male" id="male-input" type="text" class="form-control"></div>
-    </div>
-    <div class="form-group">
-        <label for="female-input" class="col-sm-1 control-label">Females:</label>
-        <div class="col-sm-4"><input name="female" [(ngModel)]="contingent.female" id="female-input" type="text" class="form-control"></div>
-    </div>
-    <div class="form-group">
-        <label for="arrivedM-input" class="col-sm-1 control-label">Arrived Males:</label>
-        <div class="col-sm-4"><input name="arrivedM" [(ngModel)]="contingent.arrivedM" id="arrivedM-input" type="text" class="form-control"></div>
-    </div>
-    <div class="form-group">
-        <label for="arrivedF-input" class="col-sm-1 control-label">Females:</label>
-        <div class="col-sm-4"><input name="arrivedF" [(ngModel)]="contingent.arrivedF" id="arrivedF-input" type="text" class="form-control"></div>
-    </div>
-    <button mat-raised-button color="primary" (click)="save();" >Save</button>
-    <button mat-raised-button color="warn" (click)="edit();"> Cancel </button>
-</form>
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutGap="8px"
+     fxLayoutGap.xs="5px">
+    <ng-container *ngIf="!editing">
+        <button mat-raised-button color="primary" (click)="edit();"> Edit </button>
+        <button mat-button color="warn" (click)="delete();"> Delete </button>
+    </ng-container>
+    <ng-container *ngIf="editing">
+        <button mat-raised-button color="primary" (click)="save();">Save</button>
+        <button mat-raised-button color="accent" (click)="edit();">Cancel</button>
+    </ng-container>
+</div>
 
 <br />
 
-<button mat-raised-button color="accent" [routerLink]="['/roomLayout/', contingent.contingentLeaderNo]">Allocate Rooms </button>
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutGap="8px"
+     fxLayoutGap.xs="5px">
+    <button mat-raised-button color="accent" [routerLink]="['/roomLayout/', contingent.contingentLeaderNo]">Allocate Rooms </button>
+</div>
 
-<br /><br />
+<br />
+
 <h3 *ngIf="(contingent)&&(contingent.roomAllocation)&&(contingent.roomAllocation.length>0)">Allocated Rooms</h3>
 <ul *ngIf="(contingent)&&(contingent.roomAllocation)&&(contingent.roomAllocation.length>0)" class="list-group">
     <li *ngFor="let roomA of contingent.roomAllocation" class="list-group-item">
@@ -60,13 +79,13 @@
     </li>
 </ul>
 
+<br />
+
 <h3 *ngIf="(id != '0')">People in this contingent</h3>
 
 <p *ngIf="(!contingent.person)&&(id != '0')"><em>Loading...</em></p>
 
-<div *ngIf="(contingent.person)&&(id != '0')" class='table-responsive' style="
-                                    margin:10px;  
-                                    box-shadow: 3px 3px 7px grey;">
+<div *ngIf="(contingent.person)&&(id != '0')" class='xunk-table table-responsive'>
     <table style="cursor:pointer;" class='table table-hover' *ngIf="contingent.person">
         <thead>
             <tr>
@@ -75,7 +94,7 @@
                 <th>College</th>
                 <th>Sex</th>
             </tr>
-        </thead>    
+        </thead>
         <tbody>
             <tr [routerLink]="['/personDetails/', person.mino]" *ngFor="let person of contingent.person">
                 <td>{{ person.name }}</td>

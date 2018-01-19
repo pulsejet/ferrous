@@ -12,41 +12,61 @@
 
     <div class="col-md-3"><b>Contingent Leader No:</b></div>
     <div class="col-md-3"> {{ person.contingentLeaderNo }} </div><br />
-    
+
     <div class="col-md-3"><b>Sex:</b></div>
     <div class="col-md-3"> {{ person.sex }} </div><br />
-
-    <br />
-    <a (click)="edit();" class="btn btn-primary"> Edit </a>
-    <a (click)="delete();" class="btn btn-danger"> Delete </a>
 </div>
 
-<form [hidden]="!editing" class="form-horizontal">
-    <div class="form-group">
-        <label for="mino-input" class="col-sm-1 control-label">MI No:</label>
-        <div class="col-sm-4"><input name="mino" [(ngModel)]="person.mino" id="mino-input" type="text" class="form-control"></div>
-    </div>
+<div [hidden]="!editing"
+     class="container"
+     fxLayout="column"
+     fxLayoutGap="8px"
+     fxLayoutAlign="left left">
 
-    <div class="form-group">
-        <label for="name-input" class="col-sm-1 control-label">Name:</label>
-        <div class="col-sm-4"><input name="name" [(ngModel)]="person.name" id="name-input" type="text" class="form-control"></div>
-    </div>
+    <mat-form-field>
+        <input fxFlex matInput name="pmino" [(ngModel)]="person.mino" placeholder="MI No">
+    </mat-form-field>
 
-    <div class="form-group">
-        <label for="college-input" class="col-sm-1 control-label">College:</label>
-        <div class="col-sm-4"><input name="college" [(ngModel)]="person.college" id="college-input" type="text" class="form-control"></div>
-    </div>
+    <mat-form-field>
+        <input fxFlex matInput name="pname" [(ngModel)]="person.name" placeholder="Name">
+    </mat-form-field>
 
-    <div class="form-group">
-        <label for="cl-input" class="col-sm-1 control-label">CL No:</label>
-        <div class="col-sm-4"><input name="contingentLeaderNo" [(ngModel)]="person.contingentLeaderNo" id="cl-input" type="text" class="form-control"></div>
-    </div>
+    <mat-form-field>
+        <input fxFlex matInput name="pcoll" [(ngModel)]="person.college" placeholder="College">
+    </mat-form-field>
 
-    <div class="form-group">
-        <label for="sex-input" class="col-sm-1 control-label">Sex:</label>
-        <div class="col-sm-4"><input name="sex" [(ngModel)]="person.sex" id="sex-input" type="text" class="form-control"></div>
-    </div>
+    <mat-form-field>
+        <input fxFlex matInput name="pclno" [(ngModel)]="person.contingentLeaderNo" placeholder="Contingent Leader No.">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select fxFlex mat-select name="psex" [(ngModel)]="person.sex" placeholder="Sex">
+            <mat-option value="M">M</mat-option>
+            <mat-option value="F">F</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
 
-    <a (click)="save();" class="btn btn-success">Save</a>
-    <a (click)="edit();" class="btn btn-warning"> Cancel </a>
-</form>
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutGap="8px"
+     fxLayoutGap.xs="5px">
+    <ng-container *ngIf="!editing">
+        <button mat-raised-button color="primary" (click)="edit();"> Edit </button>
+        <button mat-button color="warn" (click)="delete();"> Delete </button>
+    </ng-container>
+    <ng-container *ngIf="editing">
+        <button mat-raised-button color="primary" (click)="save();">Save</button>
+        <button mat-raised-button color="accent" (click)="edit();">Cancel</button>
+    </ng-container>
+</div>
+
+<br />
+
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutGap="8px"
+     fxLayoutGap.xs="5px">
+    <button mat-raised-button color="primary" [routerLink]="['/contingentDetails/', person.contingentLeaderNo]">Open Contingent</button>
+</div>

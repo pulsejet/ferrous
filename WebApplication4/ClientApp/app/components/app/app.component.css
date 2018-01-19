@@ -18,6 +18,13 @@
     }
 }
 
+:focus {
+    outline: none;
+}
+::-moz-focus-inner {
+    border: 0;
+}
+
 mat-sidenav,
 mat-sidenav.mat-locked-open,
 mat-sidenav.mat-closed.mat-locked-open-add-active {
@@ -44,6 +51,8 @@ mat-sidenav.mat-closed.mat-locked-open-add-active {
 
 h1.example-app-name {
     margin-left: 8px;
+    text-decoration: none;
+    cursor:pointer;
 }
 
 .sidenav-container {

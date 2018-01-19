@@ -2,6 +2,7 @@
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
 import { Person } from '../interfaces';
+import { style, state, animate, transition, trigger } from '@angular/core';
 
 @Component({
     selector: 'personDetails',
