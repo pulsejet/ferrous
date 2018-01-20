@@ -1,9 +1,11 @@
 ﻿<link href="/roomTemplates/room.css" rel="stylesheet" type="text/css" />
 
-<h1>Room Layout</h1>
+<button class="xunk-table-button" mat-icon-button color="primary" (click)="reloadRooms()">
+    <mat-icon>refresh</mat-icon>
+</button>
 
 <div #roomsLayout>
-    BLAHBLAH
+    <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
 </div>
 <ul class="list-group">
     <ng-container *ngFor="let room of rooms">

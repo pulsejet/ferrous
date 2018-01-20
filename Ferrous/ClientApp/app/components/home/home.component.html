@@ -1,1 +1,22 @@
-<h1>Hello, world!</h1>
+<div class="container"
+     fxLayout
+     fxLayout.xs="column">
+
+    <mat-form-field>
+        <input matInput
+               (keyup.enter)="this.router.navigate(['/contingentDetails/', enteredCL]);"
+               name="clno" [(ngModel)]="enteredCL"
+               placeholder="Contingent Leader No.">
+    </mat-form-field>
+</div>
+
+<div class="container"
+     fxLayout
+     fxLayout.xs="column">
+
+    <button mat-raised-button
+            color="primary"
+            [routerLink]="['/contingentDetails/', enteredCL]">
+        Details
+    </button>
+</div>

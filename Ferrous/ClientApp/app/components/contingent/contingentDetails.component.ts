@@ -2,6 +2,8 @@
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
 import { Contingent, RoomAllocation } from '../interfaces';
+import { Location } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'contingent',
@@ -16,8 +18,12 @@ export class ContingentDetailsComponent {
     public contingent: Contingent = {} as Contingent;
 
     constructor(private activatedRoute: ActivatedRoute,
-                public router: Router, public http: Http, @Inject('BASE_URL') baseUrl: string) {
-        this.http = http;
+        private _location: Location,
+        private titleService: Title,
+        public router: Router, public http: Http, @Inject('BASE_URL') baseUrl: string) {
+
+        this.titleService.setTitle("Contingent Details");
+
         this.editing = false;
         this.activatedRoute.params.subscribe((params: Params) => {
             this.id = params['id'];
@@ -28,11 +34,16 @@ export class ContingentDetailsComponent {
             http.get(baseUrl + 'api/Contingents/' + this.id).subscribe(result => {
                 this.contingent = result.json() as Contingent;
                 this.initial_contingent = { ...this.contingent };
-            }, error => console.error(error));
+            }, error => {
+                console.error(error);
+                alert("No such Contingent or error retrieving!");
+                _location.back();
+            });
         }
         if (this.startedit == 1) {
             this.editing = true;
         }
+        
     }
 
     public edit() {
@@ -44,7 +55,7 @@ export class ContingentDetailsComponent {
         this.contingent = { ...this.initial_contingent };
     }
 
-    public save() {
+    public save() { 
         let body = JSON.stringify(this.contingent);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });

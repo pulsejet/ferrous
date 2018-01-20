@@ -2,11 +2,13 @@
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
 import { Room, RoomAllocation } from '../interfaces';
+import { Title } from '@angular/platform-browser';
 import * as $ from 'jquery';
 
 @Component({
     selector: 'home',
-    templateUrl: './roomLayout.component.html'
+    templateUrl: './roomLayout.component.html',
+    styleUrls: ['../../Custom.css']
 })
 export class RoomLayoutComponent {
     public rooms: Room[];
@@ -15,21 +17,20 @@ export class RoomLayoutComponent {
     public marking: boolean = false;
 
     constructor(private activatedRoute: ActivatedRoute,
+        private titleService: Title,
         public router: Router, public http: Http, @Inject('BASE_URL') public baseUrl: string) {
+
+        this.titleService.setTitle("Room Layout");
 
         this.activatedRoute.params.subscribe((params: Params) => {
             this.clno = params['id'];
         });
 
-        http.get(baseUrl + '/roomTemplates/H1.html').subscribe(result => {
+        http.get(baseUrl + '/roomTemplates/H7.html').subscribe(result => {
             this.roomsLayout.nativeElement.innerHTML = result.text();
         });
 
-        http.get(baseUrl + '/api/Rooms/ByLoc/H1').subscribe(result => {
-            this.rooms = result.json() as Room[];
-            this.AssignRoomsInit();
-        });
-
+        this.reloadRooms();
     }
 
     public AssignRoomsInit() {
@@ -157,6 +158,13 @@ export class RoomLayoutComponent {
 
     public canAllocate(room: Room): boolean {
         return ((room.status == 1) || (room.status == 3)) && (!this.CheckOccupied(room));
+    }
+
+    reloadRooms() {
+        this.http.get(this.baseUrl + '/api/Rooms/ByLoc/H7').subscribe(result => {
+            this.rooms = result.json() as Room[];
+            this.AssignRoomsInit();
+        });
     }
 
 }

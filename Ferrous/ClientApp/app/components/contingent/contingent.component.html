@@ -1,12 +1,14 @@
-<span class="h1-inline">Contingents</span>
-
-<button mat-raised-button color="primary"
+<button mat-icon-button color="primary"
         [routerLink]="['/contingentDetails/', '0', 1]"
         class="xunk-table-button-margin">
-    Create
+    <mat-icon>add</mat-icon>
 </button>
 
-<div class='xunk-table table-responsive'>
+<div *ngIf="!contingents">
+    <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
+</div>
+
+<div *ngIf="contingents" class='xunk-table table-responsive'>
     <table class='table table-hover' *ngIf="contingents">
         <thead>
             <tr>

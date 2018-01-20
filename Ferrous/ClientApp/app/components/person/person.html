@@ -1,10 +1,12 @@
-<span class="h1-inline">Person</span>
-
-<button mat-raised-button color="primary" 
+<button mat-icon-button color="primary" 
         [routerLink]="['/personDetails/', '0', 1]" 
-        class="xunk-table-button-margin"> Create </button>
+        class="xunk-table-button-margin">
+    <mat-icon>add</mat-icon>
+</button>
 
-<p *ngIf="!people"><em>Loading...</em></p>
+<p *ngIf="!people">
+    <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
+</p>
 
 <div class='xunk-table table-responsive'>
     <table class='table table-hover' *ngIf="people">

@@ -181,6 +181,28 @@ namespace Ferrous.Controllers
             await _context.SaveChangesAsync();
             return Content("success");
         }
+
+        [HttpGet("CreateRoomRecords/{location}/{start}/{end}/{capacity}")]
+        public IActionResult CreateRoomRecords([FromRoute] string location, [FromRoute] int start, [FromRoute] int end, [FromRoute] int capacity)
+        {
+            string str = "";
+            for (int i = start; i<= end; i++)
+            {
+                mydbContext ctx = new mydbContext();
+                if (ctx.Room.Where(m => m.Location == location && m.Room1 == i.ToString()).Count() > 0)
+                {
+                    str += i.ToString() + " ";
+                    continue;
+                }
+                Room room = new Room();
+                room.Location = location;
+                room.Room1 = i.ToString();
+                room.Capacity = capacity;
+                ctx.Add(room);
+                ctx.SaveChanges();
+            }
+            return Content("Done -- " + str);
+        }
     }
 
 }

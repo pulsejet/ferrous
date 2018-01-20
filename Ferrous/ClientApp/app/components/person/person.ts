@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { Person } from '../interfaces';
 import { PersonDetailsComponent } from './personDetails';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'person',
@@ -12,7 +13,14 @@ import { Router } from '@angular/router';
 export class PersonComponent {
     public people: Person[];
 
-    constructor(public router: Router, public http: Http, @Inject('BASE_URL') baseUrl: string) {
+    constructor(
+        public router: Router,
+        private titleService: Title,
+        public http: Http,
+        @Inject('BASE_URL') baseUrl: string) {
+
+        this.titleService.setTitle("People");
+
         http.get(baseUrl + 'api/People').subscribe(result => {
             this.people = result.json() as Person[];
         }, error => console.error(error));

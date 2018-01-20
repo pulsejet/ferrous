@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
 import { Person } from '../interfaces';
 import { style, state, animate, transition, trigger } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'personDetails',
@@ -16,8 +17,11 @@ export class PersonDetailsComponent {
     public person: Person = {} as Person;
 
     constructor(private activatedRoute: ActivatedRoute,
+        private titleService: Title,
         public router: Router, public http: Http, @Inject('BASE_URL') baseUrl: string) {
         this.editing = false;
+
+        this.titleService.setTitle("Personal Details");
 
         this.activatedRoute.params.subscribe((params: Params) => {
             this.id = params['id'];

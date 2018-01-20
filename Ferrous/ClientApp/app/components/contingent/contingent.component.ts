@@ -4,6 +4,7 @@ import { Contingent } from '../interfaces';
 import { ContingentDetailsComponent } from './contingentDetails.component';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'contingent',
@@ -13,7 +14,14 @@ import { MatTableDataSource } from '@angular/material';
 export class ContingentComponent {
     public contingents: Contingent[];
 
-    constructor(public router: Router, public http: Http, @Inject('BASE_URL') baseUrl: string) {
+    constructor(
+        public router: Router,
+        public http: Http,
+        @Inject('BASE_URL') baseUrl: string,
+        private titleService: Title ) {
+
+        this.titleService.setTitle("Contingents");
+
         http.get(baseUrl + 'api/Contingents').subscribe(result => {
             this.contingents = result.json() as Contingent[];
         }, error => console.error(error));
