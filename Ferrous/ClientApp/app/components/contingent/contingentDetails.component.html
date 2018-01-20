@@ -42,31 +42,20 @@
 </div>
 
 <div fxLayout="column"
-     fxLayoutGap="5px"
-     class="xunk-max-200px-desktop">
-
-<div fxLayout
-     fxLayout.xs="column"
-     fxLayoutGap="8px"
-     fxLayoutGap.xs="5px"
-     fxFlex>
-    <ng-container *ngIf="!editing">
-        <button fxFlex mat-raised-button color="primary" (click)="edit();"> Edit </button>
-        <button mat-button color="warn" (click)="delete();"> Delete </button>
-    </ng-container>
-    <ng-container *ngIf="editing">
-        <button mat-raised-button color="primary" (click)="save();">Save</button>
-        <button mat-raised-button color="accent" (click)="edit();">Cancel</button>
-    </ng-container>
-
-</div>
-
-<div fxLayout
-     fxLayout.xs="column"
-     fxFlex >
-    <button fxFlex mat-raised-button color="accent" [routerLink]="['/roomLayout/', contingent.contingentLeaderNo]">Allocate Rooms </button>
-</div>
-
+     fxLayoutGap="8px">
+    <div fxLayout
+         fxLayoutGap="8px"
+         class="xunk-max-200px-desktop">
+        <ng-container *ngIf="!editing">
+            <button fxFlex mat-raised-button color="primary" (click)="edit();"> Edit </button>
+            <button mat-button color="warn" (click)="delete();"> Delete </button>
+        </ng-container>
+        <ng-container *ngIf="editing">
+            <button mat-raised-button color="primary" (click)="save();">Save</button>
+            <button mat-raised-button color="accent" (click)="edit();">Cancel</button>
+        </ng-container>
+    </div>
+    <button class="xunk-max-200px-desktop" mat-raised-button color="accent" [routerLink]="['/roomLayout/', contingent.contingentLeaderNo]">Allocate Rooms </button>
 </div>
 
 <br />

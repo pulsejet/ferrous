@@ -7,6 +7,9 @@
     <IsPackable>false</IsPackable>
     <AssemblyName>Ferrous</AssemblyName>
     <RootNamespace>Ferrous</RootNamespace>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
