@@ -55,6 +55,7 @@
     "style-loader": "0.19.1",
     "to-string-loader": "1.1.5",
     "typescript": "2.6.2",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "url-loader": "0.6.2",
     "webpack": "3.10.0",
     "webpack-hot-middleware": "2.21.0",
