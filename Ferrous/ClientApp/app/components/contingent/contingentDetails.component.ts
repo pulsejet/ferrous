@@ -5,7 +5,8 @@ import { Contingent, RoomAllocation } from '../interfaces';
 
 @Component({
     selector: 'contingent',
-    templateUrl: './contingentDetails.component.html'
+    templateUrl: './contingentDetails.component.html',
+    styleUrls: ['../../Custom.css']
 })
 export class ContingentDetailsComponent {
     public id: string = '1';

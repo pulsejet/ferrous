@@ -8,11 +8,12 @@ import { AppModule } from './app/app.browser.module';
 if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => {
+        // TODO: Why are these commented for fixing HMR?
         // Before restarting the app, we create a new root element and dispose the old one
-        const oldRootElem = document.querySelector('app');
-        const newRootElem = document.createElement('app');
-        oldRootElem!.parentNode!.insertBefore(newRootElem, oldRootElem);
-        modulePromise.then(appModule => appModule.destroy());
+        // const oldRootElem = document.querySelector('app');
+        // const newRootElem = document.createElement('app');
+        // oldRootElem!.parentNode!.insertBefore(newRootElem, oldRootElem);
+        // modulePromise.then(appModule => appModule.destroy());
     });
 } else {
     enableProdMode();

@@ -75,7 +75,7 @@
     <li *ngFor="let roomA of contingent.roomAllocation" class="list-group-item">
         <span><b>{{ roomA.room.location }} - {{ roomA.room.room1 }}</b> - {{ roomA.room.capacity}} </span>
         <span *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</span>
-        <button style="float:right" mat-button color="warn" (click)="unallocateRoom(roomA);"><mat-icon>delete</mat-icon></button>
+        <button class="xunk-table-button" mat-button color="warn" (click)="unallocateRoom(roomA);"><mat-icon>delete</mat-icon></button>
     </li>
 </ul>
 
@@ -86,7 +86,7 @@
 <p *ngIf="(!contingent.person)&&(id != '0')"><em>Loading...</em></p>
 
 <div *ngIf="(contingent.person)&&(id != '0')" class='xunk-table table-responsive'>
-    <table style="cursor:pointer;" class='table table-hover' *ngIf="contingent.person">
+    <table class='xunk-table-pointer table table-hover' *ngIf="contingent.person">
         <thead>
             <tr>
                 <th>Name</th>

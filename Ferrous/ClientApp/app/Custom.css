@@ -4,6 +4,10 @@
     box-shadow: 3px 3px 7px grey;
 }
 
+.xunk-table-pointer td {
+    cursor: pointer;
+}
+
 .xunk-table-button {
     float: right;
 }
