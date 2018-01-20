@@ -18,6 +18,7 @@ import { RoomLayoutComponent } from './components/roomLayout/roomLayout.componen
 
 import { CounterComponent } from './components/counter/counter.component';
 import { MyMaterialClass } from './components/material-angular'
+import 'hammerjs';
 
 @NgModule({
     declarations: [

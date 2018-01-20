@@ -1,7 +1,8 @@
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="shouldRun">
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
     <mat-toolbar color="primary" class="example-toolbar">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-        <h1 class="example-app-name" [routerLink]="['/home']">Ferrous</h1>
+        <h1 *ngIf="mobileQuery.matches" class="example-app-name">Ferrous</h1>
+        <h1 *ngIf="!mobileQuery.matches" class="example-app-name" [routerLink]="['/home']">Ferrous</h1>
     </mat-toolbar>
 
     <mat-sidenav-container class="sidenav-container"
@@ -9,7 +10,8 @@
         <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
             <mat-nav-list>
-                <nav-menu></nav-menu>
+                <nav-menu *ngIf="mobileQuery.matches" (click)="snav.toggle();"></nav-menu>
+                <nav-menu *ngIf="!mobileQuery.matches"></nav-menu>
             </mat-nav-list>
         </mat-sidenav>
 

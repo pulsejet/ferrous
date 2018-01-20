@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatMenuTrigger } from '@angular/material';
 
-/** @title Responsive sidenav */
 @Component({
     selector: 'app',
     templateUrl: './app.component.html',
@@ -10,8 +9,6 @@ import { MatMenuTrigger } from '@angular/material';
 })
 export class AppComponent {
     mobileQuery: MediaQueryList;
-
-    fillerNav = Array(50).fill(0).map((_, i) => `Nav Item ${i + 1}`);
 
     private _mobileQueryListener: () => void;
 
@@ -24,6 +21,4 @@ export class AppComponent {
     ngOnDestroy(): void {
         this.mobileQuery.removeListener(this._mobileQueryListener);
     }
-
-    shouldRun =true;
 }
