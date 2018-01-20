@@ -1,11 +1,14 @@
 ﻿<link href="/roomTemplates/room.css" rel="stylesheet" type="text/css" />
 
+<span class="h1-inline"> {{ Location }} </span>
 <button class="xunk-table-button" mat-icon-button color="primary" (click)="reloadRooms()">
     <mat-icon>refresh</mat-icon>
 </button>
 
-<div #roomsLayout>
-    <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
+<div class="xunk-center-wrapper table-responsive">
+    <div #roomsLayout class="xunk-center">
+        <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
+    </div>
 </div>
 <ul class="list-group">
     <ng-container *ngFor="let room of rooms">
@@ -15,7 +18,7 @@
                     <b>{{ room.location }} - {{ room.room1 }}</b> - <b>{{ roomA.contingentLeaderNo }}</b>
                 </span>
                 <span *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</span>
-                <button style="float:right" mat-button color="warn" (click)="unallocateRoom(roomA, room);"><mat-icon>delete</mat-icon></button>
+                <button style="float:right" mat-icon-button color="warn" (click)="unallocateRoom(roomA, room);"><mat-icon>delete</mat-icon></button>
             </li>
         </ng-container>
     </ng-container>
@@ -53,10 +56,3 @@
         <button fxFlex="auto" (click)="Mark(4);" mat-raised-button color="warn">Mark Not Ready</button>
     </div>
 </div>
-<!--
-<button (click)="Allot();" mat-raised-button color="primary">Allot Rooms</button>
-<button (click)="Allot(2);" mat-raised-button color="accent">Partially Allot</button>
-<button (click)="Mark(0);" mat-raised-button color="warn">Mark Unavailable</button>
-<button (click)="Mark(1);" mat-raised-button color="warn">Mark Empty</button>
-<button (click)="Mark(4);" mat-raised-button color="warn">Mark Not Ready</button>
-    -->

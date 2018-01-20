@@ -1,22 +1,23 @@
-<div class="container"
-     fxLayout
-     fxLayout.xs="column">
+<div fxLayout
+     fxLayoutGap="20px"
+     fxLayoutGap.xs="3px">
 
-    <mat-form-field>
+    <mat-form-field fxFlex>
         <input matInput
                (keyup.enter)="this.router.navigate(['/contingentDetails/', enteredCL]);"
                name="clno" [(ngModel)]="enteredCL"
                placeholder="Contingent Leader No.">
     </mat-form-field>
+
+    <button mat-icon-button
+            color="primary"
+            [routerLink]="['/contingentDetails/', enteredCL]" style="max-height:37px;">
+        <mat-icon>search</mat-icon>
+    </button>
 </div>
 
 <div class="container"
      fxLayout
      fxLayout.xs="column">
 
-    <button mat-raised-button
-            color="primary"
-            [routerLink]="['/contingentDetails/', enteredCL]">
-        Details
-    </button>
 </div>

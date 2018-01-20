@@ -161,7 +161,7 @@ namespace Ferrous.Controllers
             _context.Update(room);
 
             await _context.SaveChangesAsync();
-            return Content("success");
+            return Content(roomAllocation.Sno.ToString());
         }
 
         // GET: api/Rooms/mark/CLNo

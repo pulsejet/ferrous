@@ -1,10 +1,9 @@
 import { Component, Inject } from '@angular/core';
-import { Http } from '@angular/http';
 import { Contingent } from '../interfaces';
 import { ContingentDetailsComponent } from './contingentDetails.component';
-import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material';
 import { Title } from '@angular/platform-browser';
+import { DataService } from '../../DataService';
 
 @Component({
     selector: 'contingent',
@@ -13,31 +12,30 @@ import { Title } from '@angular/platform-browser';
 })
 export class ContingentComponent {
     public contingents: Contingent[];
+    public enteredCL: string = "";
 
     constructor(
-        public router: Router,
-        public http: Http,
+        private dataService: DataService,
         @Inject('BASE_URL') baseUrl: string,
         private titleService: Title ) {
 
         this.titleService.setTitle("Contingents");
 
-        http.get(baseUrl + 'api/Contingents').subscribe(result => {
-            this.contingents = result.json() as Contingent[];
+        this.dataService.GetAllContingents().subscribe(result => {
+            this.contingents = result;
         }, error => console.error(error));
     }
 
     public delete(id = "", rowNumber: number) {
         if (confirm("Are you sure to delete?")) {
-            this.http.delete('/api/Contingents/' + id).subscribe(result => {
+            this.dataService.DeleteContingent(id).subscribe(result => {
                 this.contingents.splice(rowNumber, 1);
             });
         }
     }
 
     public handleTableClick(contingent: Contingent) {
-        if (window.innerWidth <= 768)
-            this.router.navigate(['/contingentDetails/' + contingent.contingentLeaderNo]);
+        if (window.innerWidth <= 768) this.dataService.NavigateContingentDetails(contingent.contingentLeaderNo);
     }
 }
 

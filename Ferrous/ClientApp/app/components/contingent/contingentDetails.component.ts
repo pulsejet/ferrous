@@ -1,9 +1,9 @@
 ﻿import { Component, Inject } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
 import { Contingent, RoomAllocation } from '../interfaces';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
+import { DataService } from '../../DataService';
 
 @Component({
     selector: 'contingent',
@@ -19,8 +19,9 @@ export class ContingentDetailsComponent {
 
     constructor(private activatedRoute: ActivatedRoute,
         private _location: Location,
+        private dataService: DataService,
         private titleService: Title,
-        public router: Router, public http: Http, @Inject('BASE_URL') baseUrl: string) {
+        @Inject('BASE_URL') baseUrl: string) {
 
         this.titleService.setTitle("Contingent Details");
 
@@ -31,8 +32,8 @@ export class ContingentDetailsComponent {
         });
 
         if (this.id != '0') {
-            http.get(baseUrl + 'api/Contingents/' + this.id).subscribe(result => {
-                this.contingent = result.json() as Contingent;
+            this.dataService.GetContingent(this.id).subscribe(result => {
+                this.contingent = result;
                 this.initial_contingent = { ...this.contingent };
             }, error => {
                 console.error(error);
@@ -48,7 +49,7 @@ export class ContingentDetailsComponent {
 
     public edit() {
         if (this.startedit == 1) {
-            this.router.navigate(['/contingent/']);
+            this.dataService.NavigateContingentsList();
             return;
         }
         this.editing = !this.editing;
@@ -57,31 +58,31 @@ export class ContingentDetailsComponent {
 
     public save() { 
         let body = JSON.stringify(this.contingent);
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
 
         if (this.id != '0') {
-            this.http.put('/api/Contingents/' + this.id, body, options).subscribe(result => {
+            this.dataService.PutContingent(this.id, body).subscribe(result => {
                 this.initial_contingent = { ...this.contingent };
                 this.editing = !this.editing;
+                if (this.startedit == 1) this.dataService.NavigateContingentsList();
             });
         } else {
-            this.http.post('/api/Contingents', body, options).subscribe(result => { });
+            this.dataService.PostContingent(body).subscribe(result => {
+                this.dataService.NavigateContingentsList();
+            });
         }
-        if (this.startedit == 1) this.router.navigate(['/contingent/']);
     }
 
     public delete() {
         if (confirm("Are you sure to delete?")) {
-            this.http.delete('/api/Contingents/' + this.id).subscribe(result => {
-                this.router.navigate(['/contingent/']);
+            this.dataService.DeleteContingent(this.id).subscribe(result => {
+                this.dataService.NavigateContingentsList();
             });
         }
     }
 
     public unallocateRoom(roomA: RoomAllocation) {
         if (confirm("Are you sure you want to unallocate this room?")) {
-            this.http.delete('/api/RoomAllocations/' + roomA.sno).subscribe(result => {
+            this.dataService.UnllocateRoom(roomA.sno).subscribe(result => {
                 var index = this.contingent.roomAllocation.indexOf(roomA, 0);
                 this.contingent.roomAllocation.splice(index, 1)
             });

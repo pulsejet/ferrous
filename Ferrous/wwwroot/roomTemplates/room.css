@@ -28,23 +28,36 @@
 }
 
 .room.empty {
-    background-color:blue;
+    background-color:darkblue;
     cursor:pointer;
-
 }
 .room.unavailable {background-color:lightgray;}
-.room.already {background-color:magenta;}
-.room.notready {background-color:pink;}
+.room.already {
+    background-color:gold; 
+    color:black;
+}
+.room.already-partial {
+    background-color: greenyellow; 
+    cursor: pointer;
+    color: black;
+}
+.room.already-fullshared {
+    background-color: yellow;
+    color: black;
+}
+.room.notready {
+    background-color:lightpink;
+}
 
-.room.occupied {background-color:red;}
+.room.occupied {background-color:darkred;}
 
 .room.partial {
-    background-color:gold;
+    background-color:blue;
     cursor:pointer;
 }
 
 .room.sel {
-    background-color:green;
+    background-color:forestgreen;
     outline-color:skyblue;
     outline-style: solid;
     outline-width: 1.5px;

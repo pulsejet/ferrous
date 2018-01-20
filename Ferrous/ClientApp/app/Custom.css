@@ -15,6 +15,10 @@
     width: 140px;
 }
 
+.xunk-table-prehead {
+    margin-left: 10px
+}
+
 .xunk-table {
     margin: 10px;
     overflow-x: auto;
@@ -37,6 +41,18 @@
     font-size: 21pt;
 }   
 
+.xunk-max-200px-desktop {
+    max-width:250px;
+}
+
+.xunk-center-wrapper {
+    text-align: center;
+}
+
+.xunk-center {
+    display: inline-block;
+}
+
 @media screen and (max-width: 768px) {
     .xunk-table {
         margin: 3px;
@@ -46,5 +62,9 @@
     .xunk-hide-mobile {
         display:none;
         width: 0px;
+    }
+
+    .xunk-max-200px-desktop {
+        max-width: 100%;
     }
 }

@@ -1,6 +1,4 @@
-﻿<h1>Contingent Details</h1>
-
-<div [hidden]="editing">
+﻿<div [hidden]="editing">
     <div class="col-md-3"><b>Contingent Leader No:</b></div>
     <div class="col-md-3"> {{ contingent.contingentLeaderNo }} </div><br />
 
@@ -43,29 +41,32 @@
     </mat-form-field>
 </div>
 
-<div class="container"
-     fxLayout
+<div fxLayout="column"
+     fxLayoutGap="5px"
+     class="xunk-max-200px-desktop">
+
+<div fxLayout
      fxLayout.xs="column"
      fxLayoutGap="8px"
-     fxLayoutGap.xs="5px">
+     fxLayoutGap.xs="5px"
+     fxFlex>
     <ng-container *ngIf="!editing">
-        <button mat-raised-button color="primary" (click)="edit();"> Edit </button>
+        <button fxFlex mat-raised-button color="primary" (click)="edit();"> Edit </button>
         <button mat-button color="warn" (click)="delete();"> Delete </button>
     </ng-container>
     <ng-container *ngIf="editing">
         <button mat-raised-button color="primary" (click)="save();">Save</button>
         <button mat-raised-button color="accent" (click)="edit();">Cancel</button>
     </ng-container>
+
 </div>
 
-<br />
-
-<div class="container"
-     fxLayout
+<div fxLayout
      fxLayout.xs="column"
-     fxLayoutGap="8px"
-     fxLayoutGap.xs="5px">
-    <button mat-raised-button color="accent" [routerLink]="['/roomLayout/', contingent.contingentLeaderNo]">Allocate Rooms </button>
+     fxFlex >
+    <button fxFlex mat-raised-button color="accent" [routerLink]="['/roomLayout/', contingent.contingentLeaderNo]">Allocate Rooms </button>
+</div>
+
 </div>
 
 <br />
@@ -75,7 +76,7 @@
     <li *ngFor="let roomA of contingent.roomAllocation" class="list-group-item">
         <span><b>{{ roomA.room.location }} - {{ roomA.room.room1 }}</b> - {{ roomA.room.capacity}} </span>
         <span *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</span>
-        <button class="xunk-table-button" mat-button color="warn" (click)="unallocateRoom(roomA);"><mat-icon>delete</mat-icon></button>
+        <button class="xunk-table-button" mat-icon-button color="warn" (click)="unallocateRoom(roomA);"><mat-icon>delete</mat-icon></button>
     </li>
 </ul>
 

@@ -1,8 +1,20 @@
-<button mat-icon-button color="primary"
-        [routerLink]="['/contingentDetails/', '0', 1]"
-        class="xunk-table-button-margin">
-    <mat-icon>add</mat-icon>
-</button>
+<div fxLayout 
+     fxLayoutAlign="start start"
+     fxLayoutGap="100px"
+     fxLayoutGap.xs="3px"
+     class="xunk-table-prehead">
+    <mat-form-field fxFlex>
+        <input matInput
+               name="clno" [(ngModel)]="enteredCL"
+               placeholder="Contingent Leader No.">
+    </mat-form-field>
+
+    <button mat-icon-button color="primary"
+            [routerLink]="['/contingentDetails/', '0', 1]"
+            class="xunk-table-button-margin">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
 
 <div *ngIf="!contingents">
     <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
@@ -21,7 +33,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let contingent of contingents;  let rowIndex = index" (click)="handleTableClick(contingent)">
+            <tr *ngFor="let contingent of contingents | filtercontingents:enteredCL;  let rowIndex = index" (click)="handleTableClick(contingent)">
                 <td>{{ contingent.contingentLeaderNo }}</td>
                 <td>{{ contingent.male }}</td>
                 <td>{{ contingent.female }}</td>

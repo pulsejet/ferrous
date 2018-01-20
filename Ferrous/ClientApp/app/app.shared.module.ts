@@ -17,7 +17,10 @@ import { PersonDetailsComponent } from './components/person/personDetails';
 import { RoomLayoutComponent } from './components/roomLayout/roomLayout.component';
 
 import { CounterComponent } from './components/counter/counter.component';
-import { MyMaterialClass } from './components/material-angular'
+import { MyMaterialClass } from './components/material-angular';
+import { DataService } from './DataService';
+import { HttpClientModule } from '@angular/common/http';
+import { FilterContingents } from './Pipes';
 import 'hammerjs';
 
 @NgModule({
@@ -33,11 +36,15 @@ import 'hammerjs';
         PersonDetailsComponent,
 
         RoomLayoutComponent,
-        HomeComponent
+
+        HomeComponent,
+
+        FilterContingents
     ],
     imports: [
         CommonModule,
         HttpModule,
+        HttpClientModule,
         FormsModule,
         MyMaterialClass,
         RouterModule.forRoot([
@@ -56,6 +63,9 @@ import 'hammerjs';
             { path: 'roomLayout/:id', component: RoomLayoutComponent },
             { path: '**', redirectTo: 'home' }
         ])
+    ],
+    providers: [
+        DataService
     ]
 })
 export class AppModuleShared {

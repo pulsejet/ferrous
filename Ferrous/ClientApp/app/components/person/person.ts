@@ -1,9 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { Http } from '@angular/http';
 import { Person } from '../interfaces';
 import { PersonDetailsComponent } from './personDetails';
-import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { DataService } from '../../DataService';
 
 @Component({
     selector: 'person',
@@ -14,21 +13,20 @@ export class PersonComponent {
     public people: Person[];
 
     constructor(
-        public router: Router,
         private titleService: Title,
-        public http: Http,
+        private dataService: DataService,
         @Inject('BASE_URL') baseUrl: string) {
 
         this.titleService.setTitle("People");
 
-        http.get(baseUrl + 'api/People').subscribe(result => {
-            this.people = result.json() as Person[];
+        dataService.GetAllPeople().subscribe(result => {
+            this.people = result;
         }, error => console.error(error));
     }
 
     public delete(id = "", rowNumber: number) {
         if (confirm("Are you sure to delete?")) {
-            this.http.delete('/api/People/' + id).subscribe(result => {
+            this.dataService.DeletePerson(id).subscribe(result => {
                 this.people.splice(rowNumber, 1);
             });
         }
@@ -36,7 +34,7 @@ export class PersonComponent {
 
     public handleTableClick(person: Person) {
         if (window.innerWidth <= 768)
-            this.router.navigate(['/personDetails/' + person.mino]);
+            this.dataService.NavigatePersonDetails(person.mino);
     }
 }
 
