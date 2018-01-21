@@ -5,5 +5,6 @@
         public int CapacityEmpty;
         public int CapacityFilled;
         public int CapacityNotReady;
+        public int AlreadyAllocated;
     }
 }

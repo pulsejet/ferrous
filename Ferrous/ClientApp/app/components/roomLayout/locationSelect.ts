@@ -27,7 +27,7 @@ export class LocationSelectComponent {
         });
 
         /* Get buildings data */
-        this.dataService.GetAllBuildings().subscribe(result => {
+        this.dataService.GetAllBuildingsExtended(this.clno).subscribe(result => {
             this.buildings = result;
         });
     }

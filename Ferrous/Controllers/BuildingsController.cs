@@ -28,8 +28,8 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/Buildings/e
-        [HttpGet("e")]
-        public async Task<IEnumerable<Building>> GetBuildingExtended()
+        [HttpGet("e/{clno}")]
+        public async Task<IEnumerable<Building>> GetBuildingExtended([FromRoute] string clno)
         {
             mydbContext ctx = new mydbContext();
             Building[] buildings = await ctx.Building.Include(m => m.Room)
@@ -49,10 +49,14 @@ namespace Ferrous.Controllers
                         if (roomA.Partial <= 0) {
                             building.CapacityFilled += room.Capacity;
                             building.CapacityEmpty -= room.Capacity;
+                            if (roomA.ContingentLeaderNo == clno)
+                                building.AlreadyAllocated += room.Capacity;
                             break;
                         }
                         building.CapacityFilled += roomA.Partial;
                         building.CapacityEmpty -= roomA.Partial;
+                        if (roomA.ContingentLeaderNo == clno)
+                            building.AlreadyAllocated += roomA.Partial;
                     }
                 }
                 building.Room = null;

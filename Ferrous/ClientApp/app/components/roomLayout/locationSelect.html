@@ -10,6 +10,7 @@
             <tr>
                 <th>Location</th>
                 <th>Empty</th>
+                <th>Allocated</th>
                 <th>Filled</th>
                 <th>Not Ready</th>
                 <th>Per Room</th>
@@ -20,6 +21,7 @@
                 [routerLink]="['/roomLayout/', building.location, clno]">
                 <td>{{building.location}}</td>
                 <td><b>{{building.capacityEmpty}}</b></td>
+                <td>{{building.alreadyAllocated}}</td>
                 <td>{{building.capacityFilled}}</td>
                 <td>{{building.capacityNotReady}}</td>
                 <td>{{building.defaultCapacity}}</td>
