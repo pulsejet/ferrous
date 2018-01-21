@@ -8,11 +8,11 @@
 
 #load {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: calc(50% - 50px);
+    left: calc(50% - 50px);
     height: 140px;
     width: 140px;
+    margin: 0;
 }
 
 .xunk-table-prehead {
