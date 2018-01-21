@@ -49,9 +49,9 @@ namespace Ferrous.Controllers
 
         // GET: api/Rooms/ByLoc/H1
         [HttpGet("ByLoc/{loc}")]
-        public IEnumerable<Room> GetRoomsByLoc([FromRoute] string loc)
+        public async Task<IEnumerable<Room>> GetRoomsByLoc([FromRoute] string loc)
         {
-            return _context.Room.Where(m => m.Location == loc).Include(m => m.RoomAllocation);
+            return await _context.Room.Where(m => m.Location == loc).Include(m => m.RoomAllocation).ToListAsync();
         }
 
         // PUT: api/Rooms/5
@@ -136,9 +136,9 @@ namespace Ferrous.Controllers
         [HttpGet("allot/{id}/{CLNo}/{partialno}")]
         public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string CLNo, [FromRoute] int partialno = -1)
         {
-            Room room = _context.Room.Where(m => m.Id == id)
+            Room room = await _context.Room.Where(m => m.Id == id)
                                     .Include(m => m.RoomAllocation)
-                                    .SingleOrDefault();
+                                    .SingleOrDefaultAsync();
             if (room == null) return BadRequest();
 
             bool partial = partialno > 0;
@@ -170,9 +170,9 @@ namespace Ferrous.Controllers
         [HttpGet("mark/{id}/{status}")]
         public async Task<IActionResult> mark([FromRoute] int id, [FromRoute] int status)
         {
-            Room room = _context.Room.Where(m => m.Id == id)
+            Room room = await _context.Room.Where(m => m.Id == id)
                                     .Include(m => m.RoomAllocation)
-                                    .SingleOrDefault();
+                                    .SingleOrDefaultAsync();
             if (room == null) return BadRequest();
 
             if (room.RoomAllocation.Count > 0) return BadRequest("Not Empty");

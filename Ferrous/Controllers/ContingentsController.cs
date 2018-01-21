@@ -42,10 +42,6 @@ namespace Ferrous.Controllers
                                             .Include(m => m.Person)
                                             .SingleOrDefaultAsync();
 
-            //var contingents = await _context.Contingents.SingleOrDefaultAsync(m => m.ContingentLeaderNo == id);
-            //_context.Entry(contingents).Collection(la => la.Person).Load();
-            //_context.Entry(contingents).Collection(la => la.RoomAllocation).Load();
-
             if (contingents == null)
             {
                 return NotFound();
