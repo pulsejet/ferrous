@@ -51,4 +51,7 @@ export interface Building {
     location: string;
     defaultCapacity: number;
     room: Room[];
+    capacityEmpty: number;
+    capacityFilled: number;
+    capacityNotReady: number;
 }

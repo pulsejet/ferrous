@@ -4,14 +4,20 @@
         <thead>
             <tr>
                 <th>Location</th>
+                <th>Empty</th>
+                <th>Filled</th>
+                <th>Not Ready</th>
+                <th>Per Room</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let building of buildings"
                 [routerLink]="['/roomLayout/', building.location, clno]">
-                <td mat-raised-button color="primary">
-                    {{building.location}}
-                </td>
+                <td>{{building.location}}</td>
+                <td><b>{{building.capacityEmpty}}</b></td>
+                <td>{{building.capacityFilled}}</td>
+                <td>{{building.capacityNotReady}}</td>
+                <td>{{building.defaultCapacity}}</td>
             </tr>
         </tbody>
     </table>

@@ -136,7 +136,7 @@ export class DataService {
     /* === Buildings === */
 
     GetAllBuildings(): Observable<Building[]> {
-        return this.http.get<Building[]>(API_Buildings_URL)
+        return this.http.get<Building[]>(API_Buildings_URL  + "/e")
     }
 
     GetBuilding(loc: string): Observable<Building> {
