@@ -2,12 +2,13 @@
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { HttpClient, HttpSentEvent, HttpHeaders } from '@angular/common/http';
-import { Contingent, RoomAllocation, Person, Room } from './components/interfaces'
+import { Contingent, RoomAllocation, Person, Room, Building } from './components/interfaces'
 import { RequestOptions, Headers, ResponseContentType } from '@angular/http';
 import { Router } from '@angular/router';
 
 const API_Contingents_URL: string = '/api/Contingents/';
 const API_RoomAllocations_URL: string = '/api/RoomAllocations/';
+const API_Buildings_URL: string = '/api/Buildings/';
 
 const API_Rooms_URL: string = '/api/Rooms/';
 const API_Rooms_ByLocation_Suffix: string = 'ByLoc/';
@@ -132,4 +133,13 @@ export class DataService {
         return this.http.delete(API_RoomAllocations_URL + sno)
     }
 
+    /* === Buildings === */
+
+    GetAllBuildings(): Observable<Building[]> {
+        return this.http.get<Building[]>(API_Buildings_URL)
+    }
+
+    GetBuilding(loc: string): Observable<Building> {
+        return this.http.get<Building>(API_Buildings_URL + loc)
+    }
 }

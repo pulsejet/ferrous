@@ -23,6 +23,7 @@ namespace Ferrous.Models
         public string Remark2 { get; set; }
         public string ReasonUnavailable { get; set; }
 
+        public Building LocationNavigation { get; set; }
         public ICollection<RoomAllocation> RoomAllocation { get; set; }
     }
 }

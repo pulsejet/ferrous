@@ -1,0 +1,18 @@
+﻿<!-- Body -->
+<div  *ngIf="buildings" class='xunk-table table-responsive'>
+    <table class='xunk-table-pointer table table-hover'>
+        <thead>
+            <tr>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let building of buildings"
+                [routerLink]="['/roomLayout/', building.location, clno]">
+                <td mat-raised-button color="primary">
+                    {{building.location}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

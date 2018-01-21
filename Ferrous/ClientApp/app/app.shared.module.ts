@@ -15,6 +15,7 @@ import { PersonComponent } from './components/person/person';
 import { PersonDetailsComponent } from './components/person/personDetails';
 
 import { RoomLayoutComponent } from './components/roomLayout/roomLayout.component';
+import { LocationSelectComponent } from './components/roomLayout/locationSelect';
 
 import { CounterComponent } from './components/counter/counter.component';
 import { MyMaterialClass } from './components/material-angular';
@@ -36,6 +37,7 @@ import 'hammerjs';
         PersonDetailsComponent,
 
         RoomLayoutComponent,
+        LocationSelectComponent,
 
         HomeComponent,
 
@@ -60,7 +62,9 @@ import 'hammerjs';
             { path: 'personDetails/:id', component: PersonDetailsComponent },
             { path: 'personDetails/:id/:edit', component: PersonDetailsComponent },
 
-            { path: 'roomLayout/:id', component: RoomLayoutComponent },
+            { path: 'roomLayout/:location/:id', component: RoomLayoutComponent },
+            { path: 'locationSelect/:id', component: LocationSelectComponent },
+
             { path: '**', redirectTo: 'home' }
         ])
     ],

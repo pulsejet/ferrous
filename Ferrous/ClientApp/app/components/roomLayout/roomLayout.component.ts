@@ -7,14 +7,15 @@ import * as $ from 'jquery';
 
 /* Room layout component */
 @Component({
-    selector: 'home',
+    selector: 'roomLayout',
     templateUrl: './roomLayout.component.html',
     styleUrls: ['../../Custom.css'],
 })
 export class RoomLayoutComponent {
     public rooms: Room[];                   /* master list of rooms     */
     public clno: string;                    /* current CLNo             */
-    public Location: string;                /* current location         */
+    public Location: string;                /* location full name       */
+    public loc_code: string;                /* code of current location */
     @ViewChild('roomsLayout')               /* layout element           */
         roomsLayout: ElementRef;            /*                          */
     public marking: boolean = false;        /* marking status change    */
@@ -28,11 +29,12 @@ export class RoomLayoutComponent {
 
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
+            this.loc_code = params['location'];
             this.clno = params['id'];
         });
 
         /* Get room layout by location */
-        dataService.GetRoomLayout('H7').subscribe(result => {
+        dataService.GetRoomLayout(this.loc_code).subscribe(result => {
             this.roomsLayout.nativeElement.innerHTML = result;
             this.Location = $("#LocationName").html();
         });
@@ -42,8 +44,8 @@ export class RoomLayoutComponent {
     }
 
     reloadRooms() {
-        this.dataService.GetRoomsByLocation('H7').subscribe(result => {
-            this.rooms = result;
+        this.dataService.GetBuilding(this.loc_code).subscribe(result => {
+            this.rooms = result.room;
             this.AssignRoomsInit();
         });
     }

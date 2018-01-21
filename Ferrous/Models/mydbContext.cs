@@ -6,6 +6,7 @@ namespace Ferrous.Models
 {
     public partial class mydbContext : DbContext
     {
+        public virtual DbSet<Building> Building { get; set; }
         public virtual DbSet<Contingents> Contingents { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Room> Room { get; set; }
@@ -22,6 +23,21 @@ namespace Ferrous.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Building>(entity =>
+            {
+                entity.HasKey(e => e.Location);
+
+                entity.HasIndex(e => e.Location)
+                    .HasName("UQ__Location__E55D3B103AD1961C")
+                    .IsUnique();
+
+                entity.Property(e => e.Location)
+                    .HasMaxLength(15)
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.DefaultCapacity).HasDefaultValueSql("((0))");
+            });
+
             modelBuilder.Entity<Contingents>(entity =>
             {
                 entity.HasKey(e => e.ContingentLeaderNo);
@@ -91,6 +107,12 @@ namespace Ferrous.Models
                     .HasMaxLength(10);
 
                 entity.Property(e => e.Status).HasDefaultValueSql("((0))");
+
+                entity.HasOne(d => d.LocationNavigation)
+                    .WithMany(p => p.Room)
+                    .HasForeignKey(d => d.Location)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Room__Location__7D439ABD");
             });
 
             modelBuilder.Entity<RoomAllocation>(entity =>
