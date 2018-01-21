@@ -11,6 +11,7 @@ namespace Ferrous.Models
         }
 
         public string Location { get; set; }
+        public string LocationFullName { get; set; }
         public int DefaultCapacity { get; set; }
 
         public ICollection<Room> Room { get; set; }

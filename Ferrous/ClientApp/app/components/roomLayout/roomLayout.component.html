@@ -1,69 +1,75 @@
 ﻿<!-- Template CSS-->
 <link href="/roomTemplates/room.css" rel="stylesheet" type="text/css" />
 
+<!-- Loading spinner -->
+<div *ngIf="!rooms">
+    <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
+</div>
+
 <!-- Location label and refresh button-->
-<span class="h1-inline"> {{ Location }} </span>
+<span class="h1-inline"> {{ loc_fullname }} </span>
 <button class="xunk-table-button" mat-icon-button color="primary" (click)="reloadRooms()">
     <mat-icon>refresh</mat-icon>
 </button>
 
-<!-- Loading spinner and body -->
-<div class="xunk-center-wrapper table-responsive">
+<!-- Layout -->
+<div [hidden]="!rooms" class="xunk-center-wrapper table-responsive">
     <div #roomsLayout class="xunk-center">
-        <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
+        Loading Layout
     </div>
 </div>
 
-<br />
+<!-- Body -->
+<div *ngIf="rooms">
+    <!-- Allocated list -->
+    <ul class="list-group">
+        <ng-container *ngFor="let room of rooms">
+            <ng-container *ngIf="room.selected">
+                <li *ngFor="let roomA of room.roomAllocation" class="list-group-item">
+                    <span>
+                        <b>{{ room.location }} - {{ room.room1 }}</b> - <b>{{ roomA.contingentLeaderNo }}</b>
+                    </span>
+                    <span *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</span>
+                    <button style="float:right" mat-icon-button color="warn" (click)="unallocateRoom(roomA, room);"><mat-icon>delete</mat-icon></button>
+                </li>
+            </ng-container>
+        </ng-container>
+    </ul>
 
-<!-- Allocated list -->
-<ul class="list-group">
-    <ng-container *ngFor="let room of rooms">
-        <ng-container *ngIf="room.selected">
-            <li *ngFor="let roomA of room.roomAllocation" class="list-group-item">
-                <span>
-                    <b>{{ room.location }} - {{ room.room1 }}</b> - <b>{{ roomA.contingentLeaderNo }}</b>
-                </span>
-                <span *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</span>
-                <button style="float:right" mat-icon-button color="warn" (click)="unallocateRoom(roomA, room);"><mat-icon>delete</mat-icon></button>
+    <!-- To Allocate List -->
+    <ul class="list-group">
+        <ng-container *ngFor="let room of rooms">
+            <li *ngIf="room.selected && canAllocate(room)" class="list-group-item">
+                <div *ngIf="CheckPartial(room) || room.partialallot">
+                    <b>{{ room.location }} - {{ room.room1 }}</b> - {{ this.GetCapacity(room) }} &nbsp;
+                    <button *ngIf="room.partialallot" style="float:right" mat-button color="accent" (click)="room.partialallot = false;">Partial</button>
+                    <mat-form-field>
+                        <input matInput name="partialsel" [(ngModel)]="room.partialsel" placeholder="Partial">
+                    </mat-form-field>
+                </div>
+
+                <div *ngIf="!CheckPartial(room) && !room.partialallot">
+                    <b>{{ room.location }} - {{ room.room1 }}</b> - {{ this.GetCapacity(room) }}
+                    <button style="float:right" mat-button color="accent" (click)="room.partialallot = true;">Partial</button>
+                </div>
             </li>
         </ng-container>
-    </ng-container>
-</ul>
+    </ul>
 
-<!-- To Allocate List -->
-<ul class="list-group">
-    <ng-container *ngFor="let room of rooms">
-        <li *ngIf="room.selected && canAllocate(room)" class="list-group-item">
-            <div *ngIf="CheckPartial(room) || room.partialallot">
-                <b>{{ room.location }} - {{ room.room1 }}</b> - {{ this.GetCapacity(room) }} &nbsp;
-                <button *ngIf="room.partialallot" style="float:right" mat-button color="accent" (click)="room.partialallot = false;">Partial</button>
-                <mat-form-field>
-                    <input matInput name="partialsel" [(ngModel)]="room.partialsel" placeholder="Partial">
-                </mat-form-field>
-            </div>
+    <br>
 
-            <div *ngIf="!CheckPartial(room) && !room.partialallot">
-                <b>{{ room.location }} - {{ room.room1 }}</b> - {{ this.GetCapacity(room) }}
-                <button style="float:right" mat-button color="accent" (click)="room.partialallot = true;">Partial</button>
-            </div>
-        </li>
-    </ng-container>
-</ul>
-
-<br>
-
-<!-- Action buttons -->
-<div class="containerX">
-    <div class="container"
-         fxLayout
-         fxLayout.xs="column"
-         fxLayoutGap="8px"
-         fxLayoutGap.xs="5px">
-        <mat-slide-toggle [(ngModel)]="marking">Mark</mat-slide-toggle>
-        <button fxFlex="auto" (click)="Allot();" mat-raised-button color="primary">Allot Rooms</button>
-        <button fxFlex="auto" (click)="Mark(0);" mat-raised-button color="warn">Mark Unavailable</button>
-        <button fxFlex="auto" (click)="Mark(1);" mat-raised-button color="warn">Mark Empty</button>
-        <button fxFlex="auto" (click)="Mark(4);" mat-raised-button color="warn">Mark Not Ready</button>
+    <!-- Action buttons -->
+    <div class="containerX">
+        <div class="container"
+             fxLayout
+             fxLayout.xs="column"
+             fxLayoutGap="8px"
+             fxLayoutGap.xs="5px">
+            <mat-slide-toggle [(ngModel)]="marking">Mark</mat-slide-toggle>
+            <button fxFlex="auto" (click)="Allot();" mat-raised-button color="primary">Allot Rooms</button>
+            <button fxFlex="auto" (click)="Mark(0);" mat-raised-button color="warn">Mark Unavailable</button>
+            <button fxFlex="auto" (click)="Mark(1);" mat-raised-button color="warn">Mark Empty</button>
+            <button fxFlex="auto" (click)="Mark(4);" mat-raised-button color="warn">Mark Not Ready</button>
+        </div>
     </div>
 </div>

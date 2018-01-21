@@ -1,5 +1,10 @@
-﻿<!-- Body -->
-<div  *ngIf="buildings" class='xunk-table table-responsive'>
+﻿<!-- Loading spinner -->
+<div *ngIf="!buildings">
+    <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
+</div>
+
+<!-- Body -->
+<div *ngIf="buildings" class='xunk-table table-responsive'>
     <table class='xunk-table-pointer table table-hover'>
         <thead>
             <tr>

@@ -28,7 +28,7 @@ namespace Ferrous.Models
                 entity.HasKey(e => e.Location);
 
                 entity.HasIndex(e => e.Location)
-                    .HasName("UQ__Location__E55D3B103AD1961C")
+                    .HasName("UQ__tmp_ms_x__E55D3B10386ED722")
                     .IsUnique();
 
                 entity.Property(e => e.Location)
@@ -36,6 +36,8 @@ namespace Ferrous.Models
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.DefaultCapacity).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.LocationFullName).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Contingents>(entity =>
@@ -112,7 +114,7 @@ namespace Ferrous.Models
                     .WithMany(p => p.Room)
                     .HasForeignKey(d => d.Location)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Room__Location__7D439ABD");
+                    .HasConstraintName("FK__Room__Location__04E4BC85");
             });
 
             modelBuilder.Entity<RoomAllocation>(entity =>

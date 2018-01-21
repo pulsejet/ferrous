@@ -14,7 +14,7 @@ import * as $ from 'jquery';
 export class RoomLayoutComponent {
     public rooms: Room[];                   /* master list of rooms     */
     public clno: string;                    /* current CLNo             */
-    public Location: string;                /* location full name       */
+    public loc_fullname: string;            /* location full name       */
     public loc_code: string;                /* code of current location */
     @ViewChild('roomsLayout')               /* layout element           */
         roomsLayout: ElementRef;            /*                          */
@@ -36,7 +36,6 @@ export class RoomLayoutComponent {
         /* Get room layout by location */
         dataService.GetRoomLayout(this.loc_code).subscribe(result => {
             this.roomsLayout.nativeElement.innerHTML = result;
-            this.Location = $("#LocationName").html();
         });
 
         /* Load rooms */
@@ -46,6 +45,7 @@ export class RoomLayoutComponent {
     reloadRooms() {
         this.dataService.GetBuilding(this.loc_code).subscribe(result => {
             this.rooms = result.room;
+            this.loc_fullname = result.locationFullName;
             this.AssignRoomsInit();
         });
     }

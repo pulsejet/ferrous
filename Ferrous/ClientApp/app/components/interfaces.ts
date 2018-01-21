@@ -49,6 +49,7 @@ export interface RoomAllocation {
 
 export interface Building {
     location: string;
+    locationFullName: string;
     defaultCapacity: number;
     room: Room[];
     capacityEmpty: number;
