@@ -36,10 +36,10 @@ export class RoomLayoutComponent {
         /* Get room layout by location */
         dataService.GetRoomLayout(this.loc_code).subscribe(result => {
             this.roomsLayout.nativeElement.innerHTML = result;
-        });
 
-        /* Load rooms */
-        this.reloadRooms();
+            /* Load rooms */
+            this.reloadRooms();
+        });
     }
 
     reloadRooms() {
