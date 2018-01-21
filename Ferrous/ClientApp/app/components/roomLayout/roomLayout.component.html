@@ -1,15 +1,22 @@
-﻿<link href="/roomTemplates/room.css" rel="stylesheet" type="text/css" />
+﻿<!-- Template CSS-->
+<link href="/roomTemplates/room.css" rel="stylesheet" type="text/css" />
 
+<!-- Location label and refresh button-->
 <span class="h1-inline"> {{ Location }} </span>
 <button class="xunk-table-button" mat-icon-button color="primary" (click)="reloadRooms()">
     <mat-icon>refresh</mat-icon>
 </button>
 
+<!-- Loading spinner and body -->
 <div class="xunk-center-wrapper table-responsive">
     <div #roomsLayout class="xunk-center">
         <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
     </div>
 </div>
+
+<br />
+
+<!-- Allocated list -->
 <ul class="list-group">
     <ng-container *ngFor="let room of rooms">
         <ng-container *ngIf="room.selected">
@@ -24,6 +31,7 @@
     </ng-container>
 </ul>
 
+<!-- To Allocate List -->
 <ul class="list-group">
     <ng-container *ngFor="let room of rooms">
         <li *ngIf="room.selected && canAllocate(room)" class="list-group-item">
@@ -42,7 +50,10 @@
         </li>
     </ng-container>
 </ul>
+
 <br>
+
+<!-- Action buttons -->
 <div class="containerX">
     <div class="container"
          fxLayout

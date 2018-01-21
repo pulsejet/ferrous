@@ -5,17 +5,19 @@ import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 import * as $ from 'jquery';
 
+/* Room layout component */
 @Component({
     selector: 'home',
     templateUrl: './roomLayout.component.html',
     styleUrls: ['../../Custom.css'],
 })
 export class RoomLayoutComponent {
-    public rooms: Room[];
-    public clno: string;
-    public Location: string;
-    @ViewChild('roomsLayout') roomsLayout: ElementRef;
-    public marking: boolean = false;
+    public rooms: Room[];                   /* master list of rooms     */
+    public clno: string;                    /* current CLNo             */
+    public Location: string;                /* current location         */
+    @ViewChild('roomsLayout')               /* layout element           */
+        roomsLayout: ElementRef;            /*                          */
+    public marking: boolean = false;        /* marking status change    */
 
     constructor(private activatedRoute: ActivatedRoute,
         private titleService: Title,
@@ -24,24 +26,36 @@ export class RoomLayoutComponent {
 
         this.titleService.setTitle("Room Layout");
 
+        /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
             this.clno = params['id'];
         });
 
+        /* Get room layout by location */
         dataService.GetRoomLayout('H7').subscribe(result => {
             this.roomsLayout.nativeElement.innerHTML = result;
             this.Location = $("#LocationName").html();
         });
 
+        /* Load rooms */
         this.reloadRooms();
     }
 
+    reloadRooms() {
+        this.dataService.GetRoomsByLocation('H7').subscribe(result => {
+            this.rooms = result;
+            this.AssignRoomsInit();
+        });
+    }
+
+    /* Initialize rooms */
     public AssignRoomsInit() {
         var self = this;
         for (let room of this.rooms) {
-            let str = "#room-" + room.location + "-" + room.room1;
-            let ctrl = str.replace(/\s+/, "");
+            /* Find the room by HTML id */
+            let ctrl = this.getRoomId(room)
 
+            /* Mark the room selected */
             $(ctrl).click(function () {
                 if ((room.status == 1 && room.roomAllocation.length == 0)
                     || self.CheckPartial(room)
@@ -50,29 +64,36 @@ export class RoomLayoutComponent {
 
                     room.selected = !room.selected;
                 }
-                self.AssignRooms();
-            });
-        }
 
-        this.AssignRooms();
+                /* Update room graphic */
+                self.AssignRoom(room);
+            });
+
+            /* Initial room graphic update */
+            this.AssignRoom(room);
+        }
     }
 
+    /* Update graphic for all rooms */
     public AssignRooms() {
         for (let room of this.rooms) {
             this.AssignRoom(room);
         }
     }
 
-    public AssignRoom(room: Room){
-        let str = "#room-" + room.location + "-" + room.room1;
-        let ctrl = str.replace(/\s+/, "");
-
+    /* Update graphic for one room */
+    public AssignRoom(room: Room) {
+        let ctrl = this.getRoomId(room);
         let clss: string = this.GetRoomClass(room);
 
+        /* Show capacity and room number */
         $(ctrl).html(this.GetCapacity(room) + "<br><span>" + room.room1.toString() + "</span>");
+
+        /* Assign CSS class */
         $(ctrl).attr("class", clss);
     }
 
+    /* Mark all selected rooms */
     public Mark(Status: number) {
         for (let room of this.rooms) {
             if (room.selected) {
@@ -85,6 +106,7 @@ export class RoomLayoutComponent {
         }
     }
 
+    /* Get number of free spaces in room */
     public GetCapacity(room: Room): number {
         if (this.CheckOccupied(room)) {
             return 0;
@@ -95,10 +117,12 @@ export class RoomLayoutComponent {
         }
     }
 
+    /* Allot all selected rooms */
     public Allot() {
         for (let room of this.rooms) {
             if (room.selected) {
                 this.dataService.AllotRoom(room, this.clno).subscribe(result => {
+
                     /* Create new allocator */
                     let roomA: RoomAllocation = {} as RoomAllocation;
                     roomA.sno = result;
@@ -108,11 +132,11 @@ export class RoomLayoutComponent {
                     if (room.partialallot || this.CheckPartial(room)) {
                         roomA.partial = room.partialsel;
                     }
-                    else
-                        roomA.partial = -1;
+                    else { roomA.partial = -1; }
 
                     room.roomAllocation.push(roomA);
 
+                    /* Unmark the room and update graphic */
                     room.selected = false;
                     this.AssignRoom(room);
                 });
@@ -120,28 +144,33 @@ export class RoomLayoutComponent {
         }
     }
 
+    /* Check if room is full */
     public CheckOccupied(room: Room): boolean {
         return this.dataService.RoomCheckOccupied(room);
     }
 
+    /* Check if partially filled */
     public CheckPartial(room: Room): boolean {
         return this.dataService.RoomCheckPartial(room);
     }
 
+    /* Get partial number of people in room */
     public GetPartialNo(room: Room): number {
         return this.dataService.RoomGetPartialNo(room);
     }
 
+    /* Get CSS class for room */
     public GetRoomClass(room: Room): string {
-        let status = room.status;
+        /* Selected has top priority */
         if (room.selected) return "room sel";
 
-        let containsThis: boolean = false;
-        let containsOther: boolean = false;
-        let filled: number = 0;
+        let containsThis: boolean = false;      /* Room contains current contingent     */
+        let containsOther: boolean = false;     /* Room contains another contingent     */
+        let filled: number = 0;                 /* Number of people currently in room   */
 
+        /* Fill up local data */
         for (let roomA of room.roomAllocation) {
-            if (roomA.contingentLeaderNo == this.clno) 
+            if (roomA.contingentLeaderNo == this.clno)
                 containsThis = true;
             else
                 containsOther = true;
@@ -152,6 +181,7 @@ export class RoomLayoutComponent {
                 filled += Number(roomA.partial);
         }
 
+        /* Assign classes */
         if (filled < room.capacity) {
             if (containsOther && !containsThis) {
                 return "room partial"
@@ -168,6 +198,8 @@ export class RoomLayoutComponent {
             }
         }
 
+        /* Fall back to status code */
+        let status = room.status;
         if (status == 0) return "room unavailable";
         else if (status == 1) return "room empty";
         else if (status == 2) return "room occupied";
@@ -176,6 +208,7 @@ export class RoomLayoutComponent {
         return "room";
     }
 
+    /* Remove a RoomAllocation */
     public unallocateRoom(roomA: RoomAllocation, room: Room) {
         this.dataService.UnllocateRoom(roomA.sno).subscribe(result => {
             var index = room.roomAllocation.indexOf(roomA, 0);
@@ -184,15 +217,14 @@ export class RoomLayoutComponent {
         });
     }
 
+    /* Check if room can be allocated */
     public canAllocate(room: Room): boolean {
         return ((room.status == 1) || (room.status == 3)) && (!this.CheckOccupied(room));
     }
 
-    reloadRooms() {
-        this.dataService.GetRoomsByLocation('H7').subscribe(result => {
-            this.rooms = result;
-            this.AssignRoomsInit();
-        });
+    /* Get HTML Id of room */
+    public getRoomId(room: Room): string {
+        return ("#room-" + room.location + "-" + room.room1).replace(/\s+/, "");
     }
 
 }

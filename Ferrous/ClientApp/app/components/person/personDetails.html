@@ -1,70 +1,78 @@
-﻿<div [hidden]="editing">
-    <div class="col-md-3"><b>MI No:</b></div>
-    <div class="col-md-3"> {{ person.mino }} </div><br />
-
-    <div class="col-md-3"><b>Name:</b></div>
-    <div class="col-md-3"> {{ person.name }} </div><br />
-
-    <div class="col-md-3"><b>College:</b></div>
-    <div class="col-md-3"> {{ person.college }} </div><br />
-
-    <div class="col-md-3"><b>Contingent Leader No:</b></div>
-    <div class="col-md-3"> {{ person.contingentLeaderNo }} </div><br />
-
-    <div class="col-md-3"><b>Sex:</b></div>
-    <div class="col-md-3"> {{ person.sex }} </div><br />
+﻿<!-- Loading spinner -->
+<div *ngIf="!person">
+    <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
 </div>
 
-<div [hidden]="!editing"
-     class="container"
-     fxLayout="column"
-     fxLayoutGap="8px"
-     fxLayoutAlign="left left">
+<!-- Body -->
+<div *ngIf="person">
+    <div [hidden]="editing">
+        <div class="col-md-3"><b>MI No:</b></div>
+        <div class="col-md-3"> {{ person.mino }} </div><br />
 
-    <mat-form-field>
-        <input fxFlex matInput name="pmino" [(ngModel)]="person.mino" placeholder="MI No">
-    </mat-form-field>
+        <div class="col-md-3"><b>Name:</b></div>
+        <div class="col-md-3"> {{ person.name }} </div><br />
 
-    <mat-form-field>
-        <input fxFlex matInput name="pname" [(ngModel)]="person.name" placeholder="Name">
-    </mat-form-field>
+        <div class="col-md-3"><b>College:</b></div>
+        <div class="col-md-3"> {{ person.college }} </div><br />
 
-    <mat-form-field>
-        <input fxFlex matInput name="pcoll" [(ngModel)]="person.college" placeholder="College">
-    </mat-form-field>
+        <div class="col-md-3"><b>Contingent Leader No:</b></div>
+        <div class="col-md-3"> {{ person.contingentLeaderNo }} </div><br />
 
-    <mat-form-field>
-        <input fxFlex matInput name="pclno" [(ngModel)]="person.contingentLeaderNo" placeholder="Contingent Leader No.">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-select fxFlex mat-select name="psex" [(ngModel)]="person.sex" placeholder="Sex">
-            <mat-option value="M">M</mat-option>
-            <mat-option value="F">F</mat-option>
-        </mat-select>
-    </mat-form-field>
-</div>
+        <div class="col-md-3"><b>Sex:</b></div>
+        <div class="col-md-3"> {{ person.sex }} </div><br />
+    </div>
 
-<div class="container"
-     fxLayout
-     fxLayout.xs="column"
-     fxLayoutGap="8px"
-     fxLayoutGap.xs="5px">
-    <ng-container *ngIf="!editing">
-        <button mat-raised-button color="primary" (click)="edit();"> Edit </button>
-        <button mat-button color="warn" (click)="delete();"> Delete </button>
-    </ng-container>
-    <ng-container *ngIf="editing">
-        <button mat-raised-button color="primary" (click)="save();">Save</button>
-        <button mat-raised-button color="accent" (click)="edit();">Cancel</button>
-    </ng-container>
-</div>
+    <div [hidden]="!editing"
+         class="container"
+         fxLayout="column"
+         fxLayoutGap="8px"
+         fxLayoutAlign="left left">
 
-<br />
+        <mat-form-field>
+            <input fxFlex matInput name="pmino" [(ngModel)]="person.mino" placeholder="MI No">
+        </mat-form-field>
 
-<div class="container"
-     fxLayout
-     fxLayout.xs="column"
-     fxLayoutGap="8px"
-     fxLayoutGap.xs="5px">
-    <button mat-raised-button color="primary" [routerLink]="['/contingentDetails/', person.contingentLeaderNo]">Open Contingent</button>
+        <mat-form-field>
+            <input fxFlex matInput name="pname" [(ngModel)]="person.name" placeholder="Name">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input fxFlex matInput name="pcoll" [(ngModel)]="person.college" placeholder="College">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input fxFlex matInput name="pclno" [(ngModel)]="person.contingentLeaderNo" placeholder="Contingent Leader No.">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select fxFlex mat-select name="psex" [(ngModel)]="person.sex" placeholder="Sex">
+                <mat-option value="M">M</mat-option>
+                <mat-option value="F">F</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="container"
+         fxLayout
+         fxLayout.xs="column"
+         fxLayoutGap="8px"
+         fxLayoutGap.xs="5px">
+        <ng-container *ngIf="!editing">
+            <button mat-raised-button color="primary" (click)="edit();"> Edit </button>
+            <button mat-button color="warn" (click)="delete();"> Delete </button>
+        </ng-container>
+        <ng-container *ngIf="editing">
+            <button mat-raised-button color="primary" (click)="save();">Save</button>
+            <button mat-raised-button color="accent" (click)="edit();">Cancel</button>
+        </ng-container>
+    </div>
+
+    <br />
+
+    <div class="container"
+         fxLayout
+         fxLayout.xs="column"
+         fxLayoutGap="8px"
+         fxLayoutGap.xs="5px">
+        <button mat-raised-button color="primary" [routerLink]="['/contingentDetails/', person.contingentLeaderNo]">Open Contingent</button>
+    </div>
 </div>

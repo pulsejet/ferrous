@@ -1,12 +1,24 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+
+    <!-- Toolbar at top. The name of the page should be clickable when in desktop mode -->
     <mat-toolbar color="primary" class="example-toolbar">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-        <h1 *ngIf="mobileQuery.matches" class="example-app-name">{{ this.titleService.getTitle() }}</h1>
-        <h1 *ngIf="!mobileQuery.matches" class="example-app-name" [routerLink]="['/home']">{{ this.titleService.getTitle() }}</h1>
+        <h1 *ngIf="mobileQuery.matches" 
+            class="example-app-name">
+            {{ this.titleService.getTitle() }}
+        </h1>
+
+        <h1 *ngIf="!mobileQuery.matches" 
+            class="example-app-name" 
+            [routerLink]="['/home']">
+            {{ this.titleService.getTitle() }}
+        </h1>
     </mat-toolbar>
 
+    <!-- Sidenav -->
     <mat-sidenav-container class="sidenav-container"
                            [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <!-- Make sidenav stay when in desktop mode-->
         <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
             <mat-nav-list>
@@ -15,6 +27,7 @@
             </mat-nav-list>
         </mat-sidenav>
 
+        <!-- Outlet for the router page -->
         <mat-sidenav-content>
             <div id="outlet-div">
                 <router-outlet></router-outlet>

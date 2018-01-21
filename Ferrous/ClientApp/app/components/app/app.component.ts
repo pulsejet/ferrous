@@ -3,6 +3,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { MatMenuTrigger } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 
+/* TODO: This code comes from the example for the angular   *
+ * material side nav. Clean it up and add comments.         */
 @Component({
     selector: 'app',
     templateUrl: './app.component.html',

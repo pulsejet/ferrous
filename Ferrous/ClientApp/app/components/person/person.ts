@@ -4,13 +4,14 @@ import { PersonDetailsComponent } from './personDetails';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 
+/* Person Component */
 @Component({
     selector: 'person',
     templateUrl: './person.html',
     styleUrls: ['../../Custom.css']
 })
 export class PersonComponent {
-    public people: Person[];
+    public people: Person[];    /* master list of people */
 
     constructor(
         private titleService: Title,
@@ -19,19 +20,22 @@ export class PersonComponent {
 
         this.titleService.setTitle("People");
 
+        /* Populate the master */
         dataService.GetAllPeople().subscribe(result => {
             this.people = result;
         }, error => console.error(error));
     }
 
+    /* Delete a record*/
     public delete(id = "", rowNumber: number) {
         if (confirm("Are you sure to delete?")) {
             this.dataService.DeletePerson(id).subscribe(result => {
-                this.people.splice(rowNumber, 1);
+                this.people.splice(rowNumber, 1);       /* Splice from master */
             });
         }
     }
 
+    /* Handle table click for small devices */
     public handleTableClick(person: Person) {
         if (window.innerWidth <= 768)
             this.dataService.NavigatePersonDetails(person.mino);

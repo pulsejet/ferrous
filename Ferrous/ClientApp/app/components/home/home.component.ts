@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
+/* Homepage */
 @Component({
     selector: 'home',
     templateUrl: './home.component.html',

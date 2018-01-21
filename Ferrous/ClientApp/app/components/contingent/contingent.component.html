@@ -1,14 +1,17 @@
+<!-- Controls at top-->
 <div fxLayout 
      fxLayoutAlign="start start"
      fxLayoutGap="100px"
      fxLayoutGap.xs="3px"
      class="xunk-table-prehead">
+    <!-- Search Box -->
     <mat-form-field fxFlex>
         <input matInput
                name="clno" [(ngModel)]="enteredCL"
                placeholder="Contingent Leader No.">
     </mat-form-field>
 
+    <!-- Create record button -->
     <button mat-icon-button color="primary"
             [routerLink]="['/contingentDetails/', '0', 1]"
             class="xunk-table-button-margin">
@@ -16,10 +19,12 @@
     </button>
 </div>
 
+<!-- Loading spinner -->
 <div *ngIf="!contingents">
     <mat-progress-spinner id="load" mode="indeterminate"> </mat-progress-spinner>
 </div>
 
+<!-- Table of contingents -->
 <div *ngIf="contingents" class='xunk-table table-responsive'>
     <table class='table table-hover' *ngIf="contingents">
         <thead>
@@ -33,6 +38,7 @@
             </tr>
         </thead>
         <tbody>
+            <!-- Filtered rows, clickable on mobile -->
             <tr *ngFor="let contingent of contingents | filtercontingents:enteredCL;  let rowIndex = index" (click)="handleTableClick(contingent)">
                 <td>{{ contingent.contingentLeaderNo }}</td>
                 <td>{{ contingent.male }}</td>
@@ -40,6 +46,7 @@
                 <td>{{ contingent.arrivedM }}</td>
                 <td>{{ contingent.arrivedF }}</td>
 
+                <!-- Action buttons hidden on mobile -->
                 <td class="xunk-hide-mobile">
                     <button class="xunk-table-button" mat-raised-button color="primary" [routerLink]="['/contingentDetails/', contingent.contingentLeaderNo]">Details </button>
                     <button class="xunk-table-button" mat-button color="accent" [routerLink]="['/contingentDetails/', contingent.contingentLeaderNo, 1]">Edit </button>
