@@ -1,7 +1,7 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
 
     <!-- Toolbar at top. The name of the page should be clickable when in desktop mode -->
-    <mat-toolbar color="primary" class="example-toolbar">
+    <mat-toolbar class="mat-elevation-z3 example-toolbar" color="primary">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
         <h1 *ngIf="mobileQuery.matches" 
             class="example-app-name">

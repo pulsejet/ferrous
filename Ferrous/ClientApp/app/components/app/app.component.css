@@ -43,6 +43,10 @@ mat-sidenav.mat-closed.mat-locked-open-add-active {
     right: 0;
 }
 
+.example-toolbar {
+    z-index: 2;
+}
+
 .example-is-mobile .example-toolbar {
     position: fixed;
     /* Make sure the toolbar will stay on top of the content as it scrolls past. */
