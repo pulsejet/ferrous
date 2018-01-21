@@ -122,19 +122,8 @@ export class RoomLayoutComponent {
         for (let room of this.rooms) {
             if (room.selected) {
                 this.dataService.AllotRoom(room, this.clno).subscribe(result => {
-
-                    /* Create new allocator */
-                    let roomA: RoomAllocation = {} as RoomAllocation;
-                    roomA.sno = result;
-                    roomA.contingentLeaderNo = this.clno;
-                    roomA.roomId = room.id;
-
-                    if (room.partialallot || this.CheckPartial(room)) {
-                        roomA.partial = room.partialsel;
-                    }
-                    else { roomA.partial = -1; }
-
-                    room.roomAllocation.push(roomA);
+                    /* Add new allocation */
+                    room.roomAllocation.push(result);
 
                     /* Unmark the room and update graphic */
                     room.selected = false;

@@ -100,14 +100,14 @@ export class DataService {
         return this.http.get(API_Rooms_URL + API_Room_Mark_Suffix + id + "/" + status, { responseType: 'text' });
     }
 
-    AllotRoom(room: Room, clno: string): Observable<any> {
+    AllotRoom(room: Room, clno: string): Observable<RoomAllocation> {
         let url = API_Rooms_URL + API_Room_Allot_Suffix + room.id + '/' + clno;
         if (room.partialallot || this.RoomCheckPartial(room)) {
             if (room.partialsel == null) throw new Error("Partial number not set!");
             url += '/' + room.partialsel;
         }
 
-        return this.http.get(url, { responseType: 'text' });
+        return this.http.get<RoomAllocation>(url);
     }
 
     RoomCheckOccupied(room: Room): boolean {
