@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
+using System.Threading;
 
 namespace Ferrous.Controllers
 {
@@ -14,6 +15,7 @@ namespace Ferrous.Controllers
     public class RoomsController : Controller
     {
         private readonly mydbContext _context;
+        public static Dictionary<string, DateTime> BuildingUpdatedTime;
 
         public RoomsController(mydbContext context)
         {
@@ -162,6 +164,8 @@ namespace Ferrous.Controllers
 
             await _context.SaveChangesAsync();
 
+            BuildingUpdatedTime[room.Location] = DateTime.Now;
+
             roomAllocation.Room = null;
             return Ok(roomAllocation);
         }
@@ -181,6 +185,8 @@ namespace Ferrous.Controllers
             _context.Update(room);
 
             await _context.SaveChangesAsync();
+
+            BuildingUpdatedTime[room.Location] = DateTime.Now;
             return Content("success");
         }
 
@@ -205,6 +211,32 @@ namespace Ferrous.Controllers
             }
             return Content("Done -- " + str);
         }
+
+        /* SSE for building updates */
+#warning: TODO: The code used for this is threading unsafe
+        [HttpGet("buildingSSE/{id}")]
+        public async Task GetBuildingSSE([FromRoute] string id)
+        {
+            var response = Response;
+            response.Headers.Add("Content-Type", "text/event-stream");
+
+            /* Initial update time for this request */
+            DateTime InitialTime = BuildingUpdatedTime[id];
+            for (var i = 0; true; ++i)
+            {
+                /* Poll the dictionary and reply if required */
+                if (InitialTime != BuildingUpdatedTime[id]) { 
+                    await response
+                        .WriteAsync($"data: " + BuildingUpdatedTime[id].ToString() +"\r\r");
+                    response.Body.Flush();
+                    InitialTime = BuildingUpdatedTime[id];
+                }
+
+                /* Go back to sleep */
+                await Task.Delay(2000);
+            }
+        }
+
     }
 
 }

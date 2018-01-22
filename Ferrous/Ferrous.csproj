@@ -37,6 +37,7 @@
     <None Remove="ClientApp\app\components\roomLayout\roomLayout.component.ts" />
     <None Remove="ClientApp\app\DataService.ts" />
     <None Remove="ClientApp\app\Pipes.ts" />
+    <None Remove="ClientApp\app\SSEService.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +48,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\roomLayout\locationSelect.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\roomLayout\roomLayout.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\DataService.ts" />
+    <TypeScriptCompile Include="ClientApp\app\SSEService.ts" />
     <TypeScriptCompile Include="ClientApp\app\Pipes.ts" />
   </ItemGroup>
 

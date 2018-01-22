@@ -20,6 +20,7 @@ import { LocationSelectComponent } from './components/roomLayout/locationSelect'
 import { CounterComponent } from './components/counter/counter.component';
 import { MyMaterialClass } from './components/material-angular';
 import { DataService } from './DataService';
+import { SSEService } from './SSEService';
 import { HttpClientModule } from '@angular/common/http';
 import { FilterContingents } from './Pipes';
 import { ClickStopPropagation } from './components/material-angular';
@@ -71,7 +72,8 @@ import 'hammerjs';
         ])
     ],
     providers: [
-        DataService
+        DataService,
+        SSEService
     ]
 })
 export class AppModuleShared {

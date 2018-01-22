@@ -27,6 +27,14 @@ namespace Ferrous
                 options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
             services.AddDbContext<Ferrous.Models.mydbContext>();
+
+            /* Initialize Building Updating Dictionary */
+            Models.mydbContext _context = new Models.mydbContext();
+            Controllers.RoomsController.BuildingUpdatedTime = new Dictionary<string, DateTime>();
+            foreach (var building in _context.Building.AsEnumerable())
+            {
+                Controllers.RoomsController.BuildingUpdatedTime[building.Location] = DateTime.Now;
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

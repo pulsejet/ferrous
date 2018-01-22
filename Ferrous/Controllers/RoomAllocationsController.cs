@@ -105,7 +105,9 @@ namespace Ferrous.Controllers
                 return BadRequest(ModelState);
             }
 
-            var roomAllocation = await _context.RoomAllocation.SingleOrDefaultAsync(m => m.Sno == id);
+            var roomAllocation = await _context.RoomAllocation.Where(m => m.Sno == id)
+                                            .Include(m => m.Room)
+                                            .SingleOrDefaultAsync();
             if (roomAllocation == null)
             {
                 return NotFound();
@@ -113,6 +115,8 @@ namespace Ferrous.Controllers
 
             _context.RoomAllocation.Remove(roomAllocation);
             await _context.SaveChangesAsync();
+
+            RoomsController.BuildingUpdatedTime[roomAllocation.Room.Location] = DateTime.Now;
 
             return Ok(roomAllocation);
         }

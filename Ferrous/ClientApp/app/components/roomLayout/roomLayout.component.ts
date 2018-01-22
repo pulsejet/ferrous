@@ -4,7 +4,9 @@ import { Room, RoomAllocation } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 import { MatSnackBar } from '@angular/material';
+import { SSEService } from '../../SSEService'
 import * as $ from 'jquery';
+import { Subscription } from 'rxjs/Subscription';
 
 /* Room layout component */
 @Component({
@@ -20,11 +22,13 @@ export class RoomLayoutComponent {
     @ViewChild('roomsLayout')               /* layout element           */
         roomsLayout: ElementRef;            /*                          */
     public marking: boolean = false;        /* marking status change    */
+    private sseStream: Subscription;        /* SSE Subscription         */
 
     constructor(private activatedRoute: ActivatedRoute,
         private titleService: Title,
         private dataService: DataService,
         public snackBar: MatSnackBar,
+        private sseService: SSEService,
         @Inject('BASE_URL') public baseUrl: string) {
 
         this.titleService.setTitle("Room Layout");
@@ -44,12 +48,47 @@ export class RoomLayoutComponent {
         });
     }
 
-    reloadRooms() {
+    ngOnInit() {
+        this.sseStream = this.sseService.observeMessages('/api/Rooms/buildingSSE/' + this.loc_code)
+            .subscribe(message => {
+                this.reloadRooms();
+            });
+    }
+
+    ngOnDestroy() {
+        if (this.sseStream) {
+            this.sseStream.unsubscribe();
+        }
+    }
+
+    reloadRooms(fullReload: boolean = false) {
         this.dataService.GetBuilding(this.loc_code).subscribe(result => {
-            this.rooms = result.room;
+            if (!this.rooms || fullReload)
+                /* Perform a full replace */
+                this.rooms = result.room;
+
+            else {
+                /* Copy over all objects keeping properties created by the client   *
+                 * WARNING: This assumes that the number of rooms doesnt change.    */
+                let newrooms: Room[] = result.room as Room[];
+                let index: number = 0;
+
+                for (let room of newrooms) {
+                    let oldroom = this.rooms[index];
+                    room.selected = oldroom.selected;
+                    room.partialallot = oldroom.partialallot;
+                    room.partialsel = oldroom.partialsel;
+                    index += Number(1);
+                }
+
+                this.rooms = newrooms;
+            }
+
+            /* Assign other things */
             this.loc_fullname = result.locationFullName;
             this.AssignRoomsInit();
 
+            /* Alert the user */
             this.snackBar.open("Room data updated", "Dismiss", {
                 duration: 2000,
             });
