@@ -74,13 +74,12 @@
     <!-- Room allocations if any -->
     <div *ngIf="(contingent)&&(contingent.roomAllocation)&&(contingent.roomAllocation.length>0)">
         <h3>Allocated Rooms</h3>
-        <ul class="list-group">
-            <li *ngFor="let roomA of contingent.roomAllocation" class="list-group-item">
-                <span><b>{{ roomA.room.location }} - {{ roomA.room.room1 }}</b> - {{ roomA.room.capacity}} </span>
-                <span *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</span>
-                <button class="xunk-table-button" mat-icon-button color="warn" (click)="unallocateRoom(roomA);"><mat-icon>delete</mat-icon></button>
-            </li>
-        </ul>
+        <div *ngFor="let roomA of contingent.roomAllocation" 
+             class="xunk-room-card mat-elevation-z1">
+            <b>{{ roomA.room.location }} - {{ roomA.room.room1 }}</b> - {{ roomA.room.capacity}}
+            <ng-container *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</ng-container>
+            <button class="xunk-room-button-icon" mat-icon-button color="warn" (click)="unallocateRoom(roomA);"><mat-icon>delete</mat-icon></button>
+        </div>
     </div>
 
     <br />

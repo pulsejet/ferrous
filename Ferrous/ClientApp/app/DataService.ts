@@ -146,4 +146,13 @@ export class DataService {
     GetBuilding(loc: string): Observable<Building> {
         return this.http.get<Building>(API_Buildings_URL + loc)
     }
+
+    /* === Quick Extras which shouldn't be here === */
+
+    CheckValidNumber(num: number, min: number = -999999, max: number = 999999): boolean {
+        return (num != null &&
+            !isNaN(Number(num)) &&
+            Number(num) >= min &&
+            Number(num) <= max)
+    }
 }

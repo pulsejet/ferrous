@@ -54,6 +54,22 @@
     display: inline-block;
 }
 
+.xunk-room-card {
+    margin: 10px;
+    padding: 10px;
+    background-color:white;
+}
+
+.xunk-room-button {
+    float: right;
+    margin-top: -7px;
+}
+
+.xunk-room-button-icon {
+    float: right;
+    margin-top: -8px;
+}
+
 @media screen and (max-width: 768px) {
     .xunk-table {
         margin: 3px;

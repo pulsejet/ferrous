@@ -3,6 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Room, RoomAllocation } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
+import { MatSnackBar } from '@angular/material';
 import * as $ from 'jquery';
 
 /* Room layout component */
@@ -23,6 +24,7 @@ export class RoomLayoutComponent {
     constructor(private activatedRoute: ActivatedRoute,
         private titleService: Title,
         private dataService: DataService,
+        public snackBar: MatSnackBar,
         @Inject('BASE_URL') public baseUrl: string) {
 
         this.titleService.setTitle("Room Layout");
@@ -47,6 +49,11 @@ export class RoomLayoutComponent {
             this.rooms = result.room;
             this.loc_fullname = result.locationFullName;
             this.AssignRoomsInit();
+
+            this.snackBar.open("Room data updated", "Dismiss", {
+                duration: 2000,
+            });
+
         });
     }
 
@@ -103,6 +110,11 @@ export class RoomLayoutComponent {
                     room.status = Status;
                     room.selected = false;
                     this.AssignRoom(room);
+                }, error => {
+                    /* Show error */
+                    this.snackBar.open("Mark failed for " + room.room1, "Dismiss", {
+                        duration: 2000,
+                    });
                 });
             }
         }
@@ -121,6 +133,35 @@ export class RoomLayoutComponent {
 
     /* Allot all selected rooms */
     public Allot() {
+
+        /* Validate */
+        for (let room of this.rooms) {
+            if (room.selected) {
+
+                /* Status */
+                if (room.status != 1) {
+                    /* Show error */
+                    this.snackBar.open("Non-allocable room " + room.room1, "Dismiss", {
+                        duration: 2000,
+                    });
+                    console.log("Non-allocable room " + room.room1);
+                    return;
+                }
+
+                /* Partial */
+                if ((room.partialallot || this.CheckPartial(room)) &&
+                    (!this.dataService.CheckValidNumber(room.partialsel, 1))) {
+
+                    /* Show error */
+                    this.snackBar.open("Invalid partial capacity for " + room.room1, "Dismiss", {
+                        duration: 2000,
+                    });
+                    console.log("Invalid partial capacity for " + room.room1);
+                    return;
+                }
+            }
+        }
+
         for (let room of this.rooms) {
             if (room.selected) {
                 this.dataService.AllotRoom(room, this.clno).subscribe(result => {
@@ -130,6 +171,11 @@ export class RoomLayoutComponent {
                     /* Unmark the room and update graphic */
                     room.selected = false;
                     this.AssignRoom(room);
+                }, error => {
+                    /* Show error */
+                    this.snackBar.open("Allotment failed for " + room.room1, "Dismiss", {
+                        duration: 2000,
+                    });
                 });
             }
         }
