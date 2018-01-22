@@ -35,10 +35,9 @@ export class PersonComponent {
         }
     }
 
-    /* Handle table click for small devices */
+    /* Handle table click */
     public handleTableClick(person: Person) {
-        if (window.innerWidth <= 768)
-            this.dataService.NavigatePersonDetails(person.mino);
+        this.dataService.NavigatePersonDetails(person.mino);
     }
 }
 

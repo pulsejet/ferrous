@@ -60,7 +60,7 @@ export class RoomLayoutComponent {
             /* Mark the room selected */
             $(ctrl).click(function () {
                 if ((room.status == 1 && room.roomAllocation.length == 0)
-                    || self.CheckPartial(room)
+                    || (self.CheckPartial(room) && self.GetCapacity(room) > 0)
                     || room.selected
                     || self.marking) { 
 

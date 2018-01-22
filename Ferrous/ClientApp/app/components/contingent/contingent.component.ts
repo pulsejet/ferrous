@@ -40,10 +40,9 @@ export class ContingentComponent {
         }
     }
 
-    /* Table click event for small devices  *
-     * TODO: Fix the hard-coded value 768px */
+    /* Table click event */
     public handleTableClick(contingent: Contingent) {
-        if (window.innerWidth <= 768) this.dataService.NavigateContingentDetails(contingent.contingentLeaderNo);
+        this.dataService.NavigateContingentDetails(contingent.contingentLeaderNo);
     }
 }
 

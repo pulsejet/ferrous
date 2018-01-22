@@ -22,6 +22,7 @@ import { MyMaterialClass } from './components/material-angular';
 import { DataService } from './DataService';
 import { HttpClientModule } from '@angular/common/http';
 import { FilterContingents } from './Pipes';
+import { ClickStopPropagation } from './components/material-angular';
 import 'hammerjs';
 
 @NgModule({
@@ -41,6 +42,7 @@ import 'hammerjs';
 
         HomeComponent,
 
+        ClickStopPropagation,
         FilterContingents
     ],
     imports: [

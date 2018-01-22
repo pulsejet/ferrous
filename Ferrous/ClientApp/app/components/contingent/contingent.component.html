@@ -47,8 +47,7 @@
                 <td>{{ contingent.arrivedF }}</td>
 
                 <!-- Action buttons hidden on mobile -->
-                <td class="xunk-hide-mobile">
-                    <button class="xunk-table-button" mat-raised-button color="primary" [routerLink]="['/contingentDetails/', contingent.contingentLeaderNo]">Details </button>
+                <td class="xunk-hide-mobile" click-stop-propagation>
                     <button class="xunk-table-button" mat-button color="accent" [routerLink]="['/contingentDetails/', contingent.contingentLeaderNo, 1]">Edit </button>
                     <button class="xunk-table-button" mat-button color="warn" (click)="delete(contingent.contingentLeaderNo, rowIndex);">Delete </button>
                 </td>

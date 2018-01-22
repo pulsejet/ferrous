@@ -33,16 +33,16 @@
 }
 .room.unavailable {background-color:lightgray;}
 .room.already {
-    background-color:gold; 
+    background-color:orange; 
     color:black;
 }
 .room.already-partial {
-    background-color: greenyellow; 
+    background-color: yellow;
     cursor: pointer;
     color: black;
 }
 .room.already-fullshared {
-    background-color: yellow;
+    background-color: gold;
     color: black;
 }
 .room.notready {
@@ -57,14 +57,20 @@
 }
 
 .room.sel {
-    background-color:forestgreen;
+    background-color:greenyellow;
+    color:black;
     outline-color:skyblue;
     outline-style: solid;
     outline-width: 1.5px;
     cursor:pointer;
 }
 
-table, th, td {
+table.rooms-block td {
     padding:0;
-    border: 1px solid black;
+    border: 1.5px solid black;
+}
+
+table.building {
+    border-collapse: separate;
+    border-spacing: 0 15px;
 }
