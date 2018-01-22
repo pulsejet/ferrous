@@ -22,7 +22,6 @@
 .xunk-table {
     margin: 10px;
     overflow-x: auto;
-    box-shadow: 3px 3px 7px grey;
     cursor: pointer;
 }
 
