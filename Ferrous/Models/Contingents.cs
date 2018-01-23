@@ -13,11 +13,7 @@ namespace Ferrous.Models
         }
 
         public string ContingentLeaderNo { get; set; }
-        public int? Male { get; set; }
-        public int? Female { get; set; }
-        public int? ArrivedM { get; set; }
-        public int? ArrivedF { get; set; }
-        public string AllocatedRooms { get; set; }
+        public string Remark { get; set; }
 
         public ICollection<ContingentArrival> ContingentArrival { get; set; }
         public ICollection<Person> Person { get; set; }

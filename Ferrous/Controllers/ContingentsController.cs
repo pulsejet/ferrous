@@ -22,8 +22,38 @@ namespace Ferrous.Controllers
 
         // GET: api/Contingents
         [HttpGet]
-        public IEnumerable<Contingents> GetContingents()
+        public async Task<IEnumerable<Contingents>> GetContingents()
         {
+            Contingents[] cts = await _context.Contingents
+                                        .Include(m => m.Person)
+                                        .Include(m => m.ContingentArrival).ToArrayAsync();
+
+            foreach (var contingent in cts)
+            {
+                int RegMale = 0, RegFemale = 0, 
+                    ArrivedM = 0, ArrivedF = 0, 
+                    OnSpotM = 0, OnSpotF = 0;
+
+                Parallel.ForEach(contingent.Person, person => {
+                    if (person == null) return;
+                    if (person.Sex == "M") RegMale += 1;
+                    else if (person.Sex == "F") RegFemale += 1;
+                });
+
+                Parallel.ForEach(contingent.ContingentArrival, ca =>
+                {
+                    ArrivedM += dbCInt(ca.Male);
+                    ArrivedF += dbCInt(ca.Female);
+                    OnSpotM += dbCInt(ca.MaleOnSpot);
+                    OnSpotF += dbCInt(ca.FemaleOnSpot);
+                });
+
+                contingent.Male = RegMale.ToString();
+                contingent.Female = RegFemale.ToString();
+                contingent.ArrivedM = ArrivedM.ToString() + ((OnSpotM > 0) ? " + " + OnSpotM : "");
+                contingent.ArrivedF = ArrivedF.ToString() + ((OnSpotF > 0) ? " + " + OnSpotF : "");
+            }
+
             return _context.Contingents;
         }
 
@@ -144,6 +174,13 @@ namespace Ferrous.Controllers
         private bool ContingentsExists(string id)
         {
             return _context.Contingents.Any(e => e.ContingentLeaderNo == id);
+        }
+
+        public int dbCInt(Object o)
+        {
+            int test;
+            if (int.TryParse(o.ToString(), out test)) return test;
+            else return 0;
         }
     }
 }

@@ -16,12 +16,8 @@ namespace Ferrous.Models
         public string Room1 { get; set; }
         public string LockNo { get; set; }
         public int Capacity { get; set; }
-        public int? Allocated { get; set; }
         public short? Status { get; set; }
-        public string AllocatedTo { get; set; }
-        public string Remark1 { get; set; }
-        public string Remark2 { get; set; }
-        public string ReasonUnavailable { get; set; }
+        public string Remark { get; set; }
 
         public Building LocationNavigation { get; set; }
         public ICollection<RoomAllocation> RoomAllocation { get; set; }

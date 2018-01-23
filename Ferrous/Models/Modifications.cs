@@ -7,4 +7,12 @@
         public int CapacityNotReady;
         public int AlreadyAllocated;
     }
+
+    public partial class Contingents
+    {
+        public string Male;
+        public string Female;
+        public string ArrivedM;
+        public string ArrivedF;
+    }
 }

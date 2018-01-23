@@ -6,7 +6,7 @@
 <!-- Body -->
 <div *ngIf="contingent">
     <!-- Property list when not editing -->
-    <div [hidden]="editing">
+    <div>
         <div class="col-md-3"><b>Contingent Leader No:</b></div>
         <div class="col-md-3"> {{ contingent.contingentLeaderNo }} </div><br />
 
@@ -21,34 +21,23 @@
 
         <div class="col-md-3"><b>Arrived (F):</b></div>
         <div class="col-md-3"> {{ GetArrivedContingent(true) }} </div><br />
-    </div>
 
-    <!-- Property list when editing -->
-    <div [hidden]="!editing"
-         class="container"
-         fxLayout="column"
-         fxLayoutGap="8px"
-         fxLayoutAlign="left left">
+        <!-- Property list when editing -->
+        <div [hidden]="!editing"
+             class="container"
+             fxLayout="column"
+             fxLayoutGap="8px"
+             fxLayoutAlign="left left">
 
-        <mat-form-field>
-            <input fxFlex matInput name="cclno" [(ngModel)]="contingent.contingentLeaderNo" placeholder="Contingent Leader No.">
-        </mat-form-field>
+            <mat-form-field>
+                <input fxFlex matInput name="carrivedM" [(ngModel)]="contingent.arrivedM" placeholder="Arrived (M)">
+            </mat-form-field>
 
-        <mat-form-field>
-            <input fxFlex matInput name="cmale" [(ngModel)]="contingent.male" placeholder="Male">
-        </mat-form-field>
+            <mat-form-field>
+                <input fxFlex matInput name="carrivedF" [(ngModel)]="contingent.arrivedF" placeholder="Arrived (F)">
+            </mat-form-field>
+        </div>
 
-        <mat-form-field>
-            <input fxFlex matInput name="cfemale" [(ngModel)]="contingent.female" placeholder="Female">
-        </mat-form-field>
-
-        <mat-form-field>
-            <input fxFlex matInput name="carrivedM" [(ngModel)]="contingent.arrivedM" placeholder="Arrived (M)">
-        </mat-form-field>
-
-        <mat-form-field>
-            <input fxFlex matInput name="carrivedF" [(ngModel)]="contingent.arrivedF" placeholder="Arrived (F)">
-        </mat-form-field>
     </div>
 
     <!-- Action Buttons -->

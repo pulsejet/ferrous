@@ -78,17 +78,7 @@ namespace Ferrous.Models
                     .HasMaxLength(50)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.AllocatedRooms)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ArrivedF).HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.ArrivedM).HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.Female).HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.Male).HasDefaultValueSql("((0))");
+                entity.Property(e => e.Remark).IsUnicode(false);
             });
 
             modelBuilder.Entity<Person>(entity =>
@@ -117,8 +107,6 @@ namespace Ferrous.Models
 
             modelBuilder.Entity<Room>(entity =>
             {
-                entity.Property(e => e.Allocated).HasDefaultValueSql("((0))");
-
                 entity.Property(e => e.Location)
                     .IsRequired()
                     .HasMaxLength(15);

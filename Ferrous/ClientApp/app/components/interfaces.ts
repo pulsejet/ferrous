@@ -1,10 +1,9 @@
 ﻿export interface Contingent {
     contingentLeaderNo: string;
-    male: number;
-    female: number;
-    arrivedM: number;
-    arrivedF: number;
-    allocatedRooms: string;
+    male: string;
+    female: string;
+    arrivedM: string;
+    arrivedF: string;
     person: Person[];
     roomAllocation: RoomAllocation[];
     contingentArrival: ContingentArrival[];
@@ -28,10 +27,7 @@ export interface Room {
     capacity: number;
     allocated: string;
     status: number;
-    allocatedTo: string;
-    remark1: string;
-    remark2: string;
-    reasonUnavailable: string;
+    remark: string;
     roomAllocation: RoomAllocation[];
 
     selected: boolean;
