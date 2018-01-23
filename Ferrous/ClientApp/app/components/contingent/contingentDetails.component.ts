@@ -5,6 +5,8 @@ import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material';
 import { DataService } from '../../DataService';
+import { ContingentArrivalDialogComponent } from './ContingentArrivalDialog';
+import { MatDialog } from '@angular/material';
 
 /* Contingent Details Component */
 @Component({
@@ -18,12 +20,12 @@ export class ContingentDetailsComponent {
     public editing: boolean = false;            /* true if currently editing                */
     public initial_contingent: Contingent;      /* object for reverting cancelled changes   */
     public contingent: Contingent;              /* master Contingent object                 */
-    public nContingentArrv: ContingentArrival;  /* new ContingentArrival If needed          */
 
     constructor(private activatedRoute: ActivatedRoute,
         private _location: Location,
         private dataService: DataService,
         public snackBar: MatSnackBar,
+        public dialog: MatDialog,
         private titleService: Title,
         @Inject('BASE_URL') baseUrl: string) {
 
@@ -33,9 +35,6 @@ export class ContingentDetailsComponent {
         this.activatedRoute.params.subscribe((params: Params) => {
             this.CLNo = params['id'];
             this.startedit = params['edit'];
-
-            this.nContingentArrv = {} as ContingentArrival;
-            this.nContingentArrv.contingentLeaderNo = this.CLNo;
         });
 
         /* CLNo 0 indicates a new record  *
@@ -118,14 +117,22 @@ export class ContingentDetailsComponent {
     }
 
     public StartAllocation() {
-        /* Get the CA object and POST */
+        let dialog = this.dialog.open(ContingentArrivalDialogComponent, {
+            data: { ca: this.contingent.contingentArrival, clno: this.CLNo }
+        });
+    }
 
-        this.nContingentArrv.createdOn = new Date();
-        let body = JSON.stringify(this.nContingentArrv);
+    /* Get alloted capacity for arrival */
+    public GetArrivedContingent(female: boolean): string {
+        let curr: number = 0;
+        let currO: number = 0;
 
-        this.dataService.PostContingentArrival(body).subscribe(result => {
-            this.dataService.NavigateLayoutSelect(result.contingentLeaderNo, result.contingentArrivalNo);
-        })
+        for (let ca of this.contingent.contingentArrival) {
+            curr += Number(female ? ca.male : ca.female);
+            currO += Number(female ? ca.maleOnSpot : ca.femaleOnSpot);
+        }
+        if (currO > 0) return curr + " + " + currO;
+        else return curr.toString();
     }
 
 }

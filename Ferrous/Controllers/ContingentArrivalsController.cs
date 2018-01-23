@@ -112,6 +112,7 @@ namespace Ferrous.Controllers
                 return BadRequest(ModelState);
             }
 
+            contingentArrival.CreatedOn = DateTime.Now;
             _context.ContingentArrival.Add(contingentArrival);
             await _context.SaveChangesAsync();
 

@@ -158,6 +158,10 @@ export class DataService {
         return this.http.post<ContingentArrival>(API_ContingentArrivals_URL, body, { headers: JSON_HEADERS });
     }
 
+    DeleteContingentArrival(id: number): Observable<any> {
+        return this.http.delete(API_ContingentArrivals_URL + id);
+    }
+
     /* === Quick Extras which shouldn't be here === */
 
     CheckValidNumber(num: number, min: number = -999999, max: number = 999999): boolean {

@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 
 import { ContingentComponent } from './components/contingent/contingent.component';
 import { ContingentDetailsComponent } from './components/contingent/contingentDetails.component';
+import { ContingentArrivalDialogComponent } from './components/contingent/ContingentArrivalDialog'
 
 import { PersonComponent } from './components/person/person';
 import { PersonDetailsComponent } from './components/person/personDetails';
@@ -20,6 +21,7 @@ import { LocationSelectComponent } from './components/roomLayout/locationSelect'
 import { CounterComponent } from './components/counter/counter.component';
 import { MyMaterialClass } from './components/material-angular';
 import { DataService } from './DataService';
+
 import { SSEService } from './SSEService';
 import { HttpClientModule } from '@angular/common/http';
 import { FilterContingents } from './Pipes';
@@ -34,6 +36,7 @@ import 'hammerjs';
 
         ContingentComponent,
         ContingentDetailsComponent,
+        ContingentArrivalDialogComponent,
 
         PersonComponent,
         PersonDetailsComponent,
@@ -74,7 +77,8 @@ import 'hammerjs';
     providers: [
         DataService,
         SSEService
-    ]
+    ],
+    entryComponents: [ContingentArrivalDialogComponent]
 })
 export class AppModuleShared {
 }

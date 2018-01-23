@@ -17,10 +17,10 @@
         <div class="col-md-3"> {{ contingent.female }} </div><br />
 
         <div class="col-md-3"><b>Arrived Males:</b></div>
-        <div class="col-md-3"> {{ contingent.arrivedM }} </div><br />
+        <div class="col-md-3"> {{ GetArrivedContingent(false) }} </div><br />
 
         <div class="col-md-3"><b>Arrived Females:</b></div>
-        <div class="col-md-3"> {{ contingent.arrivedF }} </div><br />
+        <div class="col-md-3"> {{ GetArrivedContingent(true) }} </div><br />
     </div>
 
     <!-- Property list when editing -->
@@ -67,23 +67,6 @@
             </ng-container>
         </div>
 
-        <div *ngIf="nContingentArrv">
-            <mat-form-field>
-                <input fxFlex matInput name="camale" [(ngModel)]="nContingentArrv.male" placeholder="Registered (M)">
-            </mat-form-field>
-
-            <mat-form-field>
-                <input fxFlex matInput name="cafemale" [(ngModel)]="nContingentArrv.female" placeholder="Registered (F)">
-            </mat-form-field>
-
-            <mat-form-field>
-                <input fxFlex matInput name="caOnSpotM" [(ngModel)]="nContingentArrv.maleOnSpot" placeholder="On Spot (M)">
-            </mat-form-field>
-
-            <mat-form-field>
-                <input fxFlex matInput name="caOnSpotF" [(ngModel)]="nContingentArrv.femaleOnSpot" placeholder="On Spot (F)">
-            </mat-form-field>
-        </div>
         <button class="xunk-max-200px-desktop" mat-raised-button color="accent" (click)="StartAllocation()">Allocate Rooms </button>
     </div>
 

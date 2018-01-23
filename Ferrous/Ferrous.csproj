@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\components\contingent\ContingentArrivalDialog.ts" />
     <None Remove="ClientApp\app\components\contingent\contingentDetails.component.ts" />
     <None Remove="ClientApp\app\components\interfaces.ts" />
     <None Remove="ClientApp\app\components\material-angular.ts" />
@@ -41,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\contingent\ContingentArrivalDialog.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\material-angular.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\person\personDetails.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\contingent\contingentDetails.component.ts" />
