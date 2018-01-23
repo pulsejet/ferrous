@@ -1,0 +1,26 @@
+﻿<h1 mat-dialog-title>{{ room.location }} - {{ room.room1 }}</h1>
+
+<div mat-dialog-content>
+    <div fxLayout="column"
+         fxLayoutGap="3px"
+         fxLayoutAlign="left left">
+
+        <mat-form-field>
+            <input fxFlex matInput name="lockno" [(ngModel)]="room.lockNo" placeholder="Lock Number">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input fxFlex matInput name="cremark" [(ngModel)]="room.remark" placeholder="Remark">
+        </mat-form-field>
+
+    </div>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="confirmSelection()" color="primary">
+        Save
+    </button>
+    <button mat-button (click)="dialogRef.close()">
+        Cancel
+    </button>
+</div>

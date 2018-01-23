@@ -22,6 +22,11 @@
         <div class="col-md-3"><b>Arrived (F):</b></div>
         <div class="col-md-3"> {{ GetArrivedContingent(true) }} </div><br />
 
+        <ng-container *ngIf="!editing">
+            <div class="col-md-3"><b>Remark:</b></div>
+            <div class="col-md-3"> {{ contingent.remark }} </div><br />
+        </ng-container>
+
         <!-- Property list when editing -->
         <div [hidden]="!editing"
              class="container"
@@ -30,12 +35,9 @@
              fxLayoutAlign="left left">
 
             <mat-form-field>
-                <input fxFlex matInput name="carrivedM" [(ngModel)]="contingent.arrivedM" placeholder="Arrived (M)">
+                <input fxFlex matInput name="cremark" [(ngModel)]="contingent.remark" placeholder="Remark">
             </mat-form-field>
 
-            <mat-form-field>
-                <input fxFlex matInput name="carrivedF" [(ngModel)]="contingent.arrivedF" placeholder="Arrived (F)">
-            </mat-form-field>
         </div>
 
     </div>

@@ -88,6 +88,7 @@ namespace Ferrous.Controllers
                 }
             }
 
+            BuildingUpdatedTime[room.Location] = DateTime.Now;
             return NoContent();
         }
 

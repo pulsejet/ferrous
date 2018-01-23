@@ -4,14 +4,14 @@ import { ContingentArrival } from '../interfaces';
 import { DataService } from '../../DataService';
 
 @Component({
-    selector: 'app-choose-emoji-dialog',
+    selector: 'contingent-arrival-dialog',
     templateUrl: './ContingentArrivalDialog.html'
 })
 export class ContingentArrivalDialogComponent {
     chosenEntry: number = -1;                           /* Id of old chosen entry                   */
     public nContingentArrv: ContingentArrival;          /* new ContingentArrival If needed          */
     public contingentArrivals: ContingentArrival[];     /* Passed Data                              */
-    public CLNo: string;
+    public CLNo: string;                                /* CL Number for saving                     */
 
     constructor(
         public dialogRef: MatDialogRef<ContingentArrivalDialogComponent>,

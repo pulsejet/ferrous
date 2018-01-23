@@ -102,6 +102,10 @@ export class DataService {
         return this.http.get(SF_RoomLayouts_URL + location + '.html', { responseType: 'text' });
     }
 
+    PutRoom(id: string, body: any): Observable<any> {
+        return this.http.put(API_Rooms_URL + id, body, { headers: JSON_HEADERS });
+    }
+
     MarkRoom(id: number, status: number): Observable<any> {
         return this.http.get(API_Rooms_URL + API_Room_Mark_Suffix + id + "/" + status, { responseType: 'text' });
     }

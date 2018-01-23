@@ -3,8 +3,9 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Room, RoomAllocation } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
-import { MatSnackBar } from '@angular/material';
-import { SSEService } from '../../SSEService'
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { SSEService } from '../../SSEService';
+import { RoomDialogComponent } from './RoomDialogComponent';
 import * as $ from 'jquery';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -16,6 +17,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class RoomLayoutComponent {
     public rooms: Room[];                   /* master list of rooms     */
+    public roomsInited: boolean = false;    /* rooms already inited     */
     public clno: string;                    /* current CLNo             */
     public cano: number;                    /* current CArrival No      */
     public loc_fullname: string;            /* location full name       */
@@ -29,6 +31,7 @@ export class RoomLayoutComponent {
         private titleService: Title,
         private dataService: DataService,
         public snackBar: MatSnackBar,
+        public dialog: MatDialog,
         private sseService: SSEService,
         @Inject('BASE_URL') public baseUrl: string) {
 
@@ -89,6 +92,7 @@ export class RoomLayoutComponent {
             /* Assign other things */
             this.loc_fullname = result.locationFullName;
             this.AssignRoomsInit();
+            this.AssignRooms();
 
             /* Alert the user */
             this.snackBar.open("Room data updated", "Dismiss", {
@@ -100,28 +104,52 @@ export class RoomLayoutComponent {
 
     /* Initialize rooms */
     public AssignRoomsInit() {
+        /* Prevent initialization twice */
+        if (this.roomsInited) return;
+
         var self = this;
         for (let room of this.rooms) {
             /* Find the room by HTML id */
             let ctrl = this.getRoomId(room)
+            let index: number = self.rooms.indexOf(room);
 
             /* Mark the room selected */
             $(ctrl).click(function () {
-                if ((room.status == 1 && room.roomAllocation.length == 0)
-                    || (self.CheckPartial(room) && self.GetCapacity(room) > 0)
-                    || room.selected
-                    || self.marking) { 
-
-                    room.selected = !room.selected;
-                }
-
-                /* Update room graphic */
-                self.AssignRoom(room);
+                self.HandleRoomClick(index);
             });
 
-            /* Initial room graphic update */
-            this.AssignRoom(room);
+            /* Handle right click */
+            $(ctrl).contextmenu(function () {
+                self.HandleContextMenuRoom(index);
+                return false;
+            });
+
         }
+
+        /* Mark initialization done */
+        this.roomsInited = true;
+    }
+
+    /* Handle right click of room */
+    public HandleContextMenuRoom(index: number) {
+        let dialog = this.dialog.open(RoomDialogComponent, {
+            data: this.rooms[index]
+        });
+    }
+
+    /* Handle room click */
+    public HandleRoomClick(index: number) {
+        let room: Room = this.rooms[index];
+        if ((room.status == 1 && room.roomAllocation.length == 0)
+            || (this.CheckPartial(room) && this.GetCapacity(room) > 0)
+            || room.selected
+            || this.marking) {
+
+            room.selected = !room.selected;
+        }
+
+        /* Update room graphic */
+        this.AssignRoom(room);
     }
 
     /* Update graphic for all rooms */

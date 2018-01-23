@@ -17,6 +17,7 @@ import { PersonDetailsComponent } from './components/person/personDetails';
 
 import { RoomLayoutComponent } from './components/roomLayout/roomLayout.component';
 import { LocationSelectComponent } from './components/roomLayout/locationSelect';
+import { RoomDialogComponent } from './components/roomLayout/RoomDialogComponent'
 
 import { CounterComponent } from './components/counter/counter.component';
 import { MyMaterialClass } from './components/material-angular';
@@ -43,6 +44,7 @@ import 'hammerjs';
 
         RoomLayoutComponent,
         LocationSelectComponent,
+        RoomDialogComponent,
 
         HomeComponent,
 
@@ -78,7 +80,10 @@ import 'hammerjs';
         DataService,
         SSEService
     ],
-    entryComponents: [ContingentArrivalDialogComponent]
+    entryComponents: [
+        ContingentArrivalDialogComponent,
+        RoomDialogComponent
+    ]
 })
 export class AppModuleShared {
 }

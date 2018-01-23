@@ -35,6 +35,7 @@
     <None Remove="ClientApp\app\components\material-angular.ts" />
     <None Remove="ClientApp\app\components\person\personDetails.ts" />
     <None Remove="ClientApp\app\components\roomLayout\locationSelect.ts" />
+    <None Remove="ClientApp\app\components\roomLayout\RoomDialogComponent.ts" />
     <None Remove="ClientApp\app\components\roomLayout\roomLayout.component.ts" />
     <None Remove="ClientApp\app\DataService.ts" />
     <None Remove="ClientApp\app\Pipes.ts" />
@@ -48,6 +49,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\contingent\contingentDetails.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\interfaces.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\roomLayout\locationSelect.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\roomLayout\RoomDialogComponent.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\roomLayout\roomLayout.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\DataService.ts" />
     <TypeScriptCompile Include="ClientApp\app\SSEService.ts" />

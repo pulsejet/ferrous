@@ -1,7 +1,11 @@
 ﻿<h1 mat-dialog-title>Contingent Arrival</h1>
 
 <div mat-dialog-content>
-    <div *ngIf="nContingentArrv">
+    <div *ngIf="nContingentArrv"
+         fxLayout.xs="column"
+         fxLayoutGap="8px"
+         fxLayoutGap.xs="3px"
+         fxLayoutAlign="left left">
         <mat-form-field>
             <input matInput name="camale" [(ngModel)]="nContingentArrv.male" placeholder="Registered (M)">
         </mat-form-field>
