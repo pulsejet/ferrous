@@ -7,7 +7,8 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'personDetails',
-    templateUrl: './personDetails.html'
+    templateUrl: './personDetails.html',
+    styleUrls: ['../../Custom.css']
 })
 export class PersonDetailsComponent {
     public id: string;                  /* current MINo                             */
