@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
 import { Contingent, RoomAllocation } from '../interfaces';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material';
 import { DataService } from '../../DataService';
 
 /* Contingent Details Component */
@@ -21,6 +22,7 @@ export class ContingentDetailsComponent {
     constructor(private activatedRoute: ActivatedRoute,
         private _location: Location,
         private dataService: DataService,
+        public snackBar: MatSnackBar,
         private titleService: Title,
         @Inject('BASE_URL') baseUrl: string) {
 
@@ -102,6 +104,11 @@ export class ContingentDetailsComponent {
                 /* Get the index and splice it from master */
                 var index = this.contingent.roomAllocation.indexOf(roomA, 0);
                 this.contingent.roomAllocation.splice(index, 1)
+
+                /* Alert the user */
+                this.snackBar.open("Room unallocated", "Dismiss", {
+                    duration: 2000,
+                });
             });
         }
     }
