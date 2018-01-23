@@ -128,11 +128,24 @@ export class ContingentDetailsComponent {
         let currO: number = 0;
 
         for (let ca of this.contingent.contingentArrival) {
-            curr += Number(female ? ca.male : ca.female);
-            currO += Number(female ? ca.maleOnSpot : ca.femaleOnSpot);
+            curr += Number(female ? ca.female : ca.male);
+            currO += Number(female ? ca.femaleOnSpot : ca.maleOnSpot);
         }
         if (currO > 0) return curr + " + " + currO;
         else return curr.toString();
     }
 
+    /* Get no of people by sex */
+    public GetPeopleBySex(female: boolean): string {
+        let curr: number = 0;
+
+        /* Count people */
+        for (let person of this.contingent.person) {
+            if (person.sex && ((female && person.sex.toUpperCase() == "F") ||
+                (!female && person.sex.toUpperCase() == "M")))
+                curr++;
+        }
+
+        return curr.toString();
+    }
 }

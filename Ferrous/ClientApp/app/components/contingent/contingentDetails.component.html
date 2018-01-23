@@ -10,16 +10,16 @@
         <div class="col-md-3"><b>Contingent Leader No:</b></div>
         <div class="col-md-3"> {{ contingent.contingentLeaderNo }} </div><br />
 
-        <div class="col-md-3"><b>Males:</b></div>
-        <div class="col-md-3"> {{ contingent.male }} </div><br />
+        <div class="col-md-3"><b>Registered (M):</b></div>
+        <div class="col-md-3"> {{ GetPeopleBySex(false) }} </div><br />
 
-        <div class="col-md-3"><b>Females:</b></div>
-        <div class="col-md-3"> {{ contingent.female }} </div><br />
+        <div class="col-md-3"><b>Registered (F):</b></div>
+        <div class="col-md-3"> {{ GetPeopleBySex(true) }} </div><br />
 
-        <div class="col-md-3"><b>Arrived Males:</b></div>
+        <div class="col-md-3"><b>Arrived (M):</b></div>
         <div class="col-md-3"> {{ GetArrivedContingent(false) }} </div><br />
 
-        <div class="col-md-3"><b>Arrived Females:</b></div>
+        <div class="col-md-3"><b>Arrived (F):</b></div>
         <div class="col-md-3"> {{ GetArrivedContingent(true) }} </div><br />
     </div>
 
