@@ -18,7 +18,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let building of buildings"
-                [routerLink]="['/roomLayout/', building.location, clno]">
+                [routerLink]="['/roomLayout/', building.location, clno, cano]">
                 <td>{{building.location}}</td>
                 <td><b>{{building.capacityEmpty}}</b></td>
                 <td>{{building.alreadyAllocated}}</td>

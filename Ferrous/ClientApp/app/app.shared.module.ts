@@ -65,8 +65,8 @@ import 'hammerjs';
             { path: 'personDetails/:id', component: PersonDetailsComponent },
             { path: 'personDetails/:id/:edit', component: PersonDetailsComponent },
 
-            { path: 'roomLayout/:location/:id', component: RoomLayoutComponent },
-            { path: 'locationSelect/:id', component: LocationSelectComponent },
+            { path: 'roomLayout/:location/:id/:cano', component: RoomLayoutComponent },
+            { path: 'locationSelect/:id/:cano', component: LocationSelectComponent },
 
             { path: '**', redirectTo: 'home' }
         ])

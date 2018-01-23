@@ -36,18 +36,24 @@ namespace Ferrous.Controllers
                 return BadRequest(ModelState);
             }
 
-            Contingents contingents = await _context.Contingents.Where(m => m.ContingentLeaderNo == id)
+            Contingents contingent = await _context.Contingents.Where(m => m.ContingentLeaderNo == id)
                                             .Include(m => m.RoomAllocation)
                                                 .ThenInclude(m => m.Room)
                                             .Include(m => m.Person)
+                                            .Include(m => m.ContingentArrival)
                                             .SingleOrDefaultAsync();
 
-            if (contingents == null)
+            foreach ( var ra in contingent.RoomAllocation )
+            {
+                ra.ContingentArrivalNoNavigation = null;
+            }
+
+            if (contingent == null)
             {
                 return NotFound();
             }
 
-            return Ok(contingents);
+            return Ok(contingent);
         }
 
         // PUT: api/Contingents/5

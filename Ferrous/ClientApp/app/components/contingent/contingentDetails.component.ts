@@ -1,6 +1,6 @@
 ﻿import { Component, Inject } from '@angular/core';
 import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
-import { Contingent, RoomAllocation } from '../interfaces';
+import { Contingent, RoomAllocation, ContingentArrival } from '../interfaces';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material';
@@ -18,6 +18,7 @@ export class ContingentDetailsComponent {
     public editing: boolean = false;            /* true if currently editing                */
     public initial_contingent: Contingent;      /* object for reverting cancelled changes   */
     public contingent: Contingent;              /* master Contingent object                 */
+    public nContingentArrv: ContingentArrival;  /* new ContingentArrival If needed          */
 
     constructor(private activatedRoute: ActivatedRoute,
         private _location: Location,
@@ -32,6 +33,9 @@ export class ContingentDetailsComponent {
         this.activatedRoute.params.subscribe((params: Params) => {
             this.CLNo = params['id'];
             this.startedit = params['edit'];
+
+            this.nContingentArrv = {} as ContingentArrival;
+            this.nContingentArrv.contingentLeaderNo = this.CLNo;
         });
 
         /* CLNo 0 indicates a new record  *
@@ -111,6 +115,17 @@ export class ContingentDetailsComponent {
                 });
             });
         }
+    }
+
+    public StartAllocation() {
+        /* Get the CA object and POST */
+
+        this.nContingentArrv.createdOn = new Date();
+        let body = JSON.stringify(this.nContingentArrv);
+
+        this.dataService.PostContingentArrival(body).subscribe(result => {
+            this.dataService.NavigateLayoutSelect(result.contingentLeaderNo, result.contingentArrivalNo);
+        })
     }
 
 }

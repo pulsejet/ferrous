@@ -7,6 +7,7 @@ namespace Ferrous.Models
     public partial class mydbContext : DbContext
     {
         public virtual DbSet<Building> Building { get; set; }
+        public virtual DbSet<ContingentArrival> ContingentArrival { get; set; }
         public virtual DbSet<Contingents> Contingents { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Room> Room { get; set; }
@@ -38,6 +39,31 @@ namespace Ferrous.Models
                 entity.Property(e => e.DefaultCapacity).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.LocationFullName).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<ContingentArrival>(entity =>
+            {
+                entity.HasKey(e => e.ContingentArrivalNo);
+
+                entity.Property(e => e.ContingentLeaderNo)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.Female).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.FemaleOnSpot).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Male).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MaleOnSpot).HasDefaultValueSql("((0))");
+
+                entity.HasOne(d => d.ContingentLeaderNoNavigation)
+                    .WithMany(p => p.ContingentArrival)
+                    .HasForeignKey(d => d.ContingentLeaderNo)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Contingen__Conti__2CF2ADDF");
             });
 
             modelBuilder.Entity<Contingents>(entity =>
@@ -126,6 +152,11 @@ namespace Ferrous.Models
                 entity.Property(e => e.ContingentLeaderNo)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.HasOne(d => d.ContingentArrivalNoNavigation)
+                    .WithMany(p => p.RoomAllocation)
+                    .HasForeignKey(d => d.ContingentArrivalNo)
+                    .HasConstraintName("FK_RoomAllocation_ContingentArrival");
 
                 entity.HasOne(d => d.ContingentLeaderNoNavigation)
                     .WithMany(p => p.RoomAllocation)

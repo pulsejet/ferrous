@@ -66,7 +66,25 @@
                 <button mat-raised-button color="accent" (click)="edit();">Cancel</button>
             </ng-container>
         </div>
-        <button class="xunk-max-200px-desktop" mat-raised-button color="accent" [routerLink]="['/locationSelect/', contingent.contingentLeaderNo]">Allocate Rooms </button>
+
+        <div *ngIf="nContingentArrv">
+            <mat-form-field>
+                <input fxFlex matInput name="camale" [(ngModel)]="nContingentArrv.male" placeholder="Registered (M)">
+            </mat-form-field>
+
+            <mat-form-field>
+                <input fxFlex matInput name="cafemale" [(ngModel)]="nContingentArrv.female" placeholder="Registered (F)">
+            </mat-form-field>
+
+            <mat-form-field>
+                <input fxFlex matInput name="caOnSpotM" [(ngModel)]="nContingentArrv.maleOnSpot" placeholder="On Spot (M)">
+            </mat-form-field>
+
+            <mat-form-field>
+                <input fxFlex matInput name="caOnSpotF" [(ngModel)]="nContingentArrv.femaleOnSpot" placeholder="On Spot (F)">
+            </mat-form-field>
+        </div>
+        <button class="xunk-max-200px-desktop" mat-raised-button color="accent" (click)="StartAllocation()">Allocate Rooms </button>
     </div>
 
     <br />

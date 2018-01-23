@@ -7,6 +7,7 @@ namespace Ferrous.Models
     {
         public Contingents()
         {
+            ContingentArrival = new HashSet<ContingentArrival>();
             Person = new HashSet<Person>();
             RoomAllocation = new HashSet<RoomAllocation>();
         }
@@ -18,6 +19,7 @@ namespace Ferrous.Models
         public int? ArrivedF { get; set; }
         public string AllocatedRooms { get; set; }
 
+        public ICollection<ContingentArrival> ContingentArrival { get; set; }
         public ICollection<Person> Person { get; set; }
         public ICollection<RoomAllocation> RoomAllocation { get; set; }
     }

@@ -134,9 +134,9 @@ namespace Ferrous.Controllers
 
         // GET: api/Rooms/allot/CLNo
         [HttpGet("allot/{id}")]
-        [HttpGet("allot/{id}/{CLNo}")]
-        [HttpGet("allot/{id}/{CLNo}/{partialno}")]
-        public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string CLNo, [FromRoute] int partialno = -1)
+        [HttpGet("allot/{id}/{CLNo}/{CANo}")]
+        [HttpGet("allot/{id}/{CLNo}/{CANo}/{partialno}")]
+        public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string CLNo, [FromRoute] int CANo, [FromRoute] int partialno = -1)
         {
             Room room = await _context.Room.Where(m => m.Id == id)
                                     .Include(m => m.RoomAllocation)
@@ -156,6 +156,7 @@ namespace Ferrous.Controllers
 
             RoomAllocation roomAllocation = new RoomAllocation();
             roomAllocation.ContingentLeaderNo = CLNo;
+            roomAllocation.ContingentArrivalNo = CANo;
             roomAllocation.RoomId = id;
             roomAllocation.Partial = partialno;
             _context.Update(roomAllocation);

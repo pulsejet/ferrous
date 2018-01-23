@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class RoomLayoutComponent {
     public rooms: Room[];                   /* master list of rooms     */
     public clno: string;                    /* current CLNo             */
+    public cano: number;                    /* current CArrival No      */
     public loc_fullname: string;            /* location full name       */
     public loc_code: string;                /* code of current location */
     @ViewChild('roomsLayout')               /* layout element           */
@@ -37,6 +38,7 @@ export class RoomLayoutComponent {
         this.activatedRoute.params.subscribe((params: Params) => {
             this.loc_code = params['location'];
             this.clno = params['id'];
+            this.cano = params['cano'];
         });
 
         /* Get room layout by location */
@@ -203,7 +205,7 @@ export class RoomLayoutComponent {
 
         for (let room of this.rooms) {
             if (room.selected) {
-                this.dataService.AllotRoom(room, this.clno).subscribe(result => {
+                this.dataService.AllotRoom(room, this.clno, this.cano).subscribe(result => {
                     /* Add new allocation */
                     room.roomAllocation.push(result);
 

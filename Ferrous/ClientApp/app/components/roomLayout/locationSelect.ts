@@ -12,6 +12,7 @@ import { DataService } from '../../DataService';
 })
 export class LocationSelectComponent {
     public clno: string;                /* current CLNo             */
+    public cano: number;                /* current CArrival No      */
     public buildings: Building[];       /* master Building list     */
 
     constructor(private activatedRoute: ActivatedRoute,
@@ -24,6 +25,7 @@ export class LocationSelectComponent {
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
             this.clno = params['id'];
+            this.cano = params['cano'];
         });
 
         /* Get buildings data */

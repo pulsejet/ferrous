@@ -7,6 +7,7 @@
     allocatedRooms: string;
     person: Person[];
     roomAllocation: RoomAllocation[];
+    contingentArrival: ContingentArrival[];
 }
 
 export interface Person {
@@ -45,6 +46,8 @@ export interface RoomAllocation {
     contingentLeaderNoNavigation: Contingent;
     room: Room;
     partial: number;
+    contingentArrivalNo: string;
+    contingentArrivalNoNavigation: ContingentArrival[];
 }
 
 export interface Building {
@@ -55,4 +58,16 @@ export interface Building {
     capacityEmpty: number;
     capacityFilled: number;
     capacityNotReady: number;
+}
+
+export interface ContingentArrival {
+    contingentArrivalNo: number;
+    contingentLeaderNo: string;
+    createdOn: Date;
+    male: number;
+    female: number;
+    maleOnSpot: number;
+    femaleOnSpot: number;
+    contingentLeaderNoNavigation: Contingent[];
+    roomAllocation: RoomAllocation[];
 }

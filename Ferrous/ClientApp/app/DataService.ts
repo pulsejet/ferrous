@@ -2,7 +2,7 @@
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { HttpClient, HttpSentEvent, HttpHeaders } from '@angular/common/http';
-import { Contingent, RoomAllocation, Person, Room, Building } from './components/interfaces'
+import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival } from './components/interfaces'
 import { RequestOptions, Headers, ResponseContentType } from '@angular/http';
 import { Router } from '@angular/router';
 
@@ -16,6 +16,7 @@ const API_Room_Mark_Suffix: string = 'mark/';
 const API_Room_Allot_Suffix: string = 'allot/';
 
 const API_People_URL: string = '/api/People/';
+const API_ContingentArrivals_URL: string = '/api/ContingentArrivals/';
 
 const SF_RoomLayouts_URL = '/roomTemplates/';
 
@@ -44,6 +45,10 @@ export class DataService {
 
     NavigatePersonDetails(MINo: string): void {
         this.router.navigate(['/personDetails/' + MINo]);
+    }
+
+    NavigateLayoutSelect(clno:string, contingentArrivalNo: number): void {
+        this.router.navigate(['/locationSelect/' + clno + '/' + contingentArrivalNo]);
     }
 
     /* === Contingents === */
@@ -101,8 +106,8 @@ export class DataService {
         return this.http.get(API_Rooms_URL + API_Room_Mark_Suffix + id + "/" + status, { responseType: 'text' });
     }
 
-    AllotRoom(room: Room, clno: string): Observable<RoomAllocation> {
-        let url = API_Rooms_URL + API_Room_Allot_Suffix + room.id + '/' + clno;
+    AllotRoom(room: Room, clno: string, cano: number): Observable<RoomAllocation> {
+        let url = API_Rooms_URL + API_Room_Allot_Suffix + room.id + '/' + clno + '/' + cano;
         if (room.partialallot || this.RoomCheckPartial(room)) {
             if (room.partialsel == null) throw new Error("Partial number not set!");
             url += '/' + room.partialsel;
@@ -145,6 +150,12 @@ export class DataService {
 
     GetBuilding(loc: string): Observable<Building> {
         return this.http.get<Building>(API_Buildings_URL + loc)
+    }
+
+    /* === ContingentArrival === */
+
+    PostContingentArrival(body: any): Observable<ContingentArrival>  {
+        return this.http.post<ContingentArrival>(API_ContingentArrivals_URL, body, { headers: JSON_HEADERS });
     }
 
     /* === Quick Extras which shouldn't be here === */
