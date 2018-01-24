@@ -3,10 +3,10 @@ import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
 import { Contingent, RoomAllocation, ContingentArrival } from '../interfaces';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from '../../DataService';
 import { ContingentArrivalDialogComponent } from './ContingentArrivalDialog';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 /* Contingent Details Component */
 @Component({

@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 import { HttpClient, HttpSentEvent, HttpHeaders } from '@angular/common/http';
 import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival } from './components/interfaces'
 import { RequestOptions, Headers, ResponseContentType } from '@angular/http';

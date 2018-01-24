@@ -53,7 +53,7 @@ module.exports = (env) => {
         ])
     });
 
-    // Configuration for server-side (prerendering) bundle suitable for running in Node
+    /* Configuration for server-side (prerendering) bundle suitable for running in Node
     const serverBundleConfig = merge(sharedConfig, {
         resolve: { mainFields: ['main'] },
         entry: { 'main-server': './ClientApp/boot.server.ts' },
@@ -69,7 +69,7 @@ module.exports = (env) => {
             new AngularCompilerPlugin({
                 tsConfigPath: './tsconfig.json',
                 entryModule: path.join(__dirname, 'ClientApp/app/app.server.module#AppModule'),
-                exclude: ['./**/*.browser.ts']
+                exclude: ['./** --- for comment ---/*.browser.ts']
             })
         ]),
         output: {
@@ -80,5 +80,6 @@ module.exports = (env) => {
         devtool: 'inline-source-map'
     });
 
-    return [clientBundleConfig, serverBundleConfig];
+    return [clientBundleConfig, serverBundleConfig]; */
+    return [clientBundleConfig];
 };

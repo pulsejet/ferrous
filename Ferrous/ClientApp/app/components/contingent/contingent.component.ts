@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { Contingent } from '../interfaces';
 import { ContingentDetailsComponent } from './contingentDetails.component';
-import { MatTableDataSource } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 

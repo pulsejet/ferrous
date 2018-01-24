@@ -71,6 +71,7 @@ module.exports = (env) => {
         ])
     });
 
+    /*
     const serverBundleConfig = merge(sharedConfig, {
         target: 'node',
         resolve: { mainFields: ['main'] },
@@ -91,4 +92,6 @@ module.exports = (env) => {
     });
 
     return [clientBundleConfig, serverBundleConfig];
+    */
+    return [clientBundleConfig];
 }
