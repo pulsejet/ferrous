@@ -53,13 +53,15 @@ namespace Ferrous
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 
-            if (env.IsDevelopment() && System.Diagnostics.Debugger.IsAttached)
+            if (env.IsDevelopment())
             {
+#if (DEBUG)
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacement = true
                 });
+#endif
             }
             else
             {
