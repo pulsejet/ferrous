@@ -81,6 +81,10 @@ export class DataService {
         return this.http.get<Person>(API_People_URL + id)
     }
 
+    PutPerson(id: string, body: any): Observable<any> {
+        return this.http.put(API_People_URL + id, body, { headers: JSON_HEADERS });
+    }
+
     PostPerson(body: any): Observable<any> {
         return this.http.post(API_People_URL, body, { headers: JSON_HEADERS });
     }

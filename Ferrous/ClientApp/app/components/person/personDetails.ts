@@ -1,9 +1,9 @@
 ﻿import { Component, Inject } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
 import { Person } from '../interfaces';
 import { style, state, animate, transition, trigger } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { DataService } from '../../DataService';
 
 @Component({
     selector: 'personDetails',
@@ -19,7 +19,8 @@ export class PersonDetailsComponent {
 
     constructor(private activatedRoute: ActivatedRoute,
         private titleService: Title,
-        public router: Router, public http: Http, @Inject('BASE_URL') baseUrl: string) {
+        private dataService: DataService,
+        public router: Router, @Inject('BASE_URL') baseUrl: string) {
         this.editing = false;
 
         this.titleService.setTitle("Personal Details");
@@ -33,8 +34,8 @@ export class PersonDetailsComponent {
         /* MINo 0 indicates a new record  *
          * Fetch if not a new record      */
         if (this.id != '0') {
-            http.get(baseUrl + 'api/People/' + this.id).subscribe(result => {
-                this.person  = result.json() as Person;
+            this.dataService.GetPerson(this.id).subscribe(result => {
+                this.person  = result;
                 this.initial_person = { ...this.person };
 
             }, error => console.error(error));
@@ -64,19 +65,15 @@ export class PersonDetailsComponent {
     public save() {
         let body = JSON.stringify(this.person);
 
-        /* PUT for editing; POST for new record */
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-
         if (this.id != '0') {
-            this.http.put('/api/People/' + this.id, body, options).subscribe(result => {
+            this.dataService.PutPerson(this.id,body).subscribe(result => {
                 /* Update the initial data */
                 this.initial_person = { ...this.person };
                 this.editing = !this.editing;
             });
         } else {
             /* Go back to list for new record */
-            this.http.post('/api/People', body, options).subscribe(result => {
+            this.dataService.PostPerson(body).subscribe(result => {
                 this.router.navigate(['/person/'])
             });
         }
@@ -86,7 +83,7 @@ export class PersonDetailsComponent {
     /* Delete a record */
     public delete() {
         if (confirm("Are you sure to delete?")) {
-            this.http.delete('/api/People/' + this.id).subscribe(result => {
+            this.dataService.DeletePerson(this.id).subscribe(result => {
                 this.router.navigate(['/person/']);
             });
         }
