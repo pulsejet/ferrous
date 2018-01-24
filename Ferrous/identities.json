@@ -1,0 +1,15 @@
+[
+
+{
+    "username":"cg",
+    "password":"password",
+    "privilege":"1"
+},
+
+{
+    "username":"coordie",
+    "password":"badpassword",
+    "privilege":"2"
+}
+
+]

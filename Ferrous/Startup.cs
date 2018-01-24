@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -31,6 +32,9 @@ namespace Ferrous
             );
 
             services.AddResponseCompression();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
 
             DatabaseConnectionString = Configuration.GetConnectionString("DatabaseConnectionString");
             services.AddDbContext<Models.mydbContext>(options =>
@@ -64,6 +68,8 @@ namespace Ferrous
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

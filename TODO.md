@@ -1,0 +1,1 @@
+### Restart SSE stream on disconnection

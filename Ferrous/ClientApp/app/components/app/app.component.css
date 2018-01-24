@@ -9,6 +9,10 @@
     margin:30px;
 }
 
+.fill-space {
+    flex: 1 1 auto;
+}
+
 @media (max-width: 767px) {
     .body-content {
         margin: 5px;
