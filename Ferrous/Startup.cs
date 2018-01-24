@@ -30,6 +30,8 @@ namespace Ferrous
                 options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
+            services.AddResponseCompression();
+
             DatabaseConnectionString = Configuration.GetConnectionString("DatabaseConnectionString");
             services.AddDbContext<Models.mydbContext>(options =>
                 options.UseSqlServer(DatabaseConnectionString));
@@ -46,6 +48,7 @@ namespace Ferrous
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
             if (env.IsDevelopment() && System.Diagnostics.Debugger.IsAttached)
             {
                 app.UseDeveloperExceptionPage();
@@ -57,6 +60,7 @@ namespace Ferrous
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseResponseCompression();
             }
 
             app.UseStaticFiles();
