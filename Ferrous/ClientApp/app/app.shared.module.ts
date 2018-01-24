@@ -26,7 +26,6 @@ import { SSEService } from './SSEService';
 import { HttpClientModule } from '@angular/common/http';
 import { FilterContingents } from './Pipes';
 import { ClickStopPropagation } from './components/material-angular';
-import 'hammerjs';
 
 @NgModule({
     declarations: [
