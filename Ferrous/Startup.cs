@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +13,8 @@ namespace Ferrous
 {
     public class Startup
     {
+        public static string DatabaseConnectionString;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,7 +29,10 @@ namespace Ferrous
             .AddJsonOptions(
                 options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
-            services.AddDbContext<Ferrous.Models.mydbContext>();
+
+            DatabaseConnectionString = Configuration.GetConnectionString("DatabaseConnectionString");
+            services.AddDbContext<Models.mydbContext>(options =>
+                options.UseSqlServer(DatabaseConnectionString));
 
             /* Initialize Building Updating Dictionary */
             Models.mydbContext _context = new Models.mydbContext();
