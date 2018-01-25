@@ -22,6 +22,10 @@
     }
 }
 
+#logout:hover {
+    color:white;
+}
+
 :focus {
     outline: none;
 }
