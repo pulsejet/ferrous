@@ -25,7 +25,7 @@ namespace Ferrous.Controllers
             string password = Request.Query["password"];
 
             List<FerrousIdentity> identities = LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE);
-            FerrousIdentity id = identities.FirstOrDefault(m => m.username == username);
+            FerrousIdentity id = identities.FirstOrDefault(m => m.username.ToLower() == username.ToLower());
 
             if (id!=null && id.password == password)
             {
