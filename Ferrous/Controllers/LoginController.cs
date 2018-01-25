@@ -34,7 +34,12 @@ namespace Ferrous.Controllers
                 claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, id.username));
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity));
+                    new ClaimsPrincipal(claimsIdentity),
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTime.UtcNow.AddDays(4)
+                    });
                 return Ok();
             }
             
