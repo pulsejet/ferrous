@@ -7,20 +7,22 @@
 <div *ngIf="contingent">
     <!-- Property list when not editing -->
     <div>
-        <div class="col-md-3"><b>Contingent Leader No:</b></div>
-        <div class="col-md-3"> {{ contingent.contingentLeaderNo }} </div><br />
+        <ng-container *ngIf="CLNo != '0'">
+            <div class="col-md-3"><b>Contingent Leader No:</b></div>
+            <div class="col-md-3"> {{ contingent.contingentLeaderNo }} </div><br />
 
-        <div class="col-md-3"><b>Registered (M):</b></div>
-        <div class="col-md-3"> {{ GetPeopleBySex(false) }} </div><br />
+            <div class="col-md-3"><b>Registered (M):</b></div>
+            <div class="col-md-3"> {{ GetPeopleBySex(false) }} </div><br />
 
-        <div class="col-md-3"><b>Registered (F):</b></div>
-        <div class="col-md-3"> {{ GetPeopleBySex(true) }} </div><br />
+            <div class="col-md-3"><b>Registered (F):</b></div>
+            <div class="col-md-3"> {{ GetPeopleBySex(true) }} </div><br />
 
-        <div class="col-md-3"><b>Arrived (M):</b></div>
-        <div class="col-md-3"> {{ GetArrivedContingent(false) }} </div><br />
+            <div class="col-md-3"><b>Arrived (M):</b></div>
+            <div class="col-md-3"> {{ GetArrivedContingent(false) }} </div><br />
 
-        <div class="col-md-3"><b>Arrived (F):</b></div>
-        <div class="col-md-3"> {{ GetArrivedContingent(true) }} </div><br />
+            <div class="col-md-3"><b>Arrived (F):</b></div>
+            <div class="col-md-3"> {{ GetArrivedContingent(true) }} </div><br />
+        </ng-container>
 
         <ng-container *ngIf="!editing">
             <div class="col-md-3"><b>Remark:</b></div>
@@ -33,6 +35,12 @@
              fxLayout="column"
              fxLayoutGap="8px"
              fxLayoutAlign="left left">
+
+            <ng-container *ngIf="CLNo == '0'">
+                <mat-form-field>
+                    <input fxFlex matInput name="cclno" [(ngModel)]="contingent.contingentLeaderNo" placeholder="Contingent Leader No">
+                </mat-form-field>
+            </ng-container>
 
             <mat-form-field>
                 <input fxFlex matInput name="cremark" [(ngModel)]="contingent.remark" placeholder="Remark">
@@ -64,7 +72,7 @@
     <br />
 
     <!-- Room allocations if any -->
-    <div *ngIf="(contingent)&&(contingent.roomAllocation)&&(contingent.roomAllocation.length>0)">
+    <div *ngIf="(CLNo != '0')&&(contingent)&&(contingent.roomAllocation)&&(contingent.roomAllocation.length>0)">
         <h3>Allocated Rooms</h3>
         <div *ngFor="let roomA of contingent.roomAllocation" 
              class="xunk-room-card mat-elevation-z1">
@@ -77,7 +85,7 @@
     <br />
 
     <!-- People in contingent if any -->
-    <div *ngIf="(id != '0')&&(contingent.person)&&(contingent.person.length > 0)">
+    <div *ngIf="(CLNo != '0')&&(contingent.person)&&(contingent.person.length > 0)">
         <h3>People in this contingent</h3>
         <div class='mat-elevation-z3 xunk-table table-responsive'>
             <table class='xunk-table-pointer table table-hover' *ngIf="contingent.person">

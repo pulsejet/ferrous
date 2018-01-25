@@ -124,6 +124,8 @@ export class ContingentDetailsComponent {
 
     /* Get alloted capacity for arrival */
     public GetArrivedContingent(female: boolean): string {
+        if (!this.contingent.contingentArrival) return "";
+
         let curr: number = 0;
         let currO: number = 0;
 
@@ -137,6 +139,8 @@ export class ContingentDetailsComponent {
 
     /* Get no of people by sex */
     public GetPeopleBySex(female: boolean): string {
+        if (!this.contingent.person) return "";
+
         let curr: number = 0;
 
         /* Count people */

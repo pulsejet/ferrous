@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Ferrous.Models
+﻿namespace Ferrous.Models
 {
     public partial class Person
     {

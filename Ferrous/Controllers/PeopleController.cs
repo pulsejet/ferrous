@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
+using static Ferrous.Utilities;
 
 namespace Ferrous.Controllers
 {
@@ -24,6 +24,13 @@ namespace Ferrous.Controllers
         [HttpGet]
         public IEnumerable<Person> GetPerson()
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.PEOPLE_GET))
+            {
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return null;
+            }
+
             return _context.Person;
         }
 
@@ -31,6 +38,10 @@ namespace Ferrous.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPerson([FromRoute] string id)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.PERSON_GET_DETAILS))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -50,6 +61,10 @@ namespace Ferrous.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPerson([FromRoute] string id, [FromBody] Person person)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.PERSON_PUT))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -85,6 +100,10 @@ namespace Ferrous.Controllers
         [HttpPost]
         public async Task<IActionResult> PostPerson([FromBody] Person person)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.PERSON_POST))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -114,6 +133,10 @@ namespace Ferrous.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerson([FromRoute] string id)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.PERSON_DELETE))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
