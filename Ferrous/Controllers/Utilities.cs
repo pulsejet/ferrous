@@ -83,6 +83,12 @@ namespace Ferrous
              ROOM_POST = 24,
              ROOM_DELETE = 25,
 
+             CONTINGENTARRIVALS_GET = 26,
+             CONTINGENTARRIVALS_GET_DETAILS = 27,
+             CONTINGENTARRIVALS_PUT = 28,
+             CONTINGENTARRIVALS_POST = 29,
+             CONTINGENTARRIVALS_DELETE = 30,
+
              ROOM_ALLOT = 10001,
              ROOM_MARK = 10002,
              ROOM_CREATE = 10003

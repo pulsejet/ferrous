@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
+using static Ferrous.Utilities;
 
 namespace Ferrous.Controllers
 {
@@ -23,6 +24,12 @@ namespace Ferrous.Controllers
         [HttpGet]
         public IEnumerable<ContingentArrival> GetContingentArrival()
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.CONTINGENTARRIVALS_GET))
+            {
+                Response.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status401Unauthorized;
+                return null;
+            }
             return _context.ContingentArrival;
         }
 
@@ -30,6 +37,10 @@ namespace Ferrous.Controllers
         [HttpGet("byCL/{clno}")]
         public async Task<IActionResult> GetContingentArrival([FromRoute] string clno)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.CONTINGENTARRIVALS_GET))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -52,6 +63,10 @@ namespace Ferrous.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetContingentArrival([FromRoute] int id)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.CONTINGENTARRIVALS_GET_DETAILS))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -71,6 +86,10 @@ namespace Ferrous.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutContingentArrival([FromRoute] int id, [FromBody] ContingentArrival contingentArrival)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.CONTINGENTARRIVALS_PUT))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -106,6 +125,10 @@ namespace Ferrous.Controllers
         [HttpPost]
         public async Task<IActionResult> PostContingentArrival([FromBody] ContingentArrival contingentArrival)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.CONTINGENTARRIVALS_POST))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -122,6 +145,10 @@ namespace Ferrous.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteContingentArrival([FromRoute] int id)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.CONTINGENTARRIVALS_DELETE))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
