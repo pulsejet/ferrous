@@ -63,7 +63,29 @@ namespace Ferrous
              PERSON_GET_DETAILS = 7,
              PERSON_PUT = 8,
              PERSON_POST = 9,
-             PERSON_DELETE = 10
+             PERSON_DELETE = 10,
+
+             BUILDINGS_GET = 11,
+             BUILDING_GET_DETAILS = 12,
+             BUILDING_PUT = 13,
+             BUILDING_POST = 14,
+             BUILDING_DELETE = 15,
+
+             ROOMALLOCATIONS_GET = 16,
+             ROOMALLOCATIONS_GET_DETAILS = 17,
+             ROOMALLOCATIONS_PUT = 18,
+             ROOMALLOCATIONS_POST = 19,
+             ROOMALLOCATIONS_DELETE = 20,
+
+             ROOMS_GET = 21,
+             ROOM_GET_DETAILS = 22,
+             ROOM_PUT = 23,
+             ROOM_POST = 24,
+             ROOM_DELETE = 25,
+
+             ROOM_ALLOT = 10001,
+             ROOM_MARK = 10002,
+             ROOM_CREATE = 10003
         }
     }
 }

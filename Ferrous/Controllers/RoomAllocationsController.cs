@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
+using static Ferrous.Utilities;
 
 namespace Ferrous.Controllers
 {
@@ -23,6 +24,12 @@ namespace Ferrous.Controllers
         [HttpGet]
         public IEnumerable<RoomAllocation> GetRoomAllocation()
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.ROOMALLOCATIONS_GET))
+            {
+                Response.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status401Unauthorized;
+                return null;
+            }
             return _context.RoomAllocation;
         }
 
@@ -30,6 +37,10 @@ namespace Ferrous.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRoomAllocation([FromRoute] int id)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.ROOMALLOCATIONS_GET_DETAILS))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -49,6 +60,10 @@ namespace Ferrous.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRoomAllocation([FromRoute] int id, [FromBody] RoomAllocation roomAllocation)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.ROOMALLOCATIONS_PUT))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -84,6 +99,10 @@ namespace Ferrous.Controllers
         [HttpPost]
         public async Task<IActionResult> PostRoomAllocation([FromBody] RoomAllocation roomAllocation)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.ROOMALLOCATIONS_POST))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -99,6 +118,10 @@ namespace Ferrous.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoomAllocation([FromRoute] int id)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.ROOMALLOCATIONS_DELETE))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

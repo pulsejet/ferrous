@@ -11,7 +11,7 @@
     "username":"coordie",
     "password":"badpassword",
     "elevation":"2",
-    "privileges":[1, 2, 3, 7, 8, 9]
+    "privileges":[1, 2, 3, 7, 8, 9, 11, 12, 23, 10001]
 }
 
 ]

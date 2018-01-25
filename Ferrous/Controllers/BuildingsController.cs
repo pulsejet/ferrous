@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
+using static Ferrous.Utilities;
 
 namespace Ferrous.Controllers
 {
@@ -23,6 +24,12 @@ namespace Ferrous.Controllers
         [HttpGet]
         public IEnumerable<Building> GetBuilding()
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.BUILDINGS_GET))
+            {
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return null;
+            }
             return _context.Building;
         }
 
@@ -30,6 +37,13 @@ namespace Ferrous.Controllers
         [HttpGet("e/{clno}")]
         public async Task<IEnumerable<Building>> GetBuildingExtended([FromRoute] string clno)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.BUILDING_GET_DETAILS))
+            {
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return null;
+            }
+
             mydbContext ctx = new mydbContext();
             Building[] buildings = await ctx.Building.Include(m => m.Room)
                                             .ThenInclude(m => m.RoomAllocation)
@@ -68,6 +82,10 @@ namespace Ferrous.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBuilding([FromRoute] string id)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.BUILDING_GET_DETAILS))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -90,6 +108,10 @@ namespace Ferrous.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBuilding([FromRoute] string id, [FromBody] Building building)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.BUILDING_PUT))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -125,6 +147,10 @@ namespace Ferrous.Controllers
         [HttpPost]
         public async Task<IActionResult> PostBuilding([FromBody] Building building)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.BUILDING_POST))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -154,6 +180,10 @@ namespace Ferrous.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBuilding([FromRoute] string id)
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.BUILDING_DELETE))
+                return Unauthorized();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

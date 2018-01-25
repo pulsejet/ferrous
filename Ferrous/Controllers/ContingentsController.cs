@@ -103,7 +103,7 @@ namespace Ferrous.Controllers
         public async Task<IActionResult> PutContingents([FromRoute] string id, [FromBody] Contingents contingents)
         {
             if (!HasPrivilege(User.Identity.Name, 1,
-                Utilities.PrivilegeList.CONTINGENT_PUT))
+                PrivilegeList.CONTINGENT_PUT))
                 return Unauthorized();
 
             if (!ModelState.IsValid)
