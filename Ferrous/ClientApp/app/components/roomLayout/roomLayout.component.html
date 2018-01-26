@@ -64,10 +64,10 @@
              fxLayoutGap="8px"
              fxLayoutGap.xs="5px">
             <mat-slide-toggle [(ngModel)]="marking">Mark</mat-slide-toggle>
-            <button fxFlex="auto" (click)="Allot();" mat-raised-button color="primary">Allot Rooms</button>
-            <button fxFlex="auto" (click)="Mark(0);" mat-raised-button color="warn">Mark Unavailable</button>
-            <button fxFlex="auto" (click)="Mark(1);" mat-raised-button color="warn">Mark Empty</button>
-            <button fxFlex="auto" (click)="Mark(4);" mat-raised-button color="warn">Mark Not Ready</button>
+            <button fxFlex="auto" (click)="Allot();" mat-raised-button color="warn">Allot Rooms</button>
+            <button fxFlex="auto" (click)="Mark(1);" mat-raised-button color="primary">Mark Available</button>
+            <button fxFlex="auto" (click)="Mark(4);" mat-raised-button color="accent">Mark Not Ready</button>
+            <button fxFlex="auto" (click)="Mark(0);" mat-raised-button>Mark Unavailable</button>
         </div>
     </div>
 </div>
