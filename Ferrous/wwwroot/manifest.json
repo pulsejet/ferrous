@@ -1,5 +1,6 @@
 {
     "name": "Ferrous",
+    "short_name": "Ferrous",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
