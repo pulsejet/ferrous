@@ -3,7 +3,7 @@ const applicationServerPublicKey = 'BNGO41K1-_hTx0pYKwLgGg_goog8MBQ9BCXQOKnopeYx
 if ('serviceWorker' in navigator && 'PushManager' in window) {
   console.log('Service Worker and Push is supported');
 
-  navigator.serviceWorker.register('sw.js')
+  navigator.serviceWorker.register('/sw.js')
   .then(function(swReg) {
     console.log('Service Worker is registered', swReg);
 

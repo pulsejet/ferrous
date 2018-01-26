@@ -50,7 +50,7 @@ namespace Ferrous.Controllers
         {
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
-            return Redirect(Utilities.LOGIN_URL);
+            return View("Login");
         }
     }
 }

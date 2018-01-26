@@ -8,7 +8,7 @@ namespace Ferrous.Controllers
         public IActionResult Index()
         {
             if (!Utilities.HasPrivilege(User.Identity.Name, 100))
-                return Redirect(Utilities.LOGIN_URL);
+                return View("Login");
             return View();
         }
 
