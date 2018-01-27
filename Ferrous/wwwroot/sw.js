@@ -11,9 +11,6 @@ self.addEventListener('install', function(event) {
   var now = Date.now();
 
   var urlsToPrefetch = [
-    `/account/js/index.js`,
-    `/account/css/style.css`,
-    `/assets/bootstrap.min.css`,
     `/assets/md-spinner.svg`,
     `/assets/jquery-3.3.1.min.js`,
     `/assets/material-icons/material-icons.css`,
