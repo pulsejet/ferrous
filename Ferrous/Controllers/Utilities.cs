@@ -11,6 +11,11 @@ namespace Ferrous
         public const string ROOT_URL = "/";
         public const string LOGIN_URL = "/account/login.html";
 
+        public static string InlineFile(string path)
+        {
+            return System.IO.File.ReadAllText("wwwroot/" + path);
+        }
+
         public static List<T> LoadJson<T>(string path)
         {
             using (StreamReader r = new StreamReader(path))
