@@ -1,4 +1,3 @@
-dotnet publish -c release
 cd bin
 cd release
 cd netcoreapp2.0

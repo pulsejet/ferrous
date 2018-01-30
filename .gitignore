@@ -3,6 +3,7 @@ Ferrous/obj
 /packages/
 !packages/repositories.config
 .vs
+Ferrous/.vscode
 
 # Windows thumbnail cache files
 Thumbs.db
