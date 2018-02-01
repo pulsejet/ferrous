@@ -1,3 +1,4 @@
+cd ..
 cd bin
 cd release
 cd netcoreapp2.0

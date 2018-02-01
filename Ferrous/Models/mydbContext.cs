@@ -21,7 +21,7 @@ namespace Ferrous.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(Startup.DatabaseConnectionString);
+                optionsBuilder.UseNpgsql(Startup.DatabaseConnectionString);
             }
         }
 
@@ -99,7 +99,7 @@ namespace Ferrous.Models
 
                 entity.Property(e => e.Name).IsRequired();
 
-                entity.Property(e => e.Sex).HasColumnType("char(1)");
+                entity.Property(e => e.Sex).HasMaxLength(1);
 
                 entity.HasOne(d => d.ContingentLeaderNoNavigation)
                     .WithMany(p => p.Person)

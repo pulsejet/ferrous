@@ -11,13 +11,6 @@
     @Html.Partial("_Favicons")
 
     <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />
-
-    <script>
-        if ((location.protocol != 'https:') && !(location.href.indexOf('localhost') > -1))
-        {
-            location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
-        }
-    </script>
 </head>
 <body>
     @RenderBody()
