@@ -262,6 +262,8 @@ namespace Ferrous.Controllers
         {
             var response = Response;
             response.Headers.Add("Content-Type", "text/event-stream");
+            response.Headers.Add("Cache-Control", "no-cache");
+            response.Headers.Add("X-Accel-Buffering", "no");
 
             /* Initial update time for this request */
             DateTime InitialTime = BuildingUpdatedTime[id];
@@ -270,9 +272,14 @@ namespace Ferrous.Controllers
                 /* Poll the dictionary and reply if required */
                 if (InitialTime != BuildingUpdatedTime[id]) { 
                     await response
-                        .WriteAsync($"data: " + BuildingUpdatedTime[id].ToString() +"\r\r");
+                        .WriteAsync($"data: refresh " + BuildingUpdatedTime[id].ToString() +"\r\r");
                     response.Body.Flush();
                     InitialTime = BuildingUpdatedTime[id];
+                } else
+                {
+                    await response
+                        .WriteAsync($"data: p \r\r");
+                    response.Body.Flush();
                 }
 
                 /* Go back to sleep */

@@ -57,7 +57,7 @@ export class RoomLayoutComponent {
     ngOnInit() {
         this.sseStream = this.sseService.observeMessages('/api/Rooms/buildingSSE/' + this.loc_code)
             .subscribe(message => {
-                this.reloadRooms();
+                if (message.indexOf("refresh") >= 0) this.reloadRooms();
             });
     }
 
