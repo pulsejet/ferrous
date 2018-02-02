@@ -3,11 +3,11 @@ FROM microsoft/aspnetcore-build AS builder
 WORKDIR /source
 
 # caches restore result by copying csproj file separately
-COPY *.csproj ./Ferrous
+COPY ./Ferrous/*.csproj .
 RUN dotnet restore
 
 # copies the rest of your code
-COPY . ./Ferrous
+COPY ./Ferrous .
 RUN dotnet publish --output /app/ --configuration Release
 
 # Stage 2
