@@ -34,7 +34,6 @@
                 <th>Female</th>
                 <th>Arrived (M)</th>
                 <th>Arrived (F)</th>
-                <th class="xunk-hide-mobile"></th>
             </tr>
         </thead>
         <tbody>
@@ -45,12 +44,6 @@
                 <td>{{ contingent.female }}</td>
                 <td>{{ contingent.arrivedM }}</td>
                 <td>{{ contingent.arrivedF }}</td>
-
-                <!-- Action buttons hidden on mobile -->
-                <td class="xunk-hide-mobile" click-stop-propagation>
-                    <button class="xunk-table-button" mat-button color="primary" [routerLink]="['/contingentDetails/', contingent.contingentLeaderNo, 1]">Edit </button>
-                    <button class="xunk-table-button" mat-button color="warn" (click)="delete(contingent.contingentLeaderNo, rowIndex);">Delete </button>
-                </td>
             </tr>
         </tbody>
     </table>

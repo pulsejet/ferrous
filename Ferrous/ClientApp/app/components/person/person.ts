@@ -26,15 +26,6 @@ export class PersonComponent {
         }, error => console.error(error));
     }
 
-    /* Delete a record*/
-    public delete(id = "", rowNumber: number) {
-        if (confirm("Are you sure to delete?")) {
-            this.dataService.DeletePerson(id).subscribe(result => {
-                this.people.splice(rowNumber, 1);       /* Splice from master */
-            });
-        }
-    }
-
     /* Handle table click */
     public handleTableClick(person: Person) {
         this.dataService.NavigatePersonDetails(person.mino);

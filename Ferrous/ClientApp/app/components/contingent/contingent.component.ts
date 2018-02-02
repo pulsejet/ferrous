@@ -29,16 +29,6 @@ export class ContingentComponent {
         }, error => console.error(error));
     }
 
-    /* Delete contingent action */
-    public delete(id = "", rowNumber: number) {
-        if (confirm("Are you sure to delete?")) {
-            this.dataService.DeleteContingent(id).subscribe(result => {
-                /* Remove from master list */
-                this.contingents.splice(rowNumber, 1);
-            });
-        }
-    }
-
     /* Table click event */
     public handleTableClick(contingent: Contingent) {
         this.dataService.NavigateContingentDetails(contingent.contingentLeaderNo);

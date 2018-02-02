@@ -18,7 +18,6 @@
                 <th>MI No.</th>
                 <th>Name</th>
                 <th>CL No.</th>
-                <th class="xunk-hide-mobile"></th>
             </tr>
         </thead>
         <tbody>
@@ -26,11 +25,6 @@
                 <td>{{ person.mino }}</td>
                 <td>{{ person.name }}</td>
                 <td>{{ person.contingentLeaderNo }}</td>
-
-                <td class="xunk-hide-mobile" click-stop-propagation>
-                    <button class="xunk-table-button" style="float:right" mat-button color="primary" [routerLink]="['/personDetails/', person.mino, 1]">Edit </button>
-                    <button class="xunk-table-button" style="float:right" mat-button color="warn" (click)="delete(person.mino, rowIndex);">Delete </button>
-                </td>
             </tr>
         </tbody>
     </table>
