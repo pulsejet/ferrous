@@ -8,14 +8,13 @@ namespace Ferrous.Controllers
         public IActionResult Index()
         {
             if (!Utilities.HasPrivilege(User.Identity.Name, 100))
-                return View("Login");
-            return View();
+                return File("account/login.html", Utilities.HTML_MIME_TYPE);
+            return File("Index.html", Utilities.HTML_MIME_TYPE);
         }
 
         public IActionResult Error()
         {
-            ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-            return View();
+            return File("Error.html", Utilities.HTML_MIME_TYPE);
         }
     }
 }
