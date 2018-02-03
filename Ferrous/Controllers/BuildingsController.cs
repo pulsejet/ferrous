@@ -11,7 +11,7 @@ namespace Ferrous.Controllers
 {
     [Produces("application/json")]
     [Route("api/Buildings")]
-    public class BuildingsController : Controller
+    public class BuildingsController : ControllerBase
     {
         private readonly mydbContext _context;
 

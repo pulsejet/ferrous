@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ferrous.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         public IActionResult Index()
         {

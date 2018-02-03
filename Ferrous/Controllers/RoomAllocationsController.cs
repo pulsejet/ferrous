@@ -11,7 +11,7 @@ namespace Ferrous.Controllers
 {
     [Produces("application/json")]
     [Route("api/RoomAllocations")]
-    public class RoomAllocationsController : Controller
+    public class RoomAllocationsController : ControllerBase
     {
         private readonly mydbContext _context;
 

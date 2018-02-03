@@ -11,11 +11,11 @@ using static Ferrous.Utilities;
 namespace Ferrous.Controllers
 {
     [Route("Login")]
-    public class LoginController: Controller
+    public class LoginController: ControllerBase
     {
         public IActionResult Index()
         {
-            return View();
+            return File("account/login.html", Utilities.HTML_MIME_TYPE);
         }
 
         [HttpGet("login")]

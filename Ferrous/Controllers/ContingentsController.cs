@@ -12,7 +12,7 @@ namespace Ferrous.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class ContingentsController : Controller
+    public class ContingentsController : ControllerBase
     {
         private readonly mydbContext _context;
 

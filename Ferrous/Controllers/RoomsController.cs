@@ -12,7 +12,7 @@ namespace Ferrous.Controllers
 {
     [Produces("application/json")]
     [Route("api/Rooms")]
-    public class RoomsController : Controller
+    public class RoomsController : ControllerBase
     {
         private readonly mydbContext _context;
         public static Dictionary<string, DateTime> BuildingUpdatedTime;
