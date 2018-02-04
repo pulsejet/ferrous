@@ -39,14 +39,6 @@ namespace Ferrous
             DatabaseConnectionString = Configuration.GetConnectionString("DatabaseConnectionString");
             services.AddEntityFrameworkSqlite().AddDbContext<Models.ferrousContext>(options =>
                 options.UseSqlite(DatabaseConnectionString));
-
-            /* Initialize Building Updating Dictionary */
-            Models.ferrousContext _context = new Models.ferrousContext();
-            Controllers.RoomsController.BuildingUpdatedTime = new Dictionary<string, DateTime>();
-            foreach (var building in _context.Building.AsEnumerable())
-            {
-                Controllers.RoomsController.BuildingUpdatedTime[building.Location] = DateTime.Now;
-            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

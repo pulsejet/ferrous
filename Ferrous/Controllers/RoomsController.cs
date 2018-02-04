@@ -20,6 +20,16 @@ namespace Ferrous.Controllers
         public RoomsController(ferrousContext context)
         {
             _context = context;
+
+            if (BuildingUpdatedTime is null)
+            {
+                /* Initialize Building Updating Dictionary */
+                BuildingUpdatedTime = new Dictionary<string, DateTime>();
+                foreach (var building in _context.Building.AsEnumerable())
+                {
+                    BuildingUpdatedTime[building.Location] = DateTime.Now;
+                }
+            }
         }
 
         // GET: api/Rooms
