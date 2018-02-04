@@ -166,7 +166,7 @@ export class RoomLayoutComponent {
         let clss: string = this.GetRoomClass(room);
 
         /* Show capacity and room number */
-        $(ctrl).html(this.GetCapacity(room) + "<br><span>" + room.room1.toString() + "</span>");
+        $(ctrl).html(this.GetCapacity(room) + "<br><span>" + room.roomName.toString() + "</span>");
 
         /* Assign CSS class */
         $(ctrl).attr("class", clss);
@@ -176,13 +176,13 @@ export class RoomLayoutComponent {
     public Mark(Status: number) {
         for (let room of this.rooms) {
             if (room.selected) {
-                this.dataService.MarkRoom(room.id,Status).subscribe(result => {
+                this.dataService.MarkRoom(room.roomId,Status).subscribe(result => {
                     room.status = Status;
                     room.selected = false;
                     this.AssignRoom(room);
                 }, error => {
                     /* Show error */
-                    this.snackBar.open("Mark failed for " + room.room1, "Dismiss", {
+                    this.snackBar.open("Mark failed for " + room.roomName, "Dismiss", {
                         duration: 2000,
                     });
                 });
@@ -211,10 +211,10 @@ export class RoomLayoutComponent {
                 /* Status */
                 if (room.status != 1) {
                     /* Show error */
-                    this.snackBar.open("Non-allocable room " + room.room1, "Dismiss", {
+                    this.snackBar.open("Non-allocable room " + room.roomName, "Dismiss", {
                         duration: 2000,
                     });
-                    console.log("Non-allocable room " + room.room1);
+                    console.log("Non-allocable room " + room.roomName);
                     return;
                 }
 
@@ -223,10 +223,10 @@ export class RoomLayoutComponent {
                     (!this.dataService.CheckValidNumber(room.partialsel, 1))) {
 
                     /* Show error */
-                    this.snackBar.open("Invalid partial capacity for " + room.room1, "Dismiss", {
+                    this.snackBar.open("Invalid partial capacity for " + room.roomName, "Dismiss", {
                         duration: 2000,
                     });
-                    console.log("Invalid partial capacity for " + room.room1);
+                    console.log("Invalid partial capacity for " + room.roomName);
                     return;
                 }
             }
@@ -243,7 +243,7 @@ export class RoomLayoutComponent {
                     this.AssignRoom(room);
                 }, error => {
                     /* Show error */
-                    this.snackBar.open("Allotment failed for " + room.room1, "Dismiss", {
+                    this.snackBar.open("Allotment failed for " + room.roomName, "Dismiss", {
                         duration: 2000,
                     });
                 });
@@ -331,7 +331,7 @@ export class RoomLayoutComponent {
 
     /* Get HTML Id of room */
     public getRoomId(room: Room): string {
-        return ("#room-" + room.location + "-" + room.room1).replace(/\s+/, "");
+        return ("#room-" + room.location + "-" + room.roomName).replace(/\s+/, "");
     }
 
 }

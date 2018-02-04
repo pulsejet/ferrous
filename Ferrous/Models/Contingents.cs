@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ferrous.Models
 {
@@ -12,6 +13,7 @@ namespace Ferrous.Models
             RoomAllocation = new HashSet<RoomAllocation>();
         }
 
+        [Key]
         public string ContingentLeaderNo { get; set; }
         public string Remark { get; set; }
 

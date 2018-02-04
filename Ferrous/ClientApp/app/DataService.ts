@@ -114,7 +114,7 @@ export class DataService {
     }
 
     AllotRoom(room: Room, clno: string, cano: number): Observable<RoomAllocation> {
-        let url = API_Rooms_URL + API_Room_Allot_Suffix + room.id + '/' + clno + '/' + cano;
+        let url = API_Rooms_URL + API_Room_Allot_Suffix + room.roomId + '/' + clno + '/' + cano;
         if (room.partialallot || this.RoomCheckPartial(room)) {
             if (room.partialsel == null) throw new Error("Partial number not set!");
             url += '/' + room.partialsel;

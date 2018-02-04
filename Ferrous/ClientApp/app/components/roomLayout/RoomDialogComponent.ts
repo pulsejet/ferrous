@@ -19,7 +19,7 @@ export class RoomDialogComponent {
     }
 
     confirmSelection() {
-        this.dataService.PutRoom(this.room.id.toString(), this.room).subscribe(r => {
+        this.dataService.PutRoom(this.room.roomId.toString(), this.room).subscribe(r => {
             this.dialogRef.close();
         });
     }

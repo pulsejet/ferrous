@@ -27,7 +27,7 @@
             <ng-container *ngIf="room.selected">
                 <div *ngFor="let roomA of room.roomAllocation"
                      class="xunk-room-card mat-elevation-z2">
-                    <b>{{ room.location }} - {{ room.room1 }}</b> - <b>{{ roomA.contingentLeaderNo }}</b>
+                    <b>{{ room.location }} - {{ room.roomName }}</b> - <b>{{ roomA.contingentLeaderNo }}</b>
                     <ng-container *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</ng-container>
                     <button class="xunk-room-button-icon" mat-icon-button color="warn" (click)="unallocateRoom(roomA, room);"><mat-icon>delete</mat-icon></button>
                 </div>
@@ -41,13 +41,13 @@
             <div *ngIf="room.selected && canAllocate(room)" 
                  class="xunk-room-card mat-elevation-z1">
                 <ng-container *ngIf="CheckPartial(room) || room.partialallot">
-                    <b>{{ room.location }} - {{ room.room1 }}</b> - {{ this.GetCapacity(room) }} &nbsp;
+                    <b>{{ room.location }} - {{ room.roomName }}</b> - {{ this.GetCapacity(room) }} &nbsp;
                     <button *ngIf="room.partialallot" class="xunk-room-button" mat-button color="accent" (click)="room.partialallot = false;">Partial</button>
                     <input style="border:none;" matInput name="partialsel" [(ngModel)]="room.partialsel" placeholder="Partial">
                 </ng-container>
 
                 <ng-container *ngIf="!CheckPartial(room) && !room.partialallot">
-                    <b>{{ room.location }} - {{ room.room1 }}</b> - {{ this.GetCapacity(room) }}
+                    <b>{{ room.location }} - {{ room.roomName }}</b> - {{ this.GetCapacity(room) }}
                     <button class="xunk-room-button" mat-button color="accent" (click)="room.partialallot = true;">Partial</button>
                 </ng-container>
             </div>

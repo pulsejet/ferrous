@@ -53,6 +53,7 @@ export class ContingentArrivalDialogComponent {
 
     /* Get alloted capacity for arrival */
     GetAllotedCapacity(ca: ContingentArrival): number {
+        if (ca.roomAllocation == null) return 0;
         let ans: number = 0;
         for (let roomA of ca.roomAllocation) {
             if (roomA.partial <= 0) ans += Number(roomA.room.capacity)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ferrous.Models
 {
@@ -10,8 +11,9 @@ namespace Ferrous.Models
             Room = new HashSet<Room>();
         }
 
+        [Key]
         public string Location { get; set; }
-        public long DefaultCapacity { get; set; }
+        public int DefaultCapacity { get; set; }
         public string LocationFullName { get; set; }
 
         public ICollection<Room> Room { get; set; }

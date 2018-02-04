@@ -19,10 +19,10 @@ export interface Person {
 }
 
 export interface Room {
-    id: number;
+    roomId: number;
     location: string;
     locationExtra: string;
-    room1: string;
+    roomName: string;
     lockNo: string;
     capacity: number;
     allocated: string;

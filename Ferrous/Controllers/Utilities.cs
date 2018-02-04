@@ -43,6 +43,7 @@ namespace Ferrous
 
         public static int dbCInt(Object o)
         {
+            if (o is null) return 0;
             int test;
             if (int.TryParse(o.ToString(), out test)) return test;
             else return 0;

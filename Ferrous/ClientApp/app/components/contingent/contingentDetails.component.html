@@ -76,7 +76,7 @@
         <h3>Allocated Rooms</h3>
         <div *ngFor="let roomA of contingent.roomAllocation" 
              class="xunk-room-card mat-elevation-z1">
-            <b>{{ roomA.room.location }} - {{ roomA.room.room1 }}</b> - {{ roomA.room.capacity}}
+            <b>{{ roomA.room.location }} - {{ roomA.room.roomName }}</b> - {{ roomA.room.capacity}}
             <ng-container *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</ng-container>
             <button class="xunk-room-button-icon" mat-icon-button color="warn" (click)="unallocateRoom(roomA);"><mat-icon>delete</mat-icon></button>
         </div>

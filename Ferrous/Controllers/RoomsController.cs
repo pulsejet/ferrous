@@ -49,7 +49,7 @@ namespace Ferrous.Controllers
             }
 
             var room = await _context.Room.Include(m => m.RoomAllocation) 
-                                          .SingleOrDefaultAsync(m => m.Id == id);
+                                          .SingleOrDefaultAsync(m => m.RoomId == id);
 
             if (room == null)
             {
@@ -86,7 +86,7 @@ namespace Ferrous.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != room.Id)
+            if (id != room.RoomId)
             {
                 return BadRequest();
             }
@@ -129,7 +129,7 @@ namespace Ferrous.Controllers
             _context.Room.Add(room);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRoom", new { id = room.Id }, room);
+            return CreatedAtAction("GetRoom", new { id = room.RoomId }, room);
         }
 
         // DELETE: api/Rooms/5
@@ -145,7 +145,7 @@ namespace Ferrous.Controllers
                 return BadRequest(ModelState);
             }
 
-            var room = await _context.Room.SingleOrDefaultAsync(m => m.Id == id);
+            var room = await _context.Room.SingleOrDefaultAsync(m => m.RoomId == id);
             if (room == null)
             {
                 return NotFound();
@@ -159,7 +159,7 @@ namespace Ferrous.Controllers
 
         private bool RoomExists(int id)
         {
-            return _context.Room.Any(e => e.Id == id);
+            return _context.Room.Any(e => e.RoomId == id);
         }
 
         // GET: api/Rooms/allot/CLNo
@@ -172,7 +172,7 @@ namespace Ferrous.Controllers
                 PrivilegeList.ROOM_ALLOT))
                 return Unauthorized();
 
-            Room room = await _context.Room.Where(m => m.Id == id)
+            Room room = await _context.Room.Where(m => m.RoomId == id)
                                     .Include(m => m.RoomAllocation)
                                     .SingleOrDefaultAsync();
             if (room == null) return BadRequest();
@@ -213,7 +213,7 @@ namespace Ferrous.Controllers
                 PrivilegeList.ROOM_MARK))
                 return Unauthorized();
 
-            Room room = await _context.Room.Where(m => m.Id == id)
+            Room room = await _context.Room.Where(m => m.RoomId == id)
                                     .Include(m => m.RoomAllocation)
                                     .SingleOrDefaultAsync();
             if (room == null) return BadRequest();
@@ -240,14 +240,14 @@ namespace Ferrous.Controllers
             for (int i = start; i<= end; i++)
             {
                 ferrousContext ctx = new ferrousContext();
-                if (ctx.Room.Where(m => m.Location == location && m.Room1 == i.ToString()).Count() > 0)
+                if (ctx.Room.Where(m => m.Location == location && m.RoomName == i.ToString()).Count() > 0)
                 {
                     str += i.ToString() + " ";
                     continue;
                 }
                 Room room = new Room();
                 room.Location = location;
-                room.Room1 = i.ToString();
+                room.RoomName = i.ToString();
                 room.Capacity = capacity;
                 ctx.Add(room);
                 ctx.SaveChanges();
