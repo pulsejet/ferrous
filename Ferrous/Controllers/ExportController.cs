@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using System.Threading.Tasks;
 using static Ferrous.Utilities;
 
 namespace Ferrous.Controllers
@@ -23,33 +24,51 @@ namespace Ferrous.Controllers
 
         // GET: api/export
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             //Response.ContentType = "application/octet-stream";
             using (ExcelPackage package = new ExcelPackage())
             {
-                List<Contingents> contingents = _context.Contingents.ToList();
-                List<Person> people = _context.Person.ToList();
-                List<Room> rooms = _context.Room
+                Contingents[] contingents = await DataUtilities.GetExtendedContingents(_context);
+
+                var people = _context.Person.ToList()
+                    .OrderBy(m => m.ContingentLeaderNo);
+
+                var rooms = _context.Room
                     .Where(m => m.Status != 0)
-                    .Include(m => m.RoomAllocation).ToList();
-                rooms.OrderBy(m => m.Location);
+                    .Include(m => m.RoomAllocation).ToList()
+                    .OrderBy(m => m.Location);
 
                 {
                     ExcelWorksheet contingentsWorksheet = package.Workbook.Worksheets.Add("Contingents");
 
                     contingentsWorksheet.Column(1).Width = 11;
-                    contingentsWorksheet.Column(2).Width = 25;
+                    contingentsWorksheet.Column(2).Width = 11;
+                    contingentsWorksheet.Column(3).Width = 11;
+                    contingentsWorksheet.Column(4).Width = 11;
+                    contingentsWorksheet.Column(5).Width = 11;
+                    contingentsWorksheet.Column(6).Width = 25;
+
+                    for (int k = 2; k <= 5; k++)
+                        contingentsWorksheet.Column(k).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 
                     contingentsWorksheet.Row(1).Style.Font.Bold = true;
                     contingentsWorksheet.Cells[1, 1].Value = "ContingentLeaderNo";
-                    contingentsWorksheet.Cells[1, 2].Value = "Remark";
+                    contingentsWorksheet.Cells[1, 2].Value = "Reg (M)";
+                    contingentsWorksheet.Cells[1, 3].Value = "Reg (F)";
+                    contingentsWorksheet.Cells[1, 4].Value = "Arrived (M)";
+                    contingentsWorksheet.Cells[1, 5].Value = "Arrived (F)";
+                    contingentsWorksheet.Cells[1, 6].Value = "Remark";
     
                     int i = 2;
                     foreach (var contingent in contingents)
                     {
                         contingentsWorksheet.Cells[i, 1].Value = contingent.ContingentLeaderNo;
-                        contingentsWorksheet.Cells[i, 2].Value = contingent.Remark;
+                        contingentsWorksheet.Cells[i, 2].Value = IntIfNumber(contingent.Male);
+                        contingentsWorksheet.Cells[i, 3].Value = IntIfNumber(contingent.Female);
+                        contingentsWorksheet.Cells[i, 4].Value = IntIfNumber(contingent.ArrivedM);
+                        contingentsWorksheet.Cells[i, 5].Value = IntIfNumber(contingent.ArrivedF);
+                        contingentsWorksheet.Cells[i, 6].Value = contingent.Remark;
                         ++i;    
                     }
                 }
@@ -70,9 +89,29 @@ namespace Ferrous.Controllers
                     peopleWorksheet.Cells[1, 4].Value = "Sex";
                     peopleWorksheet.Cells[1, 5].Value = "CL No.";
 
-                    int i = 2;
+                    Color lightGray = ColorTranslator.FromHtml("#ecf0f1");
+
+                    int i = 2; string prevCL = ""; bool col_2 = false;
                     foreach (var person in people)
                     {
+                        if (person.ContingentLeaderNo != prevCL)
+                        {
+                            prevCL = person.ContingentLeaderNo;
+                            col_2 = !col_2;
+                        }
+
+                        if (col_2)
+                        {
+                            peopleWorksheet.Row(i).Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            peopleWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(lightGray);
+                        }
+
+                        if (person.Mino == person.ContingentLeaderNo)
+                        {
+                            peopleWorksheet.Row(i).Style.Font.Color.SetColor(Color.Blue);
+                            peopleWorksheet.Row(i).Style.Font.Bold = true;
+                        }
+
                         peopleWorksheet.Cells[i, 1].Value = person.Mino;
                         peopleWorksheet.Cells[i, 2].Value = person.Name;
                         peopleWorksheet.Cells[i, 3].Value = person.College;
@@ -127,8 +166,6 @@ namespace Ferrous.Controllers
                         roomsWorksheet.Cells[i, 4].Value = room.Capacity;
                         roomsWorksheet.Cells[i, 5].Value = IntIfNumber(room.LockNo);
                         roomsWorksheet.Cells[i, 6].Value = room.Remark;
-
-                        //Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#B7DEE8");
 
                         if (room.Status == 4 || room.Status == 1)
                         {
