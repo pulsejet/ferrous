@@ -30,7 +30,6 @@ namespace Ferrous.Controllers
                 PrivilegeList.EXPORT_DATA))
                 return Unauthorized();
 
-            //Response.ContentType = "application/octet-stream";
             using (ExcelPackage package = new ExcelPackage())
             {
                 Contingents[] contingents = await DataUtilities.GetExtendedContingents(_context);
