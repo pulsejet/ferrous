@@ -49,6 +49,14 @@ namespace Ferrous
             else return 0;
         }
 
+        public static object IntIfNumber(Object o)
+        {
+            if (o is null) return null;
+            int test;
+            if (int.TryParse(o.ToString(), out test)) return test;
+            else return o;
+        }
+
         public class FerrousIdentity
         {
             public string username;
