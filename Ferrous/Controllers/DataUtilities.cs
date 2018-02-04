@@ -44,5 +44,41 @@ namespace Ferrous.Controllers
 
             return cts;
         }
+
+        public async static Task<Building[]> GetExtendedBuildings(ferrousContext _context, string clno)
+        {
+            Building[] buildings = await _context.Building.Include(m => m.Room)
+                                                 .ThenInclude(m => m.RoomAllocation)
+                                                 .ToArrayAsync();
+
+            Parallel.ForEach(buildings, building =>
+            {
+                building.CapacityEmpty = 0;
+                foreach (var room in building.Room)
+                {
+                    if (room.Status == 4) building.CapacityNotReady += room.Capacity;
+                    if (room.Status != 1) continue;
+                    building.CapacityEmpty += room.Capacity;
+                    foreach (var roomA in room.RoomAllocation)
+                    {
+                        if (roomA.Partial <= 0)
+                        {
+                            building.CapacityFilled += room.Capacity;
+                            building.CapacityEmpty -= room.Capacity;
+                            if (roomA.ContingentLeaderNo == clno)
+                                building.AlreadyAllocated += room.Capacity;
+                            break;
+                        }
+                        building.CapacityFilled += roomA.Partial;
+                        building.CapacityEmpty -= roomA.Partial;
+                        if (roomA.ContingentLeaderNo == clno)
+                            building.AlreadyAllocated += roomA.Partial;
+                    }
+                }
+                building.Room = null;
+            });
+
+            return buildings;
+        }
     }
 }
