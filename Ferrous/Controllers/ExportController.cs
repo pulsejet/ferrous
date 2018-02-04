@@ -26,6 +26,10 @@ namespace Ferrous.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            if (!HasPrivilege(User.Identity.Name, 1,
+                PrivilegeList.EXPORT_DATA))
+                return Unauthorized();
+
             //Response.ContentType = "application/octet-stream";
             using (ExcelPackage package = new ExcelPackage())
             {

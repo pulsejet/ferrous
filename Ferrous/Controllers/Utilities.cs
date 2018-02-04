@@ -106,7 +106,9 @@ namespace Ferrous
 
              ROOM_ALLOT = 10001,
              ROOM_MARK = 10002,
-             ROOM_CREATE = 10003
+             ROOM_CREATE = 10003,
+
+             EXPORT_DATA = 11000
         }
     }
 }
