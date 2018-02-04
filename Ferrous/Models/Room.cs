@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Ferrous.Models
 {
@@ -9,14 +10,14 @@ namespace Ferrous.Models
             RoomAllocation = new HashSet<RoomAllocation>();
         }
 
-        public int Id { get; set; }
+        public long Id { get; set; }
+        public long Capacity { get; set; }
         public string Location { get; set; }
         public string LocationExtra { get; set; }
-        public string Room1 { get; set; }
         public string LockNo { get; set; }
-        public int Capacity { get; set; }
-        public short? Status { get; set; }
         public string Remark { get; set; }
+        public string Room1 { get; set; }
+        public long? Status { get; set; }
 
         public Building LocationNavigation { get; set; }
         public ICollection<RoomAllocation> RoomAllocation { get; set; }

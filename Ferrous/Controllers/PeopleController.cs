@@ -13,9 +13,9 @@ namespace Ferrous.Controllers
     [Route("api/People")]
     public class PeopleController : ControllerBase
     {
-        private readonly mydbContext _context;
+        private readonly ferrousContext _context;
 
-        public PeopleController(mydbContext context)
+        public PeopleController(ferrousContext context)
         {
             _context = context;
         }

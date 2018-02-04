@@ -2,10 +2,10 @@
 {
     public partial class Building
     {
-        public int CapacityEmpty;
-        public int CapacityFilled;
-        public int CapacityNotReady;
-        public int AlreadyAllocated;
+        public long CapacityEmpty;
+        public long CapacityFilled;
+        public long CapacityNotReady;
+        public long AlreadyAllocated;
     }
 
     public partial class Contingents

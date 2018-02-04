@@ -13,9 +13,9 @@ namespace Ferrous.Controllers
     [Route("api/[controller]")]
     public class ContingentsController : ControllerBase
     {
-        private readonly mydbContext _context;
+        private readonly ferrousContext _context;
 
-        public ContingentsController(mydbContext context)
+        public ContingentsController(ferrousContext context)
         {
             _context = context;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Ferrous.Models
 {
@@ -10,8 +11,8 @@ namespace Ferrous.Models
         }
 
         public string Location { get; set; }
+        public long DefaultCapacity { get; set; }
         public string LocationFullName { get; set; }
-        public int DefaultCapacity { get; set; }
 
         public ICollection<Room> Room { get; set; }
     }

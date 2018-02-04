@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Ferrous.Models
 {
-    public partial class mydbContext : DbContext
+    public partial class ferrousContext : DbContext
     {
         public virtual DbSet<Building> Building { get; set; }
         public virtual DbSet<ContingentArrival> ContingentArrival { get; set; }
@@ -11,9 +13,9 @@ namespace Ferrous.Models
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<RoomAllocation> RoomAllocation { get; set; }
 
-        public mydbContext() { }
+        public ferrousContext() { }
 
-        public mydbContext(DbContextOptions<mydbContext> options)
+        public ferrousContext(DbContextOptions<ferrousContext> options)
             : base(options)
         { }
 
@@ -35,22 +37,20 @@ namespace Ferrous.Models
                     .HasName("UQ__tmp_ms_x__E55D3B10386ED722")
                     .IsUnique();
 
-                entity.Property(e => e.Location)
-                    .HasMaxLength(15)
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Location).ValueGeneratedNever();
 
                 entity.Property(e => e.DefaultCapacity).HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.LocationFullName).HasMaxLength(50);
             });
 
             modelBuilder.Entity<ContingentArrival>(entity =>
             {
                 entity.HasKey(e => e.ContingentArrivalNo);
 
-                entity.Property(e => e.ContingentLeaderNo)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.HasIndex(e => e.ContingentLeaderNo);
+
+                entity.Property(e => e.ContingentArrivalNo).ValueGeneratedNever();
+
+                entity.Property(e => e.ContingentLeaderNo).IsRequired();
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
@@ -65,8 +65,7 @@ namespace Ferrous.Models
                 entity.HasOne(d => d.ContingentLeaderNoNavigation)
                     .WithMany(p => p.ContingentArrival)
                     .HasForeignKey(d => d.ContingentLeaderNo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Contingen__Conti__2CF2ADDF");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Contingents>(entity =>
@@ -77,89 +76,78 @@ namespace Ferrous.Models
                     .HasName("UQ__tmp_ms_x__A652420B54B398B9")
                     .IsUnique();
 
-                entity.Property(e => e.ContingentLeaderNo)
-                    .HasMaxLength(50)
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.Remark).IsUnicode(false);
+                entity.Property(e => e.ContingentLeaderNo).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<Person>(entity =>
             {
                 entity.HasKey(e => e.Mino);
 
+                entity.HasIndex(e => e.ContingentLeaderNo);
+
                 entity.Property(e => e.Mino)
                     .HasColumnName("MINo")
-                    .HasMaxLength(50)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.ContingentLeaderNo)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.ContingentLeaderNo).IsRequired();
 
                 entity.Property(e => e.Name).IsRequired();
-
-                entity.Property(e => e.Sex).HasMaxLength(1);
 
                 entity.HasOne(d => d.ContingentLeaderNoNavigation)
                     .WithMany(p => p.Person)
                     .HasForeignKey(d => d.ContingentLeaderNo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__mydatatab__Conti__403A8C7D");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Room>(entity =>
             {
-                entity.Property(e => e.Location)
-                    .IsRequired()
-                    .HasMaxLength(15);
+                entity.HasIndex(e => e.Location);
 
-                entity.Property(e => e.LocationExtra).HasMaxLength(15);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.LockNo)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Location).IsRequired();
 
                 entity.Property(e => e.Room1)
                     .IsRequired()
-                    .HasColumnName("Room")
-                    .HasMaxLength(10);
+                    .HasColumnName("Room");
 
                 entity.Property(e => e.Status).HasDefaultValueSql("((0))");
 
                 entity.HasOne(d => d.LocationNavigation)
                     .WithMany(p => p.Room)
                     .HasForeignKey(d => d.Location)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Room__Location__04E4BC85");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<RoomAllocation>(entity =>
             {
                 entity.HasKey(e => e.Sno);
 
-                entity.Property(e => e.Sno).HasColumnName("SNo");
+                entity.HasIndex(e => e.ContingentArrivalNo);
 
-                entity.Property(e => e.ContingentLeaderNo)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.HasIndex(e => e.ContingentLeaderNo);
+
+                entity.HasIndex(e => e.RoomId);
+
+                entity.Property(e => e.Sno)
+                    .HasColumnName("SNo")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.ContingentLeaderNo).IsRequired();
 
                 entity.HasOne(d => d.ContingentArrivalNoNavigation)
                     .WithMany(p => p.RoomAllocation)
-                    .HasForeignKey(d => d.ContingentArrivalNo)
-                    .HasConstraintName("FK_RoomAllocation_ContingentArrival");
+                    .HasForeignKey(d => d.ContingentArrivalNo);
 
                 entity.HasOne(d => d.ContingentLeaderNoNavigation)
                     .WithMany(p => p.RoomAllocation)
                     .HasForeignKey(d => d.ContingentLeaderNo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RoomAllocation_Contingents");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Room)
                     .WithMany(p => p.RoomAllocation)
                     .HasForeignKey(d => d.RoomId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RoomAllocation_Room");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
         }
     }

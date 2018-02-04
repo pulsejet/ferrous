@@ -13,9 +13,9 @@ namespace Ferrous.Controllers
     [Route("api/Buildings")]
     public class BuildingsController : ControllerBase
     {
-        private readonly mydbContext _context;
+        private readonly ferrousContext _context;
 
-        public BuildingsController(mydbContext context)
+        public BuildingsController(ferrousContext context)
         {
             _context = context;
         }
@@ -44,7 +44,7 @@ namespace Ferrous.Controllers
                 return null;
             }
 
-            mydbContext ctx = new mydbContext();
+            ferrousContext ctx = new ferrousContext();
             Building[] buildings = await ctx.Building.Include(m => m.Room)
                                             .ThenInclude(m => m.RoomAllocation)
                                             .ToArrayAsync();

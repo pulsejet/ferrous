@@ -37,11 +37,11 @@ namespace Ferrous
                 .AddCookie();
 
             DatabaseConnectionString = Configuration.GetConnectionString("DatabaseConnectionString");
-            services.AddEntityFrameworkSqlite().AddDbContext<Models.mydbContext>(options =>
+            services.AddEntityFrameworkSqlite().AddDbContext<Models.ferrousContext>(options =>
                 options.UseSqlite(DatabaseConnectionString));
 
             /* Initialize Building Updating Dictionary */
-            Models.mydbContext _context = new Models.mydbContext();
+            Models.ferrousContext _context = new Models.ferrousContext();
             Controllers.RoomsController.BuildingUpdatedTime = new Dictionary<string, DateTime>();
             foreach (var building in _context.Building.AsEnumerable())
             {

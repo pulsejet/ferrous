@@ -14,10 +14,10 @@ namespace Ferrous.Controllers
     [Route("api/Rooms")]
     public class RoomsController : ControllerBase
     {
-        private readonly mydbContext _context;
+        private readonly ferrousContext _context;
         public static Dictionary<string, DateTime> BuildingUpdatedTime;
 
-        public RoomsController(mydbContext context)
+        public RoomsController(ferrousContext context)
         {
             _context = context;
         }
@@ -239,7 +239,7 @@ namespace Ferrous.Controllers
             string str = "";
             for (int i = start; i<= end; i++)
             {
-                mydbContext ctx = new mydbContext();
+                ferrousContext ctx = new ferrousContext();
                 if (ctx.Room.Where(m => m.Location == location && m.Room1 == i.ToString()).Count() > 0)
                 {
                     str += i.ToString() + " ";
