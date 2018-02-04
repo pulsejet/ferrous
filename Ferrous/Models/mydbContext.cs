@@ -21,7 +21,7 @@ namespace Ferrous.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql(Startup.DatabaseConnectionString);
+                optionsBuilder.UseSqlite(Startup.DatabaseConnectionString);
             }
         }
 

@@ -86,7 +86,7 @@
                 $('#dialog').removeClass('dialog-effect-in').removeClass('shakeit');
                 $('#dialog').addClass('dialog-effect-out');
                 $('#successful_login').addClass('active');
-                window.location = '/';
+                window.location = '/Home';
             },
             error: function (request, status, error) {
                 addFormError(form["user_password"], 'The password is invalid');

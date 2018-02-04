@@ -1,5 +1,6 @@
 Ferrous/bin
 Ferrous/obj
+Ferrous/ferrous.db
 /packages/
 !packages/repositories.config
 .vs

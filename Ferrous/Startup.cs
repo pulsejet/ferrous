@@ -37,8 +37,8 @@ namespace Ferrous
                 .AddCookie();
 
             DatabaseConnectionString = Configuration.GetConnectionString("DatabaseConnectionString");
-            services.AddEntityFrameworkNpgsql().AddDbContext<Models.mydbContext>(options =>
-                options.UseNpgsql(DatabaseConnectionString));
+            services.AddEntityFrameworkSqlite().AddDbContext<Models.mydbContext>(options =>
+                options.UseSqlite(DatabaseConnectionString));
 
             /* Initialize Building Updating Dictionary */
             Models.mydbContext _context = new Models.mydbContext();
