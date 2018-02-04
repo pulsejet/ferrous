@@ -249,8 +249,7 @@ namespace Ferrous.Controllers
             string str = "";
             for (int i = start; i<= end; i++)
             {
-                ferrousContext ctx = new ferrousContext();
-                if (ctx.Room.Where(m => m.Location == location && m.RoomName == i.ToString()).Count() > 0)
+                if (_context.Room.Where(m => m.Location == location && m.RoomName == i.ToString()).Count() > 0)
                 {
                     str += i.ToString() + " ";
                     continue;
@@ -259,8 +258,8 @@ namespace Ferrous.Controllers
                 room.Location = location;
                 room.RoomName = i.ToString();
                 room.Capacity = capacity;
-                ctx.Add(room);
-                ctx.SaveChanges();
+                _context.Add(room);
+                _context.SaveChanges();
             }
             return Content("Done -- " + str);
         }

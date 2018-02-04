@@ -44,10 +44,9 @@ namespace Ferrous.Controllers
                 return null;
             }
 
-            ferrousContext ctx = new ferrousContext();
-            Building[] buildings = await ctx.Building.Include(m => m.Room)
-                                            .ThenInclude(m => m.RoomAllocation)
-                                            .ToArrayAsync();
+            Building[] buildings = await _context.Building.Include(m => m.Room)
+                                                 .ThenInclude(m => m.RoomAllocation)
+                                                 .ToArrayAsync();
 
             Parallel.ForEach(buildings, building =>
             {

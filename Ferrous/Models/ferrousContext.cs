@@ -13,18 +13,11 @@ namespace Ferrous.Models
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<RoomAllocation> RoomAllocation { get; set; }
 
-        public ferrousContext() { }
-
         public ferrousContext(DbContextOptions<ferrousContext> options)
             : base(options)
         { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlite(Startup.DatabaseConnectionString);
-            }
-        }
+        { }
     }
 }
