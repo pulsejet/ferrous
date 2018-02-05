@@ -5,27 +5,29 @@
 
 <!-- Body -->
 <div *ngIf="person">
-    <div [hidden]="editing">
-        <div class="col-md-3"><b>MI No:</b></div>
-        <div class="col-md-3"> {{ person.mino }} </div><br />
+    <div class="row" [hidden]="editing">
+        <div class="col-8 col-md-3"><b>MI No:</b></div>
+        <div class="col-4 col-md-9"> {{ person.mino }} </div>
 
         <div class="col-md-3"><b>Name:</b></div>
-        <div class="col-md-3"> {{ person.name }} </div><br />
+        <div class="col-md-9"> {{ person.name }} </div>
 
         <div class="col-md-3"><b>College:</b></div>
-        <div class="col-md-3"> {{ person.college }} </div><br />
+        <div class="col-md-9"> {{ person.college }} </div>
 
-        <div class="col-md-3"><b>Contingent Leader No:</b></div>
-        <div class="col-md-3"> {{ person.contingentLeaderNo }} </div><br />
+        <div class="col-8 col-md-3"><b>Contingent Leader No:</b></div>
+        <div class="col-4 col-md-9"> {{ person.contingentLeaderNo }} </div>
 
-        <div class="col-md-3"><b>Sex:</b></div>
-        <div class="col-md-3"> {{ person.sex }} </div><br />
+        <div class="col-8 col-md-3"><b>Sex:</b></div>
+        <div class="col-4 col-md-9"> {{ person.sex }} </div>
     </div>
+
+    <br *ngIf="!editing" />
 
     <div [hidden]="!editing"
          class="container"
          fxLayout="column"
-         fxLayoutGap="8px"
+         fxLayoutGap="1px"
          fxLayoutAlign="left left">
 
         <mat-form-field>

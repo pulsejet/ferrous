@@ -6,35 +6,37 @@
 <!-- Body -->
 <div *ngIf="contingent">
     <!-- Property list when not editing -->
-    <div>
+    <div class="row">
         <ng-container *ngIf="CLNo != '0'">
-            <div class="col-md-3"><b>Contingent Leader No:</b></div>
-            <div class="col-md-3"> {{ contingent.contingentLeaderNo }} </div><br />
+            <div class="col-8 col-md-3"><b>Contingent Leader No:</b></div>
+            <div class="col-4 col-md-9"> {{ contingent.contingentLeaderNo }} </div>
 
-            <div class="col-md-3"><b>Registered (M):</b></div>
-            <div class="col-md-3"> {{ GetPeopleBySex(false) }} </div><br />
+            <div class="col-8 col-md-3"><b>Registered (M):</b></div>
+            <div class="col-4 col-md-9"> {{ GetPeopleBySex(false) }} </div>
 
-            <div class="col-md-3"><b>Registered (F):</b></div>
-            <div class="col-md-3"> {{ GetPeopleBySex(true) }} </div><br />
+            <div class="col-8 col-md-3"><b>Registered (F):</b></div>
+            <div class="col-4 col-md-9"> {{ GetPeopleBySex(true) }} </div>
 
-            <div class="col-md-3"><b>Arrived (M):</b></div>
-            <div class="col-md-3"> {{ GetArrivedContingent(false) }} </div><br />
+            <div class="col-8 col-md-3"><b>Arrived (M):</b></div>
+            <div class="col-4 col-md-9"> {{ GetArrivedContingent(false) }} </div>
 
-            <div class="col-md-3"><b>Arrived (F):</b></div>
-            <div class="col-md-3"> {{ GetArrivedContingent(true) }} </div><br />
+            <div class="col-8 col-md-3"><b>Arrived (F):</b></div>
+            <div class="col-4 col-md-9"> {{ GetArrivedContingent(true) }} </div>
         </ng-container>
 
         <ng-container *ngIf="!editing">
             <div class="col-md-3"><b>Remark:</b></div>
-            <div class="col-md-3"> {{ contingent.remark }} </div><br />
+            <div class="col-md-9"> {{ contingent.remark }} </div><br />
         </ng-container>
-
+        
         <!-- Property list when editing -->
         <div [hidden]="!editing"
              class="container"
              fxLayout="column"
              fxLayoutGap="8px"
              fxLayoutAlign="left left">
+
+            <br />
 
             <ng-container *ngIf="CLNo == '0'">
                 <mat-form-field>
@@ -49,6 +51,8 @@
         </div>
 
     </div>
+
+    <br *ngIf="!editing" />
 
     <!-- Action Buttons -->
     <div fxLayout="column"
