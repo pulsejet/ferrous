@@ -31,8 +31,6 @@ namespace Ferrous
 
             services.AddSignalR();
 
-            services.AddResponseCompression();
-
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
@@ -57,7 +55,6 @@ namespace Ferrous
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseResponseCompression();
             }
 
             app.UseStaticFiles();
