@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
 using static Ferrous.Utilities;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Ferrous.Controllers
 {
@@ -14,22 +15,19 @@ namespace Ferrous.Controllers
     [Route("api/Rooms")]
     public class RoomsController : ControllerBase
     {
-        private readonly ferrousContext _context;
-        public static Dictionary<string, DateTime> BuildingUpdatedTime;
+        private static IHubContext<WebSocketHubs.BuildingUpdateHub> _hubContext;
 
-        public RoomsController(ferrousContext context)
+        private readonly ferrousContext _context;
+
+        public RoomsController(ferrousContext context, IHubContext<WebSocketHubs.BuildingUpdateHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
+        }
 
-            if (BuildingUpdatedTime is null)
-            {
-                /* Initialize Building Updating Dictionary */
-                BuildingUpdatedTime = new Dictionary<string, DateTime>();
-                foreach (var building in _context.Building.AsEnumerable())
-                {
-                    BuildingUpdatedTime[building.Location] = DateTime.Now;
-                }
-            }
+        public static void UpdateLayoutWebSocket(string Building)
+        {
+            _hubContext.Clients.Group(Building).InvokeAsync("updated", DateTime.Now.ToString());
         }
 
         // GET: api/Rooms
@@ -119,7 +117,7 @@ namespace Ferrous.Controllers
                 }
             }
 
-            BuildingUpdatedTime[room.Location] = DateTime.Now;
+            UpdateLayoutWebSocket(room.Location);
             return NoContent();
         }
 
@@ -209,7 +207,7 @@ namespace Ferrous.Controllers
 
             await _context.SaveChangesAsync();
 
-            BuildingUpdatedTime[room.Location] = DateTime.Now;
+            UpdateLayoutWebSocket(room.Location);
 
             roomAllocation.Room = null;
             return Ok(roomAllocation);
@@ -235,7 +233,7 @@ namespace Ferrous.Controllers
 
             await _context.SaveChangesAsync();
 
-            BuildingUpdatedTime[room.Location] = DateTime.Now;
+            UpdateLayoutWebSocket(room.Location);
             return Content("success");
         }
 
@@ -263,39 +261,6 @@ namespace Ferrous.Controllers
             }
             return Content("Done -- " + str);
         }
-
-        /* SSE for building updates */
-#warning: TODO: The code used for this is threading unsafe
-        [HttpGet("buildingSSE/{id}")]
-        public async Task GetBuildingSSE([FromRoute] string id)
-        {
-            var response = Response;
-            response.Headers.Add("Content-Type", "text/event-stream");
-            response.Headers.Add("Cache-Control", "no-cache");
-            response.Headers.Add("X-Accel-Buffering", "no");
-
-            /* Initial update time for this request */
-            DateTime InitialTime = BuildingUpdatedTime[id];
-            for (var i = 0; true; ++i)
-            {
-                /* Poll the dictionary and reply if required */
-                if (InitialTime != BuildingUpdatedTime[id]) { 
-                    await response
-                        .WriteAsync($"data: refresh " + BuildingUpdatedTime[id].ToString() +"\r\r");
-                    response.Body.Flush();
-                    InitialTime = BuildingUpdatedTime[id];
-                } else
-                {
-                    await response
-                        .WriteAsync($"data: p \r\r");
-                    response.Body.Flush();
-                }
-
-                /* Go back to sleep */
-                await Task.Delay(2000);
-            }
-        }
-
     }
 
 }

@@ -138,7 +138,7 @@ namespace Ferrous.Controllers
             _context.RoomAllocation.Remove(roomAllocation);
             await _context.SaveChangesAsync();
 
-            RoomsController.BuildingUpdatedTime[roomAllocation.Room.Location] = DateTime.Now;
+            RoomsController.UpdateLayoutWebSocket(roomAllocation.Room.Location);
 
             return Ok(roomAllocation);
         }

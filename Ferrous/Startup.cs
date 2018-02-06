@@ -29,6 +29,8 @@ namespace Ferrous
                 options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
+            services.AddSignalR();
+
             services.AddResponseCompression();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -61,6 +63,11 @@ namespace Ferrous
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<WebSocketHubs.BuildingUpdateHub>("websocket/building");
+            });
 
             app.UseMvc(routes =>
             {

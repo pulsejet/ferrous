@@ -66,6 +66,7 @@
     "@angular/cdk": "^5.1.1",
     "@angular/flex-layout": "^2.0.0-beta.12",
     "@angular/material": "^5.1.1",
+    "@aspnet/signalr-client": "^1.0.0-alpha2-final",
     "hammerjs": "^2.0.8",
     "popper.js": "^1.12.9"
   }

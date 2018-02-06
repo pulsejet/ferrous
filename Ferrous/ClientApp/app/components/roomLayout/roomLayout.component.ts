@@ -5,10 +5,12 @@ import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { SSEService } from '../../SSEService';
 import { RoomDialogComponent } from './RoomDialogComponent';
-import * as $ from 'jquery';
 import { Subscription } from 'rxjs/Subscription';
+import { HubConnection } from '@aspnet/signalr-client';
+import * as $ from 'jquery';
+import { Observable } from 'rxjs/Observable';
+import { TimerObservable } from "rxjs/observable/TimerObservable";
 
 /* Room layout component */
 @Component({
@@ -26,14 +28,16 @@ export class RoomLayoutComponent {
     @ViewChild('roomsLayout')               /* layout element           */
         roomsLayout: ElementRef;            /*                          */
     public marking: boolean = false;        /* marking status change    */
-    private sseStream: Subscription;        /* SSE Subscription         */
+    private _hubConnection: HubConnection;  /* Update Layout Hub        */
+    private updateSubscription: Subscription;
+    private alive: boolean;
+    private UpdateNeeded: boolean; 
 
     constructor(private activatedRoute: ActivatedRoute,
         private titleService: Title,
         private dataService: DataService,
         public snackBar: MatSnackBar,
         public dialog: MatDialog,
-        private sseService: SSEService,
         @Inject('BASE_URL') public baseUrl: string) {
 
         this.titleService.setTitle("Room Layout");
@@ -52,19 +56,39 @@ export class RoomLayoutComponent {
             /* Load rooms */
             this.reloadRooms();
         });
+
+        /* Init */
+        this.alive = true;
+        this.UpdateNeeded = false;
     }
 
     ngOnInit() {
-        this.sseStream = this.sseService.observeMessages('/api/Rooms/buildingSSE/' + this.loc_code)
-            .subscribe(message => {
-                if (message.indexOf("refresh") >= 0) this.reloadRooms();
+        this._hubConnection = new HubConnection('/websocket/building');
+
+        this._hubConnection.on('updated', (data: any) => {
+            this.UpdateNeeded = true;
+        });
+
+        this.updateSubscription = TimerObservable.create(0, 2000)
+            .subscribe(() => {
+                if (this.UpdateNeeded) {
+                    this.reloadRooms();
+                    this.UpdateNeeded = false;
+                }
+            });
+
+        this._hubConnection.start()
+            .then(() => {
+                this._hubConnection.invoke('JoinBuilding', this.loc_code);
+                console.log('Hub connection started')
+            })
+            .catch(err => {
+                console.log('Error while establishing connection')
             });
     }
 
     ngOnDestroy() {
-        if (this.sseStream) {
-            this.sseStream.unsubscribe();
-        }
+        this.updateSubscription.unsubscribe();
     }
 
     reloadRooms(fullReload: boolean = false) {

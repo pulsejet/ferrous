@@ -341,6 +341,14 @@
         "tslib": "1.7.1"
       }
     },
+    "@aspnet/signalr-client": {
+      "version": "1.0.0-alpha2-final",
+      "resolved": "https://registry.npmjs.org/@aspnet/signalr-client/-/signalr-client-1.0.0-alpha2-final.tgz",
+      "integrity": "sha1-a899AQKHXfiqbwOhB0h8k/Tx/rQ=",
+      "requires": {
+        "msgpack5": "3.6.0"
+      }
+    },
     "@ngtools/json-schema": {
       "version": "1.1.0",
       "resolved": "https://registry.npmjs.org/@ngtools/json-schema/-/json-schema-1.1.0.tgz",
@@ -2593,8 +2601,7 @@
     "core-util-is": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.2.tgz",
-      "integrity": "sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=",
-      "dev": true
+      "integrity": "sha1-tf1UIgqivFq1eqtxQMlAdUUDwac="
     },
     "cosmiconfig": {
       "version": "2.2.2",
@@ -6119,8 +6126,7 @@
     "inherits": {
       "version": "2.0.3",
       "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.3.tgz",
-      "integrity": "sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=",
-      "dev": true
+      "integrity": "sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4="
     },
     "inline-source-map": {
       "version": "0.6.2",
@@ -6530,8 +6536,7 @@
     "isarray": {
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz",
-      "integrity": "sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=",
-      "dev": true
+      "integrity": "sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE="
     },
     "isbinaryfile": {
       "version": "3.0.2",
@@ -8078,6 +8083,27 @@
       "resolved": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz",
       "integrity": "sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=",
       "dev": true
+    },
+    "msgpack5": {
+      "version": "3.6.0",
+      "resolved": "https://registry.npmjs.org/msgpack5/-/msgpack5-3.6.0.tgz",
+      "integrity": "sha512-6HuCZHA57WtNUzrKIvjJ8OMxigzveJ6D5i13y6TsgGu3X3zxABpuBvChpppOoGdB9SyWZcmqUs1fwUV/PpSQ7Q==",
+      "requires": {
+        "bl": "1.2.1",
+        "inherits": "2.0.3",
+        "readable-stream": "2.3.3",
+        "safe-buffer": "5.1.1"
+      },
+      "dependencies": {
+        "bl": {
+          "version": "1.2.1",
+          "resolved": "https://registry.npmjs.org/bl/-/bl-1.2.1.tgz",
+          "integrity": "sha1-ysMo977kVzDUBLaSID/LWQ4XLV4=",
+          "requires": {
+            "readable-stream": "2.3.3"
+          }
+        }
+      }
     },
     "multicast-dns": {
       "version": "6.2.3",
@@ -10176,8 +10202,7 @@
     "process-nextick-args": {
       "version": "1.0.7",
       "resolved": "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-1.0.7.tgz",
-      "integrity": "sha1-FQ4gt1ZZCtP5EJPyWk8q2L/zC6M=",
-      "dev": true
+      "integrity": "sha1-FQ4gt1ZZCtP5EJPyWk8q2L/zC6M="
     },
     "promise": {
       "version": "7.3.1",
@@ -10467,7 +10492,6 @@
       "version": "2.3.3",
       "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-2.3.3.tgz",
       "integrity": "sha1-No8lEtefnUb9/HE0mueHi7weuVw=",
-      "dev": true,
       "requires": {
         "core-util-is": "1.0.2",
         "inherits": "2.0.3",
@@ -10845,8 +10869,7 @@
     "safe-buffer": {
       "version": "5.1.1",
       "resolved": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.1.1.tgz",
-      "integrity": "sha1-iTMSr2myEj3vcfV4iQAWce6yyFM=",
-      "dev": true
+      "integrity": "sha1-iTMSr2myEj3vcfV4iQAWce6yyFM="
     },
     "sass-graph": {
       "version": "2.2.4",
@@ -12052,7 +12075,6 @@
       "version": "1.0.3",
       "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-1.0.3.tgz",
       "integrity": "sha1-D8Z9fBQYJd6UKC3VNr7GubzoYKs=",
-      "dev": true,
       "requires": {
         "safe-buffer": "5.1.1"
       }
@@ -13029,8 +13051,7 @@
     "util-deprecate": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz",
-      "integrity": "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=",
-      "dev": true
+      "integrity": "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8="
     },
     "utila": {
       "version": "0.4.0",
