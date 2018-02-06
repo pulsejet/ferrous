@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
 namespace Ferrous.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -38,7 +39,7 @@ namespace Ferrous.Migrations
                 columns: table => new
                 {
                     RoomId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Capacity = table.Column<int>(nullable: false),
                     Location = table.Column<string>(nullable: true),
                     LocationExtra = table.Column<string>(nullable: true),
@@ -63,7 +64,7 @@ namespace Ferrous.Migrations
                 columns: table => new
                 {
                     ContingentArrivalNo = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     ContingentLeaderNo = table.Column<string>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     Female = table.Column<int>(nullable: true),
@@ -108,7 +109,7 @@ namespace Ferrous.Migrations
                 columns: table => new
                 {
                     Sno = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     ContingentArrivalNo = table.Column<int>(nullable: true),
                     ContingentLeaderNo = table.Column<string>(nullable: true),
                     Partial = table.Column<int>(nullable: false),

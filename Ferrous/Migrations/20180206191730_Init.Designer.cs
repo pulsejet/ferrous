@@ -11,13 +11,14 @@ using System;
 namespace Ferrous.Migrations
 {
     [DbContext(typeof(ferrousContext))]
-    [Migration("20180204093740_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20180206191730_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
 
             modelBuilder.Entity("Ferrous.Models.Building", b =>

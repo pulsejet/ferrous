@@ -34,8 +34,8 @@ namespace Ferrous
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
-            services.AddEntityFrameworkSqlite().AddDbContext<Models.ferrousContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DatabaseConnectionString")));
+            services.AddEntityFrameworkNpgsql().AddDbContext<Models.ferrousContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DatabaseConnectionString")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
