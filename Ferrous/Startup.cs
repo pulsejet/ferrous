@@ -46,8 +46,8 @@ namespace Ferrous
 
             if (env.IsDevelopment())
             {
-#if (DEBUG)
                 app.UseDeveloperExceptionPage();
+#if (DEBUG)
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacement = true
