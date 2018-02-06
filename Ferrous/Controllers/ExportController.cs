@@ -192,7 +192,7 @@ namespace Ferrous.Controllers
                 /* Return the file */
                 var stream = new MemoryStream(package.GetAsByteArray());
                 return File(stream, 
-                    "aapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     "export.xlsx");
             }
         }
