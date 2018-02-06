@@ -9,7 +9,6 @@ import { RoomDialogComponent } from './RoomDialogComponent';
 import { Subscription } from 'rxjs/Subscription';
 import { HubConnection } from '@aspnet/signalr-client';
 import * as $ from 'jquery';
-import { Observable } from 'rxjs/Observable';
 import { TimerObservable } from "rxjs/observable/TimerObservable";
 
 /* Room layout component */
@@ -19,19 +18,18 @@ import { TimerObservable } from "rxjs/observable/TimerObservable";
     styleUrls: ['../../Custom.css'],
 })
 export class RoomLayoutComponent {
-    public rooms: Room[];                   /* master list of rooms     */
-    public roomsInited: boolean = false;    /* rooms already inited     */
-    public clno: string;                    /* current CLNo             */
-    public cano: number;                    /* current CArrival No      */
-    public loc_fullname: string;            /* location full name       */
-    public loc_code: string;                /* code of current location */
-    @ViewChild('roomsLayout')               /* layout element           */
-        roomsLayout: ElementRef;            /*                          */
-    public marking: boolean = false;        /* marking status change    */
-    private _hubConnection: HubConnection;  /* Update Layout Hub        */
-    private updateSubscription: Subscription;
-    private alive: boolean;
-    private UpdateNeeded: boolean; 
+    public rooms: Room[];                           /* master list of rooms                 */
+    public roomsInited: boolean = false;            /* rooms already inited                 */
+    public clno: string;                            /* current CLNo                         */
+    public cano: number;                            /* current CArrival No                  */
+    public loc_fullname: string;                    /* location full name                   */
+    public loc_code: string;                        /* code of current location             */
+    @ViewChild('roomsLayout')                       /* layout element                       */
+        roomsLayout: ElementRef;                    /*                                      */
+    public marking: boolean = false;                /* marking status change                */
+    private _hubConnection: HubConnection;          /* websocket connection for layout      */
+    private updateSubscription: Subscription;       /* layout update Subscription           */
+    private UpdateNeeded: boolean = false;          /* mark updation for next timer check   */
 
     constructor(private activatedRoute: ActivatedRoute,
         private titleService: Title,
@@ -56,19 +54,18 @@ export class RoomLayoutComponent {
             /* Load rooms */
             this.reloadRooms();
         });
-
-        /* Init */
-        this.alive = true;
-        this.UpdateNeeded = false;
     }
 
     ngOnInit() {
+        /* Connect to the websocket */
         this._hubConnection = new HubConnection('/websocket/building');
 
+        /* Mark pending update on event 'updated' */
         this._hubConnection.on('updated', (data: any) => {
             this.UpdateNeeded = true;
         });
 
+        /* Timer checks for updates every 2 seconds */
         this.updateSubscription = TimerObservable.create(0, 2000)
             .subscribe(() => {
                 if (this.UpdateNeeded) {
@@ -77,6 +74,7 @@ export class RoomLayoutComponent {
                 }
             });
 
+        /* Start the connection */
         this._hubConnection.start()
             .then(() => {
                 this._hubConnection.invoke('JoinBuilding', this.loc_code);
@@ -88,9 +86,12 @@ export class RoomLayoutComponent {
     }
 
     ngOnDestroy() {
-        this.updateSubscription.unsubscribe();
+        /* Unsubscribe if connected */
+        if (this.updateSubscription)
+            this.updateSubscription.unsubscribe();
     }
 
+    /* Reload all room data partially or fully */
     reloadRooms(fullReload: boolean = false) {
         this.dataService.GetBuilding(this.loc_code).subscribe(result => {
             if (!this.rooms || fullReload)

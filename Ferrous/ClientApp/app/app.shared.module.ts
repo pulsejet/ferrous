@@ -22,7 +22,6 @@ import { CounterComponent } from './components/counter/counter.component';
 import { MyMaterialClass } from './components/material-angular';
 import { DataService } from './DataService';
 
-import { SSEService } from './SSEService';
 import { HttpClientModule } from '@angular/common/http';
 import { FilterContingents } from './Pipes';
 import { ClickStopPropagation } from './components/material-angular';
@@ -74,8 +73,7 @@ import { ClickStopPropagation } from './components/material-angular';
         ])
     ],
     providers: [
-        DataService,
-        SSEService
+        DataService
     ],
     entryComponents: [
         ContingentArrivalDialogComponent,
