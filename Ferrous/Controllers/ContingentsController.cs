@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
-using static Ferrous.Utilities;
+using static Ferrous.Controllers.Utilities;
 
 namespace Ferrous.Controllers
 {
@@ -39,7 +39,7 @@ namespace Ferrous.Controllers
         public async Task<IActionResult> GetContingents([FromRoute] string id)
         {
             if (!HasPrivilege(User.Identity.Name, 1,
-                Utilities.PrivilegeList.CONTINGENT_GET_DETAILS))
+                PrivilegeList.CONTINGENT_GET_DETAILS))
                 return Unauthorized();
 
                 if (!ModelState.IsValid)
@@ -54,14 +54,11 @@ namespace Ferrous.Controllers
                                             .Include(m => m.ContingentArrival)
                                             .SingleOrDefaultAsync();
 
+            if (contingent == null) return NotFound();
+
             foreach ( var ra in contingent.RoomAllocation )
             {
                 ra.ContingentArrivalNoNavigation = null;
-            }
-
-            if (contingent == null)
-            {
-                return NotFound();
             }
 
             return Ok(contingent);
@@ -111,7 +108,7 @@ namespace Ferrous.Controllers
         public async Task<IActionResult> PostContingents([FromBody] Contingents contingents)
         {
             if (!HasPrivilege(User.Identity.Name, 1,
-                Utilities.PrivilegeList.CONTINGENT_POST))
+                PrivilegeList.CONTINGENT_POST))
                 return Unauthorized();
 
             if (!ModelState.IsValid)
@@ -144,7 +141,7 @@ namespace Ferrous.Controllers
         public async Task<IActionResult> DeleteContingents([FromRoute] string id)
         {
             if (!HasPrivilege(User.Identity.Name, 1,
-                Utilities.PrivilegeList.CONTINGENT_DELETE))
+                PrivilegeList.CONTINGENT_DELETE))
                 return Unauthorized();
 
             if (!ModelState.IsValid)

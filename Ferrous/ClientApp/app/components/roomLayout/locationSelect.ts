@@ -1,6 +1,6 @@
-﻿import { Component, Inject, ElementRef, ViewChild } from '@angular/core';
+﻿import { Component, Inject } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Room, RoomAllocation, Building } from '../interfaces';
+import { Building } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 

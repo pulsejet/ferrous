@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Ferrous
+namespace Ferrous.Controllers
 {
     public class Utilities
     {
@@ -14,7 +14,7 @@ namespace Ferrous
 
         public static string InlineFile(string path)
         {
-            return System.IO.File.ReadAllText("wwwroot/" + path);
+            return File.ReadAllText("wwwroot/" + path);
         }
 
         public static List<T> LoadJson<T>(string path)
@@ -26,7 +26,7 @@ namespace Ferrous
             }
         }
 
-        public static bool HasPrivilege(string username, int minElevation, PrivilegeList HasPrivilege = PrivilegeList.NONE)
+        public static bool HasPrivilege(string username, int minElevation, PrivilegeList hasPrivilege = PrivilegeList.NONE)
         {
             if (username == String.Empty) return false;
 
@@ -35,8 +35,8 @@ namespace Ferrous
             if (id == null) return false;
 
             if (id.elevation <= minElevation) return true;
-            if (HasPrivilege != PrivilegeList.NONE && 
-                id.privileges.Contains( (int) HasPrivilege) ) return true;
+            if (hasPrivilege != PrivilegeList.NONE && 
+                id.privileges.Contains( (int) hasPrivilege) ) return true;
 
             return false;
         }
@@ -44,17 +44,15 @@ namespace Ferrous
         public static int dbCInt(Object o)
         {
             if (o is null) return 0;
-            int test;
-            if (int.TryParse(o.ToString(), out test)) return test;
-            else return 0;
+            if (int.TryParse(o.ToString(), out var test)) return test;
+            return 0;
         }
 
         public static object IntIfNumber(Object o)
         {
             if (o is null) return null;
-            int test;
-            if (int.TryParse(o.ToString(), out test)) return test;
-            else return o;
+            if (int.TryParse(o.ToString(), out int test)) return test;
+            return o;
         }
 
         public class FerrousIdentity

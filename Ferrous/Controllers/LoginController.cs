@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using static Ferrous.Utilities;
+using static Ferrous.Controllers.Utilities;
 
 namespace Ferrous.Controllers
 {
@@ -15,7 +15,7 @@ namespace Ferrous.Controllers
     {
         public IActionResult Index()
         {
-            return File("account/login.html", Utilities.HTML_MIME_TYPE);
+            return File("account/login.html", HTML_MIME_TYPE);
         }
 
         [HttpGet("login")]
@@ -50,7 +50,7 @@ namespace Ferrous.Controllers
         {
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
-            return File("account/login.html", Utilities.HTML_MIME_TYPE);
+            return File("account/login.html", HTML_MIME_TYPE);
         }
     }
 }

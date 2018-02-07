@@ -7,7 +7,7 @@
 </div>
 
 <!-- Location label and refresh button-->
-<span class="h1-inline"> {{ loc_fullname }} </span>
+<span class="h1-inline"> {{ locFullname }} </span>
 <button class="xunk-table-button" mat-icon-button color="primary" (click)="reloadRooms(true)">
     <mat-icon>refresh</mat-icon>
 </button>
@@ -40,14 +40,14 @@
         <ng-container *ngFor="let room of rooms">
             <div *ngIf="room.selected && canAllocate(room)" 
                  class="xunk-room-card mat-elevation-z1">
-                <ng-container *ngIf="CheckPartial(room) || room.partialallot">
-                    <b>{{ room.location }} - {{ room.roomName }}</b> - {{ this.GetCapacity(room) }} &nbsp;
+                <ng-container *ngIf="checkPartial(room) || room.partialallot">
+                    <b>{{ room.location }} - {{ room.roomName }}</b> - {{ this.getCapacity(room) }} &nbsp;
                     <button *ngIf="room.partialallot" class="xunk-room-button" mat-button color="accent" (click)="room.partialallot = false;">Partial</button>
                     <input style="border:none;" matInput name="partialsel" [(ngModel)]="room.partialsel" placeholder="Partial">
                 </ng-container>
 
-                <ng-container *ngIf="!CheckPartial(room) && !room.partialallot">
-                    <b>{{ room.location }} - {{ room.roomName }}</b> - {{ this.GetCapacity(room) }}
+                <ng-container *ngIf="!checkPartial(room) && !room.partialallot">
+                    <b>{{ room.location }} - {{ room.roomName }}</b> - {{ this.getCapacity(room) }}
                     <button class="xunk-room-button" mat-button color="accent" (click)="room.partialallot = true;">Partial</button>
                 </ng-container>
             </div>
@@ -57,17 +57,17 @@
     <br>
 
     <!-- Action buttons -->
-    <div class="containerX">
+    <div>
         <div class="container"
              fxLayout
              fxLayout.xs="column"
              fxLayoutGap="8px"
              fxLayoutGap.xs="5px">
             <mat-slide-toggle [(ngModel)]="marking">Mark</mat-slide-toggle>
-            <button fxFlex="auto" (click)="Allot();" mat-raised-button color="warn">Allot Rooms</button>
-            <button fxFlex="auto" (click)="Mark(1);" mat-raised-button color="primary">Mark Available</button>
-            <button fxFlex="auto" (click)="Mark(4);" mat-raised-button color="accent">Mark Not Ready</button>
-            <button fxFlex="auto" (click)="Mark(0);" mat-raised-button>Mark Unavailable</button>
+            <button fxFlex="auto" (click)="allot();" mat-raised-button color="warn">Allot Rooms</button>
+            <button fxFlex="auto" (click)="mark(1);" mat-raised-button color="primary">Mark Available</button>
+            <button fxFlex="auto" (click)="mark(4);" mat-raised-button color="accent">Mark Not Ready</button>
+            <button fxFlex="auto" (click)="mark(0);" mat-raised-button>Mark Unavailable</button>
         </div>
     </div>
 </div>

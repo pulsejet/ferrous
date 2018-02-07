@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Person } from '../interfaces';
-import { PersonDetailsComponent } from './personDetails';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 
@@ -15,8 +14,7 @@ export class PersonComponent {
 
     constructor(
         private titleService: Title,
-        private dataService: DataService,
-        @Inject('BASE_URL') baseUrl: string) {
+        private dataService: DataService) {
 
         this.titleService.setTitle("People");
 

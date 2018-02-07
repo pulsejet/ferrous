@@ -30,7 +30,7 @@ export class ContingentArrivalDialogComponent {
             (this.nContingentArrv.femaleOnSpot && this.nContingentArrv.femaleOnSpot > 0)
         ) {
 
-            if (chosenEntry != -1)
+            if (chosenEntry !== -1)
                 if (!confirm("New record will be created!"))
                     return;
 
@@ -44,7 +44,7 @@ export class ContingentArrivalDialogComponent {
 
         } else {
             /* Use the old entry */
-            if (chosenEntry == -1) { alert("Validation failed or nothing to do!"); return; }
+            if (chosenEntry === -1) { alert("Validation failed or nothing to do!"); return; }
             this.dataService.NavigateLayoutSelect(
                 this.CLNo, this.contingentArrivals[chosenEntry].contingentArrivalNo);
             this.dialogRef.close(chosenEntry);
@@ -52,7 +52,7 @@ export class ContingentArrivalDialogComponent {
     }
 
     /* Get alloted capacity for arrival */
-    GetAllotedCapacity(ca: ContingentArrival): number {
+    getAllotedCapacity(ca: ContingentArrival): number {
         if (ca.roomAllocation == null) return 0;
         let ans: number = 0;
         for (let roomA of ca.roomAllocation) {

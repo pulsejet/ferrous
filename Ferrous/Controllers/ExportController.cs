@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
 using System.Linq;
 using Ferrous.Models;
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Threading.Tasks;
-using static Ferrous.Utilities;
+using static Ferrous.Controllers.Utilities;
 
 namespace Ferrous.Controllers
 {
@@ -94,16 +93,16 @@ namespace Ferrous.Controllers
 
                     Color lightGray = ColorTranslator.FromHtml("#ecf0f1");
 
-                    int i = 2; string prevCL = ""; bool col_2 = false;
+                    int i = 2; string prevCl = ""; bool col2 = false;
                     foreach (var person in people)
                     {
-                        if (person.ContingentLeaderNo != prevCL)
+                        if (person.ContingentLeaderNo != prevCl)
                         {
-                            prevCL = person.ContingentLeaderNo;
-                            col_2 = !col_2;
+                            prevCl = person.ContingentLeaderNo;
+                            col2 = !col2;
                         }
 
-                        if (col_2)
+                        if (col2)
                         {
                             peopleWorksheet.Row(i).Style.Fill.PatternType = ExcelFillStyle.Solid;
                             peopleWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(lightGray);

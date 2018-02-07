@@ -76,7 +76,7 @@
 
     .xunk-hide-mobile {
         display:none;
-        width: 0px;
+        width: 0;
     }
 
     .xunk-max-200px-desktop {

@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { Contingent } from '../interfaces';
-import { ContingentDetailsComponent } from './contingentDetails.component';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 
@@ -18,7 +17,6 @@ export class ContingentComponent {
     /* Initial Actions */
     constructor(
         private dataService: DataService,
-        @Inject('BASE_URL') baseUrl: string,
         private titleService: Title ) {
 
         this.titleService.setTitle("Contingents");

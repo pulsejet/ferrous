@@ -1,6 +1,6 @@
-﻿import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
+﻿import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ContingentArrival, Room } from '../interfaces';
+import { Room } from '../interfaces';
 import { DataService } from '../../DataService';
 
 @Component({
@@ -19,7 +19,7 @@ export class RoomDialogComponent {
     }
 
     confirmSelection() {
-        this.dataService.PutRoom(this.room.roomId.toString(), this.room).subscribe(r => {
+        this.dataService.PutRoom(this.room.roomId.toString(), this.room).subscribe((): void => {
             this.dialogRef.close();
         });
     }

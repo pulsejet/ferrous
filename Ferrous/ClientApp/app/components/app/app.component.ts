@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, ViewChild, Injectable } from '@angular/core';
+import { ChangeDetectorRef, Component, Injectable } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { Title } from '@angular/platform-browser';
 
 /* TODO: This code comes from the example for the angular   *

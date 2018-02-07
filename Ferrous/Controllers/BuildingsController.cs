@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
-using static Ferrous.Utilities;
+using static Ferrous.Controllers.Utilities;
 
 namespace Ferrous.Controllers
 {

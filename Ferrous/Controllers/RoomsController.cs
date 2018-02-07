@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
-using static Ferrous.Utilities;
+using static Ferrous.Controllers.Utilities;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Ferrous.Controllers
@@ -37,7 +37,7 @@ namespace Ferrous.Controllers
             if (!HasPrivilege(User.Identity.Name, 1,
                 PrivilegeList.ROOMS_GET))
             {
-                Response.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status401Unauthorized;
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return null;
             }
             return _context.Room.Include(m => m.RoomAllocation);
@@ -74,7 +74,7 @@ namespace Ferrous.Controllers
             if (!HasPrivilege(User.Identity.Name, 1,
                 PrivilegeList.ROOMS_GET))
             {
-                Response.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status401Unauthorized;
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return null;
             }
 

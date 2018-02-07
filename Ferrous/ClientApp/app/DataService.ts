@@ -1,8 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient, HttpSentEvent, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival } from './components/interfaces'
-import { RequestOptions, Headers, ResponseContentType } from '@angular/http';
 import { Router } from '@angular/router';
 
 const API_Contingents_URL: string = '/api/Contingents/';
@@ -31,7 +30,7 @@ export class DataService {
     /* === Navigate - voids === */
 
     NavigateContingentsList(): void {
-        this.router.navigate(['/contingent/'])
+        this.router.navigate(['/contingent/']);
     }
 
     NavigateContingentDetails(CLNo: string): void {
@@ -57,7 +56,7 @@ export class DataService {
     }
 
     GetContingent(id: string): Observable<Contingent> {
-        return this.http.get<Contingent>(API_Contingents_URL + id)
+        return this.http.get<Contingent>(API_Contingents_URL + id);
     }
 
     PutContingent(id: string, body: any): Observable<any> {
@@ -78,7 +77,7 @@ export class DataService {
     }
 
     GetPerson(id: string): Observable<Person> {
-        return this.http.get<Person>(API_People_URL + id)
+        return this.http.get<Person>(API_People_URL + id);
     }
 
     PutPerson(id: string, body: any): Observable<any> {
@@ -142,21 +141,21 @@ export class DataService {
     /* === RoomAllocations === */
 
     UnllocateRoom(sno: number): Observable<any> {
-        return this.http.delete(API_RoomAllocations_URL + sno)
+        return this.http.delete(API_RoomAllocations_URL + sno);
     }
 
     /* === Buildings === */
 
     GetAllBuildings(): Observable<Building[]> {
-        return this.http.get<Building[]>(API_Buildings_URL)
+        return this.http.get<Building[]>(API_Buildings_URL);
     }
 
     GetAllBuildingsExtended(clno: string): Observable<Building[]> {
-        return this.http.get<Building[]>(API_Buildings_URL + "e/" + clno)
+        return this.http.get<Building[]>(API_Buildings_URL + "e/" + clno);
     }
 
     GetBuilding(loc: string): Observable<Building> {
-        return this.http.get<Building>(API_Buildings_URL + loc)
+        return this.http.get<Building>(API_Buildings_URL + loc);
     }
 
     /* === ContingentArrival === */
@@ -175,6 +174,6 @@ export class DataService {
         return (num != null &&
             !isNaN(Number(num)) &&
             Number(num) >= min &&
-            Number(num) <= max)
+            Number(num) <= max);
     }
 }
