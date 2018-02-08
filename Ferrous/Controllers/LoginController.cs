@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using static Ferrous.Controllers.Authorization;
 using static Ferrous.Controllers.Utilities;
 
 namespace Ferrous.Controllers

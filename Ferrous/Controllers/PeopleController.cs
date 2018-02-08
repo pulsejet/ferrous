@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
-using static Ferrous.Controllers.Utilities;
+using static Ferrous.Controllers.Authorization;
 
 namespace Ferrous.Controllers
 {
@@ -22,26 +22,17 @@ namespace Ferrous.Controllers
 
         // GET: api/People
         [HttpGet]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PEOPLE_GET)]
         public IEnumerable<Person> GetPerson()
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.PEOPLE_GET))
-            {
-                Response.StatusCode = StatusCodes.Status401Unauthorized;
-                return null;
-            }
-
             return _context.Person;
         }
 
         // GET: api/People/5
         [HttpGet("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_GET_DETAILS)]
         public async Task<IActionResult> GetPerson([FromRoute] string id)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.PERSON_GET_DETAILS))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -59,12 +50,9 @@ namespace Ferrous.Controllers
 
         // PUT: api/People/5
         [HttpPut("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_PUT)]
         public async Task<IActionResult> PutPerson([FromRoute] string id, [FromBody] Person person)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.PERSON_PUT))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -98,12 +86,9 @@ namespace Ferrous.Controllers
 
         // POST: api/People
         [HttpPost]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_POST)]
         public async Task<IActionResult> PostPerson([FromBody] Person person)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.PERSON_POST))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -131,12 +116,9 @@ namespace Ferrous.Controllers
 
         // DELETE: api/People/5
         [HttpDelete("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_DELETE)]
         public async Task<IActionResult> DeletePerson([FromRoute] string id)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.PERSON_DELETE))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

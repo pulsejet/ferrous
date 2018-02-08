@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
-using static Ferrous.Controllers.Utilities;
 using Microsoft.AspNetCore.SignalR;
+using static Ferrous.Controllers.Authorization;
 
 namespace Ferrous.Controllers
 {
@@ -32,25 +31,17 @@ namespace Ferrous.Controllers
 
         // GET: api/Rooms
         [HttpGet]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMS_GET)]
         public IEnumerable<Room> GetRoom()
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOMS_GET))
-            {
-                Response.StatusCode = StatusCodes.Status401Unauthorized;
-                return null;
-            }
             return _context.Room.Include(m => m.RoomAllocation);
         }
 
         // GET: api/Rooms/5
         [HttpGet("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMS_GET)]
         public async Task<IActionResult> GetRoom([FromRoute] int id)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOM_GET_DETAILS))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -69,26 +60,17 @@ namespace Ferrous.Controllers
 
         // GET: api/Rooms/ByLoc/H1
         [HttpGet("ByLoc/{loc}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMS_GET)]
         public async Task<IEnumerable<Room>> GetRoomsByLoc([FromRoute] string loc)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOMS_GET))
-            {
-                Response.StatusCode = StatusCodes.Status401Unauthorized;
-                return null;
-            }
-
             return await _context.Room.Where(m => m.Location == loc).Include(m => m.RoomAllocation).ToListAsync();
         }
 
         // PUT: api/Rooms/5
         [HttpPut("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_PUT)]
         public async Task<IActionResult> PutRoom([FromRoute] int id, [FromBody] Room room)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOM_PUT))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -123,12 +105,9 @@ namespace Ferrous.Controllers
 
         // POST: api/Rooms
         [HttpPost]
+        [Authorization(ElevationLevels.SuperUser, PrivilegeList.ROOM_POST)]
         public async Task<IActionResult> PostRoom([FromBody] Room room)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOM_POST))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -142,12 +121,9 @@ namespace Ferrous.Controllers
 
         // DELETE: api/Rooms/5
         [HttpDelete("{id}")]
+        [Authorization(ElevationLevels.SuperUser, PrivilegeList.ROOM_DELETE)]
         public async Task<IActionResult> DeleteRoom([FromRoute] int id)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOM_DELETE))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -174,12 +150,9 @@ namespace Ferrous.Controllers
         [HttpGet("allot/{id}")]
         [HttpGet("allot/{id}/{CLNo}/{CANo}")]
         [HttpGet("allot/{id}/{CLNo}/{CANo}/{partialno}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_ALLOT)]
         public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string CLNo, [FromRoute] int CANo, [FromRoute] int partialno = -1)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOM_ALLOT))
-                return Unauthorized();
-
             Room room = await _context.Room.Where(m => m.RoomId == id)
                                     .Include(m => m.RoomAllocation)
                                     .SingleOrDefaultAsync();
@@ -215,12 +188,9 @@ namespace Ferrous.Controllers
 
         // GET: api/Rooms/mark/CLNo
         [HttpGet("mark/{id}/{status}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_MARK)]
         public async Task<IActionResult> mark([FromRoute] int id, [FromRoute] int status)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOM_MARK))
-                return Unauthorized();
-
             Room room = await _context.Room.Where(m => m.RoomId == id)
                                     .Include(m => m.RoomAllocation)
                                     .SingleOrDefaultAsync();
@@ -238,12 +208,9 @@ namespace Ferrous.Controllers
         }
 
         [HttpGet("CreateRoomRecords/{location}/{start}/{end}/{capacity}")]
+        [Authorization(ElevationLevels.SuperUser, PrivilegeList.ROOM_CREATE)]
         public IActionResult CreateRoomRecords([FromRoute] string location, [FromRoute] int start, [FromRoute] int end, [FromRoute] int capacity)
         {
-            if (!HasPrivilege(User.Identity.Name, 0,
-                PrivilegeList.ROOM_CREATE))
-                return Unauthorized();
-
             string str = "";
             for (int i = start; i<= end; i++)
             {

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
-using static Ferrous.Controllers.Utilities;
+using static Ferrous.Controllers.Authorization;
 
 namespace Ferrous.Controllers
 {
@@ -22,27 +22,18 @@ namespace Ferrous.Controllers
 
         // GET: api/Contingents
         [HttpGet]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTS_GET)]
         public async Task<IEnumerable<Contingents>> GetContingents()
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.CONTINGENTS_GET))
-            {
-                Response.StatusCode = StatusCodes.Status401Unauthorized;
-                return null;
-            }
-            
             return await DataUtilities.GetExtendedContingents(_context);
         }
 
         // GET: api/Contingents/5
         [HttpGet("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTS_GET)]
         public async Task<IActionResult> GetContingents([FromRoute] string id)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.CONTINGENT_GET_DETAILS))
-                return Unauthorized();
-
-                if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -66,12 +57,9 @@ namespace Ferrous.Controllers
 
         // PUT: api/Contingents/5
         [HttpPut("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_PUT)]
         public async Task<IActionResult> PutContingents([FromRoute] string id, [FromBody] Contingents contingents)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.CONTINGENT_PUT))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -105,12 +93,9 @@ namespace Ferrous.Controllers
 
         // POST: api/Contingents
         [HttpPost]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_POST)]
         public async Task<IActionResult> PostContingents([FromBody] Contingents contingents)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.CONTINGENT_POST))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -138,12 +123,9 @@ namespace Ferrous.Controllers
 
         // DELETE: api/Contingents/5
         [HttpDelete("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_DELETE)]
         public async Task<IActionResult> DeleteContingents([FromRoute] string id)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.CONTINGENT_DELETE))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

@@ -7,7 +7,7 @@ namespace Ferrous.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Index()
         {
-            if (!Utilities.HasPrivilege(User.Identity.Name, 100))
+            if (!Authorization.hasPrivilege(User.Identity.Name, Authorization.ElevationLevels.Organizer))
                 return File("account/login.html", Utilities.HTML_MIME_TYPE);
             return File("Index.html", Utilities.HTML_MIME_TYPE);
         }

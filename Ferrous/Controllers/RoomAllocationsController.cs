@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
-using static Ferrous.Controllers.Utilities;
+using static Ferrous.Controllers.Authorization;
 
 namespace Ferrous.Controllers
 {
@@ -21,25 +21,17 @@ namespace Ferrous.Controllers
 
         // GET: api/RoomAllocations
         [HttpGet]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMALLOCATIONS_GET)]
         public IEnumerable<RoomAllocation> GetRoomAllocation()
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOMALLOCATIONS_GET))
-            {
-                Response.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status401Unauthorized;
-                return null;
-            }
             return _context.RoomAllocation;
         }
 
         // GET: api/RoomAllocations/5
         [HttpGet("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMALLOCATIONS_GET_DETAILS)]
         public async Task<IActionResult> GetRoomAllocation([FromRoute] int id)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOMALLOCATIONS_GET_DETAILS))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -57,12 +49,9 @@ namespace Ferrous.Controllers
 
         // PUT: api/RoomAllocations/5
         [HttpPut("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMALLOCATIONS_PUT)]
         public async Task<IActionResult> PutRoomAllocation([FromRoute] int id, [FromBody] RoomAllocation roomAllocation)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOMALLOCATIONS_PUT))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -96,12 +85,9 @@ namespace Ferrous.Controllers
 
         // POST: api/RoomAllocations
         [HttpPost]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMALLOCATIONS_POST)]
         public async Task<IActionResult> PostRoomAllocation([FromBody] RoomAllocation roomAllocation)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOMALLOCATIONS_POST))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -115,12 +101,9 @@ namespace Ferrous.Controllers
 
         // DELETE: api/RoomAllocations/5
         [HttpDelete("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMALLOCATIONS_DELETE)]
         public async Task<IActionResult> DeleteRoomAllocation([FromRoute] int id)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.ROOMALLOCATIONS_DELETE))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

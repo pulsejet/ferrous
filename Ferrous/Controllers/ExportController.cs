@@ -8,6 +8,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Threading.Tasks;
 using static Ferrous.Controllers.Utilities;
+using static Ferrous.Controllers.Authorization;
 
 namespace Ferrous.Controllers
 {
@@ -23,12 +24,9 @@ namespace Ferrous.Controllers
 
         // GET: api/export
         [HttpGet]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.EXPORT_DATA)]
         public async Task<IActionResult> Get()
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.EXPORT_DATA))
-                return Unauthorized();
-
             using (ExcelPackage package = new ExcelPackage())
             {
                 Contingents[] contingents = await DataUtilities.GetExtendedContingents(_context);

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
-using static Ferrous.Controllers.Utilities;
+using static Ferrous.Controllers.Authorization;
 
 namespace Ferrous.Controllers
 {
@@ -22,25 +22,17 @@ namespace Ferrous.Controllers
 
         // GET: api/ContingentArrivals
         [HttpGet]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET)]
         public IEnumerable<ContingentArrival> GetContingentArrival()
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.CONTINGENTARRIVALS_GET))
-            {
-                Response.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status401Unauthorized;
-                return null;
-            }
             return _context.ContingentArrival;
         }
 
         // GET: api/ContingentArrivals/byCL/5
         [HttpGet("byCL/{clno}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET)]
         public async Task<IActionResult> GetContingentArrival([FromRoute] string clno)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.CONTINGENTARRIVALS_GET))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -61,12 +53,9 @@ namespace Ferrous.Controllers
 
         // GET: api/ContingentArrivals/5
         [HttpGet("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET_DETAILS)]
         public async Task<IActionResult> GetContingentArrival([FromRoute] int id)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.CONTINGENTARRIVALS_GET_DETAILS))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -84,12 +73,9 @@ namespace Ferrous.Controllers
 
         // PUT: api/ContingentArrivals/5
         [HttpPut("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_PUT)]
         public async Task<IActionResult> PutContingentArrival([FromRoute] int id, [FromBody] ContingentArrival contingentArrival)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.CONTINGENTARRIVALS_PUT))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -123,12 +109,9 @@ namespace Ferrous.Controllers
 
         // POST: api/ContingentArrivals
         [HttpPost]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_POST)]
         public async Task<IActionResult> PostContingentArrival([FromBody] ContingentArrival contingentArrival)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.CONTINGENTARRIVALS_POST))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -143,12 +126,9 @@ namespace Ferrous.Controllers
 
         // DELETE: api/ContingentArrivals/5
         [HttpDelete("{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_DELETE)]
         public async Task<IActionResult> DeleteContingentArrival([FromRoute] int id)
         {
-            if (!HasPrivilege(User.Identity.Name, 1,
-                PrivilegeList.CONTINGENTARRIVALS_DELETE))
-                return Unauthorized();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
