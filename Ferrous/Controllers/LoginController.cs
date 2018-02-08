@@ -13,6 +13,7 @@ namespace Ferrous.Controllers
     [Route("Login")]
     public class LoginController: ControllerBase
     {
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Index()
         {
             return File("account/login.html", HTML_MIME_TYPE);
@@ -45,6 +46,7 @@ namespace Ferrous.Controllers
             return Unauthorized();
         }
 
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         [HttpGet("logout")]
         public async Task<IActionResult> Logout()
         {
