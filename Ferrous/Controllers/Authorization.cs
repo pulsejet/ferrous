@@ -6,8 +6,9 @@ using System.Linq;
 
 namespace Ferrous.Controllers
 {
-    public class Authorization : Attribute, IResourceFilter
+    public class Authorization : Attribute, IAuthorizationFilter
     {
+        public const string IDENTITIES_JSON_FILE = "identities.json";
         private readonly ElevationLevels _elevationLevel;
         private readonly PrivilegeList _privilege;
 
@@ -17,7 +18,7 @@ namespace Ferrous.Controllers
             _privilege = privilege;
         }
 
-        public void OnResourceExecuting(ResourceExecutingContext context)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
             if (!hasPrivilege(
                 context.HttpContext.User.Identity.Name,
@@ -26,11 +27,6 @@ namespace Ferrous.Controllers
 
                 context.Result = new UnauthorizedResult();
         }
-
-        public void OnResourceExecuted(ResourceExecutedContext context)
-        { }
-
-        public const string IDENTITIES_JSON_FILE = "identities.json";
 
         public static bool hasPrivilege(string username, ElevationLevels minElevation, PrivilegeList hasPrivilege = PrivilegeList.NONE)
         {
