@@ -2,13 +2,17 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Ferrous.Controllers
 {
     public class Authorization : Attribute, IAuthorizationFilter
     {
+        private static ImmutableList<FerrousIdentity> staticIdentities;
+
         public const string IDENTITIES_JSON_FILE = "identities.json";
+
         private readonly ElevationLevels _elevationLevel;
         private readonly PrivilegeList _privilege;
 
@@ -33,10 +37,12 @@ namespace Ferrous.Controllers
 
         public static bool hasPrivilege(string username, ElevationLevels minElevation, PrivilegeList hasPrivilege = PrivilegeList.NONE)
         {
+            if (staticIdentities == null)
+                staticIdentities = Utilities.LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE).ToImmutableList();
+
             if (username == String.Empty) return false;
 
-            List<FerrousIdentity> identities = Utilities.LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE);
-            FerrousIdentity id = identities.FirstOrDefault(m => m.username == username);
+            FerrousIdentity id = staticIdentities.FirstOrDefault(m => m.username == username);
             if (id == null) return false;
 
             if (id.elevation <= (int)minElevation) return true;
@@ -51,7 +57,7 @@ namespace Ferrous.Controllers
             public string username;
             public string password;
             public int elevation;
-            public List<int> privileges;
+            public ImmutableList<int> privileges;
         }
 
         public enum PrivilegeList
