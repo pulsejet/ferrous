@@ -31,16 +31,25 @@ namespace Ferrous.Controllers
 
             if (id!=null && id.password == password)
             {
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity();
-                claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, id.username));
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, id.username)
+                };
+
+                var claimsIdentity = new ClaimsIdentity(
+                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTime.UtcNow.AddDays(4)
+                };
+
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
-                    new AuthenticationProperties
-                    {
-                        IsPersistent = true,
-                        ExpiresUtc = DateTime.UtcNow.AddDays(4)
-                    });
+                    authProperties);
+
                 return Ok();
             }
             

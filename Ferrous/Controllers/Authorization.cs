@@ -20,12 +20,15 @@ namespace Ferrous.Controllers
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (!hasPrivilege(
+            if (!context.HttpContext.User.Identity.IsAuthenticated)
+                context.Result = new UnauthorizedResult();
+
+            else if (!hasPrivilege(
                 context.HttpContext.User.Identity.Name,
                 _elevationLevel,
                 _privilege))
 
-                context.Result = new UnauthorizedResult();
+                context.Result = new StatusCodeResult(403);
         }
 
         public static bool hasPrivilege(string username, ElevationLevels minElevation, PrivilegeList hasPrivilege = PrivilegeList.NONE)
