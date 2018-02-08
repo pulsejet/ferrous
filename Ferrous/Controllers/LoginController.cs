@@ -29,7 +29,7 @@ namespace Ferrous.Controllers
             List<FerrousIdentity> identities = LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE);
             FerrousIdentity id = identities.FirstOrDefault(m => m.username.ToLower() == username.ToLower());
 
-            if (id!=null && id.password == password)
+            if (id!=null && id.password == Utilities.SHA.GenerateSHA256String(id.salt + password))
             {
                 var claims = new List<Claim>
                 {

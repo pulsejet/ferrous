@@ -2,14 +2,16 @@
 
 {
     "username":"cg",
-    "password":"password",
+    "salt":"sh",
+    "password":"EB0AFEF7FC67DF48FB86182FCC0508034A942772CEA6640A2982153B87812042",
     "elevation":"1",
     "privileges":[0]
 },
 
 {
     "username":"coordie",
-    "password":"badpassword",
+    "salt":"dm",
+    "password":"CCD0C34F0039C1BFF6B566486AA6A73FAD2DB3666310B501EDC2FB231F955C0F",
     "elevation":"2",
     "privileges":[1, 2, 3, 7, 8, 9, 11, 12, 23, 26, 27, 28, 29, 30, 10001]
 }

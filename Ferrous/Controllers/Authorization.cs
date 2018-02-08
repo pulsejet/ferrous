@@ -55,6 +55,7 @@ namespace Ferrous.Controllers
         public class FerrousIdentity
         {
             public string username;
+            public string salt;
             public string password;
             public int elevation;
             public ImmutableList<int> privileges;
