@@ -10,13 +10,20 @@ import { DataService } from '../../DataService';
     styleUrls: ['../../Custom.css']
 })
 export class PersonDetailsComponent {
-    public id: string;                  /* current MINo                             */
-    public startedit: number;           /* 1 to start editing on initial load       */
-    public editing: boolean = false;    /* true if currently editing                */
-    public initialPerson: Person;       /* object for reverting cancelled changes   */
-    public person: Person;              /* master Person object                     */
+    /** current MINo */
+    public id: string;
+    /** 1 to start editing on initial load */
+    public startedit: number; 
+    /** true if currently editing */
+    public editing: boolean = false;
+    /** object for reverting cancelled changes */
+    public initialPerson: Person;
+    /** master Person object */
+    public person: Person;
 
-    constructor(private activatedRoute: ActivatedRoute,
+    /** constructor for personDetails */
+    constructor(
+        private activatedRoute: ActivatedRoute,
         private titleService: Title,
         private dataService: DataService,
         public router: Router) {
@@ -47,7 +54,7 @@ export class PersonDetailsComponent {
         }
     }
 
-    /* Handle actions of both edit and cancel */
+    /** Handle actions of both edit and cancel */
     public edit() {
         /* Cancel if startedit navigates to person list  */
         if (this.startedit === 1) {
@@ -60,7 +67,7 @@ export class PersonDetailsComponent {
         this.person = { ...this.initialPerson };
     }
 
-    /* PUT/POST the master */
+    /** PUT/POST the master */
     public save() {
         let body = JSON.stringify(this.person);
 
@@ -79,7 +86,7 @@ export class PersonDetailsComponent {
         if (this.startedit === 1) this.router.navigate(['/person/']);
     }
 
-    /* Delete a record */
+    /** Delete a record */
     public delete() {
         if (confirm("Are you sure to delete?")) {
             this.dataService.DeletePerson(this.id).subscribe((): void => {
