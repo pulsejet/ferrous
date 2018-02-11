@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from '../../DataService';
 import { ContingentArrivalDialogComponent } from './ContingentArrivalDialog';
 import { MatDialog } from '@angular/material/dialog';
+import { PaginatorHelper } from '../../Common';
 
 /* Contingent Details Component */
 @Component({
@@ -20,6 +21,7 @@ export class ContingentDetailsComponent {
     public editing: boolean = false;            /* true if currently editing                */
     public initial_contingent: Contingent;      /* object for reverting cancelled changes   */
     public contingent: Contingent;              /* master Contingent object                 */
+    paginatorHelper = new PaginatorHelper;      /* helper for paginator                     */
 
     constructor(private activatedRoute: ActivatedRoute,
         private _location: Location,

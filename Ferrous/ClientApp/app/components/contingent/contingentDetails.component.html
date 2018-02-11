@@ -102,7 +102,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr [routerLink]="['/personDetails/', person.mino]" *ngFor="let person of contingent.person">
+                    <tr [routerLink]="['/personDetails/', person.mino]" *ngFor="let person of paginatorHelper.paginate(contingent.person)">
                         <td>{{ person.name }}</td>
                         <td>{{ person.mino }}</td>
                         <td>{{ person.college }}</td>
@@ -110,6 +110,12 @@
                     </tr>
                 </tbody>
             </table>
+
+            <mat-paginator [length]="contingent.person.length"
+                           [pageSize]="paginatorHelper.pageSize"
+                           [pageSizeOptions]="paginatorHelper.pageSizeOptions"
+                           (page)="paginatorHelper.pageEvent = $event">
+            </mat-paginator>
         </div>
     </div>
 </div>

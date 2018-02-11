@@ -21,11 +21,17 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let person of people;  let rowIndex = index" (click)="handleTableClick(person)">
+            <tr *ngFor="let person of paginatorHelper.paginate(people)" (click)="handleTableClick(person)">
                 <td>{{ person.mino }}</td>
                 <td>{{ person.name }}</td>
                 <td>{{ person.contingentLeaderNo }}</td>
             </tr>
         </tbody>
     </table>
+
+    <mat-paginator [length]="people.length"
+                   [pageSize]="paginatorHelper.pageSize"
+                   [pageSizeOptions]="paginatorHelper.pageSizeOptions"
+                   (page)="paginatorHelper.pageEvent = $event">
+    </mat-paginator>
 </div>
