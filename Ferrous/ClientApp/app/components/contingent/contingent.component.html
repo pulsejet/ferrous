@@ -30,15 +30,15 @@
         <thead>
             <tr>
                 <th>CL No.</th>
-                <th>Male</th>
-                <th>Female</th>
+                <th>Reg (M)</th>
+                <th>Reg (F)</th>
                 <th>Arrived (M)</th>
                 <th>Arrived (F)</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Filtered rows, clickable on mobile -->
-            <tr *ngFor="let contingent of contingents | filtercontingents:enteredCL;  let rowIndex = index" (click)="handleTableClick(contingent)">
+            <!-- Filtered rows -->
+            <tr *ngFor="let contingent of paginatorHelper.paginate(contingents | filtercontingents:enteredCL)" (click)="handleTableClick(contingent)">
                 <td>{{ contingent.contingentLeaderNo }}</td>
                 <td>{{ contingent.male }}</td>
                 <td>{{ contingent.female }}</td>
@@ -47,4 +47,11 @@
             </tr>
         </tbody>
     </table>
+
+    <mat-paginator [length]="(contingents | filtercontingents:enteredCL).length"
+                   [pageSize]="paginatorHelper.pageSize"
+                   [pageSizeOptions]="paginatorHelper.pageSizeOptions"
+                   (page)="paginatorHelper.pageEvent = $event">
+    </mat-paginator>
+
 </div>

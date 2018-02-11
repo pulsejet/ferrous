@@ -19,7 +19,7 @@ const nonTreeShakableModules = [
     //'bootstrap/dist/css/bootstrap.css',
     'es6-promise',
     'es6-shim',
-    'event-source-polyfill',
+    //'event-source-polyfill',
     'jquery',
 ];
 const allModules = treeShakableModules.concat(nonTreeShakableModules);

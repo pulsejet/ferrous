@@ -23,7 +23,25 @@
     margin: 10px;
     overflow-x: auto;
     cursor: pointer;
+    background-color: white;
 }
+
+/* --- Bootstrap table modification --- */
+
+.table {
+    margin-bottom: 0 !important;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table td {
+    padding: 0.63rem;
+}
+
+.table thead th {
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+/* ------------------------------------ */
 
 .xunk-table-pointer td {
     cursor: pointer;

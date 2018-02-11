@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input'
 import { MatListModule } from '@angular/material/list';
 //MatMenuModule,
 //MatNativeDateModule,
-//MatPaginatorModule,
+import { MatPaginatorModule } from '@angular/material/paginator';
 //MatProgressBarModule,
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 //MatRadioModule,
@@ -56,7 +56,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         MatListModule,
         //MatMenuModule,
         //MatNativeDateModule,
-        //MatPaginatorModule,
+        MatPaginatorModule,
         //MatProgressBarModule,
         MatProgressSpinnerModule,
         //MatRadioModule,
@@ -92,7 +92,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         MatListModule,
         //MatMenuModule,
         //MatNativeDateModule,
-        //MatPaginatorModule,
+        MatPaginatorModule,
         //MatProgressBarModule,
         MatProgressSpinnerModule,
         //MatRadioModule,

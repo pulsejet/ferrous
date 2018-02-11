@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { Contingent } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
+import { PaginatorHelper } from '../../Common';
 
 /* Contingent Component */
 @Component({
@@ -11,8 +12,9 @@ import { DataService } from '../../DataService';
 })
 export class ContingentComponent {
 
-    public contingents: Contingent[];   /* Master contingents list */
-    public enteredCL: string = "";      /* CLNo entered in the search box */
+    contingents: Contingent[];                              /* master contingents list              */
+    enteredCL: string = "";                                 /* CLNo entered in the search box       */
+    paginatorHelper = new PaginatorHelper;                  /* helper for paginator                 */
 
     /* Initial Actions */
     constructor(
