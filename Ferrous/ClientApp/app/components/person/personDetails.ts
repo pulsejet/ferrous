@@ -10,7 +10,7 @@ import { DataService } from '../../DataService';
     styleUrls: ['../../Custom.css']
 })
 export class PersonDetailsComponent {
-    /** current MINo */
+    /** Current MINo */
     public id: string;
     /** 1 to start editing on initial load */
     public startedit: number; 
@@ -18,7 +18,7 @@ export class PersonDetailsComponent {
     public editing: boolean = false;
     /** object for reverting cancelled changes */
     public initialPerson: Person;
-    /** master Person object */
+    /** Master Person object */
     public person: Person;
 
     /** constructor for personDetails */
@@ -86,7 +86,7 @@ export class PersonDetailsComponent {
         if (this.startedit === 1) this.router.navigate(['/person/']);
     }
 
-    /** Delete a record */
+    /** DELETE a record */
     public delete() {
         if (confirm("Are you sure to delete?")) {
             this.dataService.DeletePerson(this.id).subscribe((): void => {

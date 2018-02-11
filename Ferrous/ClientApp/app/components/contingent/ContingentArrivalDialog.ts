@@ -8,11 +8,16 @@ import { DataService } from '../../DataService';
     templateUrl: './ContingentArrivalDialog.html'
 })
 export class ContingentArrivalDialogComponent {
-    chosenEntry: number = -1;                           /* Id of old chosen entry                   */
-    public nContingentArrv: ContingentArrival;          /* new ContingentArrival If needed          */
-    public contingentArrivals: ContingentArrival[];     /* Passed Data                              */
-    public CLNo: string;                                /* CL Number for saving                     */
+    /** Id of old chosen entry */
+    chosenEntry: number = -1;
+    /** New ContingentArrival if necessary */
+    public nContingentArrv: ContingentArrival;
+    /** Passed Data */
+    public contingentArrivals: ContingentArrival[];
+    /** CLNo for saving */
+    public CLNo: string;
 
+    /** constructor for ContingentArrivalDialogComponent */
     constructor(
         public dialogRef: MatDialogRef<ContingentArrivalDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -22,6 +27,10 @@ export class ContingentArrivalDialogComponent {
         this.nContingentArrv = {} as ContingentArrival;
     }
 
+    /**
+     * Validate and save everything
+     * @param chosenEntry Index of old selected selected entry if any
+     */
     confirmSelection(chosenEntry: number) {
         this.nContingentArrv.createdOn = new Date();
         if ((this.nContingentArrv.male && this.nContingentArrv.male > 0) ||
@@ -51,7 +60,10 @@ export class ContingentArrivalDialogComponent {
         }
     }
 
-    /* Get alloted capacity for arrival */
+    /**
+     * Get alloted capacity for ContingentArrival
+     * @param ca ContingentArrival to check
+     */
     getAllotedCapacity(ca: ContingentArrival): number {
         if (ca.roomAllocation == null) return 0;
         let ans: number = 0;
@@ -62,7 +74,10 @@ export class ContingentArrivalDialogComponent {
         return ans;
     }
 
-    /* Delete an entry */
+    /**
+     * Delete a selected ContingentArrival
+     * @param chosenEntry Index of chosen entry
+     */
     deleteArrival(chosenEntry: number) {
         this.dataService.DeleteContingentArrival(this.contingentArrivals[chosenEntry].contingentArrivalNo).subscribe(result => {
             this.contingentArrivals.splice(chosenEntry, 1);

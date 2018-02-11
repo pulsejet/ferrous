@@ -11,9 +11,11 @@ import { PaginatorHelper } from '../../Common';
     styleUrls: ['../../Custom.css']
 })
 export class PersonComponent {
-    public people: Person[];                    /* master list of people            */
-    paginatorHelper = new PaginatorHelper;      /* helper for paginator             */
+    /** Master list of people */
+    public people: Person[];
+    paginatorHelper = new PaginatorHelper;
 
+    /** constructor for PersonComponent */
     constructor(
         private titleService: Title,
         private dataService: DataService) {
@@ -26,7 +28,7 @@ export class PersonComponent {
         }, error => console.error(error));
     }
 
-    /* Handle table click */
+    /** Handle table click */
     public handleTableClick(person: Person) {
         this.dataService.NavigatePersonDetails(person.mino);
     }

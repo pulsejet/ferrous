@@ -18,20 +18,32 @@ import { TimerObservable } from "rxjs/observable/TimerObservable";
     styleUrls: ['../../Custom.css'],
 })
 export class RoomLayoutComponent {
-    public rooms: Room[];                           /* master list of rooms                 */
-    public roomsInited: boolean = false;            /* rooms already inited                 */
-    public clno: string;                            /* current CLNo                         */
-    public cano: number;                            /* current CArrival No                  */
-    public locFullname: string;                    /* location full name                   */
-    public locCode: string;                        /* code of current location             */
-    @ViewChild('roomsLayout')                       /* layout element                       */
-        roomsLayout: ElementRef;                    /*                                      */
-    public marking: boolean = false;                /* marking status change                */
-    private hubConnection: HubConnection;           /* websocket connection for layout      */
-    private updateSubscription: Subscription;       /* layout update Subscription           */
-    private updateNeeded: boolean = false;          /* mark updation for next timer check   */
+    /** Master list of rooms */
+    public rooms: Room[];
+    /** Always true after initialization */
+    public roomsInited: boolean = false;
+    /** Current CLNo */
+    public clno: string;
+    /** Current contingentArrivalNo */
+    public cano: number;
+    /** Full name of current location (e.g. Hostel 7) */
+    public locFullname: string;
+    /** Code of current location (e.g. H7) */
+    public locCode: string;
+    /** Layout element */
+    @ViewChild('roomsLayout') roomsLayout: ElementRef;
+    /** true if marking */
+    public marking: boolean = false;
+    /** WebSocket connection for layout */
+    private hubConnection: HubConnection;
+    /** Layout update Subscription */
+    private updateSubscription: Subscription;
+    /** Mark necessity of updation for next timer check */
+    private updateNeeded: boolean = false;
 
-    constructor(private activatedRoute: ActivatedRoute,
+    /** constructor for RoomLayoutComponent */
+    constructor(
+        private activatedRoute: ActivatedRoute,
         private titleService: Title,
         private dataService: DataService,
         public snackBar: MatSnackBar,
@@ -91,7 +103,10 @@ export class RoomLayoutComponent {
             this.updateSubscription.unsubscribe();
     }
 
-    /* Reload all room data partially or fully */
+    /**
+     * Reload all room data partially or fully
+     * @param fullReload true to fully reload data
+     */
     reloadRooms(fullReload: boolean = false) {
         this.dataService.GetBuilding(this.locCode).subscribe(result => {
             if (!this.rooms || fullReload)
@@ -128,7 +143,7 @@ export class RoomLayoutComponent {
         });
     }
 
-    /* Initialize rooms */
+    /** Initialize Rooms */
     public assignRoomsInit() {
         /* Prevent initialization twice */
         if (this.roomsInited) return;
@@ -156,14 +171,20 @@ export class RoomLayoutComponent {
         this.roomsInited = true;
     }
 
-    /* Handle right click of room */
+    /**
+     * Handle right click of room
+     * @param index Index of Room in master
+     */
     public handleContextMenuRoom(index: number) {
         this.dialog.open(RoomDialogComponent, {
             data: this.rooms[index]
         });
     }
 
-    /* Handle room click */
+    /**
+     * Handle room click
+     * @param index Index of Room in master
+     */
     public handleRoomClick(index: number) {
         let room: Room = this.rooms[index];
         if ((room.status === 1 && room.roomAllocation.length === 0)
@@ -178,14 +199,17 @@ export class RoomLayoutComponent {
         this.assignRoom(room);
     }
 
-    /* Update graphic for all rooms */
+    /** Update graphics for all rooms */
     public assignRooms() {
         for (let room of this.rooms) {
             this.assignRoom(room);
         }
     }
 
-    /* Update graphic for one room */
+    /**
+     * Update graphic for one room
+     * @param room Room to be updated
+     */
     public assignRoom(room: Room) {
         let ctrl = this.getRoomId(room);
         let clss: string = this.getRoomClass(room);
@@ -197,7 +221,10 @@ export class RoomLayoutComponent {
         $(ctrl).attr("class", clss);
     }
 
-    /* Mark all selected rooms */
+    /**
+     * Try to mark all selected rooms with status
+     * @param status Status to mark
+     */
     public mark(status: number) {
         for (let room of this.rooms) {
             if (room.selected) {
@@ -215,7 +242,10 @@ export class RoomLayoutComponent {
         }
     }
 
-    /* Get number of free spaces in room */
+    /**
+     * Get number of free spaces in room
+     * @param room Room object
+     */
     public getCapacity(room: Room): number {
         if (this.checkOccupied(room)) {
             return 0;
@@ -226,7 +256,7 @@ export class RoomLayoutComponent {
         }
     }
 
-    /* Allot all selected rooms */
+    /** Allot all selected rooms to current Contingent */
     public allot() {
 
         /* Validate */
@@ -276,22 +306,25 @@ export class RoomLayoutComponent {
         }
     }
 
-    /* Check if room is full */
+    /** Check if room is full */
     public checkOccupied(room: Room): boolean {
         return this.dataService.RoomCheckOccupied(room);
     }
 
-    /* Check if partially filled */
+    /** Check if partially filled */
     public checkPartial(room: Room): boolean {
         return this.dataService.RoomCheckPartial(room);
     }
 
-    /* Get partial number of people in room */
+    /** Get partial number of people in room */
     public getPartialNo(room: Room): number {
         return this.dataService.RoomGetPartialNo(room);
     }
 
-    /* Get CSS class for room */
+    /**
+     * Get CSS class for room
+     * @param room Room object
+     */
     public getRoomClass(room: Room): string {
         /* Selected has top priority */
         if (room.selected) return "room sel";
@@ -340,7 +373,11 @@ export class RoomLayoutComponent {
         return "room";
     }
 
-    /* Remove a RoomAllocation */
+    /**
+     * DELETE a RoomAllocation
+     * @param roomA RoomAllocation object
+     * @param room Room object for local removal of allocation
+     */
     public unallocateRoom(roomA: RoomAllocation, room: Room) {
         this.dataService.UnllocateRoom(roomA.sno).subscribe(() => {
             var index = room.roomAllocation.indexOf(roomA, 0);
@@ -349,12 +386,18 @@ export class RoomLayoutComponent {
         });
     }
 
-    /* Check if room can be allocated */
+    /**
+     * Check if room can be allocated
+     * @param room Room object
+     */
     public canAllocate(room: Room): boolean {
         return ((room.status === 1) || (room.status === 3)) && (!this.checkOccupied(room));
     }
 
-    /* Get HTML Id of room */
+    /**
+     * Gets the CSS ID selector from a Room
+     * @param room Room object
+     */
     public getRoomId(room: Room): string {
         return ("#room-" + room.location + "-" + room.roomName).replace(/\s+/, "");
     }

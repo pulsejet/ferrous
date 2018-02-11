@@ -9,8 +9,10 @@ import { DataService } from '../../DataService';
     styleUrls: ['../../Custom.css']
 })
 export class RoomDialogComponent {
+    /** Current Room object */
     public room: Room;
 
+    /** constructor for RoomDialogComponent */
     constructor(
         public dialogRef: MatDialogRef<RoomDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -18,6 +20,7 @@ export class RoomDialogComponent {
         this.room = { ...data };
     }
 
+    /** PUT changes to the Room */
     confirmSelection() {
         this.dataService.PutRoom(this.room.roomId.toString(), this.room).subscribe((): void => {
             this.dialogRef.close();

@@ -11,11 +11,16 @@ import { DataService } from '../../DataService';
     styleUrls: ['../../Custom.css'],
 })
 export class LocationSelectComponent {
-    public clno: string;                /* current CLNo             */
-    public cano: number;                /* current CArrival No      */
-    public buildings: Building[];       /* master Building list     */
+    /** Current CLNo */
+    public clno: string;
+    /** Current contingentArrivalNo */
+    public cano: number;
+    /** Master Building list */
+    public buildings: Building[];
 
-    constructor(private activatedRoute: ActivatedRoute,
+    /** constructor for LocationSelectComponent */
+    constructor(
+        private activatedRoute: ActivatedRoute,
         private titleService: Title,
         private dataService: DataService,
         @Inject('BASE_URL') public baseUrl: string) {

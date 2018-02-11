@@ -11,12 +11,13 @@ import { PaginatorHelper } from '../../Common';
     styleUrls: ['../../Custom.css']
 })
 export class ContingentComponent {
+    /** Master contingents list */
+    contingents: Contingent[];
+    /** CLNo entered in the search box */
+    enteredCL: string = "";
+    paginatorHelper = new PaginatorHelper;
 
-    contingents: Contingent[];                              /* master contingents list              */
-    enteredCL: string = "";                                 /* CLNo entered in the search box       */
-    paginatorHelper = new PaginatorHelper;                  /* helper for paginator                 */
-
-    /* Initial Actions */
+    /** constructor for ContingentComponent */
     constructor(
         private dataService: DataService,
         private titleService: Title ) {
@@ -29,7 +30,7 @@ export class ContingentComponent {
         }, error => console.error(error));
     }
 
-    /* Table click event */
+    /** Table click event */
     public handleTableClick(contingent: Contingent) {
         this.dataService.NavigateContingentDetails(contingent.contingentLeaderNo);
     }

@@ -16,14 +16,21 @@ import { PaginatorHelper } from '../../Common';
     styleUrls: ['../../Custom.css']
 })
 export class ContingentDetailsComponent {
-    public CLNo: string;                        /* current CLNo                             */
-    public startedit: number;                   /* 1 to start editing on initial load       */
-    public editing: boolean = false;            /* true if currently editing                */
-    public initial_contingent: Contingent;      /* object for reverting cancelled changes   */
-    public contingent: Contingent;              /* master Contingent object                 */
-    paginatorHelper = new PaginatorHelper;      /* helper for paginator                     */
+    /** Current CLNo */
+    public CLNo: string;
+    /** 1 to start editing on initial load */
+    public startedit: number;
+    /** true if currently editing */
+    public editing: boolean = false;
+    /** Object for reverting cancelled changes */
+    public initial_contingent: Contingent;
+    /** Master Contingent object */
+    public contingent: Contingent;
+    paginatorHelper = new PaginatorHelper;
 
-    constructor(private activatedRoute: ActivatedRoute,
+    /** constructor for ContingentDetailsComponent */
+    constructor(
+        private activatedRoute: ActivatedRoute,
         private _location: Location,
         private dataService: DataService,
         public snackBar: MatSnackBar,
@@ -60,7 +67,7 @@ export class ContingentDetailsComponent {
         
     }
 
-    /* Handle actions of both edit and cancel */
+    /** Handle actions of both edit and cancel */
     public edit() {
         /* Cancel if startedit navigates to contingent list  */
         if (this.startedit == 1) {
@@ -73,7 +80,7 @@ export class ContingentDetailsComponent {
         this.contingent = { ...this.initial_contingent };
     }
 
-    /* PUT/POST the master */
+    /** PUT/POST the master */
     public save() { 
         let body = JSON.stringify(this.contingent);
 
@@ -93,7 +100,7 @@ export class ContingentDetailsComponent {
         }
     }
 
-    /* Delete a record */
+    /** DELETE a record */
     public delete() {
         if (confirm("Are you sure to delete?")) {
             this.dataService.DeleteContingent(this.CLNo).subscribe(result => {
@@ -102,7 +109,7 @@ export class ContingentDetailsComponent {
         }
     }
 
-    /* Remove a RoomAllocation */
+    /** DELETE a RoomAllocation */
     public unallocateRoom(roomA: RoomAllocation) {
         if (confirm("Are you sure you want to unallocate this room?")) {
             this.dataService.UnllocateRoom(roomA.sno).subscribe(result => {
@@ -124,7 +131,10 @@ export class ContingentDetailsComponent {
         });
     }
 
-    /* Get alloted capacity for arrival */
+    /**
+     * Compute number of people arrived
+     * @param female true returns number of females
+     */
     public GetArrivedContingent(female: boolean): string {
         if (!this.contingent.contingentArrival) return "";
 
@@ -139,7 +149,10 @@ export class ContingentDetailsComponent {
         else return curr.toString();
     }
 
-    /* Get no of people by sex */
+    /**
+     * Get no of people by sex
+     * @param female true for Female
+     */
     public GetPeopleBySex(female: boolean): string {
         if (!this.contingent.person) return "";
 
