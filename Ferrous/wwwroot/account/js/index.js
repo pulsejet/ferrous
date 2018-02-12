@@ -81,7 +81,7 @@
       }
 
       $.ajax({
-        type: "get", url: '/login/login?username=' + $('#user_username').val() + '&password=' + $('#user_password').val(),
+        type: "get", url: '/api/login/login?username=' + $('#user_username').val() + '&password=' + $('#user_password').val(),
             success: function (data, text) {
                 $('#dialog').removeClass('dialog-effect-in').removeClass('shakeit');
                 $('#dialog').addClass('dialog-effect-out');

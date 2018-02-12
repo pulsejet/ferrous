@@ -60,7 +60,7 @@ namespace Ferrous
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<WebSocketHubs.BuildingUpdateHub>("websocket/building");
+                routes.MapHub<WebSocketHubs.BuildingUpdateHub>("api/websocket/building");
             });
 
             app.UseMvc(routes =>

@@ -70,7 +70,7 @@ export class RoomLayoutComponent {
 
     ngOnInit() {
         /* Connect to the websocket */
-        this.hubConnection = new HubConnection('/websocket/building');
+        this.hubConnection = new HubConnection('/api/websocket/building');
 
         /* Mark pending update on event 'updated' */
         this.hubConnection.on('updated', () => {

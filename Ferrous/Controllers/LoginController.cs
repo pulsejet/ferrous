@@ -11,13 +11,13 @@ using static Ferrous.Controllers.Utilities;
 
 namespace Ferrous.Controllers
 {
-    [Route("Login")]
+    [Route("api/login")]
     public class LoginController: ControllerBase
     {
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Index()
         {
-            return File("account/login.html", HTML_MIME_TYPE);
+            return Redirect("/account/login.html");
         }
 
         [HttpGet("login")]
@@ -62,7 +62,15 @@ namespace Ferrous.Controllers
         {
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
-            return File("account/login.html", HTML_MIME_TYPE);
+            return Redirect("/account/login.html");
+        }
+
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        [HttpGet("getuser")]
+        public IActionResult GetUser()
+        {
+            if (!User.Identity.IsAuthenticated) return Unauthorized();
+            return Content(User.Identity.Name);
         }
     }
 }

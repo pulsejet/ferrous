@@ -28,7 +28,18 @@
             width: 140px;
         }
     </style>
-
+    
+    <script src='/assets/jquery-3.3.1.min.js'></script>
+    
+    <script>
+        $.ajax({
+            url: '/api/login/getuser',
+            success: function (response) { },
+            error: function (jqXHR, exception) {
+                window.location = '/account/login.html';
+            },
+        });
+    </script>
     <script src="/assets/root-js.js"></script>
     
 </head>
