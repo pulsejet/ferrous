@@ -1,17 +1,16 @@
 {
-  "index": "/index.html",
+  "index": "/Index.html",
   "assetGroups": [{
     "name": "app",
     "installMode": "prefetch",
     "resources": {
       "files": [
         "/favicon.ico",
-        "/index.html"
+        "/Index.html"
       ],
       "versionedFiles": [
         "/am-theme/indigo-pink.css",
-        "/account/css/style.css",
-        "/account/js/index.js"
+        "/account/**"
       ]
     }
   }, {

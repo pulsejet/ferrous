@@ -62,7 +62,7 @@ namespace Ferrous.Controllers
         {
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
-            return Redirect("/account/login.html");
+            return Ok();
         }
 
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
