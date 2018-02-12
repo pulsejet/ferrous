@@ -4,9 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "test": "karma start ClientApp/test/karma.conf.js",
-    "ngsw-config": "node_modules/.bin/ngsw-config wwwroot ClientApp/ngsw-config.json",
-    "ngsw-copy": "powershell cp node_modules/@angular/service-worker/ngsw-worker.js wwwroot/",
-    "build-ngsw": "npm run ngsw-config && npm run ngsw-copy"
+    "ngsw-config": "node_modules/.bin/ngsw-config wwwroot ClientApp/ngsw-config.json"
   },
   "devDependencies": {
     "@angular/animations": "^5.2.2",

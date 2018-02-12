@@ -6,6 +6,8 @@ const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 
+var isWin = process.platform === "win32";
+
 module.exports = (env) => {
     // Configuration in common to both client-side and server-side bundles
     const isDevBuild = !(env && env.prod);
@@ -48,7 +50,14 @@ module.exports = (env) => {
             */
         ] : [
             // Plugins that apply in production builds only
-            new WebpackShellPlugin({onBuildStart:['npm run build-ngsw'], onBuildEnd:['echo Webpack End']}),
+            new WebpackShellPlugin(
+            {
+                onBuildStart:[
+                    'npm run ngsw-config && ' +
+                    (isWin?'powershell ':'') + 'cp node_modules/@angular/service-worker/ngsw-worker.js wwwroot/'
+                ],
+                onBuildEnd:['echo Webpack End']
+            }),
             new UglifyJSPlugin({
                 parallel: 2
             }),
