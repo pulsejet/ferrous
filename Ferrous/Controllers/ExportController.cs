@@ -29,162 +29,10 @@ namespace Ferrous.Controllers
         {
             using (ExcelPackage package = new ExcelPackage())
             {
-                Contingents[] contingents = await DataUtilities.GetExtendedContingents(_context);
-
-                var people = _context.Person.ToList()
-                    .OrderBy(m => m.ContingentLeaderNo);
-
-                var rooms = _context.Room
-                    .Where(m => m.Status != 0)
-                    .Include(m => m.RoomAllocation).ToList()
-                    .OrderBy(m => m.Location);
-
-                {
-                    ExcelWorksheet contingentsWorksheet = package.Workbook.Worksheets.Add("Contingents");
-
-                    contingentsWorksheet.Column(1).Width = 11;
-                    contingentsWorksheet.Column(2).Width = 11;
-                    contingentsWorksheet.Column(3).Width = 11;
-                    contingentsWorksheet.Column(4).Width = 11;
-                    contingentsWorksheet.Column(5).Width = 11;
-                    contingentsWorksheet.Column(6).Width = 25;
-
-                    for (int k = 2; k <= 5; k++)
-                        contingentsWorksheet.Column(k).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-
-                    contingentsWorksheet.Row(1).Style.Font.Bold = true;
-                    contingentsWorksheet.Cells[1, 1].Value = "ContingentLeaderNo";
-                    contingentsWorksheet.Cells[1, 2].Value = "Reg (M)";
-                    contingentsWorksheet.Cells[1, 3].Value = "Reg (F)";
-                    contingentsWorksheet.Cells[1, 4].Value = "Arrived (M)";
-                    contingentsWorksheet.Cells[1, 5].Value = "Arrived (F)";
-                    contingentsWorksheet.Cells[1, 6].Value = "Remark";
-    
-                    int i = 2;
-                    foreach (var contingent in contingents)
-                    {
-                        contingentsWorksheet.Cells[i, 1].Value = contingent.ContingentLeaderNo;
-                        contingentsWorksheet.Cells[i, 2].Value = IntIfNumber(contingent.Male);
-                        contingentsWorksheet.Cells[i, 3].Value = IntIfNumber(contingent.Female);
-                        contingentsWorksheet.Cells[i, 4].Value = IntIfNumber(contingent.ArrivedM);
-                        contingentsWorksheet.Cells[i, 5].Value = IntIfNumber(contingent.ArrivedF);
-                        contingentsWorksheet.Cells[i, 6].Value = contingent.Remark;
-                        ++i;    
-                    }
-                }
-
-                {
-                    ExcelWorksheet peopleWorksheet = package.Workbook.Worksheets.Add("People");
-
-                    peopleWorksheet.Column(1).Width = 11;
-                    peopleWorksheet.Column(2).Width = 25;
-                    peopleWorksheet.Column(3).Width = 45;
-                    peopleWorksheet.Column(4).Width = 4;
-                    peopleWorksheet.Column(5).Width = 11;
-
-                    peopleWorksheet.Row(1).Style.Font.Bold = true;
-                    peopleWorksheet.Cells[1, 1].Value = "MI No.";
-                    peopleWorksheet.Cells[1, 2].Value = "Name";
-                    peopleWorksheet.Cells[1, 3].Value = "College";
-                    peopleWorksheet.Cells[1, 4].Value = "Sex";
-                    peopleWorksheet.Cells[1, 5].Value = "CL No.";
-
-                    Color lightGray = ColorTranslator.FromHtml("#ecf0f1");
-
-                    int i = 2; string prevCl = ""; bool col2 = false;
-                    foreach (var person in people)
-                    {
-                        if (person.ContingentLeaderNo != prevCl)
-                        {
-                            prevCl = person.ContingentLeaderNo;
-                            col2 = !col2;
-                        }
-
-                        if (col2)
-                        {
-                            peopleWorksheet.Row(i).Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            peopleWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(lightGray);
-                        }
-
-                        if (person.Mino == person.ContingentLeaderNo)
-                        {
-                            peopleWorksheet.Row(i).Style.Font.Color.SetColor(Color.Blue);
-                            peopleWorksheet.Row(i).Style.Font.Bold = true;
-                        }
-
-                        peopleWorksheet.Cells[i, 1].Value = person.Mino;
-                        peopleWorksheet.Cells[i, 2].Value = person.Name;
-                        peopleWorksheet.Cells[i, 3].Value = person.College;
-                        peopleWorksheet.Cells[i, 4].Value = person.Sex;
-                        peopleWorksheet.Cells[i, 5].Value = person.ContingentLeaderNo;
-                        ++i;
-                    }
-                }
-
-                {
-                    ExcelWorksheet roomsWorksheet = package.Workbook.Worksheets.Add("Rooms");
-
-                    roomsWorksheet.Column(1).Width = 11;
-                    roomsWorksheet.Column(2).Width = 11;
-                    roomsWorksheet.Column(3).Width = 15;
-                    roomsWorksheet.Column(4).Width = 4;
-                    roomsWorksheet.Column(5).Width = 6;
-                    roomsWorksheet.Column(6).Width = 45;
-
-                    roomsWorksheet.Row(1).Style.Font.Bold = true;
-                    roomsWorksheet.Cells[1, 1].Value = "Location";
-                    roomsWorksheet.Cells[1, 2].Value = "Room";
-                    roomsWorksheet.Cells[1, 3].Value = "Allocated";
-                    roomsWorksheet.Cells[1, 4].Value = "Capacity";
-                    roomsWorksheet.Cells[1, 5].Value = "Lock No";
-                    roomsWorksheet.Cells[1, 6].Value = "Remark";
-
-                    int i = 2;
-                    foreach (var room in rooms)
-                    {
-                        roomsWorksheet.Cells[i, 1].Value = room.Location;
-                        roomsWorksheet.Cells[i, 2].Value = IntIfNumber(room.RoomName);
-
-                        int Partial = 0;
-                        string roomAlloc = "";
-                        foreach (var roomA in room.RoomAllocation)
-                        {
-                            if (roomA.Partial > 0)
-                            {
-                                roomAlloc += roomA.ContingentLeaderNo + " - " + roomA.Partial + "; ";
-                                Partial += roomA.Partial;
-                            }
-                            else
-                            {
-                                roomAlloc += roomA.ContingentLeaderNo;
-                                Partial = -1;
-                            }
-                        }
-
-                        roomsWorksheet.Cells[i, 3].Value = roomAlloc;
-
-                        roomsWorksheet.Cells[i, 4].Value = room.Capacity;
-                        roomsWorksheet.Cells[i, 5].Value = IntIfNumber(room.LockNo);
-                        roomsWorksheet.Cells[i, 6].Value = room.Remark;
-
-                        if (room.Status == 4 || room.Status == 1)
-                        {
-                            roomsWorksheet.Row(i).Style.Fill.PatternType = ExcelFillStyle.Solid;
-
-                            if (room.Status == 4) roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.LightPink);
-                            else if (room.Status == 1)
-                            {
-                                roomsWorksheet.Row(i).Style.Font.Color.SetColor(Color.White);
-                                if (Partial == 0) roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
-                                else if (Partial < 0) roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
-                                else if (Partial > 0 && room.Capacity - Partial > 0) roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.Blue);
-                                else if (Partial > 0 && room.Capacity - Partial <= 0) roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
-                            }
-                        }
-
-                        ++i;
-                    }
-                }
+                /* Fill up the package */
+                await FillContingentsWorksheet(package.Workbook.Worksheets.Add("Contingents"));
+                FillPeopleWorksheet(package.Workbook.Worksheets.Add("People"));
+                FillRoomsWorksheet(package.Workbook.Worksheets.Add("Rooms"));
 
                 /* Return the file */
                 var stream = new MemoryStream(package.GetAsByteArray());
@@ -192,6 +40,215 @@ namespace Ferrous.Controllers
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     "export.xlsx");
             }
+        }
+
+        /// <summary>
+        /// Fill the given worksheet with contingents data
+        /// </summary>
+        /// <param name="contingentsWorksheet">Passed worksheet</param>
+        async Task<int> FillContingentsWorksheet(ExcelWorksheet contingentsWorksheet)
+        {
+            var contingents = await DataUtilities.GetExtendedContingents(_context);
+
+            int[] widths = { 11, 11, 11, 11, 11, 25 };
+            setColumnWidths(widths, contingentsWorksheet);
+
+            for (int k = 2; k <= 5; k++)
+                contingentsWorksheet.Column(k).Style.HorizontalAlignment =
+                    ExcelHorizontalAlignment.Right;
+
+            string[] headers = {
+                        "CL No",
+                        "Reg (M)",
+                        "Reg (F)",
+                        "Arrived (M)",
+                        "Arrived (F)",
+                        "Remark"
+                    };
+            setColumnHeaders(headers, contingentsWorksheet);
+
+            int rowno = 2;
+            foreach (var contingent in contingents)
+            {
+                object[] cells =
+                {
+                            contingent.ContingentLeaderNo,
+                            IntIfNumber(contingent.Male),
+                            IntIfNumber(contingent.Female),
+                            IntIfNumber(contingent.ArrivedM),
+                            IntIfNumber(contingent.ArrivedF),
+                            contingent.Remark
+                        };
+                setRow(cells, rowno++, contingentsWorksheet);
+            }
+            return 1;
+        }
+
+        /// <summary>
+        /// Fills the passed worksheet with people data
+        /// </summary>
+        /// <param name="peopleWorksheet">ExcelWorksheet to fill</param>
+        void FillPeopleWorksheet(ExcelWorksheet peopleWorksheet)
+        {
+            var people = _context.Person.ToList()
+                    .OrderBy(m => m.ContingentLeaderNo);
+
+            int[] widths = { 11, 25, 45, 4, 11 };
+            setColumnWidths(widths, peopleWorksheet);
+
+            string[] headers = {
+                        "MI No",
+                        "Name",
+                        "College",
+                        "Sex",
+                        "CL No"
+                    };
+            setColumnHeaders(headers, peopleWorksheet);
+
+            Color lightGray = ColorTranslator.FromHtml("#ecf0f1");
+
+            int i = 2; string prevCl = ""; bool col2 = false;
+            foreach (var person in people)
+            {
+                if (person.ContingentLeaderNo != prevCl)
+                {
+                    prevCl = person.ContingentLeaderNo;
+                    col2 = !col2;
+                }
+
+                if (col2)
+                {
+                    peopleWorksheet.Row(i).Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    peopleWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(lightGray);
+                }
+
+                if (person.Mino == person.ContingentLeaderNo)
+                {
+                    peopleWorksheet.Row(i).Style.Font.Color.SetColor(Color.Blue);
+                    peopleWorksheet.Row(i).Style.Font.Bold = true;
+                }
+
+                object[] cells =
+                {
+                            person.Mino,
+                            person.Name,
+                            person.College,
+                            person.Sex,
+                            person.ContingentLeaderNo
+                        };
+                setRow(cells, i++, peopleWorksheet);
+            }
+        }
+
+        /// <summary>
+        /// Fills the passed ExcelWorksheet with rooms data
+        /// </summary>
+        /// <param name="roomsWorksheet">ExcelWorksheet to fill</param>
+        void FillRoomsWorksheet(ExcelWorksheet roomsWorksheet)
+        {
+            var rooms = _context.Room
+                    .Where(m => m.Status != 0)
+                    .Include(m => m.RoomAllocation).ToList()
+                    .OrderBy(m => m.Location);
+
+            int[] widths = { 11, 11, 15, 4, 6, 45 };
+            setColumnWidths(widths, roomsWorksheet);
+
+            string[] headers = {
+                        "Location",
+                        "Room",
+                        "Allocated",
+                        "Capacity",
+                        "Lock No",
+                        "Remark"
+                    };
+            setColumnHeaders(headers, roomsWorksheet);
+
+            int i = 2;
+            foreach (var room in rooms)
+            {
+                int Partial = 0;
+                string roomAlloc = "";
+                foreach (var roomA in room.RoomAllocation)
+                {
+                    if (roomA.Partial > 0)
+                    {
+                        roomAlloc += roomA.ContingentLeaderNo + " - " + roomA.Partial + "; ";
+                        Partial += roomA.Partial;
+                    }
+                    else
+                    {
+                        roomAlloc += roomA.ContingentLeaderNo;
+                        Partial = -1;
+                    }
+                }
+
+                if (room.Status == 4 || room.Status == 1)
+                {
+                    roomsWorksheet.Row(i).Style.Fill.PatternType = ExcelFillStyle.Solid;
+
+                    if (room.Status == 4) roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.LightPink);
+                    else if (room.Status == 1)
+                    {
+                        roomsWorksheet.Row(i).Style.Font.Color.SetColor(Color.White);
+                        if (Partial == 0)
+                            roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
+                        else if (Partial < 0)
+                            roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
+                        else if (Partial > 0 && room.Capacity - Partial > 0)
+                            roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.Blue);
+                        else if (Partial > 0 && room.Capacity - Partial <= 0)
+                            roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
+                    }
+                }
+
+                object[] cells =
+                {
+                            room.Location,
+                            IntIfNumber(room.RoomName),
+                            roomAlloc,
+                            room.Capacity,
+                            IntIfNumber(room.LockNo),
+                            room.Remark
+                        };
+                setRow(cells, i++, roomsWorksheet);
+            }
+        }
+
+        /* =========== Utilities ========== */
+        /// <summary>
+        /// Sets the widths for columns
+        /// </summary>
+        /// <param name="widths">Array with width</param>
+        /// <param name="ws">ExcelWorksheet to set</param>
+        void setColumnWidths(int[] widths, ExcelWorksheet ws)
+        {
+            for (int c = 0; c <= widths.Count() - 1; ++c)
+                ws.Column(c + 1).Width = widths[c];
+        }
+
+        /// <summary>
+        /// Sets the column headers to the first row and makes it bold
+        /// </summary>
+        /// <param name="headers">Headers</param>
+        /// <param name="ws">ExcelWorksheet to set</param>
+        void setColumnHeaders(string[] headers, ExcelWorksheet ws)
+        {
+            for (int c = 0; c <= headers.Count() - 1; ++c)
+                ws.Cells[1, c + 1].Value = headers[c];
+            ws.Row(1).Style.Font.Bold = true;
+        }
+
+        /// <summary>
+        /// Set row with no rowno
+        /// </summary>
+        /// <param name="cells">Array of cell data</param>
+        /// <param name="rowno">Number of the row (1 is header)</param>
+        /// <param name="ws">ExcelWorksheet to set</param>
+        void setRow(object[] cells, int rowno, ExcelWorksheet ws)
+        {
+            for (int c = 0; c <= cells.Count() - 1; ++c)
+                ws.Cells[rowno, c + 1].Value = cells[c];
         }
     }
 }
