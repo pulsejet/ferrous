@@ -30,14 +30,8 @@ namespace Ferrous.Controllers
         {
             var contingents = await DataUtilities.GetExtendedContingents(_context);
 
-            foreach(var contingent in contingents) { 
-                contingent.Links = new LinkHelper()
-                    .SetOptions(User, this.GetType(), Url)
-                    .AddLinks(new Tuple<string, object>[] {
-                        new Tuple<string, object> (nameof(GetContingent), new { id = contingent.ContingentLeaderNo }),
-                        new Tuple<string, object> (nameof(PutContingent), new { id = contingent.ContingentLeaderNo }),
-                        new Tuple<string, object> (nameof(DeleteContingent), new { id = contingent.ContingentLeaderNo })
-                    }).GetLinks();
+            foreach(var contingent in contingents) {
+                contingent.Links = GetLinks(contingent);
             }
 
             return new EnumContainer(
@@ -68,19 +62,7 @@ namespace Ferrous.Controllers
                                             .Include(m => m.ContingentArrival)
                                             .SingleOrDefaultAsync();
 
-            contingent.Links = new LinkHelper()
-                .SetOptions(User, this.GetType(), Url)
-                .AddLinks(new string[] {
-                    nameof(GetContingent),
-                    nameof(PutContingent),
-                    nameof(DeleteContingent)
-                })
-                .SetOptions(User, typeof(BuildingsController), Url)
-                .AddLink(
-                    nameof(BuildingsController.GetBuildingExtended), 
-                    new { id = contingent.ContingentLeaderNo }, 
-                    "getbuildings"
-                ).GetLinks();
+            contingent.Links = GetLinks(contingent);
 
             if (contingent == null) return NotFound();
 
@@ -183,6 +165,23 @@ namespace Ferrous.Controllers
         private bool ContingentsExists(string id)
         {
             return _context.Contingents.Any(e => e.ContingentLeaderNo == id);
+        }
+
+        private List<Link> GetLinks(Contingents contingent)
+        {
+            return new LinkHelper()
+                .SetOptions(User, this.GetType(), Url)
+                .AddLinks(new string[] {
+                    nameof(GetContingent),
+                    nameof(PutContingent),
+                    nameof(DeleteContingent)
+                })
+                .SetOptions(User, typeof(BuildingsController), Url)
+                .AddLink(
+                    nameof(BuildingsController.GetBuilding),
+                    new { id = contingent.ContingentLeaderNo },
+                    "getbuildings"
+                ).GetLinks();
         }
     }
 }
