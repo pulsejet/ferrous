@@ -106,7 +106,16 @@ export class DataService {
     GetAllPeople(): Observable<EnumContainer> {
         return this.http.get<EnumContainer>(API_People_URL);
     }
-    
+
+    /**
+     * Gets contingent-arrival-specific extended Building[]
+     * @param clno CLNo of the contingent
+     * @param cano ContingentArrivalNo applicable
+     */
+    GetAllBuildingsExtended(clno: string, cano: number): Observable<EnumContainer> {
+        return this.http.get<EnumContainer>(API_Buildings_URL + "e/" + clno + "/" + cano.toString());
+    }
+
     /* === RoomLayout === */
 
     /**
@@ -161,35 +170,12 @@ export class DataService {
         return count;
     }
 
-    /* === RoomAllocations === */
-
     /**
      * DELETE a RoomAllocation
      * @param sno SNo of RoomAllocation
      */
     UnallocateRoom(roomA: RoomAllocation): Observable<any> {
         return this.FireLinkDelete(roomA.links);
-    }
-
-    /** All Building */
-    GetAllBuildings(): Observable<EnumContainer> {
-        return this.http.get<EnumContainer>(API_Buildings_URL);
-    }
-
-    /**
-     * Gets contingent-specific extended Building[]
-     * @param clno CLNo of Contingent to lookup
-     */
-    GetAllBuildingsExtended(clno: string, cano: number): Observable<EnumContainer> {
-        return this.http.get<EnumContainer>(API_Buildings_URL + "e/" + clno + "/" + cano.toString());
-    }
-
-    /**
-     * Gets a Building object with Room and RoomAllocation objects
-     * @param loc Location code of Building
-     */
-    GetBuilding(loc: string): Observable<Building> {
-        return this.http.get<Building>(API_Buildings_URL + loc);
     }
 
     /* === Quick Extras which shouldn't be here === */

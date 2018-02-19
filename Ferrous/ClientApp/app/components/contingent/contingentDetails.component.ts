@@ -42,7 +42,7 @@ export class ContingentDetailsComponent {
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
             this.newrecord = params['edit'] == 1;
-            this.urlLink = JSON.parse(atob(params['id']))
+            this.urlLink = this.dataService.DecodeObject(params['id']);
         });
 
         /* CLNo 0 indicates a new record  *
