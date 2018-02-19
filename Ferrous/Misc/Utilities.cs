@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Ferrous.Controllers
+namespace Ferrous.Misc
 {
     public class Utilities
     {

@@ -16,6 +16,6 @@ namespace Ferrous.Models
 
         public Contingents ContingentLeaderNoNavigation { get; set; }
 
-        public List<Link> links;
+        public List<Misc.Link> links;
     }
 }

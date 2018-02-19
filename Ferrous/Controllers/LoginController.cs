@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using static Ferrous.Controllers.Authorization;
-using static Ferrous.Controllers.Utilities;
+using static Ferrous.Misc.Authorization;
+using static Ferrous.Misc.Utilities;
 
 namespace Ferrous.Controllers
 {
@@ -29,7 +29,7 @@ namespace Ferrous.Controllers
             List<FerrousIdentity> identities = LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE);
             FerrousIdentity id = identities.FirstOrDefault(m => m.username.ToLower() == username.ToLower());
 
-            if (id!=null && id.password == Utilities.SHA.GenerateSHA256String(id.salt + password))
+            if (id!=null && id.password == Misc.Utilities.SHA.GenerateSHA256String(id.salt + password))
             {
                 var claims = new List<Claim>
                 {

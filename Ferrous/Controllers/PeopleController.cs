@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
-using static Ferrous.Controllers.Authorization;
+using static Ferrous.Misc.Authorization;
+using Ferrous.Misc;
 
 namespace Ferrous.Controllers
 {

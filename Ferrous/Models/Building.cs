@@ -17,6 +17,6 @@ namespace Ferrous.Models
 
         public ICollection<Room> Room { get; set; }
 
-        public List<Link> Links;
+        public List<Misc.Link> Links;
     }
 }

@@ -25,6 +25,6 @@ namespace Ferrous.Models
         public Building LocationNavigation { get; set; }
         public ICollection<RoomAllocation> RoomAllocation { get; set; }
 
-        public List<Link> Links;
+        public List<Misc.Link> Links;
     }
 }

@@ -26,6 +26,6 @@ namespace Ferrous.Models
         public Contingents ContingentLeaderNoNavigation { get; set; }
         public ICollection<RoomAllocation> RoomAllocation { get; set; }
 
-        public List<Link> Links;
+        public List<Misc.Link> Links;
     }
 }

@@ -7,8 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Threading.Tasks;
-using static Ferrous.Controllers.Utilities;
-using static Ferrous.Controllers.Authorization;
+using static Ferrous.Misc.Utilities;
+using static Ferrous.Misc.Authorization;
+using Ferrous.Misc;
 
 namespace Ferrous.Controllers
 {

@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Ferrous.Controllers.Utilities;
+using static Ferrous.Misc.Utilities;
 
-namespace Ferrous.Controllers
+namespace Ferrous.Misc
 {
     public class DataUtilities
     {

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using static Ferrous.Controllers.Authorization;
+using static Ferrous.Misc.Authorization;
 
-namespace Ferrous.Models
+namespace Ferrous.Misc
 {
     public class HTTPrel : Attribute
     {

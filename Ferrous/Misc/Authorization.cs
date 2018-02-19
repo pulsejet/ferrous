@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace Ferrous.Controllers
+namespace Ferrous.Misc
 {
     public class Authorization : Attribute, IAuthorizationFilter
     {
