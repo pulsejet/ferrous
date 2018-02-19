@@ -104,10 +104,11 @@ namespace Ferrous.Models
                     var cRouteAtt = (RouteAttribute)type.GetCustomAttribute(typeof(RouteAttribute));
                     foreach (var propInfo in routeParams.GetType().GetProperties())
                     {
-                        string prop = (string) propInfo.GetValue(routeParams);
+                        string prop = propInfo.GetValue(routeParams).ToString();
                         routeTemplate = routeTemplate.Replace("{" + propInfo.Name + "}", prop);
                     }
-                    Links.Add(new Link(overrideWithRel, httpMethod, "/" + cRouteAtt.Template + "/" + routeTemplate));
+                    Links.Add(new Link(overrideWithRel != "no" ? overrideWithRel : relAtt.rel, 
+                        httpMethod, "/" + cRouteAtt.Template + "/" + routeTemplate));
                 }   
             }
             return this;

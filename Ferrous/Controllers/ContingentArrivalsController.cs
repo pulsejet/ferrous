@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
 using static Ferrous.Controllers.Authorization;
+using System.Security.Claims;
 
 namespace Ferrous.Controllers
 {
@@ -19,7 +20,8 @@ namespace Ferrous.Controllers
         {
             _context = context;
         }
-
+    
+        // DEPRECATED
         // GET: api/ContingentArrivals
         [HttpGet]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET)]
@@ -28,6 +30,7 @@ namespace Ferrous.Controllers
             return _context.ContingentArrival;
         }
 
+        // DEPRECATED
         // GET: api/ContingentArrivals/byCL/5
         [HttpGet("byCL/{clno}")]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET)]
@@ -51,6 +54,7 @@ namespace Ferrous.Controllers
             return Ok(contingentArrival);
         }
 
+        // DEPRECATED
         // GET: api/ContingentArrivals/5
         [HttpGet("{id}")]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET_DETAILS)]
@@ -73,6 +77,7 @@ namespace Ferrous.Controllers
 
         // PUT: api/ContingentArrivals/5
         [HttpPut("{id}")]
+        [HTTPrel(HTTPrelList.update)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_PUT)]
         public async Task<IActionResult> PutContingentArrival([FromRoute] int id, [FromBody] ContingentArrival contingentArrival)
         {
@@ -109,6 +114,7 @@ namespace Ferrous.Controllers
 
         // POST: api/ContingentArrivals
         [HttpPost]
+        [HTTPrel(HTTPrelList.create)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_POST)]
         public async Task<IActionResult> PostContingentArrival([FromBody] ContingentArrival contingentArrival)
         {
@@ -126,6 +132,7 @@ namespace Ferrous.Controllers
 
         // DELETE: api/ContingentArrivals/5
         [HttpDelete("{id}")]
+        [HTTPrel(HTTPrelList.delete)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_DELETE)]
         public async Task<IActionResult> DeleteContingentArrival([FromRoute] int id)
         {

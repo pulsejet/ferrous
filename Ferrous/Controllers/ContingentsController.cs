@@ -31,7 +31,7 @@ namespace Ferrous.Controllers
             var contingents = await DataUtilities.GetExtendedContingents(_context);
 
             foreach(var contingent in contingents) {
-                contingent.Links = GetLinks(contingent);
+                new LinksMaker(User, Url).FillContingentsLinks(contingent);
             }
 
             return new EnumContainer(
@@ -62,7 +62,7 @@ namespace Ferrous.Controllers
                                             .Include(m => m.ContingentArrival)
                                             .SingleOrDefaultAsync();
 
-            contingent.Links = GetLinks(contingent);
+            new LinksMaker(User, Url).FillContingentsLinks(contingent);
 
             if (contingent == null) return NotFound();
 
@@ -165,23 +165,6 @@ namespace Ferrous.Controllers
         private bool ContingentsExists(string id)
         {
             return _context.Contingents.Any(e => e.ContingentLeaderNo == id);
-        }
-
-        private List<Link> GetLinks(Contingents contingent)
-        {
-            return new LinkHelper()
-                .SetOptions(User, this.GetType(), Url)
-                .AddLinks(new string[] {
-                    nameof(GetContingent),
-                    nameof(PutContingent),
-                    nameof(DeleteContingent)
-                })
-                .SetOptions(User, typeof(BuildingsController), Url)
-                .AddLink(
-                    nameof(BuildingsController.GetBuilding),
-                    new { id = contingent.ContingentLeaderNo },
-                    "getbuildings"
-                ).GetLinks();
         }
     }
 }
