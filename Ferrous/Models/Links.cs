@@ -41,28 +41,24 @@ namespace Ferrous.Models
         private List<Link> Links = new List<Link>();
         private IUrlHelper urlHelper;
 
-        private void setOptions(ClaimsPrincipal user, Type type, IUrlHelper urlHelper)
+        public LinkHelper SetOptions(ClaimsPrincipal user, Type type, IUrlHelper urlHelper)
         {
             this.user = user;
             this.type = type;
             this.urlHelper = urlHelper;
+            return this;
         }
 
-        public LinkHelper(ClaimsPrincipal user, Type type, IUrlHelper urlHelper)
+        public LinkHelper AddLinks(string[] routes)
         {
-            setOptions(user, type, urlHelper);
-        }
-
-        public LinkHelper(ClaimsPrincipal user, Type type, IUrlHelper urlHelper, string[] routes)
-        {
-            setOptions(user, type, urlHelper);
             foreach (var route in routes) AddLink(route);
+            return this;
         }
 
-        public LinkHelper(ClaimsPrincipal user, Type type, IUrlHelper urlHelper, Tuple<string, object>[] routes)
+        public LinkHelper AddLinks(Tuple<string, object>[] routes)
         {
-            setOptions(user, type, urlHelper);
             foreach (var route in routes) AddLink(route.Item1, route.Item2);
+            return this;
         }
 
         public bool AddLink(string route, object routeParams = null)

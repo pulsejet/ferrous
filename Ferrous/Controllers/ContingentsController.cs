@@ -31,8 +31,9 @@ namespace Ferrous.Controllers
             var contingents = await DataUtilities.GetExtendedContingents(_context);
 
             foreach(var contingent in contingents) { 
-                contingent.Links = new LinkHelper(User, this.GetType(), Url,
-                    new Tuple<string, object>[] {
+                contingent.Links = new LinkHelper()
+                    .SetOptions(User, this.GetType(), Url)
+                    .AddLinks(new Tuple<string, object>[] {
                         new Tuple<string, object> (nameof(GetContingent), new { id = contingent.ContingentLeaderNo }),
                         new Tuple<string, object> (nameof(PutContingent), new { id = contingent.ContingentLeaderNo }),
                         new Tuple<string, object> (nameof(DeleteContingent), new { id = contingent.ContingentLeaderNo })
@@ -41,8 +42,9 @@ namespace Ferrous.Controllers
 
             return new EnumContainer(
                 contingents,
-                new LinkHelper(User, this.GetType(), Url,
-                new string[] {
+                new LinkHelper()
+                .SetOptions(User, this.GetType(), Url)
+                .AddLinks(new string[] {
                     nameof(GetContingents),
                     nameof(PostContingent)
                 }).GetLinks()
@@ -66,8 +68,9 @@ namespace Ferrous.Controllers
                                             .Include(m => m.ContingentArrival)
                                             .SingleOrDefaultAsync();
 
-            contingent.Links = new LinkHelper(User, this.GetType(), Url,
-                new string[] {
+            contingent.Links = new LinkHelper()
+                .SetOptions(User, this.GetType(), Url)
+                .AddLinks(new string[] {
                     nameof(GetContingent),
                     nameof(PutContingent),
                     nameof(DeleteContingent)
