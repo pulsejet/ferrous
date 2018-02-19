@@ -122,15 +122,15 @@ namespace Ferrous.Models
     {
         public Link() { }
 
-        public Link(string _rel, string _method, string _url)
+        public Link(string _rel, string _method, string _href)
         {
             rel = _rel;
             method = _method;
-            url = _url;
+            href = _href;
         }
         public string rel;
         public string method;
-        public string url;
+        public string href;
     }
 
     public class EnumContainer {

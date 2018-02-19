@@ -135,10 +135,10 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/Rooms/allot/CLNo/CANo
-        [HttpGet("allot/{id}/{clno}/{cano}")]
+        [HttpGet("{id}/allot/{clno}/{cano}")]
         [HTTPrel(HTTPrelList.overridden)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_ALLOT)]
-        public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string clno, [FromRoute] int cano, [FromRoute] int partialno = -1)
+        public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string clno, [FromRoute] int cano, [FromQuery] int partialno = -1)
         {
             Room room = await _context.Room.Where(m => m.RoomId == id)
                                     .Include(m => m.RoomAllocation)
@@ -173,12 +173,11 @@ namespace Ferrous.Controllers
             return Ok(roomAllocation);
         }
 
-        // TODO: Use Query parameter for status
         // GET: api/Rooms/mark/CLNo
-        [HttpGet("mark/{id}/{status}")]
+        [HttpGet("{id}/mark")]
         [HTTPrel(HTTPrelList.overridden)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_MARK)]
-        public async Task<IActionResult> mark([FromRoute] int id, [FromRoute] int status)
+        public async Task<IActionResult> mark([FromRoute] int id, [FromQuery] int status)
         {
             Room room = await _context.Room.Where(m => m.RoomId == id)
                                     .Include(m => m.RoomAllocation)
