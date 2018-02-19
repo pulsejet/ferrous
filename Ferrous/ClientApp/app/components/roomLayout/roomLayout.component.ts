@@ -1,6 +1,6 @@
 ﻿import { Component, Inject, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Room, RoomAllocation } from '../interfaces';
+import { Room, RoomAllocation, Link } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -41,6 +41,9 @@ export class RoomLayoutComponent {
     /** Mark necessity of updation for next timer check */
     private updateNeeded: boolean = false;
 
+    public urlLink: Link;
+    public links: Link[];
+
     /** constructor for RoomLayoutComponent */
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -54,13 +57,12 @@ export class RoomLayoutComponent {
 
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
+            this.urlLink = dataService.DecodeObject(params['link']);
             this.locCode = params['location'];
-            this.clno = params['id'];
-            this.cano = params['cano'];
         });
 
         /* Get room layout by location */
-        dataService.GetRoomLayout(this.locCode).subscribe(result => {
+        dataService.GetRoomLayout("H7").subscribe(result => {
             this.roomsLayout.nativeElement.innerHTML = result;
 
             /* Load rooms */
@@ -69,7 +71,8 @@ export class RoomLayoutComponent {
     }
 
     ngOnInit() {
-        /* Connect to the websocket */
+        /* Connect to the websocket   *
+         * TODO: Use HATEOAS for this */
         this.hubConnection = new HubConnection('/api/websocket/building');
 
         /* Mark pending update on event 'updated' */
@@ -108,7 +111,9 @@ export class RoomLayoutComponent {
      * @param fullReload true to fully reload data
      */
     reloadRooms(fullReload: boolean = false) {
-        this.dataService.GetBuilding(this.locCode).subscribe(result => {
+        this.dataService.FireLink(this.urlLink).subscribe(result => {
+            this.links = result.links;
+
             if (!this.rooms || fullReload)
                 /* Perform a full replace */
                 this.rooms = result.room;
@@ -228,7 +233,7 @@ export class RoomLayoutComponent {
     public mark(status: number) {
         for (let room of this.rooms) {
             if (room.selected) {
-                this.dataService.MarkRoom(room.roomId,status).subscribe(() => {
+                this.dataService.MarkRoom(room,status).subscribe(() => {
                     room.status = status;
                     room.selected = false;
                     this.assignRoom(room);
@@ -289,7 +294,7 @@ export class RoomLayoutComponent {
 
         for (let room of this.rooms) {
             if (room.selected) {
-                this.dataService.AllotRoom(room, this.clno, this.cano).subscribe(result => {
+                this.dataService.AllotRoom(room).subscribe(result => {
                     /* Add new allocation */
                     room.roomAllocation.push(result);
 
@@ -379,7 +384,7 @@ export class RoomLayoutComponent {
      * @param room Room object for local removal of allocation
      */
     public unallocateRoom(roomA: RoomAllocation, room: Room) {
-        this.dataService.UnllocateRoom(roomA.sno).subscribe(() => {
+        this.dataService.UnallocateRoom(roomA).subscribe(() => {
             var index = room.roomAllocation.indexOf(roomA, 0);
             room.roomAllocation.splice(index, 1);
             this.assignRoom(room);

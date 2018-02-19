@@ -115,7 +115,7 @@ export class ContingentDetailsComponent {
     /** DELETE a RoomAllocation */
     public unallocateRoom(roomA: RoomAllocation) {
         if (confirm("Are you sure you want to unallocate this room?")) {
-            this.dataService.UnllocateRoom(roomA.sno).subscribe(result => {
+            this.dataService.UnallocateRoom(roomA).subscribe(result => {
                 /* Get the index and splice it from master */
                 var index = this.contingent.roomAllocation.indexOf(roomA, 0);
                 this.contingent.roomAllocation.splice(index, 1)

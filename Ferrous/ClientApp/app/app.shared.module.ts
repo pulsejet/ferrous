@@ -66,7 +66,7 @@ import { ClickStopPropagation } from './components/material-angular';
             { path: 'personDetails/:id', component: PersonDetailsComponent },
             { path: 'personDetails/:id/:edit', component: PersonDetailsComponent },
 
-            { path: 'roomLayout/:location/:id/:cano', component: RoomLayoutComponent },
+            { path: 'roomLayout/:link/:location', component: RoomLayoutComponent },
             { path: 'locationSelect/:id/:cano', component: LocationSelectComponent },
 
             { path: '**', redirectTo: 'home' }

@@ -1,6 +1,6 @@
 ﻿import { Component, Inject } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Building } from '../interfaces';
+import { Building, Link } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 
@@ -18,6 +18,9 @@ export class LocationSelectComponent {
     /** Master Building list */
     public buildings: Building[];
 
+    public urlLink: Link;
+    public links: Link[];
+
     /** constructor for LocationSelectComponent */
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -34,8 +37,14 @@ export class LocationSelectComponent {
         });
 
         /* Get buildings data */
-        this.dataService.GetAllBuildingsExtended(this.clno).subscribe(result => {
-            this.buildings = result;
+        this.dataService.GetAllBuildingsExtended(this.clno, this.cano).subscribe(result => {
+            this.buildings = result.data;
+            this.links = result.links;
         });
+    }
+
+    /** Handle table click */
+    public handleTableClick(building: Building): void {
+        this.dataService.NavigateRoomLayout(this.dataService.GetLinkSelf(building.links), building.location);
     }
 }

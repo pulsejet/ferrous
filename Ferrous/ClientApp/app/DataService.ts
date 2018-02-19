@@ -28,27 +28,10 @@ JSON_HEADERS = JSON_HEADERS.set('Content-Type', 'application/json');
 export class DataService {
 
     public passedData: any;
-    public passedLinks: Link[];
+    SetPassedData(data: any): void { this.passedData = data; }
+    GetPassedData(): any { return this.passedData; }
 
     constructor(private http: HttpClient, public router: Router) { }
-
-    SetPassedData(data: any): void {
-        this.passedData = data;
-    }
-
-    GetPassedData(): any {
-        return this.passedData;
-    }
-
-    SetPassedLinks(links: Link[]): void {
-        this.passedLinks = links;
-    }
-
-    PopPassedLinks(): any {
-        let ans = this.passedLinks;
-        this.passedLinks = [];
-        return ans;
-    }
 
     GetLink(links: Link[], rel: string = "self", encoded: boolean = false): any {
         let found = links.find(x => x.rel === rel);
@@ -62,11 +45,12 @@ export class DataService {
     GetLinkDelete(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "delete", encoded); }
     GetLinkCreate(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "create", encoded); }
 
+    FireLinkSelf(links: Link[]): Observable<any> { return this.FireLink(this.GetLinkSelf(links)); }
     FireLinkUpdate(links: Link[], body: any): Observable<any> { return this.FireLink(this.GetLinkUpdate(links), body); }
     FireLinkDelete(links: Link[]): Observable<any> { return this.FireLink(this.GetLinkDelete(links)); }
 
     EncodeObject(o: any): string { return btoa(JSON.stringify(o)) }
-    DecodeObject(s: string): any { return JSON.stringify(atob(s)) }
+    DecodeObject(s: string): any { return JSON.parse(atob(s)) }
 
     FireLink(link: Link, body: any = null): Observable<any> {
         switch (link.method) {
@@ -97,7 +81,7 @@ export class DataService {
      * @param CLNo CLNo of particular contingent
      */
     NavigateContingentDetails(link: Link, newRecord: boolean = false): void {
-        this.router.navigate(['/contingentDetails/' + this.EncodeObject(link) + (newRecord ? '/1' : '')]);
+        this.router.navigate(['/contingentDetails', this.EncodeObject(link), (newRecord ? '1' : '0')]);
     }
 
     /**
@@ -121,7 +105,11 @@ export class DataService {
      * @param contingentArrivalNo contingentArrivalNo for which rooms are being allocated
      */
     NavigateLayoutSelect(clno:string, contingentArrivalNo: number): void {
-        this.router.navigate(['/locationSelect/' + clno + '/' + contingentArrivalNo]);
+        this.router.navigate(['/locationSelect', clno, contingentArrivalNo]);
+    }
+
+    NavigateRoomLayout(link: Link, location: string): void {
+        this.router.navigate(['/roomLayout', this.EncodeObject(link), location]);
     }
 
     /* === Contingents === */
@@ -209,8 +197,10 @@ export class DataService {
      * @param id RoomId of Room
      * @param status Status to be marked
      */
-    MarkRoom(id: number, status: number): Observable<any> {
-        return this.http.get(API_Rooms_URL + API_Room_Mark_Suffix + id + "/" + status, { responseType: 'text' });
+    MarkRoom(room: Room, status: number): Observable<any> {
+        let link: Link = { ... this.GetLink(room.links, "mark") };
+        link.href += "?status=" + status.toString();
+        return this.FireLink(link);
     }
 
     /**
@@ -219,14 +209,14 @@ export class DataService {
      * @param clno CLNo of contingent for allocation
      * @param cano contingentArrivalNo to which room is to be allocated
      */
-    AllotRoom(room: Room, clno: string, cano: number): Observable<RoomAllocation> {
-        let url = API_Rooms_URL + API_Room_Allot_Suffix + room.roomId + '/' + clno + '/' + cano;
+    AllotRoom(room: Room): Observable<any> {
+        let link: Link = {... this.GetLink(room.links, "allot") };
         if (room.partialallot || this.RoomCheckPartial(room)) {
             if (room.partialsel == null) throw new Error("Partial number not set!");
-            url += '/' + room.partialsel;
+            link.href += '?partialno=' + room.partialsel;
         }
 
-        return this.http.get<RoomAllocation>(url);
+        return this.FireLink(link);
     }
 
     /**
@@ -263,8 +253,8 @@ export class DataService {
      * DELETE a RoomAllocation
      * @param sno SNo of RoomAllocation
      */
-    UnllocateRoom(sno: number): Observable<any> {
-        return this.http.delete(API_RoomAllocations_URL + sno);
+    UnallocateRoom(roomA: RoomAllocation): Observable<any> {
+        return this.FireLinkDelete(roomA.links);
     }
 
     /* === Buildings === */
@@ -272,16 +262,16 @@ export class DataService {
     /**
      * All Building[]
      */
-    GetAllBuildings(): Observable<Building[]> {
-        return this.http.get<Building[]>(API_Buildings_URL);
+    GetAllBuildings(): Observable<EnumContainer> {
+        return this.http.get<EnumContainer>(API_Buildings_URL);
     }
 
     /**
      * Gets contingent-specific extended Building[]
      * @param clno CLNo of Contingent to lookup
      */
-    GetAllBuildingsExtended(clno: string): Observable<Building[]> {
-        return this.http.get<Building[]>(API_Buildings_URL + "e/" + clno);
+    GetAllBuildingsExtended(clno: string, cano: number): Observable<EnumContainer> {
+        return this.http.get<EnumContainer>(API_Buildings_URL + "e/" + clno + "/" + cano.toString());
     }
 
     /**

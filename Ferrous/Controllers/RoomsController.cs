@@ -192,7 +192,7 @@ namespace Ferrous.Controllers
             await _context.SaveChangesAsync();
 
             UpdateLayoutWebSocket(room.Location);
-            return Content("success");
+            return Ok(room);
         }
 
         [HttpGet("CreateRoomRecords/{location}/{start}/{end}/{capacity}")]
