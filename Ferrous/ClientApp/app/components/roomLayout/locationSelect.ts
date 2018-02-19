@@ -32,7 +32,7 @@ export class LocationSelectComponent {
 
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
-            this.clno = params['id'];
+            this.clno = params['clno'];
             this.cano = params['cano'];
         });
 
@@ -45,6 +45,6 @@ export class LocationSelectComponent {
 
     /** Handle table click */
     public handleTableClick(building: Building): void {
-        this.dataService.NavigateRoomLayout(this.dataService.GetLinkSelf(building.links), building.location);
+        this.dataService.NavigateRoomLayout(this.dataService.GetLinkSelf(building.links), building.location, this.clno);
     }
 }

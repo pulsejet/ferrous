@@ -1,6 +1,6 @@
 <!-- Create button -->
 <button mat-icon-button color="primary" 
-        [routerLink]="['/personDetails/', '0', 1]" 
+        (click)="openNewRecord()"
         class="xunk-table-button-margin">
     <mat-icon>add</mat-icon>
 </button>

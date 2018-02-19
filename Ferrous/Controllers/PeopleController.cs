@@ -21,15 +21,29 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/People
-        [HttpGet]
+        [HttpGet][HTTPrel(HTTPrelList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PEOPLE_GET)]
-        public IEnumerable<Person> GetPerson()
+        public EnumContainer GetPeople()
         {
-            return _context.Person;
+            var people = _context.Person;
+            foreach (var person in people)
+            {
+                new LinksMaker(User, Url).FillPersonLinks(person);
+            }
+
+            return new EnumContainer(
+                people,
+                new LinkHelper()
+                .SetOptions(User, this.GetType(), Url)
+                .AddLinks(new string[] {
+                    nameof(GetPeople),
+                    nameof(PostPerson)
+                }).GetLinks()
+            );
         }
 
         // GET: api/People/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), HTTPrel(HTTPrelList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_GET_DETAILS)]
         public async Task<IActionResult> GetPerson([FromRoute] string id)
         {
@@ -43,13 +57,16 @@ namespace Ferrous.Controllers
             if (person == null)
             {
                 return NotFound();
+            } else
+            {
+                new LinksMaker(User, Url).FillPersonLinks(person);
             }
 
             return Ok(person);
         }
 
         // PUT: api/People/5
-        [HttpPut("{id}")]
+        [HttpPut("{id}")][HTTPrel(HTTPrelList.update)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_PUT)]
         public async Task<IActionResult> PutPerson([FromRoute] string id, [FromBody] Person person)
         {
@@ -85,7 +102,7 @@ namespace Ferrous.Controllers
         }
 
         // POST: api/People
-        [HttpPost]
+        [HttpPost][HTTPrel(HTTPrelList.create)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_POST)]
         public async Task<IActionResult> PostPerson([FromBody] Person person)
         {
@@ -115,7 +132,7 @@ namespace Ferrous.Controllers
         }
 
         // DELETE: api/People/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")][HTTPrel(HTTPrelList.delete)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_DELETE)]
         public async Task<IActionResult> DeletePerson([FromRoute] string id)
         {

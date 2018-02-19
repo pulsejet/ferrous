@@ -24,8 +24,6 @@ export class RoomLayoutComponent {
     public roomsInited: boolean = false;
     /** Current CLNo */
     public clno: string;
-    /** Current contingentArrivalNo */
-    public cano: number;
     /** Full name of current location (e.g. Hostel 7) */
     public locFullname: string;
     /** Code of current location (e.g. H7) */
@@ -59,10 +57,11 @@ export class RoomLayoutComponent {
         this.activatedRoute.params.subscribe((params: Params) => {
             this.urlLink = dataService.DecodeObject(params['link']);
             this.locCode = params['location'];
+            this.clno = params['clno'];
         });
 
         /* Get room layout by location */
-        dataService.GetRoomLayout("H7").subscribe(result => {
+        dataService.GetRoomLayout(this.locCode).subscribe(result => {
             this.roomsLayout.nativeElement.innerHTML = result;
 
             /* Load rooms */

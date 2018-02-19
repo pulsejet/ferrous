@@ -35,14 +35,6 @@ namespace Ferrous.Models
                 .AddLink(nameof(ContingentsController.PutContingent), idObject, "no")
                 .AddLink(nameof(ContingentsController.DeleteContingent), idObject, "no")
 
-                /* Get building with contingent-related data */
-                .SetOptions(User, typeof(BuildingsController), Url)
-                .AddLink(
-                    nameof(BuildingsController.GetBuilding),
-                    idObject,
-                    "get_buildings"
-                )
-
                 /* POST a ContingentArrival */
                 .SetOptions(User, typeof(ContingentArrivalsController), Url)
                 .AddLink(
@@ -57,6 +49,9 @@ namespace Ferrous.Models
 
             foreach (var ra in contingent.RoomAllocation)
                 FillRoomAllocationLinks(ra);
+
+            foreach (var person in contingent.Person)
+                FillPersonLinks(person);
         }
 
         /// <summary>
@@ -133,6 +128,21 @@ namespace Ferrous.Models
 
             foreach (var roomA in room.RoomAllocation)
                 FillRoomAllocationLinks(roomA);
+        }
+
+        public void FillPersonLinks(Person person)
+        {
+            var idObject = new { id = person.Mino };
+            person.links = new LinkHelper()
+                .SetOptions(User, typeof(PeopleController), Url)
+                .AddLink(nameof(PeopleController.GetPerson), idObject, "no")
+                .AddLink(nameof(PeopleController.PutPerson), idObject, "no")
+                .AddLink(nameof(PeopleController.DeletePerson), idObject, "no")
+
+                .SetOptions(User, typeof(ContingentsController), Url)
+                .AddLink(nameof(ContingentsController.GetContingent), new { id = person.ContingentLeaderNo }, "contingent")
+
+                .GetLinks();
         }
 
     }

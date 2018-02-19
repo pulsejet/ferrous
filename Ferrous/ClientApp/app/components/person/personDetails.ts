@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Person } from '../interfaces';
+import { Person, Link } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 
@@ -10,10 +10,6 @@ import { DataService } from '../../DataService';
     styleUrls: ['../../Custom.css']
 })
 export class PersonDetailsComponent {
-    /** Current MINo */
-    public id: string;
-    /** 1 to start editing on initial load */
-    public startedit: number; 
     /** true if currently editing */
     public editing: boolean = false;
     /** object for reverting cancelled changes */
@@ -21,11 +17,15 @@ export class PersonDetailsComponent {
     /** Master Person object */
     public person: Person;
 
+    public newrecord: boolean;
+
+    public urlLink: Link;
+
     /** constructor for personDetails */
     constructor(
         private activatedRoute: ActivatedRoute,
         private titleService: Title,
-        private dataService: DataService,
+        public dataService: DataService,
         public router: Router) {
         this.editing = false;
 
@@ -33,14 +33,14 @@ export class PersonDetailsComponent {
 
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
-            this.id = params['id'];
-            this.startedit = params['edit'];
+            this.urlLink = this.dataService.DecodeObject(params['link']);
+            this.newrecord = params['edit'] == 1;
         });
 
         /* MINo 0 indicates a new record  *
          * Fetch if not a new record      */
-        if (this.id !== '0') {
-            this.dataService.GetPerson(this.id).subscribe(result => {
+        if (!this.newrecord) {
+            this.dataService.FireLink(this.urlLink).subscribe(result => {
                 this.person  = result;
                 this.initialPerson = { ...this.person };
 
@@ -48,7 +48,7 @@ export class PersonDetailsComponent {
         }
 
         /* Start editing if edit was clicked */
-        if (this.startedit === 1) {
+        if (this.newrecord) {
             this.editing = true;
             this.person = {} as Person;
         }
@@ -57,7 +57,7 @@ export class PersonDetailsComponent {
     /** Handle actions of both edit and cancel */
     public edit() {
         /* Cancel if startedit navigates to person list  */
-        if (this.startedit === 1) {
+        if (this.newrecord) {
             this.router.navigate(['/person/']);
             return;
         }
@@ -71,25 +71,25 @@ export class PersonDetailsComponent {
     public save() {
         let body = JSON.stringify(this.person);
 
-        if (this.id !== '0') {
-            this.dataService.PutPerson(this.id,body).subscribe((): void => {
+        if (!this.newrecord) {
+            this.dataService.FireLinkUpdate(this.person.links, body).subscribe((): void => {
                 /* Update the initial data */
                 this.initialPerson = { ...this.person };
                 this.editing = !this.editing;
             });
         } else {
             /* Go back to list for new record */
-            this.dataService.PostPerson(body).subscribe((): void => {
+            this.dataService.FireLink(this.urlLink, body).subscribe((): void => {
                 this.router.navigate(['/person/']);
             });
         }
-        if (this.startedit === 1) this.router.navigate(['/person/']);
+        if (this.newrecord) this.router.navigate(['/person/']);
     }
 
     /** DELETE a record */
     public delete() {
         if (confirm("Are you sure to delete?")) {
-            this.dataService.DeletePerson(this.id).subscribe((): void => {
+            this.dataService.FireLinkDelete(this.person.links).subscribe((): void => {
                 this.router.navigate(['/person/']);
             });
         }

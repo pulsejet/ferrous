@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Person } from '../interfaces';
+import { Person, Link } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 import { PaginatorHelper } from '../../Common';
@@ -15,6 +15,8 @@ export class PersonComponent {
     public people: Person[];
     paginatorHelper = new PaginatorHelper;
 
+    public links: Link[];
+
     /** constructor for PersonComponent */
     constructor(
         private titleService: Title,
@@ -24,13 +26,19 @@ export class PersonComponent {
 
         /* Populate the master */
         dataService.GetAllPeople().subscribe(result => {
-            this.people = result;
+            this.people = result.data;
+            this.links = result.links;
         }, error => console.error(error));
     }
 
     /** Handle table click */
     public handleTableClick(person: Person) {
-        this.dataService.NavigatePersonDetails(person.mino);
+        this.dataService.NavigatePersonDetails(this.dataService.GetLinkSelf(person.links));
+    }
+
+    /** Create a new record */
+    public openNewRecord() {
+        this.dataService.NavigatePersonDetails(this.dataService.GetLinkCreate(this.links), true);
     }
 }
 

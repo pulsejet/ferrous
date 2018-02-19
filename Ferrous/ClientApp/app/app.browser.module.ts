@@ -12,7 +12,7 @@ import 'hammerjs';
         BrowserModule,
         AppModuleShared,
         BrowserAnimationsModule,
-        ServiceWorkerModule.register('/ngsw-worker.js')
+        //ServiceWorkerModule.register('/ngsw-worker.js')
     ],
     providers: [
         { provide: 'BASE_URL', useFactory: getBaseUrl }

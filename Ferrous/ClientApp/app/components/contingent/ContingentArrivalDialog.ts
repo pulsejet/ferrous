@@ -1,6 +1,6 @@
 ﻿import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ContingentArrival } from '../interfaces';
+import { ContingentArrival, Link } from '../interfaces';
 import { DataService } from '../../DataService';
 
 @Component({
@@ -17,6 +17,8 @@ export class ContingentArrivalDialogComponent {
     /** CLNo for saving */
     public CLNo: string;
 
+    public links: Link[];
+
     /** constructor for ContingentArrivalDialogComponent */
     constructor(
         public dialogRef: MatDialogRef<ContingentArrivalDialogComponent>,
@@ -24,6 +26,7 @@ export class ContingentArrivalDialogComponent {
         private dataService: DataService) {
         this.contingentArrivals = data["ca"];
         this.CLNo = data["clno"];
+        this.links = data["links"];
         this.nContingentArrv = {} as ContingentArrival;
     }
 
@@ -46,7 +49,7 @@ export class ContingentArrivalDialogComponent {
             /* Prepare and create the new entry */
             this.nContingentArrv.contingentLeaderNo = this.CLNo;
             let body = JSON.stringify(this.nContingentArrv);
-            this.dataService.PostContingentArrival(body).subscribe(result => {
+            this.dataService.FireLink(this.dataService.GetLink(this.links, "create_contingent_arrival"), body).subscribe(result => {
                 this.dataService.NavigateLayoutSelect(result.contingentLeaderNo, result.contingentArrivalNo);
             })
             this.dialogRef.close(this.chosenEntry);
@@ -79,7 +82,7 @@ export class ContingentArrivalDialogComponent {
      * @param chosenEntry Index of chosen entry
      */
     deleteArrival(chosenEntry: number) {
-        this.dataService.DeleteContingentArrival(this.contingentArrivals[chosenEntry].contingentArrivalNo).subscribe(result => {
+        this.dataService.FireLinkDelete(this.contingentArrivals[chosenEntry].links).subscribe(result => {
             this.contingentArrivals.splice(chosenEntry, 1);
             this.chosenEntry = -1;
         });

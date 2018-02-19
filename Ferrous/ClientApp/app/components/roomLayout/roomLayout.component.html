@@ -7,7 +7,7 @@
 </div>
 
 <!-- Location label and refresh button-->
-<span class="h1-inline"> {{ locFullname }} </span>
+<span *ngIf="rooms" class="h1-inline"> {{ locFullname }} (for {{ clno }})</span>
 <button class="xunk-table-button" mat-icon-button color="primary" (click)="reloadRooms(true)">
     <mat-icon>refresh</mat-icon>
 </button>

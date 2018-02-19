@@ -102,7 +102,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr [routerLink]="['/personDetails/', person.mino]" *ngFor="let person of paginatorHelper.paginate(contingent.person)">
+                    <tr *ngFor="let person of paginatorHelper.paginate(contingent.person)"
+                        (click)="this.dataService.NavigatePersonDetails(this.dataService.GetLinkSelf(person.links));">
                         <td>{{ person.name }}</td>
                         <td>{{ person.mino }}</td>
                         <td>{{ person.college }}</td>

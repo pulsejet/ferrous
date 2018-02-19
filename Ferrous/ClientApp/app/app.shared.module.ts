@@ -63,11 +63,11 @@ import { ClickStopPropagation } from './components/material-angular';
             { path: 'contingentDetails/:id/:edit', component: ContingentDetailsComponent },
 
             { path: 'person', component: PersonComponent },
-            { path: 'personDetails/:id', component: PersonDetailsComponent },
-            { path: 'personDetails/:id/:edit', component: PersonDetailsComponent },
+            { path: 'personDetails/:link', component: PersonDetailsComponent },
+            { path: 'personDetails/:link/:edit', component: PersonDetailsComponent },
 
-            { path: 'roomLayout/:link/:location', component: RoomLayoutComponent },
-            { path: 'locationSelect/:id/:cano', component: LocationSelectComponent },
+            { path: 'roomLayout/:link/:location/:clno', component: RoomLayoutComponent },
+            { path: 'locationSelect/:clno/:cano', component: LocationSelectComponent },
 
             { path: '**', redirectTo: 'home' }
         ])

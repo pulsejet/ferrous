@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ferrous.Models
 {
@@ -14,5 +15,7 @@ namespace Ferrous.Models
         public string Sex { get; set; }
 
         public Contingents ContingentLeaderNoNavigation { get; set; }
+
+        public List<Link> links;
     }
 }

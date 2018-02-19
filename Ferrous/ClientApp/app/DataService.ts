@@ -76,10 +76,6 @@ export class DataService {
         this.router.navigate(['/contingent/']);
     }
 
-    /**
-     * Navigate to ContingentDetails
-     * @param CLNo CLNo of particular contingent
-     */
     NavigateContingentDetails(link: Link, newRecord: boolean = false): void {
         this.router.navigate(['/contingentDetails', this.EncodeObject(link), (newRecord ? '1' : '0')]);
     }
@@ -91,12 +87,8 @@ export class DataService {
         this.router.navigate(['/person/']);
     }
 
-    /**
-     * Navigate to PersonDetails
-     * @param MINo MINo of particular person
-     */
-    NavigatePersonDetails(MINo: string): void {
-        this.router.navigate(['/personDetails/' + MINo]);
+    NavigatePersonDetails(link: Link, newRecord: boolean = false): void {
+        this.router.navigate(['/personDetails', this.EncodeObject(link), (newRecord ? '1' : '0')]);
     }
 
     /**
@@ -108,8 +100,8 @@ export class DataService {
         this.router.navigate(['/locationSelect', clno, contingentArrivalNo]);
     }
 
-    NavigateRoomLayout(link: Link, location: string): void {
-        this.router.navigate(['/roomLayout', this.EncodeObject(link), location]);
+    NavigateRoomLayout(link: Link, location: string, clno: string): void {
+        this.router.navigate(['/roomLayout', this.EncodeObject(link), location, clno]);
     }
 
     /* === Contingents === */
@@ -126,8 +118,8 @@ export class DataService {
     /**
      * All People
      */
-    GetAllPeople(): Observable<Person[]> {
-        return this.http.get<Person[]>(API_People_URL);
+    GetAllPeople(): Observable<EnumContainer> {
+        return this.http.get<EnumContainer>(API_People_URL);
     }
 
     /**

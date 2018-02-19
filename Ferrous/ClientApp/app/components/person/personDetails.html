@@ -67,6 +67,10 @@
                 <button mat-raised-button color="accent" (click)="edit();">Cancel</button>
             </ng-container>
         </div>
-        <button class="xunk-max-200px-desktop" mat-raised-button color="primary" [routerLink]="['/contingentDetails/', person.contingentLeaderNo]">Open Contingent</button>
+        <button class="xunk-max-200px-desktop" 
+                mat-raised-button color="primary" 
+                (click)="this.dataService.NavigateContingentDetails(this.dataService.GetLink(person.links, 'contingent'));">
+        Open Contingent
+        </button>
     </div>
 </div>

@@ -16,9 +16,6 @@ import { PaginatorHelper } from '../../Common';
     styleUrls: ['../../Custom.css']
 })
 export class ContingentDetailsComponent {
-    /** Current CLNo */
-    //public CLNo: string;
-    /** 1 to start editing on initial load */
     public newrecord: boolean;
     /** true if currently editing */
     public editing: boolean = false;
@@ -34,7 +31,7 @@ export class ContingentDetailsComponent {
     constructor(
         private activatedRoute: ActivatedRoute,
         private _location: Location,
-        private dataService: DataService,
+        public dataService: DataService,
         public snackBar: MatSnackBar,
         public dialog: MatDialog,
         private titleService: Title,
@@ -130,7 +127,11 @@ export class ContingentDetailsComponent {
 
     public StartAllocation() {
         let dialog = this.dialog.open(ContingentArrivalDialogComponent, {
-            data: { ca: this.contingent.contingentArrival, clno: this.contingent.contingentLeaderNo }
+            data: {
+                links: this.links,
+                ca: this.contingent.contingentArrival,
+                clno: this.contingent.contingentLeaderNo
+            }
         });
     }
 
