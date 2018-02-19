@@ -29,11 +29,11 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/Buildings/e
-        [HttpGet("e/{clno}")]
+        [HttpGet("e/{id}", Name = "GetBuildingExtended")][HTTPrel(HTTPrelList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDING_GET_DETAILS)]
-        public async Task<IEnumerable<Building>> GetBuildingExtended([FromRoute] string clno)
+        public async Task<IEnumerable<Building>> GetBuildingExtended([FromRoute] string id)
         {
-            return await DataUtilities.GetExtendedBuildings(_context, clno);
+            return await DataUtilities.GetExtendedBuildings(_context, id);
         }
 
         // GET: api/Buildings/5

@@ -61,23 +61,35 @@ namespace Ferrous.Models
             return this;
         }
 
-        public bool AddLink(string route, object routeParams = null)
+        public LinkHelper AddLinks(Tuple<string, object, string>[] routes)
+        {
+            foreach (var route in routes) AddLink(route.Item1, route.Item2, route.Item3);
+            return this;
+        }
+
+        public bool AddLink(string route, object routeParams = null, string byname = "")
         {
             MethodInfo controllerMethod = type.GetMethod(route);
             Authorization attr = (Authorization)controllerMethod.GetCustomAttributes(typeof(Authorization), true)[0];
 
-            var getAtt = controllerMethod.GetCustomAttribute(typeof(HttpGetAttribute));
-            var postAtt = controllerMethod.GetCustomAttribute(typeof(HttpPostAttribute));
-            var putAtt = controllerMethod.GetCustomAttribute(typeof(HttpPutAttribute));
-            var deleteAtt = controllerMethod.GetCustomAttribute(typeof(HttpDeleteAttribute));
+            var getAtt = (HttpGetAttribute) controllerMethod.GetCustomAttribute(typeof(HttpGetAttribute));
+            var postAtt = (HttpPostAttribute) controllerMethod.GetCustomAttribute(typeof(HttpPostAttribute));
+            var putAtt = (HttpPutAttribute) controllerMethod.GetCustomAttribute(typeof(HttpPutAttribute));
+            var deleteAtt = (HttpDeleteAttribute) controllerMethod.GetCustomAttribute(typeof(HttpDeleteAttribute));
             var relAtt = (HTTPrel)controllerMethod.GetCustomAttribute(typeof(HTTPrel));
-
+            
             string httpMethod = HTTPMethod.GET;
 
-            if (getAtt != null) httpMethod = HTTPMethod.GET;
-            else if (postAtt != null) httpMethod = HTTPMethod.POST;
-            else if (putAtt != null) httpMethod = HTTPMethod.PUT;
-            else if (deleteAtt != null) httpMethod = HTTPMethod.DELETE;
+            object routingAttribute = null;
+
+            if (getAtt != null) { httpMethod = HTTPMethod.GET; routingAttribute = getAtt; }
+            else if (postAtt != null) { httpMethod = HTTPMethod.POST; routingAttribute = postAtt; }
+            else if (putAtt != null) { httpMethod = HTTPMethod.PUT; routingAttribute = putAtt; }
+            else if (deleteAtt != null) { httpMethod = HTTPMethod.DELETE; routingAttribute = deleteAtt; }
+
+            string routeTemplate = "";
+            if (routingAttribute != null)
+                routeTemplate = (string) routingAttribute.GetType().GetProperty(nameof(getAtt.Template)).GetValue(routingAttribute);
 
             if (relAtt == null) throw new Exception("HTTPrel attribute not set for creating link");
 
@@ -85,8 +97,18 @@ namespace Ferrous.Models
             {
                 if (routeParams == null)
                     Links.Add(new Link(relAtt.rel, httpMethod, urlHelper.Action(route)));
-                else
+                else if (byname == String.Empty)
                     Links.Add(new Link(relAtt.rel, httpMethod, urlHelper.Action(route, routeParams)));
+                else
+                {
+                    var cRouteAtt = (RouteAttribute)type.GetCustomAttribute(typeof(RouteAttribute));
+                    foreach (var propInfo in routeParams.GetType().GetProperties())
+                    {
+                        string prop = (string) propInfo.GetValue(routeParams);
+                        routeTemplate = routeTemplate.Replace("{" + propInfo.Name + "}", prop);
+                        Links.Add(new Link(relAtt.rel, httpMethod, "/" + cRouteAtt.Template + "/" + routeTemplate));
+                    }
+                }   
                 return true;
             }
             else return false;
