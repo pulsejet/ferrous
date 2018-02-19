@@ -22,7 +22,7 @@ export class RoomDialogComponent {
 
     /** PUT changes to the Room */
     confirmSelection() {
-        this.dataService.PutRoom(this.room.roomId.toString(), this.room).subscribe((): void => {
+        this.dataService.FireLinkUpdate(this.room.links, this.room).subscribe((): void => {
             this.dialogRef.close();
         });
     }

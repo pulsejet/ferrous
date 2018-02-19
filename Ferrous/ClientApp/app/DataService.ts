@@ -5,16 +5,8 @@ import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival, 
 import { Router } from '@angular/router';
 
 const API_Contingents_URL: string = '/api/Contingents/';
-const API_RoomAllocations_URL: string = '/api/RoomAllocations/';
 const API_Buildings_URL: string = '/api/Buildings/';
-
-const API_Rooms_URL: string = '/api/Rooms/';
-const API_Rooms_ByLocation_Suffix: string = 'ByLoc/';
-const API_Room_Mark_Suffix: string = 'mark/';
-const API_Room_Allot_Suffix: string = 'allot/';
-
 const API_People_URL: string = '/api/People/';
-const API_ContingentArrivals_URL: string = '/api/ContingentArrivals/';
 
 const SF_RoomLayouts_URL = '/roomTemplates/';
 
@@ -33,6 +25,7 @@ export class DataService {
 
     constructor(private http: HttpClient, public router: Router) { }
 
+    /* Code for Link management */
     GetLink(links: Link[], rel: string = "self", encoded: boolean = false): any {
         let found = links.find(x => x.rel === rel);
         if (found == null) return null;
@@ -104,67 +97,16 @@ export class DataService {
         this.router.navigate(['/roomLayout', this.EncodeObject(link), location, clno]);
     }
 
-    /* === Contingents === */
-
-    /**
-     * All Contingent[]
-     */
+    /** All Contingents */
     GetAllContingents(): Observable<EnumContainer> {
         return this.http.get<EnumContainer>(API_Contingents_URL);
     }
-    
-    /* === People === */
 
-    /**
-     * All People
-     */
+    /** All People */
     GetAllPeople(): Observable<EnumContainer> {
         return this.http.get<EnumContainer>(API_People_URL);
     }
-
-    /**
-     * Person Details
-     * @param id MINo of Person
-     */
-    GetPerson(id: string): Observable<Person> {
-        return this.http.get<Person>(API_People_URL + id);
-    }
-
-    /**
-     * PUT update to existing Person
-     * @param id MINo of Person
-     * @param body JSON of Person
-     */
-    PutPerson(id: string, body: any): Observable<any> {
-        return this.http.put(API_People_URL + id, body, { headers: JSON_HEADERS });
-    }
-
-    /**
-     * POST new Person
-     * @param body JSON of Person
-     */
-    PostPerson(body: any): Observable<any> {
-        return this.http.post(API_People_URL, body, { headers: JSON_HEADERS });
-    }
-
-    /**
-     * DELETE Person without prompting
-     * @param id
-     */
-    DeletePerson(id: string): Observable<any> {
-        return this.http.delete(API_People_URL + id);
-    }
-
-    /* === Rooms === */
-
-    /**
-     * (Deprecated) Get Room[] from a given location
-     * @param location Location code
-     */
-    GetRoomsByLocation(location: string): Observable<Room[]> {
-        return this.http.get<Room[]>(API_Rooms_URL + API_Rooms_ByLocation_Suffix +location);
-    }
-
+    
     /* === RoomLayout === */
 
     /**
@@ -175,32 +117,12 @@ export class DataService {
         return this.http.get(SF_RoomLayouts_URL + location + '.html', { responseType: 'text' });
     }
 
-    /**
-     * PUT update to existing Room
-     * @param id RoomId of Room
-     * @param body JSON of Room
-     */
-    PutRoom(id: string, body: any): Observable<any> {
-        return this.http.put(API_Rooms_URL + id, body, { headers: JSON_HEADERS });
-    }
-
-    /**
-     * Mark room with a status
-     * @param id RoomId of Room
-     * @param status Status to be marked
-     */
     MarkRoom(room: Room, status: number): Observable<any> {
         let link: Link = { ... this.GetLink(room.links, "mark") };
         link.href += "?status=" + status.toString();
         return this.FireLink(link);
     }
 
-    /**
-     * Try to allot room to contingent
-     * @param room Room object to be allocated
-     * @param clno CLNo of contingent for allocation
-     * @param cano contingentArrivalNo to which room is to be allocated
-     */
     AllotRoom(room: Room): Observable<any> {
         let link: Link = {... this.GetLink(room.links, "allot") };
         if (room.partialallot || this.RoomCheckPartial(room)) {
@@ -249,11 +171,7 @@ export class DataService {
         return this.FireLinkDelete(roomA.links);
     }
 
-    /* === Buildings === */
-
-    /**
-     * All Building[]
-     */
+    /** All Building */
     GetAllBuildings(): Observable<EnumContainer> {
         return this.http.get<EnumContainer>(API_Buildings_URL);
     }
@@ -272,24 +190,6 @@ export class DataService {
      */
     GetBuilding(loc: string): Observable<Building> {
         return this.http.get<Building>(API_Buildings_URL + loc);
-    }
-
-    /* === ContingentArrival === */
-
-    /**
-     * POST a new ContingentArrival
-     * @param body
-     */
-    PostContingentArrival(body: any): Observable<ContingentArrival>  {
-        return this.http.post<ContingentArrival>(API_ContingentArrivals_URL, body, { headers: JSON_HEADERS });
-    }
-
-    /**
-     * DELETE an empty ContingentArrival
-     * @param id contingentArrivalNo
-     */
-    DeleteContingentArrival(id: number): Observable<any> {
-        return this.http.delete(API_ContingentArrivals_URL + id);
     }
 
     /* === Quick Extras which shouldn't be here === */
