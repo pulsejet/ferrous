@@ -20,7 +20,7 @@ namespace Ferrous.Models
         }
 
         /// <summary>
-        /// Links object for Contingents. SHOULD BE CALLED ONLY FROM ContingentsController
+        /// Links object for Contingents. SHOULD BE CALLED ONLY from ContingentsController
         /// </summary>
         /// <param name="contingent">Contingent object</param>
         /// <returns></returns>
@@ -60,7 +60,25 @@ namespace Ferrous.Models
         }
 
         /// <summary>
-        /// Lists object for ContingnetArrival
+        /// Includes Links object in all necessary sub data for Building. SHOULD BE CALLED ONLY from BuildingsController
+        /// </summary>
+        /// <param name="building"></param>
+        /// <returns></returns>
+        public void FillBuildingsLinks(Building building)
+        {
+            building.Links = new LinkHelper()
+                   .SetOptions(User, typeof(BuildingsController), Url)
+                   .AddLink(nameof(BuildingsController.GetBuilding), new { id = building.Location })
+                   .AddLink(nameof(BuildingsController.PutBuilding), new { id = building.Location })
+                   .AddLink(nameof(BuildingsController.DeleteBuilding), new { id = building.Location })
+                   .GetLinks();
+
+            foreach (var room in building.Room)
+                FillRoomLinks(room);
+        }
+
+        /// <summary>
+        /// Links object for ContingnetArrival
         /// </summary>
         /// <param name="contingentArrival">ContingentArrival object</param>
         /// <returns></returns>
@@ -79,7 +97,7 @@ namespace Ferrous.Models
         }
 
         /// <summary>
-        /// Lists object for Room Allocation
+        /// Links object for Room Allocation
         /// </summary>
         /// <param name="roomAllocation">RoomAllocation object</param>
         public void FillRoomAllocationLinks(RoomAllocation roomAllocation)
@@ -91,5 +109,24 @@ namespace Ferrous.Models
                 .AddLink(nameof(RoomAllocationsController.DeleteRoomAllocation), idObject, "no")
                 .GetLinks();
         }
+
+        /// <summary>
+        /// Fills Links object for Room
+        /// </summary>
+        /// <param name="room">Room object</param>
+        public void FillRoomLinks(Room room)
+        {
+            var idObject = new { id = room.RoomId };
+            room.Links = new LinkHelper()
+                .SetOptions(User, typeof(RoomsController), Url)
+                .AddLink(nameof(RoomsController.GetRoom), idObject, "no")
+                .AddLink(nameof(RoomsController.PutRoom), idObject, "no")
+                .AddLink(nameof(RoomsController.DeleteRoom), idObject, "no")
+                .GetLinks();
+
+            foreach (var roomA in room.RoomAllocation)
+                FillRoomAllocationLinks(roomA);
+        }
+
     }
 }

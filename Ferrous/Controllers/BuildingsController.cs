@@ -29,9 +29,8 @@ namespace Ferrous.Controllers
         {
             var buildings = await DataUtilities.GetExtendedBuildings(_context, id);
             foreach (var building in buildings)
-            {
-                building.Links = GetLinks(building);
-            }
+                (new LinksMaker(User,Url)).FillBuildingsLinks(building);
+
             return new EnumContainer(
                 buildings,
                 new LinkHelper()
@@ -64,7 +63,7 @@ namespace Ferrous.Controllers
                 return NotFound();
             } else
             {
-                building.Links = GetLinks(building);
+                new LinksMaker(User, Url).FillBuildingsLinks(building);
             }
 
             return Ok(building);
@@ -73,7 +72,7 @@ namespace Ferrous.Controllers
         // PUT: api/Buildings/5
         [HttpPut("{id}")]
         [HTTPrel(HTTPrelList.update)]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDING_PUT)]
+        [Authorization(ElevationLevels.SuperUser, PrivilegeList.BUILDING_PUT)]
         public async Task<IActionResult> PutBuilding([FromRoute] string id, [FromBody] Building building)
         {
             if (!ModelState.IsValid)
@@ -141,7 +140,7 @@ namespace Ferrous.Controllers
         // DELETE: api/Buildings/5
         [HttpDelete("{id}")]
         [HTTPrel(HTTPrelList.delete)]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDING_DELETE)]
+        [Authorization(ElevationLevels.SuperUser, PrivilegeList.BUILDING_DELETE)]
         public async Task<IActionResult> DeleteBuilding([FromRoute] string id)
         {
             if (!ModelState.IsValid)
@@ -164,17 +163,6 @@ namespace Ferrous.Controllers
         private bool BuildingExists(string id)
         {
             return _context.Building.Any(e => e.Location == id);
-        }
-
-        private List<Link> GetLinks(Building building)
-        {
-            return new LinkHelper()
-                   .SetOptions(User, this.GetType(), Url)
-                   .AddLinks(new Tuple<string, object>[] {
-                        new Tuple<string, object> (nameof(GetBuilding), new { id = building.Location }),
-                        new Tuple<string, object> (nameof(PutBuilding), new { id = building.Location }),
-                        new Tuple<string, object> (nameof(DeleteBuilding), new { id = building.Location })
-                   }).GetLinks();
         }
     }
 }

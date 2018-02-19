@@ -29,16 +29,9 @@ namespace Ferrous.Controllers
             _hubContext.Clients.Group(Building).InvokeAsync("updated", DateTime.Now.ToString());
         }
 
-        // GET: api/Rooms
-        [HttpGet]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMS_GET)]
-        public IEnumerable<Room> GetRoom()
-        {
-            return _context.Room.Include(m => m.RoomAllocation);
-        }
-
         // GET: api/Rooms/5
         [HttpGet("{id}")]
+        [HTTPrel(HTTPrelList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMS_GET)]
         public async Task<IActionResult> GetRoom([FromRoute] int id)
         {
@@ -58,16 +51,9 @@ namespace Ferrous.Controllers
             return Ok(room);
         }
 
-        // GET: api/Rooms/ByLoc/H1
-        [HttpGet("ByLoc/{loc}")]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMS_GET)]
-        public async Task<IEnumerable<Room>> GetRoomsByLoc([FromRoute] string loc)
-        {
-            return await _context.Room.Where(m => m.Location == loc).Include(m => m.RoomAllocation).ToListAsync();
-        }
-
         // PUT: api/Rooms/5
         [HttpPut("{id}")]
+        [HTTPrel(HTTPrelList.update)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_PUT)]
         public async Task<IActionResult> PutRoom([FromRoute] int id, [FromBody] Room room)
         {
@@ -105,6 +91,7 @@ namespace Ferrous.Controllers
 
         // POST: api/Rooms
         [HttpPost]
+        [HTTPrel(HTTPrelList.create)]
         [Authorization(ElevationLevels.SuperUser, PrivilegeList.ROOM_POST)]
         public async Task<IActionResult> PostRoom([FromBody] Room room)
         {
@@ -121,6 +108,7 @@ namespace Ferrous.Controllers
 
         // DELETE: api/Rooms/5
         [HttpDelete("{id}")]
+        [HTTPrel(HTTPrelList.delete)]
         [Authorization(ElevationLevels.SuperUser, PrivilegeList.ROOM_DELETE)]
         public async Task<IActionResult> DeleteRoom([FromRoute] int id)
         {
@@ -150,6 +138,7 @@ namespace Ferrous.Controllers
         [HttpGet("allot/{id}")]
         [HttpGet("allot/{id}/{CLNo}/{CANo}")]
         [HttpGet("allot/{id}/{CLNo}/{CANo}/{partialno}")]
+        [HTTPrel(HTTPrelList.overridden)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_ALLOT)]
         public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string CLNo, [FromRoute] int CANo, [FromRoute] int partialno = -1)
         {
@@ -188,6 +177,7 @@ namespace Ferrous.Controllers
 
         // GET: api/Rooms/mark/CLNo
         [HttpGet("mark/{id}/{status}")]
+        [HTTPrel(HTTPrelList.overridden)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_MARK)]
         public async Task<IActionResult> mark([FromRoute] int id, [FromRoute] int status)
         {
@@ -208,6 +198,7 @@ namespace Ferrous.Controllers
         }
 
         [HttpGet("CreateRoomRecords/{location}/{start}/{end}/{capacity}")]
+        [HTTPrel(HTTPrelList.overridden)]
         [Authorization(ElevationLevels.SuperUser, PrivilegeList.ROOM_CREATE)]
         public IActionResult CreateRoomRecords([FromRoute] string location, [FromRoute] int start, [FromRoute] int end, [FromRoute] int capacity)
         {

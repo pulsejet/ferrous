@@ -20,6 +20,7 @@ namespace Ferrous.Models
     }
 
     public enum HTTPrelList {
+        overridden = -1,
         self = 0,
         update = 1,
         delete = 2,
