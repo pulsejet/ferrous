@@ -1,6 +1,6 @@
 ﻿import { Component, Inject } from '@angular/core';
 import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
-import { Contingent, RoomAllocation, ContingentArrival } from '../interfaces';
+import { Contingent, RoomAllocation, ContingentArrival, Link } from '../interfaces';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -17,15 +17,17 @@ import { PaginatorHelper } from '../../Common';
 })
 export class ContingentDetailsComponent {
     /** Current CLNo */
-    public CLNo: string;
+    //public CLNo: string;
     /** 1 to start editing on initial load */
-    public startedit: number;
+    public newrecord: boolean;
     /** true if currently editing */
     public editing: boolean = false;
     /** Object for reverting cancelled changes */
     public initial_contingent: Contingent;
     /** Master Contingent object */
     public contingent: Contingent;
+    public urlLink: Link;
+    public links: Link[];
     paginatorHelper = new PaginatorHelper;
 
     /** constructor for ContingentDetailsComponent */
@@ -42,15 +44,16 @@ export class ContingentDetailsComponent {
 
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
-            this.CLNo = params['id'];
-            this.startedit = params['edit'];
+            this.newrecord = params['edit'] == 1;
+            this.urlLink = JSON.parse(atob(params['id']))
         });
 
         /* CLNo 0 indicates a new record  *
          * Fetch if not a new record      */
-        if (this.CLNo != '0') {
-            this.dataService.GetContingent(this.CLNo).subscribe(result => {
+        if (!this.newrecord) {
+            this.dataService.FireLink(this.urlLink).subscribe(result => {
                 this.contingent = result;
+                this.links = this.contingent.links;
                 this.initial_contingent = { ...this.contingent };   /* Shallow copy */
             }, error => {
                 console.error(error);
@@ -60,7 +63,7 @@ export class ContingentDetailsComponent {
         }
 
         /* Start editing if edit was clicked */
-        if (this.startedit == 1) {
+        if (this.newrecord) {
             this.editing = true;
             this.contingent = {} as Contingent;
         }
@@ -70,7 +73,7 @@ export class ContingentDetailsComponent {
     /** Handle actions of both edit and cancel */
     public edit() {
         /* Cancel if startedit navigates to contingent list  */
-        if (this.startedit == 1) {
+        if (this.newrecord) {
             this.dataService.NavigateContingentsList();
             return;
         }
@@ -85,16 +88,16 @@ export class ContingentDetailsComponent {
         let body = JSON.stringify(this.contingent);
 
         /* PUT for editing; POST for new record */
-        if (this.CLNo != '0') {
-            this.dataService.PutContingent(this.CLNo, body).subscribe(result => {
+        if (!this.newrecord) {
+            this.dataService.FireLinkUpdate(this.links, body).subscribe(result => {
                 /* Update the initial data */
                 this.initial_contingent = { ...this.contingent };
                 this.editing = !this.editing;
-                if (this.startedit == 1) this.dataService.NavigateContingentsList();
+                if (this.newrecord) this.dataService.NavigateContingentsList();
             });
         } else {
             /* Go back to list for new record */
-            this.dataService.PostContingent(body).subscribe(result => {
+            this.dataService.FireLink(this.urlLink, body).subscribe(result => {
                 this.dataService.NavigateContingentsList();
             });
         }
@@ -103,7 +106,7 @@ export class ContingentDetailsComponent {
     /** DELETE a record */
     public delete() {
         if (confirm("Are you sure to delete?")) {
-            this.dataService.DeleteContingent(this.CLNo).subscribe(result => {
+            this.dataService.FireLinkDelete(this.links).subscribe(result => {
                 this.dataService.NavigateContingentsList();
             });
         }
@@ -127,7 +130,7 @@ export class ContingentDetailsComponent {
 
     public StartAllocation() {
         let dialog = this.dialog.open(ContingentArrivalDialogComponent, {
-            data: { ca: this.contingent.contingentArrival, clno: this.CLNo }
+            data: { ca: this.contingent.contingentArrival, clno: this.contingent.contingentLeaderNo }
         });
     }
 

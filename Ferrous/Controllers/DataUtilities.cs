@@ -1,5 +1,6 @@
 ﻿using Ferrous.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Ferrous.Controllers.Utilities;
 
@@ -37,6 +38,8 @@ namespace Ferrous.Controllers
                 contingent.Female = RegFemale.ToString();
                 contingent.ArrivedM = ArrivedM.ToString() + ((OnSpotM > 0) ? " + " + OnSpotM : "");
                 contingent.ArrivedF = ArrivedF.ToString() + ((OnSpotF > 0) ? " + " + OnSpotF : "");
+                contingent.Person = new HashSet<Person>();
+                contingent.ContingentArrival = new HashSet<ContingentArrival>();
             }
 
             return cts;

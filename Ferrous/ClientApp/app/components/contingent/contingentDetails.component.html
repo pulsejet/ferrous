@@ -7,7 +7,7 @@
 <div *ngIf="contingent">
     <!-- Property list when not editing -->
     <div class="row">
-        <ng-container *ngIf="CLNo != '0'">
+        <ng-container *ngIf="!newrecord">
             <div class="col-8 col-md-3"><b>Contingent Leader No:</b></div>
             <div class="col-4 col-md-9"> {{ contingent.contingentLeaderNo }} </div>
 
@@ -28,7 +28,7 @@
             <div class="col-md-3"><b>Remark:</b></div>
             <div class="col-md-9"> {{ contingent.remark }} </div><br />
         </ng-container>
-        
+
         <!-- Property list when editing -->
         <div [hidden]="!editing"
              class="container"
@@ -38,7 +38,7 @@
 
             <br />
 
-            <ng-container *ngIf="CLNo == '0'">
+            <ng-container *ngIf="newrecord">
                 <mat-form-field>
                     <input fxFlex matInput name="cclno" [(ngModel)]="contingent.contingentLeaderNo" placeholder="Contingent Leader No">
                 </mat-form-field>
@@ -76,9 +76,9 @@
     <br />
 
     <!-- Room allocations if any -->
-    <div *ngIf="(CLNo != '0')&&(contingent)&&(contingent.roomAllocation)&&(contingent.roomAllocation.length>0)">
+    <div *ngIf="(!newrecord)&&(contingent)&&(contingent.roomAllocation)&&(contingent.roomAllocation.length>0)">
         <h3>Allocated Rooms</h3>
-        <div *ngFor="let roomA of contingent.roomAllocation" 
+        <div *ngFor="let roomA of contingent.roomAllocation"
              class="xunk-room-card mat-elevation-z1">
             <b>{{ roomA.room.location }} - {{ roomA.room.roomName }}</b> - {{ roomA.room.capacity}}
             <ng-container *ngIf="roomA.partial > 0">(partial, {{roomA.partial}})</ng-container>
@@ -89,7 +89,7 @@
     <br />
 
     <!-- People in contingent if any -->
-    <div *ngIf="(CLNo != '0')&&(contingent.person)&&(contingent.person.length > 0)">
+    <div *ngIf="(!newrecord)&&(contingent.person)&&(contingent.person.length > 0)">
         <h3>People in this contingent</h3>
         <div class='mat-elevation-z3 xunk-table table-responsive'>
             <table class='xunk-table-pointer table table-hover' *ngIf="contingent.person">

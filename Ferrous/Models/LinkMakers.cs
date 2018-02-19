@@ -26,20 +26,20 @@ namespace Ferrous.Models
         /// <returns></returns>
         public void FillContingentsLinks(Contingents contingent)
         {
+            var idObject = new { id = contingent.ContingentLeaderNo };
+
             contingent.Links = new LinkHelper()
                 /* Contingent Actions */
                 .SetOptions(User, typeof(ContingentsController), Url)
-                .AddLinks(new string[] {
-                    nameof(ContingentsController.GetContingent),
-                    nameof(ContingentsController.PutContingent),
-                    nameof(ContingentsController.DeleteContingent)
-                })
+                .AddLink(nameof(ContingentsController.GetContingent), idObject, "no")
+                .AddLink(nameof(ContingentsController.PutContingent), idObject, "no")
+                .AddLink(nameof(ContingentsController.DeleteContingent), idObject, "no")
 
                 /* Get building with contingent-related data */
                 .SetOptions(User, typeof(BuildingsController), Url)
                 .AddLink(
                     nameof(BuildingsController.GetBuilding),
-                    new { id = contingent.ContingentLeaderNo },
+                    idObject,
                     "get_buildings"
                 )
 

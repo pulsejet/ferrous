@@ -13,7 +13,7 @@ using System;
 namespace Ferrous.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/Contingents")]
     public class ContingentsController : ControllerBase
     {
         private readonly ferrousContext _context;

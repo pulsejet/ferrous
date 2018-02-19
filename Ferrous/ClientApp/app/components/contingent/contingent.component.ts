@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { Contingent } from '../interfaces';
+import { Contingent, Link } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 import { PaginatorHelper } from '../../Common';
@@ -13,6 +13,8 @@ import { PaginatorHelper } from '../../Common';
 export class ContingentComponent {
     /** Master contingents list */
     contingents: Contingent[];
+    /** Master links list */
+    links: Link[];
     /** CLNo entered in the search box */
     enteredCL: string = "";
     paginatorHelper = new PaginatorHelper;
@@ -26,13 +28,19 @@ export class ContingentComponent {
 
         /* Load our contingents */
         this.dataService.GetAllContingents().subscribe(result => {
-            this.contingents = result;
+            this.contingents = result.data;
+            this.links = result.links;
         }, error => console.error(error));
     }
 
     /** Table click event */
     public handleTableClick(contingent: Contingent) {
-        this.dataService.NavigateContingentDetails(contingent.contingentLeaderNo);
+        this.dataService.NavigateContingentDetails(this.dataService.GetLinkSelf(contingent.links));
+    }
+
+    /** Create a new record */
+    public openNewRecord() {
+        this.dataService.NavigateContingentDetails(this.dataService.GetLinkCreate(this.links), true);
     }
 }
 

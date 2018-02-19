@@ -1,4 +1,15 @@
-﻿export interface Contingent {
+﻿export interface EnumContainer {
+    links: Link[];
+    data: any;
+}
+
+export interface Link {
+    rel: string;
+    href: string;
+    method: string;
+}
+
+export interface Contingent {
     contingentLeaderNo: string;
     male: string;
     female: string;
@@ -7,6 +18,8 @@
     person: Person[];
     roomAllocation: RoomAllocation[];
     contingentArrival: ContingentArrival[];
+
+    links: Link[];
 }
 
 export interface Person {
@@ -16,6 +29,8 @@ export interface Person {
     contingentLeaderNo: string;
     contingentLeaderNoNavigation: string;
     sex: string;
+
+    links: Link[];
 }
 
 export interface Room {
@@ -33,6 +48,8 @@ export interface Room {
     selected: boolean;
     partialsel: number;
     partialallot: boolean;
+
+    links: Link[];
 }
 
 export interface RoomAllocation {
@@ -44,6 +61,8 @@ export interface RoomAllocation {
     partial: number;
     contingentArrivalNo: string;
     contingentArrivalNoNavigation: ContingentArrival[];
+
+    links: Link[];
 }
 
 export interface Building {
@@ -54,6 +73,8 @@ export interface Building {
     capacityEmpty: number;
     capacityFilled: number;
     capacityNotReady: number;
+
+    links: Link[];
 }
 
 export interface ContingentArrival {
@@ -66,4 +87,6 @@ export interface ContingentArrival {
     femaleOnSpot: number;
     contingentLeaderNoNavigation: Contingent[];
     roomAllocation: RoomAllocation[];
+
+    links: Link[];
 }

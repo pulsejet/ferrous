@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival } from './components/interfaces'
+import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival, EnumContainer, Link } from './components/interfaces'
 import { Router } from '@angular/router';
 
 const API_Contingents_URL: string = '/api/Contingents/';
@@ -27,7 +27,61 @@ JSON_HEADERS = JSON_HEADERS.set('Content-Type', 'application/json');
 @Injectable()
 export class DataService {
 
+    public passedData: any;
+    public passedLinks: Link[];
+
     constructor(private http: HttpClient, public router: Router) { }
+
+    SetPassedData(data: any): void {
+        this.passedData = data;
+    }
+
+    GetPassedData(): any {
+        return this.passedData;
+    }
+
+    SetPassedLinks(links: Link[]): void {
+        this.passedLinks = links;
+    }
+
+    PopPassedLinks(): any {
+        let ans = this.passedLinks;
+        this.passedLinks = [];
+        return ans;
+    }
+
+    GetLink(links: Link[], rel: string = "self", encoded: boolean = false): any {
+        let found = links.find(x => x.rel === rel);
+        if (found == null) return null;
+        if (encoded) return this.EncodeObject(found);
+        return found;
+    }
+
+    GetLinkSelf(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "self", encoded); }
+    GetLinkUpdate(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "update", encoded); }
+    GetLinkDelete(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "delete", encoded); }
+    GetLinkCreate(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "create", encoded); }
+
+    FireLinkUpdate(links: Link[], body: any): Observable<any> { return this.FireLink(this.GetLinkUpdate(links), body); }
+    FireLinkDelete(links: Link[]): Observable<any> { return this.FireLink(this.GetLinkDelete(links)); }
+
+    EncodeObject(o: any): string { return btoa(JSON.stringify(o)) }
+    DecodeObject(s: string): any { return JSON.stringify(atob(s)) }
+
+    FireLink(link: Link, body: any = null): Observable<any> {
+        switch (link.method) {
+            case "GET":
+                return this.http.get(link.href);
+            case "POST":
+                return this.http.post(link.href, body, { headers: JSON_HEADERS });
+            case "PUT":
+                return this.http.put(link.href, body, { headers: JSON_HEADERS });                
+            case "DELETE":
+                return this.http.delete(link.href);
+            default:
+                throw new Error("no method defined for " + link.href);
+        }
+    }
 
     /* === Navigate - voids === */
 
@@ -42,8 +96,8 @@ export class DataService {
      * Navigate to ContingentDetails
      * @param CLNo CLNo of particular contingent
      */
-    NavigateContingentDetails(CLNo: string): void {
-        this.router.navigate(['/contingentDetails/' + CLNo]);
+    NavigateContingentDetails(link: Link, newRecord: boolean = false): void {
+        this.router.navigate(['/contingentDetails/' + this.EncodeObject(link) + (newRecord ? '/1' : '')]);
     }
 
     /**
@@ -75,43 +129,10 @@ export class DataService {
     /**
      * All Contingent[]
      */
-    GetAllContingents(): Observable<Contingent[]> {
-        return this.http.get<Contingent[]>(API_Contingents_URL);
+    GetAllContingents(): Observable<EnumContainer> {
+        return this.http.get<EnumContainer>(API_Contingents_URL);
     }
-
-    /**
-     * Contingent Details
-     * @param id CLNo of Contingent
-     */
-    GetContingent(id: string): Observable<Contingent> {
-        return this.http.get<Contingent>(API_Contingents_URL + id);
-    }
-
-    /**
-     * PUT update to existing Contingent
-     * @param id CLNo of Contingent
-     * @param body JSON of Contingent
-     */
-    PutContingent(id: string, body: any): Observable<any> {
-        return this.http.put(API_Contingents_URL + id, body, { headers: JSON_HEADERS });
-    }
-
-    /**
-     * POST new Contingent
-     * @param body JSON of Contingent
-     */
-    PostContingent(body: any): Observable<any> {
-        return this.http.post(API_Contingents_URL, body, { headers: JSON_HEADERS });
-    }
-
-    /**
-     * DELETES Contingent without prompting
-     * @param id
-     */
-    DeleteContingent(id: string): Observable<any> {
-        return this.http.delete(API_Contingents_URL + id);
-    }
-
+    
     /* === People === */
 
     /**
