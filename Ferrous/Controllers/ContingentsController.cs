@@ -23,11 +23,18 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/Contingents
-        [HttpGet]
+        [HttpGet, HTTPrel(HTTPrelList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTS_GET)]
-        public async Task<IEnumerable<Contingents>> GetContingents()
+        public async Task<EnumContainer> GetContingents()
         {
-            return await DataUtilities.GetExtendedContingents(_context);
+            return new EnumContainer(
+                await DataUtilities.GetExtendedContingents(_context),
+                new LinkHelper(User, this.GetType(), Url,
+                new string[] {
+                    nameof(GetContingents),
+                    nameof(PostContingent)
+                }).GetLinks()
+            );
         }
 
         // GET: api/Contingents/5
@@ -47,7 +54,12 @@ namespace Ferrous.Controllers
                                             .Include(m => m.ContingentArrival)
                                             .SingleOrDefaultAsync();
 
-            contingent.Links = GetLinks();
+            contingent.Links = new LinkHelper(User, this.GetType(), Url,
+                new string[] {
+                    nameof(GetContingent),
+                    nameof(PutContingent),
+                    nameof(DeleteContingent)
+                }).GetLinks();
 
             if (contingent == null) return NotFound();
 
@@ -151,13 +163,5 @@ namespace Ferrous.Controllers
         {
             return _context.Contingents.Any(e => e.ContingentLeaderNo == id);
         }
-
-        private List<Link> GetLinks() =>
-            new LinkHelper(User, this.GetType(), Url,
-                new string[] {
-                    nameof(GetContingent),
-                    nameof(PutContingent),
-                    nameof(DeleteContingent)
-                }).GetLinks();
     }
 }

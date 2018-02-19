@@ -32,7 +32,7 @@ namespace Ferrous.Models
         public static string POST = "POST";
         public static string PUT = "PUT";
         public static string DELETE = "DELETE";
-    }    
+    }
 
     public class LinkHelper
     {
@@ -54,7 +54,7 @@ namespace Ferrous.Models
             this.type = type;
             this.urlHelper = urlHelper;
 
-            foreach(var route in routes)
+            foreach (var route in routes)
             {
                 AddLink(route);
             }
@@ -77,6 +77,8 @@ namespace Ferrous.Models
             else if (postAtt != null) httpMethod = HTTPMethod.POST;
             else if (putAtt != null) httpMethod = HTTPMethod.PUT;
             else if (deleteAtt != null) httpMethod = HTTPMethod.DELETE;
+
+            if (relAtt == null) throw new Exception("HTTPrel attribute not set for creating link");
 
             if (hasPrivilege(user.Identity.Name, attr._elevationLevel, attr._privilege))
             {
@@ -102,5 +104,16 @@ namespace Ferrous.Models
         public string rel;
         public string method;
         public string url;
+    }
+
+    public class EnumContainer {
+        public List<Link> Links;
+        public object Data;
+
+        public EnumContainer(object data, List<Link>links)
+        {
+            this.Links = links;
+            this.Data = data;
+        }
     }
 }
