@@ -19,5 +19,7 @@ namespace Ferrous.Models
         public ICollection<ContingentArrival> ContingentArrival { get; set; }
         public ICollection<Person> Person { get; set; }
         public ICollection<RoomAllocation> RoomAllocation { get; set; }
+
+        public List<Link> Links;
     }
 }

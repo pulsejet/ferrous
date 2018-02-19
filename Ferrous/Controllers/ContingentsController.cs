@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
 using static Ferrous.Controllers.Authorization;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Ferrous.Controllers
 {
@@ -29,9 +31,9 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/Contingents/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), HTTPrel(HTTPrelList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTS_GET)]
-        public async Task<IActionResult> GetContingents([FromRoute] string id)
+        public async Task<IActionResult> GetContingent([FromRoute] string id)
         {
             if (!ModelState.IsValid)
             {
@@ -45,6 +47,8 @@ namespace Ferrous.Controllers
                                             .Include(m => m.ContingentArrival)
                                             .SingleOrDefaultAsync();
 
+            contingent.Links = GetLinks();
+
             if (contingent == null) return NotFound();
 
             foreach ( var ra in contingent.RoomAllocation )
@@ -56,9 +60,9 @@ namespace Ferrous.Controllers
         }
 
         // PUT: api/Contingents/5
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), HTTPrel(HTTPrelList.update)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_PUT)]
-        public async Task<IActionResult> PutContingents([FromRoute] string id, [FromBody] Contingents contingents)
+        public async Task<IActionResult> PutContingent([FromRoute] string id, [FromBody] Contingents contingents)
         {
             if (!ModelState.IsValid)
             {
@@ -92,9 +96,9 @@ namespace Ferrous.Controllers
         }
 
         // POST: api/Contingents
-        [HttpPost]
+        [HttpPost, HTTPrel(HTTPrelList.create)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_POST)]
-        public async Task<IActionResult> PostContingents([FromBody] Contingents contingents)
+        public async Task<IActionResult> PostContingent([FromBody] Contingents contingents)
         {
             if (!ModelState.IsValid)
             {
@@ -122,9 +126,9 @@ namespace Ferrous.Controllers
         }
 
         // DELETE: api/Contingents/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), HTTPrel(HTTPrelList.delete)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_DELETE)]
-        public async Task<IActionResult> DeleteContingents([FromRoute] string id)
+        public async Task<IActionResult> DeleteContingent([FromRoute] string id)
         {
             if (!ModelState.IsValid)
             {
@@ -147,5 +151,13 @@ namespace Ferrous.Controllers
         {
             return _context.Contingents.Any(e => e.ContingentLeaderNo == id);
         }
+
+        private List<Link> GetLinks() =>
+            new LinkHelper(User, this.GetType(), Url,
+                new string[] {
+                    nameof(GetContingent),
+                    nameof(PutContingent),
+                    nameof(DeleteContingent)
+                }).GetLinks();
     }
 }

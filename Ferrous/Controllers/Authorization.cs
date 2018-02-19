@@ -13,8 +13,8 @@ namespace Ferrous.Controllers
 
         public const string IDENTITIES_JSON_FILE = "identities.json";
 
-        private readonly ElevationLevels _elevationLevel;
-        private readonly PrivilegeList _privilege;
+        public readonly ElevationLevels _elevationLevel;
+        public readonly PrivilegeList _privilege;
 
         public Authorization(ElevationLevels elevationLevel, PrivilegeList privilege )
         {
