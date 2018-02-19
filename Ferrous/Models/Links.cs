@@ -41,26 +41,31 @@ namespace Ferrous.Models
         private List<Link> Links = new List<Link>();
         private IUrlHelper urlHelper;
 
-        public LinkHelper(ClaimsPrincipal user, Type type, IUrlHelper urlHelper)
+        private void setOptions(ClaimsPrincipal user, Type type, IUrlHelper urlHelper)
         {
             this.user = user;
             this.type = type;
             this.urlHelper = urlHelper;
+        }
+
+        public LinkHelper(ClaimsPrincipal user, Type type, IUrlHelper urlHelper)
+        {
+            setOptions(user, type, urlHelper);
         }
 
         public LinkHelper(ClaimsPrincipal user, Type type, IUrlHelper urlHelper, string[] routes)
         {
-            this.user = user;
-            this.type = type;
-            this.urlHelper = urlHelper;
-
-            foreach (var route in routes)
-            {
-                AddLink(route);
-            }
+            setOptions(user, type, urlHelper);
+            foreach (var route in routes) AddLink(route);
         }
 
-        public bool AddLink(string route)
+        public LinkHelper(ClaimsPrincipal user, Type type, IUrlHelper urlHelper, Tuple<string, object>[] routes)
+        {
+            setOptions(user, type, urlHelper);
+            foreach (var route in routes) AddLink(route.Item1, route.Item2);
+        }
+
+        public bool AddLink(string route, object routeParams = null)
         {
             MethodInfo controllerMethod = type.GetMethod(route);
             Authorization attr = (Authorization)controllerMethod.GetCustomAttributes(typeof(Authorization), true)[0];
@@ -82,7 +87,10 @@ namespace Ferrous.Models
 
             if (hasPrivilege(user.Identity.Name, attr._elevationLevel, attr._privilege))
             {
-                Links.Add(new Link(relAtt.rel, httpMethod, urlHelper.Action(route)));
+                if (routeParams == null)
+                    Links.Add(new Link(relAtt.rel, httpMethod, urlHelper.Action(route)));
+                else
+                    Links.Add(new Link(relAtt.rel, httpMethod, urlHelper.Action(route, routeParams)));
                 return true;
             }
             else return false;

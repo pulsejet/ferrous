@@ -8,6 +8,7 @@ using Ferrous.Models;
 using static Ferrous.Controllers.Authorization;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System;
 
 namespace Ferrous.Controllers
 {
@@ -27,8 +28,19 @@ namespace Ferrous.Controllers
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTS_GET)]
         public async Task<EnumContainer> GetContingents()
         {
+            var contingents = await DataUtilities.GetExtendedContingents(_context);
+
+            foreach(var contingent in contingents) { 
+                contingent.Links = new LinkHelper(User, this.GetType(), Url,
+                    new Tuple<string, object>[] {
+                        new Tuple<string, object> (nameof(GetContingent), new { id = contingent.ContingentLeaderNo }),
+                        new Tuple<string, object> (nameof(PutContingent), new { id = contingent.ContingentLeaderNo }),
+                        new Tuple<string, object> (nameof(DeleteContingent), new { id = contingent.ContingentLeaderNo })
+                    }).GetLinks();
+            }
+
             return new EnumContainer(
-                await DataUtilities.GetExtendedContingents(_context),
+                contingents,
                 new LinkHelper(User, this.GetType(), Url,
                 new string[] {
                     nameof(GetContingents),
