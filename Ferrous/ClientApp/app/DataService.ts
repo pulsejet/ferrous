@@ -42,8 +42,8 @@ export class DataService {
     FireLinkUpdate(links: Link[], body: any): Observable<any> { return this.FireLink(this.GetLinkUpdate(links), body); }
     FireLinkDelete(links: Link[]): Observable<any> { return this.FireLink(this.GetLinkDelete(links)); }
 
-    EncodeObject(o: any): string { return btoa(JSON.stringify(o)) }
-    DecodeObject(s: string): any { return JSON.parse(atob(s)) }
+    EncodeObject(o: any): string { return encodeURIComponent(btoa(JSON.stringify(o))) }
+    DecodeObject(s: string): any { return JSON.parse(atob(decodeURIComponent(s))) }
 
     FireLink(link: Link, body: any = null): Observable<any> {
         switch (link.method) {
