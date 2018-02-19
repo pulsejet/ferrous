@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
 using static Ferrous.Controllers.Authorization;
+using System;
 
 namespace Ferrous.Controllers
 {
@@ -20,24 +21,31 @@ namespace Ferrous.Controllers
             _context = context;
         }
 
-        // GET: api/Buildings
-        [HttpGet]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDINGS_GET)]
-        public IEnumerable<Building> GetBuilding()
-        {
-            return _context.Building;
-        }
-
         // GET: api/Buildings/e
-        [HttpGet("e/{id}")][HTTPrel(HTTPrelList.self)]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDING_GET_DETAILS)]
-        public async Task<IEnumerable<Building>> GetBuildingExtended([FromRoute] string id)
+        [HttpGet("e/{id}")]
+        [HTTPrel(HTTPrelList.self)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDINGS_GET)]
+        public async Task<EnumContainer> GetBuildingsExtended([FromRoute] string id)
         {
-            return await DataUtilities.GetExtendedBuildings(_context, id);
+            var buildings = await DataUtilities.GetExtendedBuildings(_context, id);
+            foreach (var building in buildings)
+            {
+                building.Links = GetLinks(building);
+            }
+            return new EnumContainer(
+                buildings,
+                new LinkHelper()
+                .SetOptions(User, this.GetType(), Url)
+                .AddLinks(new string[] {
+                    nameof(GetBuildingsExtended),
+                    nameof(PostBuilding)
+                }).GetLinks()
+            );
         }
 
         // GET: api/Buildings/5
         [HttpGet("{id}")]
+        [HTTPrel(HTTPrelList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDING_GET_DETAILS)]
         public async Task<IActionResult> GetBuilding([FromRoute] string id)
         {
@@ -54,6 +62,9 @@ namespace Ferrous.Controllers
             if (building == null)
             {
                 return NotFound();
+            } else
+            {
+                building.Links = GetLinks(building);
             }
 
             return Ok(building);
@@ -61,6 +72,7 @@ namespace Ferrous.Controllers
 
         // PUT: api/Buildings/5
         [HttpPut("{id}")]
+        [HTTPrel(HTTPrelList.update)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDING_PUT)]
         public async Task<IActionResult> PutBuilding([FromRoute] string id, [FromBody] Building building)
         {
@@ -97,6 +109,7 @@ namespace Ferrous.Controllers
 
         // POST: api/Buildings
         [HttpPost]
+        [HTTPrel(HTTPrelList.create)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDING_POST)]
         public async Task<IActionResult> PostBuilding([FromBody] Building building)
         {
@@ -127,6 +140,7 @@ namespace Ferrous.Controllers
 
         // DELETE: api/Buildings/5
         [HttpDelete("{id}")]
+        [HTTPrel(HTTPrelList.delete)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDING_DELETE)]
         public async Task<IActionResult> DeleteBuilding([FromRoute] string id)
         {
@@ -150,6 +164,17 @@ namespace Ferrous.Controllers
         private bool BuildingExists(string id)
         {
             return _context.Building.Any(e => e.Location == id);
+        }
+
+        private List<Link> GetLinks(Building building)
+        {
+            return new LinkHelper()
+                   .SetOptions(User, this.GetType(), Url)
+                   .AddLinks(new Tuple<string, object>[] {
+                        new Tuple<string, object> (nameof(GetBuilding), new { id = building.Location }),
+                        new Tuple<string, object> (nameof(PutBuilding), new { id = building.Location }),
+                        new Tuple<string, object> (nameof(DeleteBuilding), new { id = building.Location })
+                   }).GetLinks();
         }
     }
 }

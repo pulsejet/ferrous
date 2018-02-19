@@ -16,5 +16,7 @@ namespace Ferrous.Models
         public string LocationFullName { get; set; }
 
         public ICollection<Room> Room { get; set; }
+
+        public List<Link> Links;
     }
 }
