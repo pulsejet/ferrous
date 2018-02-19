@@ -76,11 +76,11 @@ namespace Ferrous.Controllers
                     nameof(DeleteContingent)
                 })
                 .SetOptions(User, typeof(BuildingsController), Url)
-                .AddLinks(new Tuple<string, object, string>[]
-                {
-                    new Tuple<string, object, string>(nameof(BuildingsController.GetBuildingExtended), new { id = contingent.ContingentLeaderNo, cloo = "EW" }, "no")
-                })
-                .GetLinks();
+                .AddLink(
+                    nameof(BuildingsController.GetBuildingExtended), 
+                    new { id = contingent.ContingentLeaderNo }, 
+                    "getbuildings"
+                ).GetLinks();
 
             if (contingent == null) return NotFound();
 

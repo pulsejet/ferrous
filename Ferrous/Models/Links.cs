@@ -67,7 +67,7 @@ namespace Ferrous.Models
             return this;
         }
 
-        public bool AddLink(string route, object routeParams = null, string byname = "")
+        public LinkHelper AddLink(string route, object routeParams = null, string overrideWithRel = "")
         {
             MethodInfo controllerMethod = type.GetMethod(route);
             Authorization attr = (Authorization)controllerMethod.GetCustomAttributes(typeof(Authorization), true)[0];
@@ -97,7 +97,7 @@ namespace Ferrous.Models
             {
                 if (routeParams == null)
                     Links.Add(new Link(relAtt.rel, httpMethod, urlHelper.Action(route)));
-                else if (byname == String.Empty)
+                else if (overrideWithRel == String.Empty)
                     Links.Add(new Link(relAtt.rel, httpMethod, urlHelper.Action(route, routeParams)));
                 else
                 {
@@ -106,12 +106,11 @@ namespace Ferrous.Models
                     {
                         string prop = (string) propInfo.GetValue(routeParams);
                         routeTemplate = routeTemplate.Replace("{" + propInfo.Name + "}", prop);
-                        Links.Add(new Link(relAtt.rel, httpMethod, "/" + cRouteAtt.Template + "/" + routeTemplate));
                     }
+                    Links.Add(new Link(overrideWithRel, httpMethod, "/" + cRouteAtt.Template + "/" + routeTemplate));
                 }   
-                return true;
             }
-            else return false;
+            return this;
         }
 
         public List<Link> GetLinks() => Links;
