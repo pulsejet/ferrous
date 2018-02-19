@@ -22,14 +22,14 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/Buildings/e
-        [HttpGet("e/{id}")]
+        [HttpGet("e/{id}/{cano}")]
         [HTTPrel(HTTPrelList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDINGS_GET)]
-        public async Task<EnumContainer> GetBuildingsExtended([FromRoute] string id)
+        public async Task<EnumContainer> GetBuildingsExtended([FromRoute] string id, [FromRoute] int cano)
         {
             var buildings = await DataUtilities.GetExtendedBuildings(_context, id);
             foreach (var building in buildings)
-                (new LinksMaker(User,Url)).FillBuildingsLinks(building);
+                (new LinksMaker(User,Url)).FillBuildingsLinks(building, id, cano);
 
             return new EnumContainer(
                 buildings,
@@ -43,10 +43,10 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/Buildings/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}/{clno}/{cano}")]
         [HTTPrel(HTTPrelList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDING_GET_DETAILS)]
-        public async Task<IActionResult> GetBuilding([FromRoute] string id)
+        public async Task<IActionResult> GetBuilding([FromRoute] string id, [FromRoute] string clno, [FromRoute] int cano)
         {
             if (!ModelState.IsValid)
             {
@@ -63,7 +63,7 @@ namespace Ferrous.Controllers
                 return NotFound();
             } else
             {
-                new LinksMaker(User, Url).FillBuildingsLinks(building);
+                new LinksMaker(User, Url).FillBuildingsLinks(building, clno, cano);
             }
 
             return Ok(building);

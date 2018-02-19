@@ -134,13 +134,11 @@ namespace Ferrous.Controllers
             return _context.Room.Any(e => e.RoomId == id);
         }
 
-        // GET: api/Rooms/allot/CLNo
-        [HttpGet("allot/{id}")]
-        [HttpGet("allot/{id}/{CLNo}/{CANo}")]
-        [HttpGet("allot/{id}/{CLNo}/{CANo}/{partialno}")]
+        // GET: api/Rooms/allot/CLNo/CANo
+        [HttpGet("allot/{id}/{clno}/{cano}")]
         [HTTPrel(HTTPrelList.overridden)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_ALLOT)]
-        public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string CLNo, [FromRoute] int CANo, [FromRoute] int partialno = -1)
+        public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string clno, [FromRoute] int cano, [FromRoute] int partialno = -1)
         {
             Room room = await _context.Room.Where(m => m.RoomId == id)
                                     .Include(m => m.RoomAllocation)
@@ -159,8 +157,8 @@ namespace Ferrous.Controllers
             if (!empty || room.Status != 1) return BadRequest( "Not Empty");
 
             RoomAllocation roomAllocation = new RoomAllocation();
-            roomAllocation.ContingentLeaderNo = CLNo;
-            roomAllocation.ContingentArrivalNo = CANo;
+            roomAllocation.ContingentLeaderNo = clno;
+            roomAllocation.ContingentArrivalNo = cano;
             roomAllocation.RoomId = id;
             roomAllocation.Partial = partialno;
             _context.Update(roomAllocation);
@@ -175,6 +173,7 @@ namespace Ferrous.Controllers
             return Ok(roomAllocation);
         }
 
+        // TODO: Use Query parameter for status
         // GET: api/Rooms/mark/CLNo
         [HttpGet("mark/{id}/{status}")]
         [HTTPrel(HTTPrelList.overridden)]

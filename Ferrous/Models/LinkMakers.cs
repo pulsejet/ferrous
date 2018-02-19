@@ -64,17 +64,20 @@ namespace Ferrous.Models
         /// </summary>
         /// <param name="building"></param>
         /// <returns></returns>
-        public void FillBuildingsLinks(Building building)
+        public void FillBuildingsLinks(Building building, string clno, int cano)
         {
+            var idObject = new { id = building.Location, clno = clno, cano = cano };
+
             building.Links = new LinkHelper()
                    .SetOptions(User, typeof(BuildingsController), Url)
-                   .AddLink(nameof(BuildingsController.GetBuilding), new { id = building.Location })
-                   .AddLink(nameof(BuildingsController.PutBuilding), new { id = building.Location })
-                   .AddLink(nameof(BuildingsController.DeleteBuilding), new { id = building.Location })
+                   .AddLink(nameof(BuildingsController.GetBuilding), idObject, "no")
+                   .AddLink(nameof(BuildingsController.PutBuilding), idObject, "no")
+                   .AddLink(nameof(BuildingsController.DeleteBuilding), idObject, "no")
                    .GetLinks();
 
-            foreach (var room in building.Room)
-                FillRoomLinks(room);
+            if (building.Room != null)
+                foreach (var room in building.Room)
+                    FillRoomLinks(room, clno, cano);
         }
 
         /// <summary>
@@ -114,14 +117,18 @@ namespace Ferrous.Models
         /// Fills Links object for Room
         /// </summary>
         /// <param name="room">Room object</param>
-        public void FillRoomLinks(Room room)
+        public void FillRoomLinks(Room room, string clno, int cano)
         {
             var idObject = new { id = room.RoomId };
+            var idObjectAllot = new { id = room.RoomId, clno = clno, cano = cano };
+
             room.Links = new LinkHelper()
                 .SetOptions(User, typeof(RoomsController), Url)
                 .AddLink(nameof(RoomsController.GetRoom), idObject, "no")
                 .AddLink(nameof(RoomsController.PutRoom), idObject, "no")
                 .AddLink(nameof(RoomsController.DeleteRoom), idObject, "no")
+                .AddLink(nameof(RoomsController.RoomAllot), idObjectAllot, "allot")
+                .AddLink(nameof(RoomsController.mark), idObject, "mark")
                 .GetLinks();
 
             foreach (var roomA in room.RoomAllocation)
