@@ -19,13 +19,26 @@ JSON_HEADERS = JSON_HEADERS.set('Content-Type', 'application/json');
 @Injectable()
 export class DataService {
 
+    /** Can be used for passing data between components */
     public passedData: any;
+
+    /**
+     * Set the static passed data
+     * @param data Data to store
+     */
     SetPassedData(data: any): void { this.passedData = data; }
+
+    /** Gets the stored data */
     GetPassedData(): any { return this.passedData; }
 
     constructor(private http: HttpClient, public router: Router) { }
-
-    /* Code for Link management */
+    
+    /**
+     * Get link from rel
+     * @param links Array of links
+     * @param rel Required rell
+     * @param encoded Returns encoded object if true
+     */
     GetLink(links: Link[], rel: string = "self", encoded: boolean = false): any {
         let found = links.find(x => x.rel === rel);
         if (found == null) return null;
@@ -33,18 +46,70 @@ export class DataService {
         return found;
     }
 
+    /**
+     * Retrn the link with rel "self"
+     * @param links Array of links
+     * @param encoded Returns encoded string if true
+     */
     GetLinkSelf(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "self", encoded); }
+
+    /**
+     * Retrn the link with rel "update"
+     * @param links Arrar of links
+     * @param encoded Returns enocded string if true
+     */
     GetLinkUpdate(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "update", encoded); }
+
+    /**
+     * Returns the link with rel "delete"
+     * @param links Array of links
+     * @param encoded Retrns encoded string if true
+     */
     GetLinkDelete(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "delete", encoded); }
+
+    /**
+     * Return the string with rel "create"
+     * @param links Array of links
+     * @param encoded Returns encoded string if true
+     */
     GetLinkCreate(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "create", encoded); }
 
+    /**
+     * Fires the link with rel "self"
+     * @param links Array of links
+     */
     FireLinkSelf(links: Link[]): Observable<any> { return this.FireLink(this.GetLinkSelf(links)); }
+
+    /**
+     * Fires the link with rel "update"
+     * @param links Array of links
+     * @param body JSON body to upload
+     */
     FireLinkUpdate(links: Link[], body: any): Observable<any> { return this.FireLink(this.GetLinkUpdate(links), body); }
+
+    /**
+     * Fires the link with rel "delete"
+     * @param links Array of links
+     */
     FireLinkDelete(links: Link[]): Observable<any> { return this.FireLink(this.GetLinkDelete(links)); }
 
+    /**
+     * Encode an object for passing through URL
+     * @param o Object to encode
+     */
     EncodeObject(o: any): string { return encodeURIComponent(btoa(JSON.stringify(o))) }
+
+    /**
+     * Decode an object encoded with "EncodeObject"
+     * @param s Encoded string
+     */
     DecodeObject(s: string): any { return JSON.parse(atob(decodeURIComponent(s))) }
 
+    /**
+     * Fire a link and return the result as an observable
+     * @param link Link to fire
+     * @param body Optional body to upload
+     */
     FireLink(link: Link, body: any = null): Observable<any> {
         switch (link.method) {
             case "GET":
@@ -80,6 +145,11 @@ export class DataService {
         this.router.navigate(['/person/']);
     }
 
+    /**
+     * Navigate to person details
+     * @param link "self" link for the person
+     * @param newRecord true for creating a new record. If true, link must be the "create" link
+     */
     NavigatePersonDetails(link: Link, newRecord: boolean = false): void {
         this.router.navigate(['/personDetails', this.EncodeObject(link), (newRecord ? '1' : '0')]);
     }
@@ -92,7 +162,12 @@ export class DataService {
     NavigateLayoutSelect(clno:string, contingentArrivalNo: number): void {
         this.router.navigate(['/locationSelect', clno, contingentArrivalNo]);
     }
-
+    /**
+     * Navigate to room layout
+     * @param link "self" link for the building
+     * @param location Location for local purposes
+     * @param clno ContingentLeaderNo for local highlighting
+     */
     NavigateRoomLayout(link: Link, location: string, clno: string): void {
         this.router.navigate(['/roomLayout', this.EncodeObject(link), location, clno]);
     }
@@ -126,12 +201,21 @@ export class DataService {
         return this.http.get(SF_RoomLayouts_URL + location + '.html', { responseType: 'text' });
     }
 
+    /**
+     * Mark a room with a given status
+     * @param room Room object
+     * @param status Status to mark
+     */
     MarkRoom(room: Room, status: number): Observable<any> {
         let link: Link = { ... this.GetLink(room.links, "mark") };
         link.href += "?status=" + status.toString();
         return this.FireLink(link);
     }
 
+    /**
+     * Allot a room
+     * @param room Room object
+     */
     AllotRoom(room: Room): Observable<any> {
         let link: Link = {... this.GetLink(room.links, "allot") };
         if (room.partialallot || this.RoomCheckPartial(room)) {
@@ -171,8 +255,8 @@ export class DataService {
     }
 
     /**
-     * DELETE a RoomAllocation
-     * @param sno SNo of RoomAllocation
+     * Fires the "delete" link in a RoomAllocation
+     * @param roomA RoomAllocation object
      */
     UnallocateRoom(roomA: RoomAllocation): Observable<any> {
         return this.FireLinkDelete(roomA.links);
