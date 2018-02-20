@@ -104,7 +104,6 @@ namespace Ferrous.Misc
             var idObject = new { id = roomAllocation.Sno };
             roomAllocation.Links = new LinkHelper()
                 .SetOptions(User, typeof(RoomAllocationsController), Url)
-                .AddLink(nameof(RoomAllocationsController.PutRoomAllocation), idObject)
                 .AddLink(nameof(RoomAllocationsController.DeleteRoomAllocation), idObject)
                 .GetLinks();
         }
