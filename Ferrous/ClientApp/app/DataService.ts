@@ -37,10 +37,9 @@ export class DataService {
      * @param rel Required rell
      * @param encoded Returns encoded object if true
      */
-    GetLink(links: Link[], rel: string = "self", encoded: boolean = false): any {
+    GetLink(links: Link[], rel: string = "self"): Link {
         let found = links.find(x => x.rel === rel);
-        if (found == null) return null;
-        if (encoded) return this.EncodeObject(found);
+        if (found == null) return { } as Link;
         return found;
     }
 
@@ -49,28 +48,28 @@ export class DataService {
      * @param links Array of links
      * @param encoded Returns encoded string if true
      */
-    GetLinkSelf(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "self", encoded); }
+    GetLinkSelf(links: Link[]): Link { return this.GetLink(links, "self"); }
 
     /**
      * Retrn the link with rel "update"
      * @param links Arrar of links
      * @param encoded Returns enocded string if true
      */
-    GetLinkUpdate(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "update", encoded); }
+    GetLinkUpdate(links: Link[]): Link { return this.GetLink(links, "update"); }
 
     /**
      * Returns the link with rel "delete"
      * @param links Array of links
      * @param encoded Retrns encoded string if true
      */
-    GetLinkDelete(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "delete", encoded); }
+    GetLinkDelete(links: Link[], encoded: boolean = false): Link { return this.GetLink(links, "delete"); }
 
     /**
      * Return the string with rel "create"
      * @param links Array of links
      * @param encoded Returns encoded string if true
      */
-    GetLinkCreate(links: Link[], encoded: boolean = false): any { return this.GetLink(links, "create", encoded); }
+    GetLinkCreate(links: Link[], encoded: boolean = false): Link { return this.GetLink(links, "create"); }
 
     /**
      * Fires the link with rel "self"
