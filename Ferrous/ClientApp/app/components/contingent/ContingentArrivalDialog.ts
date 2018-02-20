@@ -49,7 +49,7 @@ export class ContingentArrivalDialogComponent {
             /* Prepare and create the new entry */
             this.nContingentArrv.contingentLeaderNo = this.CLNo;
             let body = JSON.stringify(this.nContingentArrv);
-            this.dataService.FireLink(this.dataService.GetLink(this.links, "create_contingent_arrival"), body).subscribe(result => {
+            this.dataService.FireLink<ContingentArrival>(this.dataService.GetLink(this.links, "create_contingent_arrival"), body).subscribe(result => {
                 this.dataService.NavigateLayoutSelect(result.contingentLeaderNo, result.contingentArrivalNo);
             })
             this.dialogRef.close(this.chosenEntry);

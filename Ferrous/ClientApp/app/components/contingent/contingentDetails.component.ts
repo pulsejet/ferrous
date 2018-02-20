@@ -48,9 +48,9 @@ export class ContingentDetailsComponent {
         /* CLNo 0 indicates a new record  *
          * Fetch if not a new record      */
         if (!this.newrecord) {
-            this.dataService.FireLink(this.urlLink).subscribe(result => {
+            this.dataService.FireLink<Contingent>(this.urlLink).subscribe(result => {
                 this.contingent = result;
-                this.links = this.contingent.links;
+                this.links = result.links;
                 this.initial_contingent = { ...this.contingent };   /* Shallow copy */
             }, error => {
                 console.error(error);

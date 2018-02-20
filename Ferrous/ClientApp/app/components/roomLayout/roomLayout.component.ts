@@ -1,6 +1,6 @@
 ﻿import { Component, Inject, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Room, RoomAllocation, Link } from '../interfaces';
+import { Room, RoomAllocation, Link, Building } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -117,7 +117,7 @@ export class RoomLayoutComponent {
      * @param fullReload true to fully reload data
      */
     reloadRooms(fullReload: boolean = false) {
-        this.dataService.FireLink(this.urlLink).subscribe(result => {
+        this.dataService.FireLink<Building>(this.urlLink).subscribe(result => {
             this.links = result.links;
 
             if (!this.rooms || fullReload)

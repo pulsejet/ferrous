@@ -40,7 +40,7 @@ export class PersonDetailsComponent {
         /* MINo 0 indicates a new record  *
          * Fetch if not a new record      */
         if (!this.newrecord) {
-            this.dataService.FireLink(this.urlLink).subscribe(result => {
+            this.dataService.FireLink<Person>(this.urlLink).subscribe(result => {
                 this.person  = result;
                 this.initialPerson = { ...this.person };
 

@@ -40,7 +40,7 @@ export class DataService {
     GetLink(links: Link[], rel: string = "self"): Link {
         let found = links.find(x => x.rel === rel);
         if (found == null) return { } as Link;
-        return found;
+        return found as Link;
     }
 
     /**
@@ -75,20 +75,20 @@ export class DataService {
      * Fires the link with rel "self"
      * @param links Array of links
      */
-    FireLinkSelf(links: Link[]): Observable<any> { return this.FireLink(this.GetLinkSelf(links)); }
+    FireLinkSelf<T>(links: Link[]): Observable<T> { return this.FireLink<T>(this.GetLinkSelf(links)); }
 
     /**
      * Fires the link with rel "update"
      * @param links Array of links
      * @param body JSON body to upload
      */
-    FireLinkUpdate(links: Link[], body: any): Observable<any> { return this.FireLink(this.GetLinkUpdate(links), body); }
+    FireLinkUpdate<T>(links: Link[], body: any): Observable<T> { return this.FireLink<T>(this.GetLinkUpdate(links), body); }
 
     /**
      * Fires the link with rel "delete"
      * @param links Array of links
      */
-    FireLinkDelete(links: Link[]): Observable<any> { return this.FireLink(this.GetLinkDelete(links)); }
+    FireLinkDelete<T>(links: Link[]): Observable<T> { return this.FireLink<T>(this.GetLinkDelete(links)); }
 
     /**
      * Encode an object for passing through URL
@@ -100,14 +100,15 @@ export class DataService {
      * Decode an object encoded with "EncodeObject"
      * @param s Encoded string
      */
-    DecodeObject(s: string): any { return JSON.parse(atob(decodeURIComponent(s))) }
+    DecodeObject<T>(s: string): T { return JSON.parse(atob(decodeURIComponent(s))) as T }
 
     /**
      * Fire a link and return the result as an observable
      * @param link Link to fire
      * @param body Optional body to upload only for POST and PUT requests
      */
-    FireLink<T>(link: Link, body: any = null, options: any = null): Observable<any> {
+    FireLink<T>(link: Link, body: any = null, options: any = null): Observable<T> {
+        /* Fill in parameters */
         let URL = link.href;
         if (options != null) {
             for (var prop in options) {
@@ -115,6 +116,7 @@ export class DataService {
             }
         }
 
+        /* Use the correct method */
         switch (link.method) {
             case "GET":
                 return this.http.get<T>(URL);
