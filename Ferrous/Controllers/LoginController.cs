@@ -21,11 +21,8 @@ namespace Ferrous.Controllers
         }
 
         [HttpGet("login")]
-        public async Task<IActionResult> login()
+        public async Task<IActionResult> login([FromQuery] string username, [FromQuery] string password)
         {
-            string username = Request.Query["username"];
-            string password = Request.Query["password"];
-
             List<FerrousIdentity> identities = LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE);
             FerrousIdentity id = identities.FirstOrDefault(m => m.username.ToLower() == username.ToLower());
 
