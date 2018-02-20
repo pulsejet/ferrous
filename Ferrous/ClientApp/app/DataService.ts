@@ -108,7 +108,7 @@ export class DataService {
     /**
      * Fire a link and return the result as an observable
      * @param link Link to fire
-     * @param body Optional body to upload
+     * @param body Optional body to upload only for POST and PUT requests
      */
     FireLink(link: Link, body: any = null): Observable<any> {
         switch (link.method) {
