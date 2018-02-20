@@ -92,13 +92,13 @@ export class DataService {
      * Encode an object for passing through URL
      * @param o Object to encode
      */
-    EncodeObject(o: any): string { return encodeURIComponent(btoa(JSON.stringify(o))) }
+    EncodeObject(o: any): string { return btoa(JSON.stringify(o)) }
 
     /**
      * Decode an object encoded with "EncodeObject"
      * @param s Encoded string
      */
-    DecodeObject<T>(s: string): T { return JSON.parse(atob(decodeURIComponent(s))) as T }
+    DecodeObject<T>(s: string): T { return JSON.parse(atob(s)) as T }
 
     /**
      * Fire a link and return the result as an observable
