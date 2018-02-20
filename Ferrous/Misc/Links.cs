@@ -69,7 +69,7 @@ namespace Ferrous.Misc
         {
             /* Get the method */
             MethodInfo controllerMethod = type.GetMethod(route);
-            Authorization attr = (Authorization)controllerMethod.GetCustomAttributes(typeof(Authorization), true)[0];
+            Authorization attr = (Authorization)controllerMethod.GetCustomAttribute(typeof(Authorization));
 
             /* Get the relevant attributes */
             var getAtt = (HttpGetAttribute) controllerMethod.GetCustomAttribute(typeof(HttpGetAttribute));
@@ -95,11 +95,10 @@ namespace Ferrous.Misc
             if (routingAttribute != null)
                 routeTemplate = (string) routingAttribute.GetType().GetProperty(nameof(getAtt.Template)).GetValue(routingAttribute);
 
-            /* Throw an error if HTTPrel is not set */
-            if (relAtt == null) throw new Exception("HTTPrel attribute not set for creating link");
+            if (relAtt == null && overrideWithRel == String.Empty) throw new Exception("HTTPrel attribute not set for creating link");
 
             /* Check for priveleges and add the link*/
-            if (hasPrivilege(user.Identity.Name, attr._elevationLevel, attr._privilege))
+            if (attr == null || hasPrivilege(user.Identity.Name, attr._elevationLevel, attr._privilege))
             {
                 var cRouteAtt = (RouteAttribute)type.GetCustomAttribute(typeof(RouteAttribute));
                 if (routeParams != null)

@@ -8,8 +8,6 @@ import { API_SPEC } from '../api.spec';
 
 const SF_RoomLayouts_URL = '/roomTemplates/';
 
-const API_Logout_URL: string = '/api/login/logout';
-
 var JSON_HEADERS = new HttpHeaders();
 JSON_HEADERS = JSON_HEADERS.set('Content-Type', 'application/json');
 
@@ -287,6 +285,6 @@ export class DataService {
      * End the session
      */
     Logout(): Observable<any> {
-        return this.http.get(API_Logout_URL);
+        return this.FireLink(this.GetLink(API_SPEC, "logout"));
     }
 }
