@@ -36,10 +36,9 @@ namespace Ferrous.Controllers
                 buildings,
                 new LinkHelper()
                 .SetOptions(User, this.GetType(), Url)
-                .AddLinks(new string[] {
-                    nameof(GetBuildingsExtended),
-                    nameof(PostBuilding)
-                }).GetLinks()
+                .AddLink(nameof(GetBuildingsExtended))
+                .AddLink(nameof(PostBuilding))
+                .GetLinks()
             );
         }
 

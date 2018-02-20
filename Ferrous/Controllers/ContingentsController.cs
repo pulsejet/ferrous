@@ -39,10 +39,9 @@ namespace Ferrous.Controllers
                 contingents,
                 new LinkHelper()
                 .SetOptions(User, this.GetType(), Url)
-                .AddLinks(new string[] {
-                    nameof(GetContingents),
-                    nameof(PostContingent)
-                }).GetLinks()
+                .AddLink(nameof(GetContingents))
+                .AddLink(nameof(PostContingent))
+                .GetLinks()
             );
         }
 

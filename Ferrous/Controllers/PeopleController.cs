@@ -36,10 +36,9 @@ namespace Ferrous.Controllers
                 people,
                 new LinkHelper()
                 .SetOptions(User, this.GetType(), Url)
-                .AddLinks(new string[] {
-                    nameof(GetPeople),
-                    nameof(PostPerson)
-                }).GetLinks()
+                .AddLink(nameof(GetPeople))
+                .AddLink(nameof(PostPerson))
+                .GetLinks()
             );
         }
 

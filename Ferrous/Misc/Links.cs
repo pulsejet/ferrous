@@ -50,24 +50,6 @@ namespace Ferrous.Misc
             return this;
         }
 
-        public LinkHelper AddLinks(string[] routes)
-        {
-            foreach (var route in routes) AddLink(route);
-            return this;
-        }
-
-        public LinkHelper AddLinks(Tuple<string, object>[] routes)
-        {
-            foreach (var route in routes) AddLink(route.Item1, route.Item2);
-            return this;
-        }
-
-        public LinkHelper AddLinks(Tuple<string, object, string>[] routes)
-        {
-            foreach (var route in routes) AddLink(route.Item1, route.Item2, route.Item3);
-            return this;
-        }
-
         public LinkHelper AddLink(string route, object routeParams = null, string overrideWithRel = "")
         {
             MethodInfo controllerMethod = type.GetMethod(route);
