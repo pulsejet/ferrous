@@ -21,7 +21,7 @@ namespace Ferrous.Misc
         }
 
         /// <summary>
-        /// Links object for Contingents. SHOULD BE CALLED ONLY from ContingentsController
+        /// Fill Links object for Contingents. SHOULD BE CALLED ONLY from ContingentsController
         /// </summary>
         /// <param name="contingent">Contingent object</param>
         /// <returns></returns>
@@ -56,7 +56,7 @@ namespace Ferrous.Misc
         }
 
         /// <summary>
-        /// Includes Links object in all necessary sub data for Building. SHOULD BE CALLED ONLY from BuildingsController
+        /// Fills Links object for Building. SHOULD BE CALLED ONLY from BuildingsController
         /// </summary>
         /// <param name="building"></param>
         /// <returns></returns>
@@ -77,7 +77,7 @@ namespace Ferrous.Misc
         }
 
         /// <summary>
-        /// Links object for ContingnetArrival
+        /// Fill Links object for ContingentArrival
         /// </summary>
         /// <param name="contingentArrival">ContingentArrival object</param>
         /// <returns></returns>
@@ -96,7 +96,7 @@ namespace Ferrous.Misc
         }
 
         /// <summary>
-        /// Links object for Room Allocation
+        /// Fill Links object for Room Allocation
         /// </summary>
         /// <param name="roomAllocation">RoomAllocation object</param>
         public void FillRoomAllocationLinks(RoomAllocation roomAllocation)
@@ -110,7 +110,7 @@ namespace Ferrous.Misc
         }
 
         /// <summary>
-        /// Fills Links object for Room
+        /// Fill Links object for Room
         /// </summary>
         /// <param name="room">Room object</param>
         public void FillRoomLinks(Room room, string clno, int cano)
@@ -131,6 +131,10 @@ namespace Ferrous.Misc
                 FillRoomAllocationLinks(roomA);
         }
 
+        /// <summary>
+        /// Fills links object for Person object
+        /// </summary>
+        /// <param name="person">Person object to fill</param>
         public void FillPersonLinks(Person person)
         {
             var idObject = new { id = person.Mino };
