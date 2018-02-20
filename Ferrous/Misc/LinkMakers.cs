@@ -85,7 +85,7 @@ namespace Ferrous.Misc
         /// <returns></returns>
         public void FillBuildingsLinks(Building building, string clno, int cano)
         {
-            var idObject = new { id = building.Location, clno = clno, cano = cano };
+            var idObject = new { id = building.Location, clno, cano };
 
             building.Links = new LinkHelper()
                    .SetOptions(User, typeof(BuildingsController), Url)
