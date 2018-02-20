@@ -1,0 +1,2 @@
+﻿export const API_SPEC =
+    [{ "rel": "contingents", "method": "GET", "href": "/api/Contingents/" }, { "rel": "buildings", "method": "GET", "href": "/api/Buildings/e/{id}/{cano}" }, { "rel": "people", "method": "GET", "href": "/api/People/" }, { "rel": "building_websocket", "method": "GET", "href": "api/websocket/building" }, { "rel": "building_websocket_join", "method": "GET", "href": "JoinBuilding" }]

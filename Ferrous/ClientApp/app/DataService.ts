@@ -4,9 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival, EnumContainer, Link } from './components/interfaces'
 import { Router } from '@angular/router';
 
-const API_Contingents_URL: string = '/api/Contingents/';
-const API_Buildings_URL: string = '/api/Buildings/';
-const API_People_URL: string = '/api/People/';
+import { API_SPEC } from '../api.spec';
 
 const SF_RoomLayouts_URL = '/roomTemplates/';
 
@@ -110,18 +108,25 @@ export class DataService {
      * @param link Link to fire
      * @param body Optional body to upload only for POST and PUT requests
      */
-    FireLink(link: Link, body: any = null): Observable<any> {
+    FireLink<T>(link: Link, body: any = null, options: any = null): Observable<any> {
+        let URL = link.href;
+        if (options != null) {
+            for (var prop in options) {
+                URL = URL.replace("{" + prop + "}", options[prop]);
+            }
+        }
+
         switch (link.method) {
             case "GET":
-                return this.http.get(link.href);
+                return this.http.get<T>(URL);
             case "POST":
-                return this.http.post(link.href, body, { headers: JSON_HEADERS });
+                return this.http.post<T>(URL, body, { headers: JSON_HEADERS });
             case "PUT":
-                return this.http.put(link.href, body, { headers: JSON_HEADERS });                
+                return this.http.put<T>(URL, body, { headers: JSON_HEADERS });                
             case "DELETE":
-                return this.http.delete(link.href);
+                return this.http.delete<T>(URL);
             default:
-                throw new Error("no method defined for " + link.href);
+                throw new Error("no method defined for " + URL);
         }
     }
 
@@ -174,12 +179,12 @@ export class DataService {
 
     /** All Contingents */
     GetAllContingents(): Observable<EnumContainer> {
-        return this.http.get<EnumContainer>(API_Contingents_URL);
+        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, "contingents"));
     }
 
     /** All People */
     GetAllPeople(): Observable<EnumContainer> {
-        return this.http.get<EnumContainer>(API_People_URL);
+        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, "people"));
     }
 
     /**
@@ -188,7 +193,7 @@ export class DataService {
      * @param cano ContingentArrivalNo applicable
      */
     GetAllBuildingsExtended(clno: string, cano: number): Observable<EnumContainer> {
-        return this.http.get<EnumContainer>(API_Buildings_URL + "e/" + clno + "/" + cano.toString());
+        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, "buildings"), null, { id: clno, cano: cano.toString() });
     }
 
     /* === RoomLayout === */

@@ -20,6 +20,25 @@ namespace Ferrous.Misc
             this.Url = Url;
         }
 
+        public List<Link> API_SPEC()
+        {
+            var list = new LinkHelper()
+                .SetOptions(User, typeof(ContingentsController), Url)
+                .AddLink(nameof(ContingentsController.GetContingents), null, "contingents")
+
+                .SetOptions(User, typeof(BuildingsController), Url)
+                .AddLink(nameof(BuildingsController.GetBuildingsExtended), null, "buildings")
+
+                .SetOptions(User, typeof(PeopleController), Url)
+                .AddLink(nameof(PeopleController.GetPeople), null, "people")
+                .GetLinks();
+
+            /* Add websocket */
+            list.Add(new Link("building_websocket", "GET", WebSocketHubs.BuildingUpdateHub.BuildingWebsocketUrl));
+            list.Add(new Link("building_websocket_join", "GET", nameof(WebSocketHubs.BuildingUpdateHub.JoinBuilding)));
+            return list;
+        }
+
         /// <summary>
         /// Fill Links object for Contingents.
         /// </summary>

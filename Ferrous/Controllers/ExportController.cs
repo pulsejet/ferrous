@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using static Ferrous.Misc.Utilities;
 using static Ferrous.Misc.Authorization;
 using Ferrous.Misc;
+using System.Collections.Generic;
 
 namespace Ferrous.Controllers
 {
@@ -21,6 +22,15 @@ namespace Ferrous.Controllers
         public ExportController(ferrousContext context)
         {
             _context = context;
+        }
+
+        [HttpGet("api_spec")]
+        [Authorization(ElevationLevels.Organizer, PrivilegeList.NONE)]
+        [HTTPrel(HTTPrelList.self)]
+        [Produces("application/json")]
+        public List<Link> GetApiSpec()
+        {
+            return new LinksMaker(User, Url).API_SPEC();
         }
 
         // GET: api/export
