@@ -93,21 +93,17 @@ namespace Ferrous.Misc
             /* Check for priveleges and add the link*/
             if (hasPrivilege(user.Identity.Name, attr._elevationLevel, attr._privilege))
             {
-                if (routeParams == null)
-                    Links.Add(new Link(relAtt.rel, httpMethod, urlHelper.Action(route)));
-                else if (overrideWithRel == String.Empty)
-                    Links.Add(new Link(relAtt.rel, httpMethod, urlHelper.Action(route, routeParams)));
-                else
-                {
-                    var cRouteAtt = (RouteAttribute)type.GetCustomAttribute(typeof(RouteAttribute));
+                var cRouteAtt = (RouteAttribute)type.GetCustomAttribute(typeof(RouteAttribute));
+                if (routeParams != null)
                     foreach (var propInfo in routeParams.GetType().GetProperties())
                     {
                         string prop = propInfo.GetValue(routeParams).ToString();
                         routeTemplate = routeTemplate.Replace("{" + propInfo.Name + "}", prop);
                     }
-                    Links.Add(new Link(overrideWithRel != "no" ? overrideWithRel : relAtt.rel, 
-                        httpMethod, "/" + cRouteAtt.Template + "/" + routeTemplate));
-                }   
+                Links.Add(new Link(
+                    (overrideWithRel != String.Empty && overrideWithRel != "no") ? overrideWithRel : relAtt.rel, 
+                    httpMethod, "/" + cRouteAtt.Template + "/" + routeTemplate
+                ));
             }
             return this;
         }

@@ -21,7 +21,7 @@ namespace Ferrous.Misc
         }
 
         /// <summary>
-        /// Fill Links object for Contingents. SHOULD BE CALLED ONLY from ContingentsController
+        /// Fill Links object for Contingents.
         /// </summary>
         /// <param name="contingent">Contingent object</param>
         /// <returns></returns>
@@ -32,9 +32,9 @@ namespace Ferrous.Misc
             contingent.Links = new LinkHelper()
                 /* Contingent Actions */
                 .SetOptions(User, typeof(ContingentsController), Url)
-                .AddLink(nameof(ContingentsController.GetContingent), idObject, "no")
-                .AddLink(nameof(ContingentsController.PutContingent), idObject, "no")
-                .AddLink(nameof(ContingentsController.DeleteContingent), idObject, "no")
+                .AddLink(nameof(ContingentsController.GetContingent), idObject)
+                .AddLink(nameof(ContingentsController.PutContingent), idObject)
+                .AddLink(nameof(ContingentsController.DeleteContingent), idObject)
 
                 /* POST a ContingentArrival */
                 .SetOptions(User, typeof(ContingentArrivalsController), Url)
@@ -56,7 +56,7 @@ namespace Ferrous.Misc
         }
 
         /// <summary>
-        /// Fills Links object for Building. SHOULD BE CALLED ONLY from BuildingsController
+        /// Fills Links object for Building.
         /// </summary>
         /// <param name="building"></param>
         /// <returns></returns>
@@ -66,9 +66,9 @@ namespace Ferrous.Misc
 
             building.Links = new LinkHelper()
                    .SetOptions(User, typeof(BuildingsController), Url)
-                   .AddLink(nameof(BuildingsController.GetBuilding), idObject, "no")
-                   .AddLink(nameof(BuildingsController.PutBuilding), idObject, "no")
-                   .AddLink(nameof(BuildingsController.DeleteBuilding), idObject, "no")
+                   .AddLink(nameof(BuildingsController.GetBuilding), idObject)
+                   .AddLink(nameof(BuildingsController.PutBuilding), idObject)
+                   .AddLink(nameof(BuildingsController.DeleteBuilding), idObject)
                    .GetLinks();
 
             if (building.Room != null)
@@ -86,8 +86,8 @@ namespace Ferrous.Misc
             var idObject = new { id = contingentArrival.ContingentArrivalNo };
             contingentArrival.Links = new LinkHelper()
                 .SetOptions(User, typeof(ContingentArrivalsController), Url)
-                .AddLink(nameof(ContingentArrivalsController.PutContingentArrival), idObject, "no")
-                .AddLink(nameof(ContingentArrivalsController.DeleteContingentArrival), idObject, "no")
+                .AddLink(nameof(ContingentArrivalsController.PutContingentArrival), idObject)
+                .AddLink(nameof(ContingentArrivalsController.DeleteContingentArrival), idObject)
 
                 .SetOptions(User, typeof(RoomAllocationsController), Url)
                 .AddLink(nameof(RoomAllocationsController.PostRoomAllocation), new { }, "create_room_allocation")
@@ -104,8 +104,8 @@ namespace Ferrous.Misc
             var idObject = new { id = roomAllocation.Sno };
             roomAllocation.Links = new LinkHelper()
                 .SetOptions(User, typeof(RoomAllocationsController), Url)
-                .AddLink(nameof(RoomAllocationsController.PutRoomAllocation), idObject, "no")
-                .AddLink(nameof(RoomAllocationsController.DeleteRoomAllocation), idObject, "no")
+                .AddLink(nameof(RoomAllocationsController.PutRoomAllocation), idObject)
+                .AddLink(nameof(RoomAllocationsController.DeleteRoomAllocation), idObject)
                 .GetLinks();
         }
 
@@ -120,9 +120,9 @@ namespace Ferrous.Misc
 
             room.Links = new LinkHelper()
                 .SetOptions(User, typeof(RoomsController), Url)
-                .AddLink(nameof(RoomsController.GetRoom), idObject, "no")
-                .AddLink(nameof(RoomsController.PutRoom), idObject, "no")
-                .AddLink(nameof(RoomsController.DeleteRoom), idObject, "no")
+                .AddLink(nameof(RoomsController.GetRoom), idObject)
+                .AddLink(nameof(RoomsController.PutRoom), idObject)
+                .AddLink(nameof(RoomsController.DeleteRoom), idObject)
                 .AddLink(nameof(RoomsController.RoomAllot), idObjectAllot, "allot")
                 .AddLink(nameof(RoomsController.mark), idObject, "mark")
                 .GetLinks();
@@ -140,9 +140,9 @@ namespace Ferrous.Misc
             var idObject = new { id = person.Mino };
             person.links = new LinkHelper()
                 .SetOptions(User, typeof(PeopleController), Url)
-                .AddLink(nameof(PeopleController.GetPerson), idObject, "no")
-                .AddLink(nameof(PeopleController.PutPerson), idObject, "no")
-                .AddLink(nameof(PeopleController.DeletePerson), idObject, "no")
+                .AddLink(nameof(PeopleController.GetPerson), idObject)
+                .AddLink(nameof(PeopleController.PutPerson), idObject)
+                .AddLink(nameof(PeopleController.DeletePerson), idObject)
 
                 .SetOptions(User, typeof(ContingentsController), Url)
                 .AddLink(nameof(ContingentsController.GetContingent), new { id = person.ContingentLeaderNo }, "contingent")
