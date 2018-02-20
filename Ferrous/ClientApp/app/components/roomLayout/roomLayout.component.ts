@@ -11,6 +11,9 @@ import { HubConnection } from '@aspnet/signalr-client';
 import * as $ from 'jquery';
 import { TimerObservable } from "rxjs/observable/TimerObservable";
 
+const API_WebSocket_Building: string = '/api/websocket/building';
+const API_WebSocket_Building_Join: string = 'JoinBuilding';
+
 /* Room layout component */
 @Component({
     selector: 'roomLayout',
@@ -72,7 +75,7 @@ export class RoomLayoutComponent {
     ngOnInit() {
         /* Connect to the websocket   *
          * TODO: Use HATEOAS for this */
-        this.hubConnection = new HubConnection('/api/websocket/building');
+        this.hubConnection = new HubConnection(API_WebSocket_Building);
 
         /* Mark pending update on event 'updated' */
         this.hubConnection.on('updated', () => {
@@ -91,7 +94,7 @@ export class RoomLayoutComponent {
         /* Start the connection */
         this.hubConnection.start()
             .then(() => {
-                this.hubConnection.invoke('JoinBuilding', this.locCode);
+                this.hubConnection.invoke(API_WebSocket_Building_Join, this.locCode);
                 console.log('Hub connection started');
             })
             .catch(() => {
