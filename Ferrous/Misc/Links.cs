@@ -57,7 +57,15 @@ namespace Ferrous.Misc
             return this;
         }
 
-        public LinkHelper AddLink(string route, object routeParams = null, string overrideWithRel = "")
+        /// <summary>
+        /// Adds a Link to the Helper
+        /// </summary>
+        /// <param name="route">Routing object's name, may be passed using nameof(object)</param>
+        /// <param name="routeParams">Params for route. Each {param} will be replaced</param>
+        /// <param name="overrideWithRel">Override rel attribute</param>
+        /// <param name="noParentTemplate">Do not use parent template</param>
+        /// <returns></returns>
+        public LinkHelper AddLink(string route, object routeParams = null, string overrideWithRel = "", bool noParentTemplate = false)
         {
             /* Get the method */
             MethodInfo controllerMethod = type.GetMethod(route);
@@ -102,7 +110,8 @@ namespace Ferrous.Misc
                     }
                 Links.Add(new Link(
                     (overrideWithRel != String.Empty && overrideWithRel != "no") ? overrideWithRel : relAtt.rel, 
-                    httpMethod, "/" + cRouteAtt.Template + "/" + routeTemplate
+                    httpMethod, 
+                    (!noParentTemplate?"/" + cRouteAtt.Template : String.Empty) + "/" + routeTemplate
                 ));
             }
             return this;
