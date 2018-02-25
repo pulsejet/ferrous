@@ -1,0 +1,16 @@
+sudo: required #is required to use docker service in travis
+
+language: csharp #can be any language, just php for example
+
+services:
+  - docker # required, but travis uses older version of docker :(
+
+install:
+  - echo "No installes necessary" # put your normal pre-testing installs here
+
+script:
+  - echo "No tests for now!" # put your normal testing scripts here
+
+after_success:
+  - docker --version  # document the version travis is using
+  - docker build .
