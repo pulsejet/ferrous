@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Injectable } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Title } from '@angular/platform-browser';
-import { DataService } from '../../data.service';
+import { DataService } from './data.service';
 
 /* TODO: This code comes from the example for the angular   *
  * material side nav. Clean it up and add comments.         */
