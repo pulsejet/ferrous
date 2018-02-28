@@ -6,7 +6,7 @@ import { DataService } from '../../DataService';
 
 @Component({
     selector: 'personDetails',
-    templateUrl: './personDetails.html',
+    templateUrl: './person-details.component.html',
     styleUrls: ['../../Custom.css']
 })
 export class PersonDetailsComponent {

@@ -7,7 +7,7 @@ import { PaginatorHelper } from '../../Common';
 /* Person Component */
 @Component({
     selector: 'person',
-    templateUrl: './person.html',
+    templateUrl: './person.component.html',
     styleUrls: ['../../Custom.css']
 })
 export class PersonComponent {
