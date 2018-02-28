@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from '../../DataService';
-import { ContingentArrivalDialogComponent } from '../contingent/ContingentArrivalDialog';
+import { ContingentArrivalDialogComponent } from '../contingent-arrival-dialog/contingent-arrival-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PaginatorHelper } from '../../Common';
 

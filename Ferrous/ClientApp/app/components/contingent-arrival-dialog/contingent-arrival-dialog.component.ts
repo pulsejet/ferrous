@@ -5,7 +5,7 @@ import { DataService } from '../../DataService';
 
 @Component({
     selector: 'contingent-arrival-dialog',
-    templateUrl: './ContingentArrivalDialog.html'
+    templateUrl: './contingent-arrival-dialog.component.html'
 })
 export class ContingentArrivalDialogComponent {
     /** Id of old chosen entry */

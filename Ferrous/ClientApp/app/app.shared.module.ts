@@ -9,7 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 
 import { ContingentComponent } from './components/contingent/contingent.component';
 import { ContingentDetailsComponent } from './components/contingent-details/contingent-details.component';
-import { ContingentArrivalDialogComponent } from './components/contingent/ContingentArrivalDialog'
+import { ContingentArrivalDialogComponent } from './components/contingent-arrival-dialog/contingent-arrival-dialog.component'
 
 import { PersonComponent } from './components/person/person';
 import { PersonDetailsComponent } from './components/person/personDetails';
