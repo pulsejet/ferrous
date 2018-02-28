@@ -19,12 +19,12 @@ import { LocationSelectComponent } from './components/location-select/location-s
 import { RoomDialogComponent } from './components/room-dialog/room-dialog.component'
 
 import { CounterComponent } from './components/counter/counter.component';
-import { MyMaterialClass } from './components/material-angular';
+import { MyMaterialClass } from './components/material-angular.module';
 import { DataService } from './data.service';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FilterContingents } from './Pipes';
-import { ClickStopPropagation } from './components/material-angular';
+import { ClickStopPropagation } from './components/material-angular.module';
 
 @NgModule({
     declarations: [
