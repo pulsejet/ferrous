@@ -1,16 +1,13 @@
-sudo: required #is required to use docker service in travis
+language: csharp
+sudo: false
+solution: ./Ferrous.sln
+dist: xenial
 
-language: generic
+cache:
+  directories:
+    - node_modules
 
-services:
-  - docker # required, but travis uses older version of docker :(
-
-install:
-  - echo "No installs necessary" # put your normal pre-testing installs here
-
+mono: none
+dotnet: 2.1.4
 script:
-  - echo "No tests for now!" # put your normal testing scripts here
-
-after_success:
-  - docker --version  # document the version travis is using
-  - docker build .
+  - dotnet publish
