@@ -38,7 +38,7 @@
         </thead>
         <tbody>
             <!-- Filtered rows -->
-            <tr *ngFor="let contingent of paginatorHelper.paginate(contingents | filtercontingents:enteredCL)" (click)="handleTableClick(contingent)">
+            <tr *ngFor="let contingent of paginatorHelper.paginate(contingents | filter_contingents:enteredCL)" (click)="handleTableClick(contingent)">
                 <td>{{ contingent.contingentLeaderNo }}</td>
                 <td>{{ contingent.male }}</td>
                 <td>{{ contingent.female }}</td>
@@ -48,7 +48,7 @@
         </tbody>
     </table>
 
-    <mat-paginator [length]="(contingents | filtercontingents:enteredCL).length"
+    <mat-paginator [length]="(contingents | filter_contingents:enteredCL).length"
                    [pageSize]="paginatorHelper.pageSize"
                    [pageSizeOptions]="paginatorHelper.pageSizeOptions"
                    (page)="paginatorHelper.pageEvent = $event">

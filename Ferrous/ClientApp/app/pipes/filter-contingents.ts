@@ -2,7 +2,7 @@
 import { Contingent } from '../components/interfaces';
 
 @Pipe({
-    name: 'filtercontingents',
+    name: 'filter_contingents',
     pure: false
 })
 export class FilterContingents implements PipeTransform {
