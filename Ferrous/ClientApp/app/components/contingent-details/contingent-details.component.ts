@@ -1,6 +1,6 @@
 ﻿import { Component, Inject } from '@angular/core';
 import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
-import { Contingent, RoomAllocation, ContingentArrival, Link } from '../interfaces';
+import { Contingent, RoomAllocation, ContingentArrival, Link } from '../../interfaces';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';

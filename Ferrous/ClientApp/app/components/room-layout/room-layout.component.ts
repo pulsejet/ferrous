@@ -1,6 +1,6 @@
 ﻿import { Component, Inject, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Room, RoomAllocation, Link, Building } from '../interfaces';
+import { Room, RoomAllocation, Link, Building } from '../../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';

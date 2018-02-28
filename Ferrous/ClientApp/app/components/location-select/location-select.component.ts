@@ -1,6 +1,6 @@
 ﻿import { Component, Inject } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Building, Link } from '../interfaces';
+import { Building, Link } from '../../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../data.service';
 

@@ -1,5 +1,5 @@
 ﻿import { Pipe, PipeTransform } from '@angular/core';
-import { Contingent } from '../components/interfaces';
+import { Contingent } from '../interfaces';
 
 @Pipe({
     name: 'filter_contingents',

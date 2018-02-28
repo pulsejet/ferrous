@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival, EnumContainer, Link } from './components/interfaces'
+import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival, EnumContainer, Link } from './interfaces'
 import { Router } from '@angular/router';
 
 import { API_SPEC } from '../api.spec';
