@@ -10,8 +10,8 @@ RUN dotnet restore
 COPY ./Ferrous .
 RUN dotnet publish --output /app/ --configuration Release
 
-# Stage 2
-FROM microsoft/aspnetcore
-WORKDIR /app
-COPY --from=builder /app .
-ENTRYPOINT ["dotnet", "aspdocker.dll"]
+# Stage 2 (enable if continuous integration is necessary)
+# FROM microsoft/aspnetcore
+# WORKDIR /app
+# COPY --from=builder /app .
+# ENTRYPOINT ["dotnet", "aspdocker.dll"]
