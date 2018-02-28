@@ -119,6 +119,9 @@ namespace Ferrous.Misc
         public List<Link> GetLinks() => Links;
     }
 
+    /// <summary>
+    /// A link with a rel, method and href
+    /// </summary>
     public class Link
     {
         public Link() { }
@@ -134,6 +137,9 @@ namespace Ferrous.Misc
         public string href;
     }
 
+    /// <summary>
+    /// Container for sending links with top level data
+    /// </summary>
     public class EnumContainer {
         public List<Link> Links;
         public object Data;

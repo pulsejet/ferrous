@@ -20,6 +20,10 @@ namespace Ferrous.Misc
             this.Url = Url;
         }
 
+        /// <summary>
+        /// Generate the API Spec
+        /// </summary>
+        /// <returns>List of links defined in API_SPEC</returns>
         public List<Link> API_SPEC()
         {
             var list = new LinkHelper()
