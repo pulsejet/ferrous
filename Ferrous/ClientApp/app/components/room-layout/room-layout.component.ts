@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { DataService } from '../../DataService';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { RoomDialogComponent } from './RoomDialogComponent';
+import { RoomDialogComponent } from '../room-dialog/room-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 import { HubConnection } from '@aspnet/signalr-client';
 import * as $ from 'jquery';
@@ -16,7 +16,7 @@ import { API_SPEC } from '../../../api.spec';
 /* Room layout component */
 @Component({
     selector: 'roomLayout',
-    templateUrl: './roomLayout.component.html',
+    templateUrl: './room-layout.component.html',
     styleUrls: ['../../Custom.css'],
 })
 export class RoomLayoutComponent {

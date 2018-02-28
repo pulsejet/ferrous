@@ -5,7 +5,7 @@ import { DataService } from '../../DataService';
 
 @Component({
     selector: 'room-dialog',
-    templateUrl: './RoomDialogComponent.html',
+    templateUrl: './room-dialog.component.html',
     styleUrls: ['../../Custom.css']
 })
 export class RoomDialogComponent {

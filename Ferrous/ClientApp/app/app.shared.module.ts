@@ -14,9 +14,9 @@ import { ContingentArrivalDialogComponent } from './components/contingent-arriva
 import { PersonComponent } from './components/person/person.component';
 import { PersonDetailsComponent } from './components/person-details/person-details.component';
 
-import { RoomLayoutComponent } from './components/roomLayout/roomLayout.component';
-import { LocationSelectComponent } from './components/roomLayout/locationSelect';
-import { RoomDialogComponent } from './components/roomLayout/RoomDialogComponent'
+import { RoomLayoutComponent } from './components/room-layout/room-layout.component';
+import { LocationSelectComponent } from './components/location-select/location-select.component';
+import { RoomDialogComponent } from './components/room-dialog/room-dialog.component'
 
 import { CounterComponent } from './components/counter/counter.component';
 import { MyMaterialClass } from './components/material-angular';

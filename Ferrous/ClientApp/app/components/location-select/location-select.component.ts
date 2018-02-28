@@ -7,7 +7,7 @@ import { DataService } from '../../DataService';
 /* Room layout component */
 @Component({
     selector: 'locationSelect',
-    templateUrl: './locationSelect.html',
+    templateUrl: './location-select.component.html',
     styleUrls: ['../../Custom.css'],
 })
 export class LocationSelectComponent {
