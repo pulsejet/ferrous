@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Contingent, Link } from '../interfaces';
 import { Title } from '@angular/platform-browser';
-import { DataService } from '../../DataService';
+import { DataService } from '../../data.service';
 import { PaginatorHelper } from '../../Common';
 
 /* Contingent Component */

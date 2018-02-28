@@ -2,7 +2,7 @@
 import { ActivatedRoute, Params } from '@angular/router';
 import { Room, RoomAllocation, Link, Building } from '../interfaces';
 import { Title } from '@angular/platform-browser';
-import { DataService } from '../../DataService';
+import { DataService } from '../../data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { RoomDialogComponent } from '../room-dialog/room-dialog.component';

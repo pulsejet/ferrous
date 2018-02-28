@@ -20,7 +20,7 @@ import { RoomDialogComponent } from './components/room-dialog/room-dialog.compon
 
 import { CounterComponent } from './components/counter/counter.component';
 import { MyMaterialClass } from './components/material-angular';
-import { DataService } from './DataService';
+import { DataService } from './data.service';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FilterContingents } from './Pipes';

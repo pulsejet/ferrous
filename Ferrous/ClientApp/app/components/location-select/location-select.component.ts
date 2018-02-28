@@ -2,7 +2,7 @@
 import { ActivatedRoute, Params } from '@angular/router';
 import { Building, Link } from '../interfaces';
 import { Title } from '@angular/platform-browser';
-import { DataService } from '../../DataService';
+import { DataService } from '../../data.service';
 
 /* Room layout component */
 @Component({
