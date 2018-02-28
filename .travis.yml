@@ -1,13 +1,17 @@
 language: csharp
 sudo: false
 solution: ./Ferrous.sln
-dist: xenial
+dist: trusty
 
 cache:
   directories:
-    - node_modules
+    - ./Ferrous/node_modules
+
+install:
+  - "npm install --prefix ./Ferrous"
 
 mono: none
 dotnet: 2.1.4
+
 script:
   - dotnet publish
