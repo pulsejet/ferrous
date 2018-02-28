@@ -8,7 +8,6 @@ import { DataService } from '../../data.service';
 @Component({
     selector: 'locationSelect',
     templateUrl: './location-select.component.html',
-    styleUrls: ['../../Custom.css'],
 })
 export class LocationSelectComponent {
     /** Current CLNo */

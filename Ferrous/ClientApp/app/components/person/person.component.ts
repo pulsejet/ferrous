@@ -8,7 +8,6 @@ import { PaginatorHelper } from '../../helpers';
 @Component({
     selector: 'person',
     templateUrl: './person.component.html',
-    styleUrls: ['../../Custom.css']
 })
 export class PersonComponent {
     /** Master list of people */

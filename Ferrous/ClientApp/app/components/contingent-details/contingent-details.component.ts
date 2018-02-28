@@ -13,7 +13,6 @@ import { PaginatorHelper } from '../../helpers';
 @Component({
     selector: 'contingent',
     templateUrl: './contingent-details.component.html',
-    styleUrls: ['../../Custom.css']
 })
 export class ContingentDetailsComponent {
     public newrecord: boolean;

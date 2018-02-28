@@ -6,7 +6,6 @@ import { Title } from '@angular/platform-browser';
 @Component({
     selector: 'home',
     templateUrl: './home.component.html',
-    styleUrls: ['../../Custom.css']
 })
 export class HomeComponent {
     constructor(private activatedRoute: ActivatedRoute,

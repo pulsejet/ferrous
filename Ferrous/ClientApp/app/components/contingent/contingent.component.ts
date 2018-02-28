@@ -8,7 +8,6 @@ import { PaginatorHelper } from '../../helpers';
 @Component({
     selector: 'contingent',
     templateUrl: './contingent.component.html',
-    styleUrls: ['../../Custom.css']
 })
 export class ContingentComponent {
     /** Master contingents list */

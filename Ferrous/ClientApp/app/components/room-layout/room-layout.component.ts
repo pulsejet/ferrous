@@ -17,7 +17,6 @@ import { API_SPEC } from '../../../api.spec';
 @Component({
     selector: 'roomLayout',
     templateUrl: './room-layout.component.html',
-    styleUrls: ['../../Custom.css'],
 })
 export class RoomLayoutComponent {
     /** Master list of rooms */
