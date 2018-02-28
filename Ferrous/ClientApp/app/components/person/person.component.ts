@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Person, Link } from '../interfaces';
 import { Title } from '@angular/platform-browser';
 import { DataService } from '../../data.service';
-import { PaginatorHelper } from '../../Common';
+import { PaginatorHelper } from '../../helpers';
 
 /* Person Component */
 @Component({

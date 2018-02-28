@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from '../../data.service';
 import { ContingentArrivalDialogComponent } from '../contingent-arrival-dialog/contingent-arrival-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { PaginatorHelper } from '../../Common';
+import { PaginatorHelper } from '../../helpers';
 
 /* Contingent Details Component */
 @Component({
