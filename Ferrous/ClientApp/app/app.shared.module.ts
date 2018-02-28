@@ -24,7 +24,7 @@ import { DataService } from './data.service';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FilterContingents } from './pipes/filter-contingents';
-import { ClickStopPropagation } from './components/material-angular.module';
+import { ClickStopPropagation } from './helpers';
 
 @NgModule({
     declarations: [

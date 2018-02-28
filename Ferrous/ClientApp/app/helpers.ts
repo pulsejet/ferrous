@@ -23,3 +23,17 @@ export class PaginatorHelper {
         }
     }
 }
+
+/* Click Stop Propagation */
+import { Directive, HostListener } from "@angular/core";
+
+@Directive({
+    selector: "[click-stop-propagation]"
+})
+/** Stops propagation of clicks to elements below */
+export class ClickStopPropagation {
+    @HostListener("click", ["$event"])
+    public onClick(event: any): void {
+        event.stopPropagation();
+    }
+}
