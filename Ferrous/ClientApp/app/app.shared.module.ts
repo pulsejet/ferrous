@@ -8,7 +8,7 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 
 import { ContingentComponent } from './components/contingent/contingent.component';
-import { ContingentDetailsComponent } from './components/contingent/contingentDetails.component';
+import { ContingentDetailsComponent } from './components/contingent-details/contingent-details.component';
 import { ContingentArrivalDialogComponent } from './components/contingent/ContingentArrivalDialog'
 
 import { PersonComponent } from './components/person/person';

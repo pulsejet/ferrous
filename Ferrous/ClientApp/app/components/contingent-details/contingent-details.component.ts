@@ -5,14 +5,14 @@ import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from '../../DataService';
-import { ContingentArrivalDialogComponent } from './ContingentArrivalDialog';
+import { ContingentArrivalDialogComponent } from '../contingent/ContingentArrivalDialog';
 import { MatDialog } from '@angular/material/dialog';
 import { PaginatorHelper } from '../../Common';
 
 /* Contingent Details Component */
 @Component({
     selector: 'contingent',
-    templateUrl: './contingentDetails.component.html',
+    templateUrl: './contingent-details.component.html',
     styleUrls: ['../../Custom.css']
 })
 export class ContingentDetailsComponent {
