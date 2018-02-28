@@ -39,7 +39,13 @@ module.exports = (env) => {
             new webpack.DllReferencePlugin({
                 context: __dirname,
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
-            })
+            }),
+            new webpack.DefinePlugin({
+                'process.env':{
+                    'NODE_ENV': JSON.stringify(isDevBuild ? 'dev' : 'prod'),
+                    'ISDEV': isDevBuild ? true : false,
+                }
+            }),
         ].concat(isDevBuild ? [
             // Plugins that apply in development builds only
             /*
@@ -63,7 +69,7 @@ module.exports = (env) => {
             }),
             new AngularCompilerPlugin({
                 tsConfigPath: './tsconfig.json',
-                entryModule: path.join(__dirname, 'ClientApp/app/app.browser.module#AppModule'),
+                entryModule: path.join(__dirname, 'ClientApp/app/app.module#AppModule'),
                 exclude: ['./**/*.server.ts']
             })
         ])

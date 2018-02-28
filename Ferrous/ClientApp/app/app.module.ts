@@ -32,6 +32,8 @@ import { ClickStopPropagation } from './helpers';
 
 import 'hammerjs';
 
+const isprod: boolean = !(process.env.ISDEV);
+
 @NgModule({
     bootstrap: [
         AppComponent
@@ -60,7 +62,7 @@ import 'hammerjs';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        //ServiceWorkerModule.register('/ngsw-worker.js')
+        ServiceWorkerModule.register('/ngsw-worker.js', { enabled: isprod }),
 
         CommonModule,
         HttpClientModule,
@@ -94,8 +96,7 @@ import 'hammerjs';
         RoomDialogComponent
     ]
 })
-export class AppModule {
-}
+export class AppModule { }
 
 export function getBaseUrl() {
     return document.getElementsByTagName('base')[0].href;
