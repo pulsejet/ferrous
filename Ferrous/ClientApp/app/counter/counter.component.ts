@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DataService } from '../../data.service';
+import { DataService } from '../data.service';
 
 @Component({
     selector: 'counter',

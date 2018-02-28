@@ -1,8 +1,8 @@
 ﻿import { Component } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Person, Link } from '../../interfaces';
+import { Person, Link } from '../interfaces';
 import { Title } from '@angular/platform-browser';
-import { DataService } from '../../data.service';
+import { DataService } from '../data.service';
 
 @Component({
     selector: 'personDetails',

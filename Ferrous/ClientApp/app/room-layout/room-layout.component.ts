@@ -1,8 +1,8 @@
 ﻿import { Component, Inject, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Room, RoomAllocation, Link, Building } from '../../interfaces';
+import { Room, RoomAllocation, Link, Building } from '../interfaces';
 import { Title } from '@angular/platform-browser';
-import { DataService } from '../../data.service';
+import { DataService } from '../data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { RoomDialogComponent } from '../room-dialog/room-dialog.component';
@@ -11,7 +11,7 @@ import { HubConnection } from '@aspnet/signalr-client';
 import * as $ from 'jquery';
 import { TimerObservable } from "rxjs/observable/TimerObservable";
 
-import { API_SPEC } from '../../../api.spec';
+import { API_SPEC } from '../../api.spec';
 
 /* Room layout component */
 @Component({

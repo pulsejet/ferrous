@@ -1,13 +1,13 @@
 ﻿import { Component, Inject } from '@angular/core';
 import { ActivatedRoute, Params, Routes, Route, Router } from '@angular/router';
-import { Contingent, RoomAllocation, ContingentArrival, Link } from '../../interfaces';
+import { Contingent, RoomAllocation, ContingentArrival, Link } from '../interfaces';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DataService } from '../../data.service';
+import { DataService } from '../data.service';
 import { ContingentArrivalDialogComponent } from '../contingent-arrival-dialog/contingent-arrival-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { PaginatorHelper } from '../../helpers';
+import { PaginatorHelper } from '../helpers';
 
 /* Contingent Details Component */
 @Component({
