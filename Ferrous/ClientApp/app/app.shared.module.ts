@@ -23,7 +23,7 @@ import { MyMaterialClass } from './components/material-angular.module';
 import { DataService } from './data.service';
 
 import { HttpClientModule } from '@angular/common/http';
-import { FilterContingents } from './Pipes';
+import { FilterContingents } from './pipes/filter-contingents';
 import { ClickStopPropagation } from './components/material-angular.module';
 
 @NgModule({
