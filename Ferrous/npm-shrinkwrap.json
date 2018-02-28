@@ -286,15 +286,6 @@
         "tslib": "1.7.1"
       }
     },
-    "@angular/http": {
-      "version": "5.2.2",
-      "resolved": "https://registry.npmjs.org/@angular/http/-/http-5.2.2.tgz",
-      "integrity": "sha512-MG7ClwOs9gQgAIjKa6WulUmLyWmKbY8qwX1osVn4cTuGtnpcyTiqruOwrS3DzY6doE8qsu2y5VURt3Ncs0SE6Q==",
-      "dev": true,
-      "requires": {
-        "tslib": "1.7.1"
-      }
-    },
     "@angular/material": {
       "version": "5.1.1",
       "resolved": "https://registry.npmjs.org/@angular/material/-/material-5.1.1.tgz",
@@ -319,17 +310,6 @@
       "dev": true,
       "requires": {
         "tslib": "1.7.1"
-      }
-    },
-    "@angular/platform-server": {
-      "version": "5.2.2",
-      "resolved": "https://registry.npmjs.org/@angular/platform-server/-/platform-server-5.2.2.tgz",
-      "integrity": "sha512-83FvU5JHOFI5lVOXnj4g/oqwZfihzsv5dBiAnwp5NIskJygMBCc+s5D3kpX5KtqUDyMVyYQU6qrzKgL3b7K0uQ==",
-      "dev": true,
-      "requires": {
-        "domino": "1.0.30",
-        "tslib": "1.7.1",
-        "xhr2": "0.1.4"
       }
     },
     "@angular/router": {
@@ -2770,12 +2750,6 @@
       "requires": {
         "domelementtype": "1.3.0"
       }
-    },
-    "domino": {
-      "version": "1.0.30",
-      "resolved": "https://registry.npmjs.org/domino/-/domino-1.0.30.tgz",
-      "integrity": "sha512-ikq8WiDSkICdkElud317F2Sigc6A3EDpWsxWBwIZqOl95km4p/Vc9Rj98id7qKgsjDmExj0AVM7JOd4bb647Xg==",
-      "dev": true
     },
     "domutils": {
       "version": "1.5.1",
@@ -8376,12 +8350,6 @@
         "uniqs": "2.0.0"
       }
     },
-    "preboot": {
-      "version": "6.0.0-beta.1",
-      "resolved": "https://registry.npmjs.org/preboot/-/preboot-6.0.0-beta.1.tgz",
-      "integrity": "sha512-wtAhCShcOo+CyQRMWUnWX9QFFaxgpz5NVamPCl/IgYWLG+mn1z+JN1IdpGz/+OahxH2G0gLgvksE7ZXcMqL2ew==",
-      "dev": true
-    },
     "prepend-http": {
       "version": "1.0.4",
       "resolved": "https://registry.npmjs.org/prepend-http/-/prepend-http-1.0.4.tgz",
@@ -11780,12 +11748,6 @@
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz",
       "integrity": "sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=",
-      "dev": true
-    },
-    "xhr2": {
-      "version": "0.1.4",
-      "resolved": "https://registry.npmjs.org/xhr2/-/xhr2-0.1.4.tgz",
-      "integrity": "sha1-f4dliEdxbbUCYyOBL4GMras4el8=",
       "dev": true
     },
     "xml-char-classes": {
