@@ -14,14 +14,14 @@ import { HomeComponent } from './home/home.component';
 
 import { ContingentComponent } from './contingent/contingent.component';
 import { ContingentDetailsComponent } from './contingent-details/contingent-details.component';
-import { ContingentArrivalDialogComponent } from './contingent-arrival-dialog/contingent-arrival-dialog.component'
+import { ContingentArrivalDialogComponent } from './contingent-arrival-dialog/contingent-arrival-dialog.component';
 
 import { PersonComponent } from './person/person.component';
 import { PersonDetailsComponent } from './person-details/person-details.component';
 
 import { RoomLayoutComponent } from './room-layout/room-layout.component';
 import { LocationSelectComponent } from './location-select/location-select.component';
-import { RoomDialogComponent } from './room-dialog/room-dialog.component'
+import { RoomDialogComponent } from './room-dialog/room-dialog.component';
 
 import { CounterComponent } from './counter/counter.component';
 import { MyMaterialClass } from './material-angular.module';

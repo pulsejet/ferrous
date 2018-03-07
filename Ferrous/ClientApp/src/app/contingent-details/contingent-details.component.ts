@@ -11,13 +11,13 @@ import { PaginatorHelper } from '../helpers';
 
 /* Contingent Details Component */
 @Component({
-    selector: 'contingent',
+    selector: 'app-contingent',
     templateUrl: './contingent-details.component.html',
 })
 export class ContingentDetailsComponent {
     public newrecord: boolean;
     /** true if currently editing */
-    public editing: boolean = false;
+    public editing = false;
     /** Object for reverting cancelled changes */
     public initial_contingent: Contingent;
     /** Master Contingent object */
@@ -36,11 +36,11 @@ export class ContingentDetailsComponent {
         private titleService: Title,
         @Inject('BASE_URL') baseUrl: string) {
 
-        this.titleService.setTitle("Contingent Details");
+        this.titleService.setTitle('Contingent Details');
 
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
-            this.newrecord = params['edit'] == 1;
+            this.newrecord = params['edit'] === 1;
             this.urlLink = this.dataService.DecodeObject(params['id']);
         });
 
@@ -53,7 +53,7 @@ export class ContingentDetailsComponent {
                 this.initial_contingent = { ...this.contingent };   /* Shallow copy */
             }, error => {
                 console.error(error);
-                alert("No such Contingent or error retrieving!");
+                alert('No such Contingent or error retrieving!');
                 _location.back();       /* Go back if invalid */
             });
         }
@@ -63,7 +63,7 @@ export class ContingentDetailsComponent {
             this.editing = true;
             this.contingent = {} as Contingent;
         }
-        
+
     }
 
     /** Handle actions of both edit and cancel */
@@ -80,8 +80,8 @@ export class ContingentDetailsComponent {
     }
 
     /** PUT/POST the master */
-    public save() { 
-        let body = JSON.stringify(this.contingent);
+    public save() {
+        const body = JSON.stringify(this.contingent);
 
         /* PUT for editing; POST for new record */
         if (!this.newrecord) {
@@ -89,7 +89,7 @@ export class ContingentDetailsComponent {
                 /* Update the initial data */
                 this.initial_contingent = { ...this.contingent };
                 this.editing = !this.editing;
-                if (this.newrecord) this.dataService.NavigateContingentsList();
+                if (this.newrecord) { this.dataService.NavigateContingentsList(); }
             });
         } else {
             /* Go back to list for new record */
@@ -101,7 +101,7 @@ export class ContingentDetailsComponent {
 
     /** DELETE a record */
     public delete() {
-        if (confirm("Are you sure to delete?")) {
+        if (confirm('Are you sure to delete?')) {
             this.dataService.FireLinkDelete(this.links).subscribe(result => {
                 this.dataService.NavigateContingentsList();
             });
@@ -110,14 +110,14 @@ export class ContingentDetailsComponent {
 
     /** DELETE a RoomAllocation */
     public unallocateRoom(roomA: RoomAllocation) {
-        if (confirm("Are you sure you want to unallocate this room?")) {
+        if (confirm('Are you sure you want to unallocate this room?')) {
             this.dataService.UnallocateRoom(roomA).subscribe(result => {
                 /* Get the index and splice it from master */
-                var index = this.contingent.roomAllocation.indexOf(roomA, 0);
-                this.contingent.roomAllocation.splice(index, 1)
+                const index = this.contingent.roomAllocation.indexOf(roomA, 0);
+                this.contingent.roomAllocation.splice(index, 1);
 
                 /* Alert the user */
-                this.snackBar.open("Room unallocated", "Dismiss", {
+                this.snackBar.open('Room unallocated', 'Dismiss', {
                     duration: 2000,
                 });
             });
@@ -125,7 +125,7 @@ export class ContingentDetailsComponent {
     }
 
     public StartAllocation() {
-        let dialog = this.dialog.open(ContingentArrivalDialogComponent, {
+        const dialog = this.dialog.open(ContingentArrivalDialogComponent, {
             data: {
                 links: this.links,
                 ca: this.contingent.contingentArrival,
@@ -139,17 +139,20 @@ export class ContingentDetailsComponent {
      * @param female true returns number of females
      */
     public GetArrivedContingent(female: boolean): string {
-        if (!this.contingent.contingentArrival) return "";
+        if (!this.contingent.contingentArrival) { return ''; }
 
-        let curr: number = 0;
-        let currO: number = 0;
+        let curr = 0;
+        let currO = 0;
 
-        for (let ca of this.contingent.contingentArrival) {
+        for (const ca of this.contingent.contingentArrival) {
             curr += Number(female ? ca.female : ca.male);
             currO += Number(female ? ca.femaleOnSpot : ca.maleOnSpot);
         }
-        if (currO > 0) return curr + " + " + currO;
-        else return curr.toString();
+        if (currO > 0) {
+            return curr + ' + ' + currO;
+        } else {
+            return curr.toString();
+        }
     }
 
     /**
@@ -157,15 +160,16 @@ export class ContingentDetailsComponent {
      * @param female true for Female
      */
     public GetPeopleBySex(female: boolean): string {
-        if (!this.contingent.person) return "";
+        if (!this.contingent.person) { return ''; }
 
-        let curr: number = 0;
+        let curr = 0;
 
         /* Count people */
-        for (let person of this.contingent.person) {
-            if (person.sex && ((female && person.sex.toUpperCase() == "F") ||
-                (!female && person.sex.toUpperCase() == "M")))
+        for (const person of this.contingent.person) {
+            if (person.sex && ((female && person.sex.toUpperCase() === 'F') ||
+                (!female && person.sex.toUpperCase() === 'M'))) {
                 curr++;
+            }
         }
 
         return curr.toString();

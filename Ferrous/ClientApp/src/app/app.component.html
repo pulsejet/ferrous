@@ -27,8 +27,8 @@
         <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
             <mat-nav-list>
-                <nav-menu *ngIf="mobileQuery.matches" (click)="snav.toggle();"></nav-menu>
-                <nav-menu *ngIf="!mobileQuery.matches"></nav-menu>
+                <app-nav-menu *ngIf="mobileQuery.matches" (click)="snav.toggle();"></app-nav-menu>
+                <app-nav-menu *ngIf="!mobileQuery.matches"></app-nav-menu>
             </mat-nav-list>
         </mat-sidenav>
 

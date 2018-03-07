@@ -6,7 +6,7 @@ import { DataService } from '../data.service';
 
 /* Room layout component */
 @Component({
-    selector: 'locationSelect',
+    selector: 'app-location-select',
     templateUrl: './location-select.component.html',
 })
 export class LocationSelectComponent {
@@ -27,7 +27,7 @@ export class LocationSelectComponent {
         private dataService: DataService,
         @Inject('BASE_URL') public baseUrl: string) {
 
-        this.titleService.setTitle("Locations");
+        this.titleService.setTitle('Locations');
 
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {

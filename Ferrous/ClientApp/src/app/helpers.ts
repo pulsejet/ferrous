@@ -1,9 +1,9 @@
-﻿import { PageEvent } from "@angular/material/paginator";
+﻿import { PageEvent } from '@angular/material/paginator';
 
 /** Helper for using Angular Paginator */
 export class PaginatorHelper {
     /** Default page size */
-    pageSize: number = 10;
+    pageSize = 10;
 
     /** Default options for page size */
     pageSizeOptions: number[] = [5, 10, 25, 100, 200];
@@ -16,7 +16,7 @@ export class PaginatorHelper {
      */
     public paginate(array: any[]): any[] {
         if (this.pageEvent) {
-            let start = this.pageEvent.pageIndex * this.pageEvent.pageSize;
+            const start = this.pageEvent.pageIndex * this.pageEvent.pageSize;
             return array.slice(start, start + this.pageEvent.pageSize);
         } else {
             return array.slice(0, this.pageSize);
@@ -25,14 +25,14 @@ export class PaginatorHelper {
 }
 
 /* Click Stop Propagation */
-import { Directive, HostListener } from "@angular/core";
+import { Directive, HostListener } from '@angular/core';
 
 @Directive({
-    selector: "[click-stop-propagation]"
+    selector: '[click-stop-propagation]'
 })
 /** Stops propagation of clicks to elements below */
 export class ClickStopPropagation {
-    @HostListener("click", ["$event"])
+    @HostListener('click', ['$event'])
     public onClick(event: any): void {
         event.stopPropagation();
     }

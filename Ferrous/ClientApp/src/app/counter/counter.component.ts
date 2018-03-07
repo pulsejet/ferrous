@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { DataService } from '../data.service';
 
 @Component({
-    selector: 'counter',
+    selector: 'app-counter',
     templateUrl: './counter.component.html'
 })
 export class CounterComponent {
     constructor(private DataServ: DataService) { }
 
-    gotdata: string = "";
+    gotdata = '';
     public currentCount = 0;
 
     public incrementCounter() {

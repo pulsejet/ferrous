@@ -4,7 +4,7 @@ import { Room } from '../interfaces';
 import { DataService } from '../data.service';
 
 @Component({
-    selector: 'room-dialog',
+    selector: 'app-room-dialog',
     templateUrl: './room-dialog.component.html',
 })
 export class RoomDialogComponent {

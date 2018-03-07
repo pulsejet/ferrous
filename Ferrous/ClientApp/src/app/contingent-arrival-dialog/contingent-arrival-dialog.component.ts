@@ -4,12 +4,12 @@ import { ContingentArrival, Link } from '../interfaces';
 import { DataService } from '../data.service';
 
 @Component({
-    selector: 'contingent-arrival-dialog',
+    selector: 'app-contingent-arrival-dialog',
     templateUrl: './contingent-arrival-dialog.component.html'
 })
 export class ContingentArrivalDialogComponent {
     /** Id of old chosen entry */
-    chosenEntry: number = -1;
+    chosenEntry = -1;
     /** New ContingentArrival if necessary */
     public nContingentArrv: ContingentArrival;
     /** Passed Data */
@@ -24,9 +24,9 @@ export class ContingentArrivalDialogComponent {
         public dialogRef: MatDialogRef<ContingentArrivalDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private dataService: DataService) {
-        this.contingentArrivals = data["ca"];
-        this.CLNo = data["clno"];
-        this.links = data["links"];
+        this.contingentArrivals = data['ca'];
+        this.CLNo = data['clno'];
+        this.links = data['links'];
         this.nContingentArrv = {} as ContingentArrival;
     }
 
@@ -42,21 +42,26 @@ export class ContingentArrivalDialogComponent {
             (this.nContingentArrv.femaleOnSpot && this.nContingentArrv.femaleOnSpot > 0)
         ) {
 
-            if (chosenEntry !== -1)
-                if (!confirm("New record will be created!"))
+            if (chosenEntry !== -1) {
+                if (!confirm('New record will be created!')) {
                     return;
+                }
+            }
 
             /* Prepare and create the new entry */
             this.nContingentArrv.contingentLeaderNo = this.CLNo;
-            let body = JSON.stringify(this.nContingentArrv);
-            this.dataService.FireLink<ContingentArrival>(this.dataService.GetLink(this.links, "create_contingent_arrival"), body).subscribe(result => {
+            const body = JSON.stringify(this.nContingentArrv);
+            this.dataService.FireLink<ContingentArrival>(
+                this.dataService.GetLink(
+                    this.links, 'create_contingent_arrival'), body).subscribe(result => {
                 this.dataService.NavigateLayoutSelect(result.contingentLeaderNo, result.contingentArrivalNo);
-            })
+            });
+
             this.dialogRef.close(this.chosenEntry);
 
         } else {
             /* Use the old entry */
-            if (chosenEntry === -1) { alert("Validation failed or nothing to do!"); return; }
+            if (chosenEntry === -1) { alert('Validation failed or nothing to do!'); return; }
             this.dataService.NavigateLayoutSelect(
                 this.CLNo, this.contingentArrivals[chosenEntry].contingentArrivalNo);
             this.dialogRef.close(chosenEntry);
@@ -68,11 +73,14 @@ export class ContingentArrivalDialogComponent {
      * @param ca ContingentArrival to check
      */
     getAllotedCapacity(ca: ContingentArrival): number {
-        if (ca.roomAllocation == null) return 0;
-        let ans: number = 0;
-        for (let roomA of ca.roomAllocation) {
-            if (roomA.partial <= 0) ans += Number(roomA.room.capacity)
-            else ans += Number(roomA.partial);
+        if (ca.roomAllocation == null) { return 0; }
+        let ans = 0;
+        for (const roomA of ca.roomAllocation) {
+            if (roomA.partial <= 0) {
+                ans += Number(roomA.room.capacity);
+            } else {
+                ans += Number(roomA.partial);
+            }
         }
         return ans;
     }

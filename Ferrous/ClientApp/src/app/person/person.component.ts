@@ -6,7 +6,7 @@ import { PaginatorHelper } from '../helpers';
 
 /* Person Component */
 @Component({
-    selector: 'person',
+    selector: 'app-person',
     templateUrl: './person.component.html',
 })
 export class PersonComponent {
@@ -21,7 +21,7 @@ export class PersonComponent {
         private titleService: Title,
         private dataService: DataService) {
 
-        this.titleService.setTitle("People");
+        this.titleService.setTitle('People');
 
         /* Populate the master */
         dataService.GetAllPeople().subscribe(result => {

@@ -1,14 +1,14 @@
 ﻿import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival, EnumContainer, Link } from './interfaces'
+import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival, EnumContainer, Link } from './interfaces';
 import { Router } from '@angular/router';
 
 import { API_SPEC } from '../api.spec';
 
 const SF_RoomLayouts_URL = '/roomTemplates/';
 
-var JSON_HEADERS = new HttpHeaders();
+let JSON_HEADERS = new HttpHeaders();
 JSON_HEADERS = JSON_HEADERS.set('Content-Type', 'application/json');
 
 /* Main Data Service */
@@ -28,16 +28,18 @@ export class DataService {
     GetPassedData(): any { return this.passedData; }
 
     constructor(private http: HttpClient, public router: Router) { }
-    
+
     /**
      * Get link from rel
      * @param links Array of links
      * @param rel Required rell
      * @param encoded Returns encoded object if true
      */
-    GetLink(links: Link[], rel: string = "self"): Link {
-        let found = links.find(x => x.rel === rel);
-        if (found == null) return { } as Link;
+    GetLink(links: Link[], rel: string = 'self'): Link {
+        const found = links.find(x => x.rel === rel);
+        if (found == null) {
+            return {} as Link;
+        }
         return found as Link;
     }
 
@@ -46,28 +48,28 @@ export class DataService {
      * @param links Array of links
      * @param encoded Returns encoded string if true
      */
-    GetLinkSelf(links: Link[]): Link { return this.GetLink(links, "self"); }
+    GetLinkSelf(links: Link[]): Link { return this.GetLink(links, 'self'); }
 
     /**
      * Retrn the link with rel "update"
      * @param links Arrar of links
      * @param encoded Returns enocded string if true
      */
-    GetLinkUpdate(links: Link[]): Link { return this.GetLink(links, "update"); }
+    GetLinkUpdate(links: Link[]): Link { return this.GetLink(links, 'update'); }
 
     /**
      * Returns the link with rel "delete"
      * @param links Array of links
      * @param encoded Retrns encoded string if true
      */
-    GetLinkDelete(links: Link[], encoded: boolean = false): Link { return this.GetLink(links, "delete"); }
+    GetLinkDelete(links: Link[], encoded: boolean = false): Link { return this.GetLink(links, 'delete'); }
 
     /**
      * Return the string with rel "create"
      * @param links Array of links
      * @param encoded Returns encoded string if true
      */
-    GetLinkCreate(links: Link[], encoded: boolean = false): Link { return this.GetLink(links, "create"); }
+    GetLinkCreate(links: Link[], encoded: boolean = false): Link { return this.GetLink(links, 'create'); }
 
     /**
      * Fires the link with rel "self"
@@ -92,13 +94,13 @@ export class DataService {
      * Encode an object for passing through URL
      * @param o Object to encode
      */
-    EncodeObject(o: any): string { return btoa(JSON.stringify(o)) }
+    EncodeObject(o: any): string { return btoa(JSON.stringify(o)); }
 
     /**
      * Decode an object encoded with "EncodeObject"
      * @param s Encoded string
      */
-    DecodeObject<T>(s: string): T { return JSON.parse(atob(s)) as T }
+    DecodeObject<T>(s: string): T { return JSON.parse(atob(s)) as T; }
 
     /**
      * Fire a link and return the result as an observable
@@ -109,23 +111,25 @@ export class DataService {
         /* Fill in parameters */
         let URL = link.href;
         if (options != null) {
-            for (var prop in options) {
-                URL = URL.replace("{" + prop + "}", options[prop]);
+            for (const prop in options) {
+                if (options.hasOwnProperty(prop)) {
+                    URL = URL.replace('{' + prop + '}', options[prop]);
+                }
             }
         }
 
         /* Use the correct method */
         switch (link.method) {
-            case "GET":
+            case 'GET':
                 return this.http.get<T>(URL);
-            case "POST":
+            case 'POST':
                 return this.http.post<T>(URL, body, { headers: JSON_HEADERS });
-            case "PUT":
-                return this.http.put<T>(URL, body, { headers: JSON_HEADERS });                
-            case "DELETE":
+            case 'PUT':
+                return this.http.put<T>(URL, body, { headers: JSON_HEADERS });
+            case 'DELETE':
                 return this.http.delete<T>(URL);
             default:
-                throw new Error("no method defined for " + URL);
+                throw new Error('no method defined for ' + URL);
         }
     }
 
@@ -159,11 +163,11 @@ export class DataService {
     }
 
     /**
-     * Navigate to Location Selection 
+     * Navigate to Location Selection
      * @param clno CLNo of the contingent being allocated rooms; Use "mark" if marking
      * @param contingentArrivalNo contingentArrivalNo for which rooms are being allocated
      */
-    NavigateLayoutSelect(clno:string, contingentArrivalNo: number): void {
+    NavigateLayoutSelect(clno: string, contingentArrivalNo: number): void {
         this.router.navigate(['/locationSelect', clno, contingentArrivalNo]);
     }
     /**
@@ -178,12 +182,12 @@ export class DataService {
 
     /** All Contingents */
     GetAllContingents(): Observable<EnumContainer> {
-        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, "contingents"));
+        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, 'contingents'));
     }
 
     /** All People */
     GetAllPeople(): Observable<EnumContainer> {
-        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, "people"));
+        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, 'people'));
     }
 
     /**
@@ -192,7 +196,7 @@ export class DataService {
      * @param cano ContingentArrivalNo applicable
      */
     GetAllBuildingsExtended(clno: string, cano: number): Observable<EnumContainer> {
-        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, "buildings"), null, { id: clno, cano: cano.toString() });
+        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, 'buildings'), null, { id: clno, cano: cano.toString() });
     }
 
     /* === RoomLayout === */
@@ -211,8 +215,8 @@ export class DataService {
      * @param status Status to mark
      */
     MarkRoom(room: Room, status: number): Observable<any> {
-        let link: Link = { ... this.GetLink(room.links, "mark") };
-        link.href += "?status=" + status.toString();
+        const link: Link = { ... this.GetLink(room.links, 'mark') };
+        link.href += '?status=' + status.toString();
         return this.FireLink(link);
     }
 
@@ -221,9 +225,9 @@ export class DataService {
      * @param room Room object
      */
     AllotRoom(room: Room): Observable<any> {
-        let link: Link = {... this.GetLink(room.links, "allot") };
+        const link: Link = {... this.GetLink(room.links, 'allot') };
         if (room.partialallot || this.RoomCheckPartial(room)) {
-            if (room.partialsel == null) throw new Error("Partial number not set!");
+            if (room.partialsel == null) { throw new Error('Partial number not set!'); }
             link.href += '?partialno=' + room.partialsel;
         }
 
@@ -251,9 +255,11 @@ export class DataService {
      * @param room Room to check
      */
     RoomGetPartialNo(room: Room): number {
-        let count: number = 0;
-        for (let roomA of room.roomAllocation) {
-            if (roomA.partial != null) count += Number(roomA.partial);
+        let count = 0;
+        for (const roomA of room.roomAllocation) {
+            if (roomA.partial != null) {
+                count += Number(roomA.partial);
+            }
         }
         return count;
     }
@@ -285,6 +291,6 @@ export class DataService {
      * End the session
      */
     Logout(): Observable<any> {
-        return this.FireLink(this.GetLink(API_SPEC, "logout"));
+        return this.FireLink(this.GetLink(API_SPEC, 'logout'));
     }
 }

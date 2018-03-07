@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Injectable } from '@angular/core';
+import { ChangeDetectorRef, Component, Injectable, OnDestroy } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Title } from '@angular/platform-browser';
 import { DataService } from './data.service';
@@ -11,7 +11,7 @@ import { DataService } from './data.service';
     styleUrls: ['./app.component.css']
 })
 @Injectable()
-export class AppComponent {
+export class AppComponent implements OnDestroy {
     mobileQuery: MediaQueryList;
 
     private _mobileQueryListener: () => void;
@@ -25,7 +25,7 @@ export class AppComponent {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
-        this.titleService.setTitle("Home");
+        this.titleService.setTitle('Home');
     }
 
     ngOnDestroy(): void {
@@ -34,7 +34,7 @@ export class AppComponent {
 
     logout() {
         this.dataService.Logout().subscribe(() => {
-            window.location.href = "/account/login.html";
+            window.location.href = '/account/login.html';
         });
     }
 }

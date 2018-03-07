@@ -6,7 +6,7 @@ import { PaginatorHelper } from '../helpers';
 
 /* Contingent Component */
 @Component({
-    selector: 'contingent',
+    selector: 'app-contingent',
     templateUrl: './contingent.component.html',
 })
 export class ContingentComponent {
@@ -15,7 +15,7 @@ export class ContingentComponent {
     /** Master links list */
     links: Link[];
     /** CLNo entered in the search box */
-    enteredCL: string = "";
+    enteredCL = '';
     paginatorHelper = new PaginatorHelper;
 
     /** constructor for ContingentComponent */
@@ -23,7 +23,7 @@ export class ContingentComponent {
         private dataService: DataService,
         private titleService: Title ) {
 
-        this.titleService.setTitle("Contingents");
+        this.titleService.setTitle('Contingents');
 
         /* Load our contingents */
         this.dataService.GetAllContingents().subscribe(result => {

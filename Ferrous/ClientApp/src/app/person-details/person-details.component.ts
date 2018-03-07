@@ -5,12 +5,12 @@ import { Title } from '@angular/platform-browser';
 import { DataService } from '../data.service';
 
 @Component({
-    selector: 'personDetails',
+    selector: 'app-person-details',
     templateUrl: './person-details.component.html',
 })
 export class PersonDetailsComponent {
     /** true if currently editing */
-    public editing: boolean = false;
+    public editing = false;
     /** object for reverting cancelled changes */
     public initialPerson: Person;
     /** Master Person object */
@@ -28,12 +28,12 @@ export class PersonDetailsComponent {
         public router: Router) {
         this.editing = false;
 
-        this.titleService.setTitle("Personal Details");
+        this.titleService.setTitle('Personal Details');
 
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
             this.urlLink = this.dataService.DecodeObject(params['link']);
-            this.newrecord = params['edit'] == 1;
+            this.newrecord = params['edit'] === 1;
         });
 
         /* MINo 0 indicates a new record  *
@@ -68,7 +68,7 @@ export class PersonDetailsComponent {
 
     /** PUT/POST the master */
     public save() {
-        let body = JSON.stringify(this.person);
+        const body = JSON.stringify(this.person);
 
         if (!this.newrecord) {
             this.dataService.FireLinkUpdate(this.person.links, body).subscribe((): void => {
@@ -82,12 +82,12 @@ export class PersonDetailsComponent {
                 this.router.navigate(['/person/']);
             });
         }
-        if (this.newrecord) this.router.navigate(['/person/']);
+        if (this.newrecord) { this.router.navigate(['/person/']); }
     }
 
     /** DELETE a record */
     public delete() {
-        if (confirm("Are you sure to delete?")) {
+        if (confirm('Are you sure you want to delete?')) {
             this.dataService.FireLinkDelete(this.person.links).subscribe((): void => {
                 this.router.navigate(['/person/']);
             });
