@@ -29,7 +29,7 @@ import { DataService } from './data.service';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FilterContingents } from './pipes/filter-contingents';
-import { ClickStopPropagation } from './helpers';
+import { ClickStopPropagationDirective } from './helpers';
 
 import 'hammerjs';
 
@@ -55,7 +55,7 @@ import 'hammerjs';
 
         HomeComponent,
 
-        ClickStopPropagation,
+        ClickStopPropagationDirective,
         FilterContingents
     ],
     imports: [
