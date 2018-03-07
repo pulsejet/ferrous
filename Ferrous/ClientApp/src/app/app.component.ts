@@ -6,7 +6,7 @@ import { DataService } from './data.service';
 /* TODO: This code comes from the example for the angular   *
  * material side nav. Clean it up and add comments.         */
 @Component({
-    selector: 'app',
+    selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })

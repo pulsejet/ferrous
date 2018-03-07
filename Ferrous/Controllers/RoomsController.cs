@@ -27,7 +27,7 @@ namespace Ferrous.Controllers
 
         public static void UpdateLayoutWebSocket(string Building)
         {
-            _hubContext.Clients.Group(Building).InvokeAsync("updated", DateTime.Now.ToString());
+            _hubContext.Clients.Group(Building).SendAsync("updated", DateTime.Now.ToString());
         }
 
         // GET: api/Rooms/5

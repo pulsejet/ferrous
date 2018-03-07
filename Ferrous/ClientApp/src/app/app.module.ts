@@ -32,7 +32,7 @@ import { ClickStopPropagation } from './helpers';
 
 import 'hammerjs';
 
-const isprod: boolean = !(process.env.ISDEV);
+const isprod: boolean = false; //!(process.env.ISDEV);
 
 @NgModule({
     bootstrap: [
