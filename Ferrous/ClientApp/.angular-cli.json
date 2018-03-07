@@ -17,6 +17,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
+      "serviceWorker": true,
       "styles": [
         "styles.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css"
@@ -55,7 +56,8 @@
   },
   "defaults": {
     "styleExt": "css",
-    "component": {},
+    "component": {
+    },
     "build": {
       "progress": true
     }

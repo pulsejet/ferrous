@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -32,8 +33,6 @@ import { ClickStopPropagation } from './helpers';
 
 import 'hammerjs';
 
-const isprod: boolean = false; //!(process.env.ISDEV);
-
 @NgModule({
     bootstrap: [
         AppComponent
@@ -62,7 +61,7 @@ const isprod: boolean = false; //!(process.env.ISDEV);
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        ServiceWorkerModule.register('/ngsw-worker.js', { enabled: isprod }),
+        ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
 
         CommonModule,
         HttpClientModule,
