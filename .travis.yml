@@ -11,7 +11,7 @@ install:
   - "npm install --prefix ./Ferrous"
 
 mono: none
-dotnet: 2.1.4
+dotnet: 2.1.300-preview1-008174
 
 script:
   - dotnet publish
