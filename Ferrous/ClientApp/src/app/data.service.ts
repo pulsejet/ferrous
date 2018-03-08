@@ -295,7 +295,7 @@ export class DataService {
      * TODO: Do this with the API spec
      */
     GetCurrentUser(): Observable<any> {
-        return this.http.get('/api/login/getuser', { responseType: 'text' });
+        return this.http.get('/api/login/getuser');
     }
 
     /**

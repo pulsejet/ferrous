@@ -67,7 +67,12 @@ namespace Ferrous.Controllers
         public IActionResult GetUser()
         {
             if (!User.Identity.IsAuthenticated) return Unauthorized();
-            return Content(User.Identity.Name);
+
+            List<FerrousIdentity> identities = LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE);
+            FerrousIdentity id = identities.FirstOrDefault(m => m.username.ToLower() == User.Identity.Name.ToLower());
+            id.password = id.salt = null;
+
+            return new JsonResult(id);
         }
     }
 }
