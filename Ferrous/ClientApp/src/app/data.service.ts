@@ -15,6 +15,9 @@ JSON_HEADERS = JSON_HEADERS.set('Content-Type', 'application/json');
 @Injectable()
 export class DataService {
 
+    /** True whenever any user is logged in */
+    public loggedIn = true;
+
     /** Can be used for passing data between components */
     public passedData: any;
 
@@ -285,6 +288,14 @@ export class DataService {
             !isNaN(Number(num)) &&
             Number(num) >= min &&
             Number(num) <= max);
+    }
+
+    /**
+     * Get if a user is logged in
+     * TODO: Do this with the API spec
+     */
+    GetCurrentUser(): Observable<any> {
+        return this.http.get('/api/login/getuser', { responseType: 'text' });
     }
 
     /**

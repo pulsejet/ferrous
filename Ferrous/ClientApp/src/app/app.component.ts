@@ -26,6 +26,12 @@ export class AppComponent implements OnDestroy {
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
         this.titleService.setTitle('Home');
+
+        this.dataService.GetCurrentUser().subscribe(result => {
+            this.dataService.loggedIn = true;
+        }, error => {
+            this.dataService.loggedIn = false;
+        });
     }
 
     ngOnDestroy(): void {
@@ -34,7 +40,7 @@ export class AppComponent implements OnDestroy {
 
     logout() {
         this.dataService.Logout().subscribe(() => {
-            window.location.href = '/account/login.html';
+            this.dataService.loggedIn = false;
         });
     }
 }

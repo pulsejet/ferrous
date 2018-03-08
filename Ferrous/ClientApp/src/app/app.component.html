@@ -1,4 +1,6 @@
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+<div class="example-container" 
+    [class.example-is-mobile]="mobileQuery.matches"
+    *ngIf="dataService.loggedIn">
 
     <!-- Toolbar at top. The name of the page should be clickable when in desktop mode -->
     <mat-toolbar class="mat-elevation-z3 example-toolbar" color="primary">
@@ -40,3 +42,5 @@
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>
+
+<app-login *ngIf='!dataService.loggedIn'></app-login>

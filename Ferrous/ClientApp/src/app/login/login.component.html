@@ -1,0 +1,24 @@
+<div id="dialog" class="dialog dialog-effect-in">
+  <div class="dialog-front">
+      <div class="dialog-content">
+          <form id="login_form" class="dialog-form" action="" method="POST">
+              <fieldset>
+                  <legend>Log in</legend>
+                  <div class="form-group">
+                      <label for="user_username" class="control-label">Username:</label>
+                      <input (click)='clearMessages()' [(ngModel)]="username" type="text" id="user_username" class="form-control" name="user_username" autofocus />
+                      <span *ngIf="usernameError !== ''" class="derror-msg"> {{ usernameError }} </span>
+                  </div>
+                  <div class="form-group">
+                      <label for="user_password" class="control-label">Password:</label>
+                      <input (click)='clearMessages()' [(ngModel)]="password" type="password" id="user_password" class="form-control" name="user_password" />
+                      <span *ngIf="passwordError !== ''" class="derror-msg"> {{ passwordError }} </span>
+                  </div>
+                  <div class="pad-top-20 pad-btm-20">
+                      <input (click)="continueLogin()" type="submit" id="continue" class="btn btn-default btn-block btn-lg" value="Continue" />
+                  </div>
+              </fieldset>
+          </form>
+      </div>
+  </div>
+</div>

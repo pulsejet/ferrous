@@ -32,6 +32,7 @@ import { FilterContingents } from './pipes/filter-contingents';
 import { ClickStopPropagationDirective } from './helpers';
 
 import 'hammerjs';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
     bootstrap: [
@@ -56,7 +57,8 @@ import 'hammerjs';
         HomeComponent,
 
         ClickStopPropagationDirective,
-        FilterContingents
+        FilterContingents,
+        LoginComponent
     ],
     imports: [
         BrowserModule,
