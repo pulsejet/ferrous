@@ -4,6 +4,8 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
+import { hmrBootstrap } from './hmr';
+
 export function getBaseUrl() {
   return document.getElementsByTagName('base')[0].href;
 }
@@ -12,9 +14,15 @@ const providers = [
   { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }
 ];
 
+const bootstrap = () => platformBrowserDynamic().bootstrapModule(AppModule);
 if (environment.production) {
   enableProdMode();
+  bootstrap();
+} else {
+  if (module[ 'hot' ]) {
+    hmrBootstrap(module, bootstrap);
+  } else {
+    console.error('HMR is not enabled for webpack-dev-server!');
+    console.log('Are you using the --hmr flag for ng serve?');
+  }
 }
-
-platformBrowserDynamic(providers).bootstrapModule(AppModule)
-  .catch(err => console.log(err));
