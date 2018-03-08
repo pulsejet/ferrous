@@ -14,15 +14,11 @@ namespace Ferrous.Controllers
     [Route("api/login")]
     public class LoginController: ControllerBase
     {
-        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Index()
-        {
-            return Redirect("/account/login.html");
-        }
-
         [HttpGet("login")]
         public async Task<IActionResult> login([FromQuery] string username, [FromQuery] string password)
         {
+            Response.Headers.Add("Content-Type", "application/octet-stream");
+
             List<FerrousIdentity> identities = LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE);
             FerrousIdentity id = identities.FirstOrDefault(m => m.username.ToLower() == username.ToLower());
 
@@ -47,7 +43,7 @@ namespace Ferrous.Controllers
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                return Ok();
+                return NoContent();
             }
             
             return Unauthorized();
