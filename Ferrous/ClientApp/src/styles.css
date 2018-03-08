@@ -1,5 +1,10 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+.xunk-full-container {
+    width: 100vw;
+    height: 100vh;
+}
+
 :focus {
     outline: none;
 }

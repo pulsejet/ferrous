@@ -1,3 +1,7 @@
+.xunk-full-container {
+  background-color: #222;
+}
+
 .pad-top-20 {
   padding-top: 20px;
 }
@@ -83,7 +87,7 @@ h3,
   z-index: 3;
 }
 .dialog {
-  color: #222;
+  color: #222 !important;
   -webkit-perspective: 1200px;
   -moz-perspective: 1200px;
   -ms-perspective: 1200px;
