@@ -39,6 +39,8 @@ namespace Ferrous.Misc
                 .SetOptions(User, typeof(LoginController), Url)
                 .AddLink(nameof(LoginController.login), null, "login")
                 .AddLink(nameof(LoginController.Logout), null, "logout")
+                .AddLink(nameof(LoginController.GetUser), null, "getuser")
+
                 .GetLinks();
 
             /* Add websocket */
