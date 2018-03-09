@@ -28,7 +28,7 @@ namespace Ferrous.Misc
         {
             var building_mark_params = new { id = 1, cano = "mark" };
 
-            var list = new LinkHelper()
+            return new LinkHelper()
                 .SetOptions(User, typeof(ContingentsController), Url)
                 .AddLink(nameof(ContingentsController.GetContingents), null, "contingents")
 
@@ -43,12 +43,11 @@ namespace Ferrous.Misc
                 .AddLink(nameof(LoginController.Logout), null, "logout")
                 .AddLink(nameof(LoginController.GetUser), null, "getuser")
 
-                .GetLinks();
+                /* Add websocket */
+                .AddAbsoluteContentLink(WebSocketHubs.BuildingUpdateHub.BuildingWebsocketUrl, "building_websocket")
+                .AddStringLink(nameof(WebSocketHubs.BuildingUpdateHub.JoinBuilding), "building_websocket_join")
 
-            /* Add websocket */
-            list.Add(new Link("building_websocket", "GET", WebSocketHubs.BuildingUpdateHub.BuildingWebsocketUrl));
-            list.Add(new Link("building_websocket_join", "GET", nameof(WebSocketHubs.BuildingUpdateHub.JoinBuilding)));
-            return list;
+                .GetLinks();
         }
 
         /// <summary>

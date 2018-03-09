@@ -1,4 +1,5 @@
 ﻿using Ferrous.Controllers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -166,6 +167,33 @@ namespace Ferrous.Misc
                     urlHelper.Action(action, controller, routeParams, "https")
                 ));
             }
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a fully qualified URL Link to the specified content by using the specified content path.
+        /// </summary>
+        /// <param name="contentPath">The content path.</param>
+        /// <param name="httpRel">relation to object (rel).</param>
+        /// <param name="httpVerb">HTTP Verb to use</param>
+        /// <returns>LinkHelper</returns>
+        public LinkHelper AddAbsoluteContentLink(string contentPath, string httpRel, string httpVerb = "GET")
+        {
+            HttpRequest request = this.urlHelper.ActionContext.HttpContext.Request;
+            string url = new Uri(new Uri(request.Scheme + "://" + request.Host.Value), this.urlHelper.Content(contentPath)).ToString();
+            Links.Add(new Link(httpRel, httpVerb, url));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a dummy link used to pass string content.
+        /// </summary>
+        /// <param name="contentPath">String to pass.</param>
+        /// <param name="httpRel">relation to object (rel).</param>
+        /// <param name="httpVerb">HTTP Verb to use</param>
+        /// <returns>LinkHelper</returns>
+        public LinkHelper AddStringLink(string content, string httpRel, string httpVerb = "GET") {
+            Links.Add(new Link(httpRel, httpVerb, content));
             return this;
         }
 
