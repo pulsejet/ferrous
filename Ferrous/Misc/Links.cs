@@ -61,65 +61,6 @@ namespace Ferrous.Misc
         }
 
         /// <summary>
-        /// Adds a relative Link to the Helper without protocol and hostname
-        /// </summary>
-        /// <param name="route">Routing object's name, may be passed using nameof(object)</param>
-        /// <param name="routeParams">Params for route. Each {param} will be replaced</param>
-        /// <param name="overrideWithRel">Override rel attribute</param>
-        /// <param name="noParentTemplate">Do not use parent template</param>
-        /// <returns>LinkHelper</returns>
-        public LinkHelper AddLinkRelative(string route, object routeParams = null, string overrideWithRel = "", bool noParentTemplate = false)
-        {
-            /* Get the method */
-            MethodInfo controllerMethod = type.GetMethod(route);
-            Authorization attr = (Authorization)controllerMethod.GetCustomAttribute(typeof(Authorization));
-
-            /* Get the relevant attributes */
-            var getAtt = (HttpGetAttribute) controllerMethod.GetCustomAttribute(typeof(HttpGetAttribute));
-            var postAtt = (HttpPostAttribute) controllerMethod.GetCustomAttribute(typeof(HttpPostAttribute));
-            var putAtt = (HttpPutAttribute) controllerMethod.GetCustomAttribute(typeof(HttpPutAttribute));
-            var deleteAtt = (HttpDeleteAttribute) controllerMethod.GetCustomAttribute(typeof(HttpDeleteAttribute));
-            var relAtt = (HTTPrel)controllerMethod.GetCustomAttribute(typeof(HTTPrel));
-            
-            string httpMethod = HTTPMethod.GET;
-
-            /** Gets the routeing attribute that is being used */
-            object routingAttribute = null;
-
-            if (getAtt != null) { httpMethod = HTTPMethod.GET; routingAttribute = getAtt; }
-            else if (postAtt != null) { httpMethod = HTTPMethod.POST; routingAttribute = postAtt; }
-            else if (putAtt != null) { httpMethod = HTTPMethod.PUT; routingAttribute = putAtt; }
-            else if (deleteAtt != null) { httpMethod = HTTPMethod.DELETE; routingAttribute = deleteAtt; }
-
-            /* Gets the route template for the controller method 
-             * that is being used to route the call
-             * TODO: One method may have multiple. Throw an error for this */
-            string routeTemplate = "";
-            if (routingAttribute != null)
-                routeTemplate = (string) routingAttribute.GetType().GetProperty(nameof(getAtt.Template)).GetValue(routingAttribute);
-
-            if (relAtt == null && overrideWithRel == String.Empty) throw new Exception("HTTPrel attribute not set for creating link");
-
-            /* Check for priveleges and add the link*/
-            if (attr == null || hasPrivilege(user.Identity.Name, attr._elevationLevel, attr._privilege))
-            {
-                var cRouteAtt = (RouteAttribute)type.GetCustomAttribute(typeof(RouteAttribute));
-                if (routeParams != null)
-                    foreach (var propInfo in routeParams.GetType().GetProperties())
-                    {
-                        string prop = propInfo.GetValue(routeParams).ToString();
-                        routeTemplate = routeTemplate.Replace("{" + propInfo.Name + "}", prop);
-                    }
-                Links.Add(new Link(
-                    (overrideWithRel != String.Empty && overrideWithRel != "no") ? overrideWithRel : relAtt.rel,
-                    httpMethod,
-                    (!noParentTemplate?"/" + cRouteAtt.Template : String.Empty) + "/" + routeTemplate
-                ));
-            }
-            return this;
-        }
-
-        /// <summary>
         /// Adds an absolute Link to the Helper with protocol and hostname
         /// </summary>
         /// <param name="action">Routing object's name; may be passed using nameof(object)</param>
