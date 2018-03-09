@@ -25,7 +25,6 @@ namespace Ferrous.Controllers
         }
 
         [HttpGet("api_spec")]
-        [Authorization(ElevationLevels.Organizer, PrivilegeList.NONE)]
         [HTTPrel(HTTPrelList.self)]
         [Produces("application/json")]
         public List<Link> GetApiSpec()
