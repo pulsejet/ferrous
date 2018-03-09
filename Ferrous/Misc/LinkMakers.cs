@@ -64,11 +64,7 @@ namespace Ferrous.Misc
 
                 /* POST a ContingentArrival */
                 .SetOptions(User, typeof(ContingentArrivalsController), Url)
-                .AddLink(
-                    nameof(ContingentArrivalsController.PostContingentArrival), 
-                    new { }, 
-                    "create_contingent_arrival"
-                )
+                .AddLink(nameof(ContingentArrivalsController.PostContingentArrival), null, "create_contingent_arrival")
                 .GetLinks();
 
             foreach (var ca in contingent.ContingentArrival)
