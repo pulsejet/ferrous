@@ -83,7 +83,7 @@ import { LoginComponent } from './login/login.component';
             { path: 'personDetails/:link/:edit', component: PersonDetailsComponent },
 
             { path: 'roomLayout/:link/:location/:clno', component: RoomLayoutComponent },
-            { path: 'locationSelect/:clno/:cano', component: LocationSelectComponent },
+            { path: 'locationSelect/:link/:clno', component: LocationSelectComponent },
 
             { path: '**', redirectTo: 'home' }
         ])

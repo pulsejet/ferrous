@@ -31,8 +31,8 @@ export class LocationSelectComponent {
 
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
-            this.urlLink = this.dataService.DecodeObject(params['clno']);
-            this.clno = params['cano'];
+            this.urlLink = this.dataService.DecodeObject(params['link']);
+            this.clno = params['clno'];
         });
 
         /* Get buildings data */
