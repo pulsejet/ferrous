@@ -46,5 +46,5 @@
 <a mat-list-item [routerLink]="['/counter']"> <mat-icon>queue</mat-icon> &nbsp; Counter</a>
 <a mat-list-item [routerLink]="['/contingent']"> <mat-icon>list</mat-icon> &nbsp; Contingents</a>
 <a mat-list-item [routerLink]="['/person']"> <mat-icon>list</mat-icon> &nbsp; People</a>
-<a mat-list-item [routerLink]="['/locationSelect/mark/1']"> <mat-icon>assignment</mat-icon> &nbsp; Rooms</a>
+<a mat-list-item (click)="NavigateLayoutSelect()"> <mat-icon>assignment</mat-icon> &nbsp; Rooms</a>
 <a mat-list-item href="mailto:incoming+radialapps/ferrous@gitlab.com"> <mat-icon>bug_report</mat-icon> &nbsp; Report Bug</a>
