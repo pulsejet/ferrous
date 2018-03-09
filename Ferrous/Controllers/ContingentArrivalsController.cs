@@ -54,7 +54,7 @@ namespace Ferrous.Controllers
 
             return Ok(contingentArrival);
         }
-
+        
         // DEPRECATED
         // GET: api/ContingentArrivals/5
         [HttpGet("{id}")]
@@ -127,6 +127,8 @@ namespace Ferrous.Controllers
             contingentArrival.CreatedOn = DateTime.UtcNow.AddHours(5).AddMinutes(30);
             _context.ContingentArrival.Add(contingentArrival);
             await _context.SaveChangesAsync();
+
+            new LinksMaker(User, Url).FillContingentArrivalLinks(contingentArrival);
 
             return CreatedAtAction("GetContingentArrival", new { id = contingentArrival.ContingentArrivalNo }, contingentArrival);
         }
