@@ -163,7 +163,7 @@ namespace Ferrous.Misc
                 Links.Add(new Link(
                     (overrideWithRel != String.Empty) ? overrideWithRel : relAtt.rel,
                     http_verb,
-                    urlHelper.Action(action, controller, routeParams, "http")
+                    urlHelper.Action(action, controller, routeParams, "https")
                 ));
             }
             return this;

@@ -49,11 +49,11 @@ namespace Ferrous
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseHttpsRedirection();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
             }
 
             app.UseAuthentication();
