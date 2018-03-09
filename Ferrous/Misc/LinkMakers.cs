@@ -26,12 +26,14 @@ namespace Ferrous.Misc
         /// <returns>List of links defined in API_SPEC</returns>
         public List<Link> API_SPEC()
         {
+            var building_mark_params = new { id = 1, cano = "mark" };
+
             var list = new LinkHelper()
                 .SetOptions(User, typeof(ContingentsController), Url)
                 .AddLink(nameof(ContingentsController.GetContingents), null, "contingents")
 
                 .SetOptions(User, typeof(BuildingsController), Url)
-                .AddLinkRelative(nameof(BuildingsController.GetBuildingsExtended), null, "buildings")
+                .AddLink(nameof(BuildingsController.GetBuildingsExtended), building_mark_params, "mark_buildings")
 
                 .SetOptions(User, typeof(PeopleController), Url)
                 .AddLink(nameof(PeopleController.GetPeople), null, "people")
@@ -113,13 +115,17 @@ namespace Ferrous.Misc
         public void FillContingentArrivalLinks(ContingentArrival contingentArrival)
         {
             var idObject = new { id = contingentArrival.ContingentArrivalNo };
+            var idObjectBuilding = new { id = contingentArrival.ContingentLeaderNo, cano = contingentArrival.ContingentArrivalNo };
             contingentArrival.Links = new LinkHelper()
                 .SetOptions(User, typeof(ContingentArrivalsController), Url)
                 .AddLink(nameof(ContingentArrivalsController.PutContingentArrival), idObject)
                 .AddLink(nameof(ContingentArrivalsController.DeleteContingentArrival), idObject)
 
                 .SetOptions(User, typeof(RoomAllocationsController), Url)
-                .AddLink(nameof(RoomAllocationsController.PostRoomAllocation), new { }, "create_room_allocation")
+                .AddLink(nameof(RoomAllocationsController.PostRoomAllocation), null, "create_room_allocation")
+
+                .SetOptions(User, typeof(BuildingsController), Url)
+                .AddLink(nameof(BuildingsController.GetBuildingsExtended), idObjectBuilding, "buildings")
 
                 .GetLinks();
         }

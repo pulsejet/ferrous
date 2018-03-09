@@ -31,12 +31,12 @@ export class LocationSelectComponent {
 
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
-            this.clno = params['clno'];
-            this.cano = params['cano'];
+            this.urlLink = this.dataService.DecodeObject(params['clno']);
+            this.clno = params['cano'];
         });
 
         /* Get buildings data */
-        this.dataService.GetAllBuildingsExtended(this.clno, this.cano).subscribe(result => {
+        this.dataService.GetAllBuildingsExtended(this.urlLink).subscribe(result => {
             this.buildings = result.data;
             this.links = result.links;
         });

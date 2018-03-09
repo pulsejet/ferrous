@@ -54,7 +54,7 @@ export class ContingentArrivalDialogComponent {
             this.dataService.FireLink<ContingentArrival>(
                 this.dataService.GetLink(
                     this.links, 'create_contingent_arrival'), body).subscribe(result => {
-                this.dataService.NavigateLayoutSelect(result.contingentLeaderNo, result.contingentArrivalNo);
+                this.dataService.NavigateLayoutSelect(result, this.CLNo);
             });
 
             this.dialogRef.close(this.chosenEntry);
@@ -62,8 +62,7 @@ export class ContingentArrivalDialogComponent {
         } else {
             /* Use the old entry */
             if (chosenEntry === -1) { alert('Validation failed or nothing to do!'); return; }
-            this.dataService.NavigateLayoutSelect(
-                this.CLNo, this.contingentArrivals[chosenEntry].contingentArrivalNo);
+            this.dataService.NavigateLayoutSelect(this.contingentArrivals[chosenEntry], this.CLNo);
             this.dialogRef.close(chosenEntry);
         }
     }

@@ -167,12 +167,13 @@ export class DataService {
 
     /**
      * Navigate to Location Selection
-     * @param clno CLNo of the contingent being allocated rooms; Use "mark" if marking
-     * @param contingentArrivalNo contingentArrivalNo for which rooms are being allocated
+     * @param ca ContingentArrival for which rooms are being allocated
+     * @param clno ContingentLeaderNo
      */
-    NavigateLayoutSelect(clno: string, contingentArrivalNo: number): void {
-        this.router.navigate(['/locationSelect', clno, contingentArrivalNo]);
+    NavigateLayoutSelect(ca: ContingentArrival, clno: string): void {
+        this.router.navigate(['/locationSelect', this.EncodeObject(this.GetLink(ca.links, 'buildings')), clno]);
     }
+
     /**
      * Navigate to room layout
      * @param link "self" link for the building
@@ -195,11 +196,10 @@ export class DataService {
 
     /**
      * Gets contingent-arrival-specific extended Building[]
-     * @param clno CLNo of the contingent
-     * @param cano ContingentArrivalNo applicable
+     * @param link Link to follow
      */
-    GetAllBuildingsExtended(clno: string, cano: number): Observable<EnumContainer> {
-        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, 'buildings'), null, { id: clno, cano: cano.toString() });
+    GetAllBuildingsExtended(link: Link): Observable<EnumContainer> {
+        return this.FireLink<EnumContainer>(link);
     }
 
     /* === RoomLayout === */
