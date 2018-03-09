@@ -24,16 +24,13 @@ namespace Ferrous.Misc
         /// Generate the API Spec
         /// </summary>
         /// <returns>List of links defined in API_SPEC</returns>
-        public List<Link> API_SPEC()
-        {
-            var building_mark_params = new { id = 1, cano = "mark" };
-
-            return new LinkHelper()
+        public List<Link> API_SPEC() => 
+            new LinkHelper()
                 .SetOptions(User, typeof(ContingentsController), Url)
                 .AddLink(nameof(ContingentsController.GetContingents), null, "contingents")
 
                 .SetOptions(User, typeof(BuildingsController), Url)
-                .AddLink(nameof(BuildingsController.GetBuildingsExtended), building_mark_params, "mark_buildings")
+                .AddLink(nameof(BuildingsController.GetBuildingsExtended), new { id = 1, cano = "mark" }, "mark_buildings")
 
                 .SetOptions(User, typeof(PeopleController), Url)
                 .AddLink(nameof(PeopleController.GetPeople), null, "people")
@@ -48,7 +45,6 @@ namespace Ferrous.Misc
                 .AddStringLink(nameof(WebSocketHubs.BuildingUpdateHub.JoinBuilding), "building_websocket_join")
 
                 .GetLinks();
-        }
 
         /// <summary>
         /// Fill Links object for Contingents.
