@@ -3,13 +3,14 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival, EnumContainer, Link } from './interfaces';
 import { Router } from '@angular/router';
+import { environment } from '../environments/environment';
 
 const SF_RoomLayouts_URL = '/roomTemplates/';
 
 let JSON_HEADERS = new HttpHeaders();
 JSON_HEADERS = JSON_HEADERS.set('Content-Type', 'application/json');
 
-const API_SPEC_URL = '/api/export/api_spec';
+const API_SPEC_URL = environment.api_url;
 
 /* Main Data Service */
 @Injectable()

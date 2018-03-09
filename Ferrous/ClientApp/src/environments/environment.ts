@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  hmr: true
+  hmr: true,
+  api_url: '/api/export/api_spec'
 };
