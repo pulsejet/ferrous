@@ -40,7 +40,7 @@ export class ContingentDetailsComponent {
 
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
-            this.newrecord = params['edit'] === 1;
+            this.newrecord = params['edit'] === '1';
             this.urlLink = this.dataService.DecodeObject(params['id']);
         });
 

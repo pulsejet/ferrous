@@ -33,7 +33,7 @@ export class PersonDetailsComponent {
         /* Get URL parameters */
         this.activatedRoute.params.subscribe((params: Params) => {
             this.urlLink = this.dataService.DecodeObject(params['link']);
-            this.newrecord = params['edit'] === 1;
+            this.newrecord = params['edit'] === '1';
         });
 
         /* MINo 0 indicates a new record  *
