@@ -4,19 +4,22 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Contingent, RoomAllocation, Person, Room, Building, ContingentArrival, EnumContainer, Link } from './interfaces';
 import { Router } from '@angular/router';
 
-import { API_SPEC } from '../api.spec';
-
 const SF_RoomLayouts_URL = '/roomTemplates/';
 
 let JSON_HEADERS = new HttpHeaders();
 JSON_HEADERS = JSON_HEADERS.set('Content-Type', 'application/json');
 
+const API_SPEC_URL = '/api/export/api_spec';
+
 /* Main Data Service */
 @Injectable()
 export class DataService {
 
+    /** Stores the API_SPEC */
+    public _API_SPEC: Link[];
+
     /** True whenever any user is logged in */
-    public loggedIn = true;
+    public loggedIn = false;
 
     /** Can be used for passing data between components */
     public passedData: any;
@@ -31,6 +34,14 @@ export class DataService {
     GetPassedData(): any { return this.passedData; }
 
     constructor(private http: HttpClient, public router: Router) { }
+
+    public RefreshAPISpec(): Observable<any> {
+        return this.http.get<Link[]>(API_SPEC_URL);
+    }
+
+    public GetAPISpec() {
+        return this._API_SPEC;
+    }
 
     /**
      * Get link from rel
@@ -186,12 +197,12 @@ export class DataService {
 
     /** All Contingents */
     GetAllContingents(): Observable<EnumContainer> {
-        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, 'contingents'));
+        return this.FireLink<EnumContainer>(this.GetLink(this.GetAPISpec(), 'contingents'));
     }
 
     /** All People */
     GetAllPeople(): Observable<EnumContainer> {
-        return this.FireLink<EnumContainer>(this.GetLink(API_SPEC, 'people'));
+        return this.FireLink<EnumContainer>(this.GetLink(this.GetAPISpec(), 'people'));
     }
 
     /**
@@ -295,13 +306,13 @@ export class DataService {
      * TODO: Do this with the API spec
      */
     GetCurrentUser(): Observable<any> {
-        return this.FireLink(this.GetLink(API_SPEC, 'getuser'));
+        return this.FireLink(this.GetLink(this.GetAPISpec(), 'getuser'));
     }
 
     /**
      * End the session
      */
     Logout(): Observable<any> {
-        return this.FireLink(this.GetLink(API_SPEC, 'logout'));
+        return this.FireLink(this.GetLink(this.GetAPISpec(), 'logout'));
     }
 }

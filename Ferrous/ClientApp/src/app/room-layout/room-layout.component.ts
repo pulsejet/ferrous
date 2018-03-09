@@ -11,8 +11,6 @@ import { HubConnection } from '@aspnet/signalr';
 import * as $ from 'jquery';
 import { TimerObservable } from 'rxjs/observable/TimerObservable';
 
-import { API_SPEC } from '../../api.spec';
-
 /* Room layout component */
 @Component({
     selector: 'app-room-layout',
@@ -74,7 +72,7 @@ export class RoomLayoutComponent implements OnInit, OnDestroy {
         /* Connect to the websocket   *
          * TODO: Use HATEOAS for this */
         this.hubConnection = new HubConnection(
-            this.dataService.GetLink(API_SPEC, 'building_websocket').href
+            this.dataService.GetLink(this.dataService.GetAPISpec(), 'building_websocket').href
         );
 
         /* Mark pending update on event 'updated' */
@@ -95,7 +93,8 @@ export class RoomLayoutComponent implements OnInit, OnDestroy {
         this.hubConnection.start()
             .then(() => {
                 this.hubConnection.invoke(
-                    this.dataService.GetLink(API_SPEC, 'building_websocket_join').href,
+                    this.dataService.GetLink(
+                        this.dataService.GetAPISpec(), 'building_websocket_join').href,
                     this.locCode
                 );
                 console.log('Hub connection started');

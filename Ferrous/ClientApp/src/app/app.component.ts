@@ -13,6 +13,7 @@ import { DataService } from './data.service';
 @Injectable()
 export class AppComponent implements OnDestroy {
     mobileQuery: MediaQueryList;
+    public initialized = false;
 
     private _mobileQueryListener: () => void;
 
@@ -27,10 +28,16 @@ export class AppComponent implements OnDestroy {
         this.mobileQuery.addListener(this._mobileQueryListener);
         this.titleService.setTitle('Home');
 
-        this.dataService.GetCurrentUser().subscribe(result => {
-            this.dataService.loggedIn = true;
-        }, error => {
-            this.dataService.loggedIn = false;
+        this.dataService.RefreshAPISpec().subscribe(api => {
+            this.dataService._API_SPEC = api;
+
+            this.dataService.GetCurrentUser().subscribe(result => {
+                this.dataService.loggedIn = true;
+                this.initialized = true;
+            }, error => {
+                this.dataService.loggedIn = false;
+                this.initialized = true;
+            });
         });
     }
 
@@ -41,6 +48,11 @@ export class AppComponent implements OnDestroy {
     logout() {
         this.dataService.Logout().subscribe(() => {
             this.dataService.loggedIn = false;
+
+            this.dataService.RefreshAPISpec().subscribe(api => {
+                this.dataService._API_SPEC = api;
+            });
+
         });
     }
 }

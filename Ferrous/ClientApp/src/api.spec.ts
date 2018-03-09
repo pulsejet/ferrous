@@ -1,3 +1,0 @@
-﻿/* tslint:disable */
-export const API_SPEC =
-    [{"rel":"contingents","method":"GET","href":"http://localhost:5000/api/Contingents"},{"rel":"mark_buildings","method":"GET","href":"http://localhost:5000/api/Buildings/e/1/mark"},{"rel":"people","method":"GET","href":"http://localhost:5000/api/People"},{"rel":"login","method":"GET","href":"http://localhost:5000/api/login/login"},{"rel":"logout","method":"GET","href":"http://localhost:5000/api/login/logout"},{"rel":"getuser","method":"GET","href":"http://localhost:5000/api/login/getuser"},{"rel":"building_websocket","method":"GET","href":"/api/websocket/building"},{"rel":"building_websocket_join","method":"GET","href":"JoinBuilding"}]

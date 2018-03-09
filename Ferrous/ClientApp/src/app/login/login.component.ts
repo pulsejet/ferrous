@@ -39,7 +39,11 @@ export class LoginComponent implements OnInit {
                 $('#dialog').addClass('dialog-effect-out');
                 $('#successful_login').addClass('active');
                 setTimeout(function() {
-                  self.dataService.loggedIn = true;
+                  self.dataService.RefreshAPISpec().subscribe(api => {
+                    self.dataService._API_SPEC = api;
+                    self.dataService.loggedIn = true;
+                  });
+
                 }, 300);
             },
             error: function (request, status, error) {
