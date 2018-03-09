@@ -41,6 +41,7 @@ namespace Ferrous.Misc
         private Type type;
         private List<Link> Links = new List<Link>();
         private IUrlHelper urlHelper;
+        private string controller;
 
         /// <summary>
         /// Set options for the LinkHelper
@@ -54,18 +55,19 @@ namespace Ferrous.Misc
             this.user = user;
             this.type = type;
             this.urlHelper = urlHelper;
+            this.controller = type.Name.Replace("Controller", "");
             return this;
         }
 
         /// <summary>
-        /// Adds a Link to the Helper
+        /// Adds a relative Link to the Helper without protocol and hostname
         /// </summary>
         /// <param name="route">Routing object's name, may be passed using nameof(object)</param>
         /// <param name="routeParams">Params for route. Each {param} will be replaced</param>
         /// <param name="overrideWithRel">Override rel attribute</param>
         /// <param name="noParentTemplate">Do not use parent template</param>
-        /// <returns></returns>
-        public LinkHelper AddLink(string route, object routeParams = null, string overrideWithRel = "", bool noParentTemplate = false)
+        /// <returns>LinkHelper</returns>
+        public LinkHelper AddLinkRelative(string route, object routeParams = null, string overrideWithRel = "", bool noParentTemplate = false)
         {
             /* Get the method */
             MethodInfo controllerMethod = type.GetMethod(route);
@@ -108,9 +110,60 @@ namespace Ferrous.Misc
                         routeTemplate = routeTemplate.Replace("{" + propInfo.Name + "}", prop);
                     }
                 Links.Add(new Link(
-                    (overrideWithRel != String.Empty && overrideWithRel != "no") ? overrideWithRel : relAtt.rel, 
-                    httpMethod, 
+                    (overrideWithRel != String.Empty && overrideWithRel != "no") ? overrideWithRel : relAtt.rel,
+                    httpMethod,
                     (!noParentTemplate?"/" + cRouteAtt.Template : String.Empty) + "/" + routeTemplate
+                ));
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Adds an absolute Link to the Helper with protocol and hostname
+        /// </summary>
+        /// <param name="action">Routing object's name; may be passed using nameof(object)</param>
+        /// <param name="routeParams">Params for route passed to UrlHelper</param>
+        /// <param name="overrideWithRel">Override rel attribute</param>
+        /// <returns>LinkHelper</returns>
+        public LinkHelper AddLink(string action, object routeParams = null, string overrideWithRel = "")
+        {
+            /* Get the method */
+            MethodInfo controllerMethod = type.GetMethod(action);
+
+            /* Get rel and auth attributes */
+            var relAtt = (HTTPrel)controllerMethod.GetCustomAttribute(typeof(HTTPrel));
+            if (relAtt == null && overrideWithRel == String.Empty) {
+                throw new Exception("HTTPrel attribute not set for creating link");
+            }
+
+            Authorization AuthAttr = (Authorization)controllerMethod.GetCustomAttribute(typeof(Authorization));
+
+            /* List of verb attributes */
+            var Attributes = new List<(Type, string)> {
+                (typeof(HttpGetAttribute), HTTPMethod.GET),
+                (typeof(HttpPostAttribute), HTTPMethod.POST),
+                (typeof(HttpPutAttribute), HTTPMethod.PUT),
+                (typeof(HttpDeleteAttribute), HTTPMethod.DELETE)
+            };
+            
+            /* Get the HTTP verb from the routing attribute */
+            string http_verb = HTTPMethod.GET;
+
+            foreach (var rAtt in Attributes) {
+                if (controllerMethod.GetCustomAttribute(rAtt.Item1) != null) {
+                    http_verb = rAtt.Item2;
+                    break;
+                }
+            }
+
+            /* Check for priveleges and add the link */
+            if (AuthAttr == null || 
+                hasPrivilege(user.Identity.Name, AuthAttr._elevationLevel, AuthAttr._privilege))
+            {
+                Links.Add(new Link(
+                    (overrideWithRel != String.Empty) ? overrideWithRel : relAtt.rel,
+                    http_verb,
+                    urlHelper.Action(action, controller, routeParams, "http")
                 ));
             }
             return this;

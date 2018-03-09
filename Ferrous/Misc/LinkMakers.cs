@@ -31,7 +31,7 @@ namespace Ferrous.Misc
                 .AddLink(nameof(ContingentsController.GetContingents), null, "contingents")
 
                 .SetOptions(User, typeof(BuildingsController), Url)
-                .AddLink(nameof(BuildingsController.GetBuildingsExtended), null, "buildings")
+                .AddLinkRelative(nameof(BuildingsController.GetBuildingsExtended), null, "buildings")
 
                 .SetOptions(User, typeof(PeopleController), Url)
                 .AddLink(nameof(PeopleController.GetPeople), null, "people")
