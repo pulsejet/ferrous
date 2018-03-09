@@ -75,15 +75,15 @@ import { LoginComponent } from './login/login.component';
             { path: 'counter', component: CounterComponent },
 
             { path: 'contingent', component: ContingentComponent },
-            { path: 'contingentDetails/:id', component: ContingentDetailsComponent },
-            { path: 'contingentDetails/:id/:edit', component: ContingentDetailsComponent },
+            { path: 'contingent/:id', component: ContingentDetailsComponent },
+            { path: 'contingent/:id/:edit', component: ContingentDetailsComponent },
 
             { path: 'person', component: PersonComponent },
-            { path: 'personDetails/:link', component: PersonDetailsComponent },
-            { path: 'personDetails/:link/:edit', component: PersonDetailsComponent },
+            { path: 'person/:link', component: PersonDetailsComponent },
+            { path: 'person/:link/:edit', component: PersonDetailsComponent },
 
-            { path: 'roomLayout/:link/:location/:clno', component: RoomLayoutComponent },
-            { path: 'locationSelect/:link/:clno', component: LocationSelectComponent },
+            { path: 'room-layout/:link/:location/:clno', component: RoomLayoutComponent },
+            { path: 'location-select/:link/:clno', component: LocationSelectComponent },
 
             { path: '**', redirectTo: 'home' }
         ])

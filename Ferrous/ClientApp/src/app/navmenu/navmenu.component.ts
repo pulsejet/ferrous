@@ -15,7 +15,7 @@ export class NavMenuComponent {
 
     public NavigateLayoutSelect() {
         this.router.navigate(
-            ['/locationSelect', this.dataService.EncodeObject(
+            ['/location-select', this.dataService.EncodeObject(
                 this.dataService.GetLink(this.dataService.GetAPISpec(), 'mark_buildings')), 'marking'
             ]);
     }

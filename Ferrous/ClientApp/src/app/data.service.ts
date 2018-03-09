@@ -158,7 +158,7 @@ export class DataService {
     }
 
     NavigateContingentDetails(link: Link, newRecord: boolean = false): void {
-        this.router.navigate(['/contingentDetails', this.EncodeObject(link), (newRecord ? '1' : '0')]);
+        this.router.navigate(['/contingent', this.EncodeObject(link), (newRecord ? '1' : '0')]);
     }
 
     /**
@@ -174,7 +174,7 @@ export class DataService {
      * @param newRecord true for creating a new record. If true, link must be the "create" link
      */
     NavigatePersonDetails(link: Link, newRecord: boolean = false): void {
-        this.router.navigate(['/personDetails', this.EncodeObject(link), (newRecord ? '1' : '0')]);
+        this.router.navigate(['/person', this.EncodeObject(link), (newRecord ? '1' : '0')]);
     }
 
     /**
@@ -183,7 +183,7 @@ export class DataService {
      * @param clno ContingentLeaderNo
      */
     NavigateLayoutSelect(ca: ContingentArrival, clno: string): void {
-        this.router.navigate(['/locationSelect', this.EncodeObject(this.GetLink(ca.links, 'buildings')), clno]);
+        this.router.navigate(['/location-select', this.EncodeObject(this.GetLink(ca.links, 'buildings')), clno]);
     }
 
     /**
@@ -193,7 +193,7 @@ export class DataService {
      * @param clno ContingentLeaderNo for local highlighting
      */
     NavigateRoomLayout(link: Link, location: string, clno: string): void {
-        this.router.navigate(['/roomLayout', this.EncodeObject(link), location, clno]);
+        this.router.navigate(['/room-layout', this.EncodeObject(link), location, clno]);
     }
 
     /** All Contingents */
