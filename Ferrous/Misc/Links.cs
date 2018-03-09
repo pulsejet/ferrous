@@ -180,7 +180,7 @@ namespace Ferrous.Misc
         public LinkHelper AddAbsoluteContentLink(string contentPath, string httpRel, string httpVerb = "GET")
         {
             HttpRequest request = this.urlHelper.ActionContext.HttpContext.Request;
-            string url = new Uri(new Uri(request.Scheme + "://" + request.Host.Value), this.urlHelper.Content(contentPath)).ToString();
+            string url = new Uri(new Uri("https://" + request.Host.Value), this.urlHelper.Content(contentPath)).ToString();
             Links.Add(new Link(httpRel, httpVerb, url));
             return this;
         }
