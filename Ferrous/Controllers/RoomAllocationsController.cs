@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
 using static Ferrous.Misc.Authorization;
 using Ferrous.Misc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Ferrous.Controllers
 {
@@ -14,10 +15,17 @@ namespace Ferrous.Controllers
     public class RoomAllocationsController : ControllerBase
     {
         private readonly ferrousContext _context;
+        private readonly IHubContext<WebSocketHubs.BuildingUpdateHub> _hubContext;
 
-        public RoomAllocationsController(ferrousContext context)
+        public RoomAllocationsController(ferrousContext context, IHubContext<WebSocketHubs.BuildingUpdateHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
+        }
+
+        public void UpdateLayoutWebSocket(string Building)
+        {
+            var grp = _hubContext.Clients.Group(Building).SendAsync("updated", System.DateTime.Now.ToString());
         }
 
         // DEPRECATED
@@ -126,9 +134,9 @@ namespace Ferrous.Controllers
             _context.RoomAllocation.Remove(roomAllocation);
             await _context.SaveChangesAsync();
 
-            RoomsController.UpdateLayoutWebSocket(roomAllocation.Room.Location);
+            UpdateLayoutWebSocket(roomAllocation.Room.Location);
 
-            return Ok(roomAllocation);
+            return NoContent();
         }
 
         private bool RoomAllocationExists(int id)

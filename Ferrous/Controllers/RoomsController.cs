@@ -15,7 +15,7 @@ namespace Ferrous.Controllers
     [Route("api/Rooms")]
     public class RoomsController : ControllerBase
     {
-        private static IHubContext<WebSocketHubs.BuildingUpdateHub> _hubContext;
+        private readonly IHubContext<WebSocketHubs.BuildingUpdateHub> _hubContext;
 
         private readonly ferrousContext _context;
 
@@ -25,7 +25,7 @@ namespace Ferrous.Controllers
             _hubContext = hubContext;
         }
 
-        public static void UpdateLayoutWebSocket(string Building)
+        public void UpdateLayoutWebSocket(string Building)
         {
             _hubContext.Clients.Group(Building).SendAsync("updated", DateTime.Now.ToString());
         }
