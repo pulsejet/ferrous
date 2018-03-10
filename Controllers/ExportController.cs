@@ -25,7 +25,7 @@ namespace Ferrous.Controllers
         }
 
         [HttpGet("api_spec")]
-        [HTTPrel(HTTPrelList.self)]
+        [LinkRelation(LinkRelationList.self)]
         [Produces("application/json")]
         public List<Link> GetApiSpec()
         {

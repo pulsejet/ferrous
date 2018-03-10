@@ -22,7 +22,7 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/People
-        [HttpGet][HTTPrel(HTTPrelList.self)]
+        [HttpGet][LinkRelation(LinkRelationList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PEOPLE_GET)]
         public EnumContainer GetPeople()
         {
@@ -43,7 +43,7 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/People/5
-        [HttpGet("{id}"), HTTPrel(HTTPrelList.self)]
+        [HttpGet("{id}"), LinkRelation(LinkRelationList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_GET_DETAILS)]
         public async Task<IActionResult> GetPerson([FromRoute] string id)
         {
@@ -66,7 +66,7 @@ namespace Ferrous.Controllers
         }
 
         // PUT: api/People/5
-        [HttpPut("{id}")][HTTPrel(HTTPrelList.update)]
+        [HttpPut("{id}")][LinkRelation(LinkRelationList.update)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_PUT)]
         public async Task<IActionResult> PutPerson([FromRoute] string id, [FromBody] Person person)
         {
@@ -102,7 +102,7 @@ namespace Ferrous.Controllers
         }
 
         // POST: api/People
-        [HttpPost][HTTPrel(HTTPrelList.create)]
+        [HttpPost][LinkRelation(LinkRelationList.create)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_POST)]
         public async Task<IActionResult> PostPerson([FromBody] Person person)
         {
@@ -132,7 +132,7 @@ namespace Ferrous.Controllers
         }
 
         // DELETE: api/People/5
-        [HttpDelete("{id}")][HTTPrel(HTTPrelList.delete)]
+        [HttpDelete("{id}")][LinkRelation(LinkRelationList.delete)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_DELETE)]
         public async Task<IActionResult> DeletePerson([FromRoute] string id)
         {

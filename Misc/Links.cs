@@ -11,16 +11,16 @@ using static Ferrous.Misc.Authorization;
 
 namespace Ferrous.Misc
 {
-    public class HTTPrel : Attribute
+    public class LinkRelation : Attribute
     {
         public string rel;
-        public HTTPrel(HTTPrelList rel)
+        public LinkRelation(LinkRelationList rel)
         {
             this.rel = rel.ToString();
         }
     }
 
-    public enum HTTPrelList {
+    public enum LinkRelationList {
         overridden = -1,
         self = 0,
         update = 1,
@@ -81,7 +81,7 @@ namespace Ferrous.Misc
             }
 
             /* Get rel and auth attributes */
-            var relAtt = (HTTPrel)controllerMethod.GetCustomAttribute(typeof(HTTPrel));
+            var relAtt = (LinkRelation)controllerMethod.GetCustomAttribute(typeof(LinkRelation));
             if (relAtt == null && overrideWithRel == String.Empty) {
                 throw new Exception("HTTPrel attribute not set for creating link");
             }   

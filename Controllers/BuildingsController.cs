@@ -24,7 +24,7 @@ namespace Ferrous.Controllers
 
         // GET: api/Buildings/e
         [HttpGet("e/{id}/{cano}")]
-        [HTTPrel(HTTPrelList.self)]
+        [LinkRelation(LinkRelationList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDINGS_GET)]
         public async Task<EnumContainer> GetBuildingsExtended([FromRoute] string id, [FromRoute] int cano)
         {
@@ -44,7 +44,7 @@ namespace Ferrous.Controllers
 
         // GET: api/Buildings/5
         [HttpGet("{id}/{clno}/{cano}")]
-        [HTTPrel(HTTPrelList.self)]
+        [LinkRelation(LinkRelationList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDING_GET_DETAILS)]
         public async Task<IActionResult> GetBuilding([FromRoute] string id, [FromRoute] string clno, [FromRoute] int cano)
         {
@@ -71,7 +71,7 @@ namespace Ferrous.Controllers
 
         // PUT: api/Buildings/5
         [HttpPut("{id}")]
-        [HTTPrel(HTTPrelList.update)]
+        [LinkRelation(LinkRelationList.update)]
         [Authorization(ElevationLevels.SuperUser, PrivilegeList.BUILDING_PUT)]
         public async Task<IActionResult> PutBuilding([FromRoute] string id, [FromBody] Building building)
         {
@@ -108,7 +108,7 @@ namespace Ferrous.Controllers
 
         // POST: api/Buildings
         [HttpPost]
-        [HTTPrel(HTTPrelList.create)]
+        [LinkRelation(LinkRelationList.create)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDING_POST)]
         public async Task<IActionResult> PostBuilding([FromBody] Building building)
         {
@@ -139,7 +139,7 @@ namespace Ferrous.Controllers
 
         // DELETE: api/Buildings/5
         [HttpDelete("{id}")]
-        [HTTPrel(HTTPrelList.delete)]
+        [LinkRelation(LinkRelationList.delete)]
         [Authorization(ElevationLevels.SuperUser, PrivilegeList.BUILDING_DELETE)]
         public async Task<IActionResult> DeleteBuilding([FromRoute] string id)
         {

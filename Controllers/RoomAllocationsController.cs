@@ -60,7 +60,7 @@ namespace Ferrous.Controllers
 
         // PUT: api/RoomAllocations/5
         [HttpPut("{id}")]
-        [HTTPrel(HTTPrelList.update)]
+        [LinkRelation(LinkRelationList.update)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMALLOCATIONS_PUT)]
         public async Task<IActionResult> PutRoomAllocation([FromRoute] int id, [FromBody] RoomAllocation roomAllocation)
         {
@@ -97,7 +97,7 @@ namespace Ferrous.Controllers
 
         // POST: api/RoomAllocations
         [HttpPost]
-        [HTTPrel(HTTPrelList.create)]
+        [LinkRelation(LinkRelationList.create)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMALLOCATIONS_POST)]
         public async Task<IActionResult> PostRoomAllocation([FromBody] RoomAllocation roomAllocation)
         {
@@ -114,7 +114,7 @@ namespace Ferrous.Controllers
 
         // DELETE: api/RoomAllocations/5
         [HttpDelete("{id}")]
-        [HTTPrel(HTTPrelList.delete)]
+        [LinkRelation(LinkRelationList.delete)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMALLOCATIONS_DELETE)]
         public async Task<IActionResult> DeleteRoomAllocation([FromRoute] int id)
         {

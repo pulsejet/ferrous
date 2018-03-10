@@ -78,7 +78,7 @@ namespace Ferrous.Controllers
 
         // PUT: api/ContingentArrivals/5
         [HttpPut("{id}")]
-        [HTTPrel(HTTPrelList.update)]
+        [LinkRelation(LinkRelationList.update)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_PUT)]
         public async Task<IActionResult> PutContingentArrival([FromRoute] int id, [FromBody] ContingentArrival contingentArrival)
         {
@@ -115,7 +115,7 @@ namespace Ferrous.Controllers
 
         // POST: api/ContingentArrivals
         [HttpPost]
-        [HTTPrel(HTTPrelList.create)]
+        [LinkRelation(LinkRelationList.create)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_POST)]
         public async Task<IActionResult> PostContingentArrival([FromBody] ContingentArrival contingentArrival)
         {
@@ -135,7 +135,7 @@ namespace Ferrous.Controllers
 
         // DELETE: api/ContingentArrivals/5
         [HttpDelete("{id}")]
-        [HTTPrel(HTTPrelList.delete)]
+        [LinkRelation(LinkRelationList.delete)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_DELETE)]
         public async Task<IActionResult> DeleteContingentArrival([FromRoute] int id)
         {

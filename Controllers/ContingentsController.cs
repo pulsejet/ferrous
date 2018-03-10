@@ -25,7 +25,7 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/Contingents
-        [HttpGet, HTTPrel(HTTPrelList.self)]
+        [HttpGet, LinkRelation(LinkRelationList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTS_GET)]
         public async Task<EnumContainer> GetContingents()
         {
@@ -46,14 +46,14 @@ namespace Ferrous.Controllers
         }
 
         // GET: api/Contingents?5
-        [HttpGet("find"), HTTPrel(HTTPrelList.self)]
+        [HttpGet("find"), LinkRelation(LinkRelationList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_GET_DETAILS)]
         public async Task<IActionResult> FindContingent([FromQuery] string id) {
             return await GetContingent(id);
         }
 
         // GET: api/Contingents/5
-        [HttpGet("{id}"), HTTPrel(HTTPrelList.self)]
+        [HttpGet("{id}"), LinkRelation(LinkRelationList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_GET_DETAILS)]
         public async Task<IActionResult> GetContingent([FromRoute] string id)
         {
@@ -77,7 +77,7 @@ namespace Ferrous.Controllers
         }
 
         // PUT: api/Contingents/5
-        [HttpPut("{id}"), HTTPrel(HTTPrelList.update)]
+        [HttpPut("{id}"), LinkRelation(LinkRelationList.update)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_PUT)]
         public async Task<IActionResult> PutContingent([FromRoute] string id, [FromBody] Contingents contingents)
         {
@@ -113,7 +113,7 @@ namespace Ferrous.Controllers
         }
 
         // POST: api/Contingents
-        [HttpPost, HTTPrel(HTTPrelList.create)]
+        [HttpPost, LinkRelation(LinkRelationList.create)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_POST)]
         public async Task<IActionResult> PostContingent([FromBody] Contingents contingents)
         {
@@ -143,7 +143,7 @@ namespace Ferrous.Controllers
         }
 
         // DELETE: api/Contingents/5
-        [HttpDelete("{id}"), HTTPrel(HTTPrelList.delete)]
+        [HttpDelete("{id}"), LinkRelation(LinkRelationList.delete)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_DELETE)]
         public async Task<IActionResult> DeleteContingent([FromRoute] string id)
         {
