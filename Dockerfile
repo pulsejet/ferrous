@@ -7,7 +7,7 @@ COPY ./*.csproj .
 RUN dotnet restore
 
 # copies the rest of your code
-COPY .
+COPY . .
 RUN cd ClientApp && npm install && npm run lint && cd ..
 RUN dotnet publish --output /app/ --configuration Release
 
