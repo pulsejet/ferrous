@@ -69,9 +69,9 @@ namespace Ferrous.Controllers
                                             .Include(m => m.ContingentArrival)
                                             .SingleOrDefaultAsync();
 
-            new LinksMaker(User, Url).FillContingentsLinks(contingent);
-
             if (contingent == null) return NotFound();
+
+            new LinksMaker(User, Url).FillContingentsLinks(contingent);
 
             foreach ( var ra in contingent.RoomAllocation )
             {
