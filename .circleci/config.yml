@@ -10,19 +10,19 @@ jobs:
     steps:
       - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "Ferrous/ClientApp/package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
       - setup_remote_docker
 
       - run:
           name: Load Submodules
           command: |
             git submodule update --init --recursive
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Ferrous/ClientApp/package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
 
       - run:
           name: Pull NPM dependencies
