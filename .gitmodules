@@ -1,4 +1,4 @@
 [submodule "Ferrous/ClientApp"]
-	path = Ferrous/ClientApp
+	path = ClientApp
 	url = https://github.com/pulsejet/Ferrous-Client.git
 	branch = master
