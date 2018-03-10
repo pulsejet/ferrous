@@ -30,7 +30,7 @@ namespace Ferrous.Misc
                 .AddLink(nameof(ContingentsController.GetContingents), null, "contingents")
 
                 .SetOptions(User, typeof(BuildingsController), Url)
-                .AddLink(nameof(BuildingsController.GetBuildingsExtended), new { id = 1, cano = "mark" }, "mark_buildings")
+                .AddLink(nameof(BuildingsController.GetBuildingsExtended), new { id = "mark", cano = "mark" }, "mark_buildings")
 
                 .SetOptions(User, typeof(PeopleController), Url)
                 .AddLink(nameof(PeopleController.GetPeople), null, "people")
@@ -141,16 +141,20 @@ namespace Ferrous.Misc
         public void FillRoomLinks(Room room, string clno, int cano)
         {
             var idObject = new { id = room.RoomId };
-            var idObjectAllot = new { id = room.RoomId, clno = clno, cano = cano };
 
-            room.Links = new LinkHelper()
+            var linkHelper = new LinkHelper()
                 .SetOptions(User, typeof(RoomsController), Url)
                 .AddLink(nameof(RoomsController.GetRoom), idObject)
                 .AddLink(nameof(RoomsController.PutRoom), idObject)
                 .AddLink(nameof(RoomsController.DeleteRoom), idObject)
-                .AddLink(nameof(RoomsController.RoomAllot), idObjectAllot, "allot")
-                .AddLink(nameof(RoomsController.mark), idObject, "mark")
-                .GetLinks();
+                .AddLink(nameof(RoomsController.mark), idObject, "mark");
+
+            if (clno != "mark") {
+                var idObjectAllot = new { id = room.RoomId, clno = clno, cano = cano };
+                linkHelper.AddLink(nameof(RoomsController.RoomAllot), idObjectAllot, "allot");
+            }
+
+            room.Links = linkHelper.GetLinks();
 
             foreach (var roomA in room.RoomAllocation)
                 FillRoomAllocationLinks(roomA);

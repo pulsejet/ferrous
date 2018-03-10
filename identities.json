@@ -13,7 +13,7 @@
     "salt":"dm",
     "password":"CCD0C34F0039C1BFF6B566486AA6A73FAD2DB3666310B501EDC2FB231F955C0F",
     "elevation":"2",
-    "privileges":[1, 2, 3, 7, 8, 9, 11, 12, 23, 26, 27, 28, 29, 30, 10001]
+    "privileges":[1, 2, 3, 7, 8, 9, 11, 12, 26, 27, 28, 30, 10001]
 }
 
 ]
