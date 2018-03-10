@@ -6,12 +6,13 @@ jobs:
     docker:
       - image: docker:17.05.0-ce-git
     steps:
-      - checkout:
-          post:
-            - git submodule sync
-            - git submodule update --init
-
+      - checkout
       - setup_remote_docker
+
+      -run:
+        name: Load Submodules
+        command: |
+          git submodule update --init --recursive
 
       - restore_cache:
           keys:
