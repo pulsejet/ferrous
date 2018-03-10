@@ -2,9 +2,11 @@ version: 2
 
 jobs:
   build:
-    working_directory: /app
     docker:
       - image: circleci/node:8.9.4-stretch-browsers
+
+    working_directory: ~/repo
+
     steps:
       - checkout
 
