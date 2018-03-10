@@ -18,14 +18,14 @@ jobs:
       - setup_remote_docker
 
       - run:
-        name: Load Submodules
-        command: |
-          git submodule update --init --recursive
+          name: Load Submodules
+          command: |
+            git submodule update --init --recursive
 
       - run:
-        name: Pull NPM dependencies
-        command: |
-          cd Ferrous && cd ClientApp && npm install
+          name: Pull NPM dependencies
+          command: |
+            cd Ferrous && cd ClientApp && npm install
 
       - save_cache:
           paths:
