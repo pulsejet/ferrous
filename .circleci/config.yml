@@ -1,10 +1,11 @@
 version: 2
-jobs:
-  checkout:
-    post:
-      - git submodule sync
-      - git submodule update --init
 
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init
+
+jobs:
   build:
     working_directory: /app
     docker:
