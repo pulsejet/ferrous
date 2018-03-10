@@ -67,18 +67,23 @@ namespace Ferrous.Misc
         /// <param name="routeParams">Params for route passed to UrlHelper</param>
         /// <param name="overrideWithRel">Override rel attribute</param>
         /// <returns>LinkHelper</returns>
-        public LinkHelper AddLink(string action, object routeParams = null, string overrideWithRel = "")
+        public LinkHelper AddLink(string action, object routeParams = null, string overrideWithRel = "", bool hasQueryParams = false)
         {
             /* Get the method */
             MethodInfo controllerMethod = type.GetMethod(action);
+
+            /* Check privileges */
+            Authorization AuthAttr = (Authorization)controllerMethod.GetCustomAttribute(typeof(Authorization));
+            if (AuthAttr != null && 
+                !hasPrivilege(user.Identity.Name, AuthAttr._elevationLevel, AuthAttr._privilege)) {
+                return this;
+            }
 
             /* Get rel and auth attributes */
             var relAtt = (HTTPrel)controllerMethod.GetCustomAttribute(typeof(HTTPrel));
             if (relAtt == null && overrideWithRel == String.Empty) {
                 throw new Exception("HTTPrel attribute not set for creating link");
-            }
-
-            Authorization AuthAttr = (Authorization)controllerMethod.GetCustomAttribute(typeof(Authorization));
+            }   
 
             /* List of verb attributes */
             var Attributes = new List<(Type, string)> {
@@ -98,16 +103,12 @@ namespace Ferrous.Misc
                 }
             }
 
-            /* Check for priveleges and add the link */
-            if (AuthAttr == null || 
-                hasPrivilege(user.Identity.Name, AuthAttr._elevationLevel, AuthAttr._privilege))
-            {
-                Links.Add(new Link(
-                    (overrideWithRel != String.Empty) ? overrideWithRel : relAtt.rel,
-                    http_verb,
-                    urlHelper.Action(action, controller, routeParams, "https")
-                ));
-            }
+            /* Add the link */
+            Links.Add(new Link(
+                (overrideWithRel != String.Empty) ? overrideWithRel : relAtt.rel,
+                http_verb,
+                urlHelper.Action(action, controller, routeParams, "https")
+            ));
             return this;
         }
 
