@@ -9,7 +9,7 @@ jobs:
       - checkout
       - setup_remote_docker
 
-      -run:
+      - run:
         name: Load Submodules
         command: |
           git submodule update --init --recursive
