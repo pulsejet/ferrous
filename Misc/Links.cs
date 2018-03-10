@@ -66,6 +66,7 @@ namespace Ferrous.Misc
         /// <param name="action">Routing object's name; may be passed using nameof(object)</param>
         /// <param name="routeParams">Params for route passed to UrlHelper</param>
         /// <param name="overrideWithRel">Override rel attribute</param>
+        /// <param name="hasQueryParams">Set to true to include query params in href</param>
         /// <returns>LinkHelper</returns>
         public LinkHelper AddLink(string action, object routeParams = null, string overrideWithRel = "", bool hasQueryParams = false)
         {
@@ -103,11 +104,24 @@ namespace Ferrous.Misc
                 }
             }
 
+            /* Add query parameters */
+            string url_parameters = String.Empty;
+            if (hasQueryParams && controllerMethod.GetParameters().Count() > 0) {
+                url_parameters = "{?";
+                foreach (var param in controllerMethod.GetParameters()){
+                   if (param.GetCustomAttribute(typeof(FromQueryAttribute)) != null) {
+                       url_parameters += param.Name + ",";
+                   }
+                }
+                url_parameters = url_parameters.TrimEnd(',');
+                url_parameters += "}";
+            }
+
             /* Add the link */
             Links.Add(new Link(
                 (overrideWithRel != String.Empty) ? overrideWithRel : relAtt.rel,
                 http_verb,
-                urlHelper.Action(action, controller, routeParams, "https")
+                urlHelper.Action(action, controller, routeParams, "https") + url_parameters
             ));
             return this;
         }

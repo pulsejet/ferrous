@@ -147,11 +147,11 @@ namespace Ferrous.Misc
                 .AddLink(nameof(RoomsController.GetRoom), idObject)
                 .AddLink(nameof(RoomsController.PutRoom), idObject)
                 .AddLink(nameof(RoomsController.DeleteRoom), idObject)
-                .AddLink(nameof(RoomsController.mark), idObject, "mark");
+                .AddLink(nameof(RoomsController.mark), idObject, "mark", true);
 
             if (clno != "mark") {
                 var idObjectAllot = new { id = room.RoomId, clno = clno, cano = cano };
-                linkHelper.AddLink(nameof(RoomsController.RoomAllot), idObjectAllot, "allot");
+                linkHelper.AddLink(nameof(RoomsController.RoomAllot), idObjectAllot, "allot", true);
             }
 
             room.Links = linkHelper.GetLinks();
