@@ -29,7 +29,7 @@ A unique room, which may be allocated to multiple people.
 6. Export data to spreadsheet
 
 ## Usage
-The project can be built directly with the dotnet sdk used by `Ferrous.csproj`. It is recommended to use the client supplied, since development of the server takes place in close co-ordination with it. The client needs to be built separately, and traffic not relevant for the server is passed to `localhost:4200`, where the client should be served.
+The project can be built directly with the dotnet sdk used by `Ferrous.csproj`. It is recommended to use the client supplied, since development of the server takes place in close co-ordination with it. During development the client needs to be built and served separately, and traffic not relevant for the server is passed to `localhost:4200`, where the client should be served. For production, `dotnet publish` will automatically run the build script for `ClientApp` and the client will be bundled with the application, which can then be deployed directly, preferably behind an SSL reverse proxy.
 
 ## Contributing
 Pull requests and issues are welcome, as long as a few constraints are followed:
