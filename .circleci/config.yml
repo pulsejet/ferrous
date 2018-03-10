@@ -37,4 +37,5 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build
+            docker --version  # document the version travis is using
+            docker build .
