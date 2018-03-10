@@ -28,7 +28,7 @@ namespace Ferrous.Misc
         create = 3
     }
 
-    public static class HTTPMethod
+    public static class HTTPVerb
     {
         public static string GET = "GET";
         public static string POST = "POST";
@@ -88,14 +88,14 @@ namespace Ferrous.Misc
 
             /* List of verb attributes */
             var Attributes = new List<(Type, string)> {
-                (typeof(HttpGetAttribute), HTTPMethod.GET),
-                (typeof(HttpPostAttribute), HTTPMethod.POST),
-                (typeof(HttpPutAttribute), HTTPMethod.PUT),
-                (typeof(HttpDeleteAttribute), HTTPMethod.DELETE)
+                (typeof(HttpGetAttribute), HTTPVerb.GET),
+                (typeof(HttpPostAttribute), HTTPVerb.POST),
+                (typeof(HttpPutAttribute), HTTPVerb.PUT),
+                (typeof(HttpDeleteAttribute), HTTPVerb.DELETE)
             };
             
             /* Get the HTTP verb from the routing attribute */
-            string http_verb = HTTPMethod.GET;
+            string http_verb = HTTPVerb.GET;
 
             foreach (var rAtt in Attributes) {
                 if (controllerMethod.GetCustomAttribute(rAtt.Item1) != null) {
@@ -130,14 +130,14 @@ namespace Ferrous.Misc
         /// Adds a fully qualified URL Link to the specified content by using the specified content path.
         /// </summary>
         /// <param name="contentPath">The content path.</param>
-        /// <param name="httpRel">relation to object (rel).</param>
+        /// <param name="linkRelation">relation to object (rel).</param>
         /// <param name="httpVerb">HTTP Verb to use</param>
         /// <returns>LinkHelper</returns>
-        public LinkHelper AddAbsoluteContentLink(string contentPath, string httpRel, string httpVerb = "GET")
+        public LinkHelper AddAbsoluteContentLink(string contentPath, string linkRelation, string httpVerb = "GET")
         {
             HttpRequest request = this.urlHelper.ActionContext.HttpContext.Request;
             string url = new Uri(new Uri("https://" + request.Host.Value), this.urlHelper.Content(contentPath)).ToString();
-            Links.Add(new Link(httpRel, httpVerb, url));
+            Links.Add(new Link(linkRelation, httpVerb, url));
             return this;
         }
 
@@ -145,11 +145,11 @@ namespace Ferrous.Misc
         /// Adds a dummy link used to pass string content.
         /// </summary>
         /// <param name="contentPath">String to pass.</param>
-        /// <param name="httpRel">relation to object (rel).</param>
+        /// <param name="linkRelation">relation to object (rel).</param>
         /// <param name="httpVerb">HTTP Verb to use</param>
         /// <returns>LinkHelper</returns>
-        public LinkHelper AddStringLink(string content, string httpRel, string httpVerb = "GET") {
-            Links.Add(new Link(httpRel, httpVerb, content));
+        public LinkHelper AddStringLink(string content, string linkRelation, string httpVerb = "GET") {
+            Links.Add(new Link(linkRelation, httpVerb, content));
             return this;
         }
 
