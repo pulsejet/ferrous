@@ -28,6 +28,7 @@ namespace Ferrous.Misc
             new LinkHelper()
                 .SetOptions(User, typeof(ContingentsController), Url)
                 .AddLink(nameof(ContingentsController.GetContingents), null, "contingents")
+                .AddLink(nameof(ContingentsController.FindContingent), null, "find_contingent", true)
 
                 .SetOptions(User, typeof(BuildingsController), Url)
                 .AddLink(nameof(BuildingsController.GetBuildingsExtended), new { id = "mark", cano = "mark" }, "mark_buildings")

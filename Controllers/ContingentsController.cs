@@ -45,9 +45,16 @@ namespace Ferrous.Controllers
             );
         }
 
+        // GET: api/Contingents?5
+        [HttpGet("find"), HTTPrel(HTTPrelList.self)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_GET_DETAILS)]
+        public async Task<IActionResult> FindContingent([FromQuery] string id) {
+            return await GetContingent(id);
+        }
+
         // GET: api/Contingents/5
         [HttpGet("{id}"), HTTPrel(HTTPrelList.self)]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTS_GET)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_GET_DETAILS)]
         public async Task<IActionResult> GetContingent([FromRoute] string id)
         {
             if (!ModelState.IsValid)
