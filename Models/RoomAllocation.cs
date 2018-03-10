@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Ferrous.Models
 {
@@ -15,6 +16,7 @@ namespace Ferrous.Models
         public int Partial { get; set; }
         public int RoomId { get; set; }
 
+        [JsonIgnore]
         public ContingentArrival ContingentArrivalNoNavigation { get; set; }
         public Contingents ContingentLeaderNoNavigation { get; set; }
         public Room Room { get; set; }

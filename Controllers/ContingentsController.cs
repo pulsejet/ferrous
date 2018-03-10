@@ -73,11 +73,6 @@ namespace Ferrous.Controllers
 
             new LinksMaker(User, Url).FillContingentsLinks(contingent);
 
-            foreach ( var ra in contingent.RoomAllocation )
-            {
-                ra.ContingentArrivalNoNavigation = null;
-            }
-
             return Ok(contingent);
         }
 
