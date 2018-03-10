@@ -4,9 +4,17 @@ jobs:
   build:
     working_directory: /app
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: circleci/node:8.9.4-stretch-browsers
     steps:
       - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Ferrous/ClientApp/package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
       - setup_remote_docker
 
       - run:
@@ -14,11 +22,16 @@ jobs:
         command: |
           git submodule update --init --recursive
 
-      - restore_cache:
-          keys:
-            - v1-{{ .Branch }}
+      - run:
+        name: Pull NPM dependencies
+        command: |
+          cd Ferrous && cd ClientApp && npm install
+
+      - save_cache:
           paths:
-            - /caches/app.tar
+            - Ferrous/ClientApp/node_modules
+          key: v1-dependencies-{{ checksum "Ferrous/ClientApp/package.json" }}
+
       - run:
           name: Load Docker image layer cache
           command: |
