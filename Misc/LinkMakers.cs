@@ -37,7 +37,7 @@ namespace Ferrous.Misc
                 .AddLink(nameof(PeopleController.GetPeople), null, "people")
 
                 .SetOptions(User, typeof(LoginController), Url)
-                .AddLink(nameof(LoginController.login), null, "login")
+                .AddLink(nameof(LoginController.login), null, "login", true)
                 .AddLink(nameof(LoginController.Logout), null, "logout")
                 .AddLink(nameof(LoginController.GetUser), null, "getuser")
 
