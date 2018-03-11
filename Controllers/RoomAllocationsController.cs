@@ -23,9 +23,9 @@ namespace Ferrous.Controllers
             _hubContext = hubContext;
         }
 
-        public void UpdateLayoutWebSocket(string Building)
+        public void UpdateLayoutWebSocket(Room room)
         {
-            var grp = _hubContext.Clients.Group(Building).SendAsync("updated", System.DateTime.Now.ToString());
+            _hubContext.Clients.Group(room.Location).SendAsync("updated", room.RoomId);
         }
 
         // DEPRECATED
@@ -134,7 +134,7 @@ namespace Ferrous.Controllers
             _context.RoomAllocation.Remove(roomAllocation);
             await _context.SaveChangesAsync();
 
-            UpdateLayoutWebSocket(roomAllocation.Room.Location);
+            UpdateLayoutWebSocket(roomAllocation.Room);
 
             return NoContent();
         }

@@ -25,29 +25,31 @@ namespace Ferrous.Controllers
             _hubContext = hubContext;
         }
 
-        public void UpdateLayoutWebSocket(string Building)
+        public void UpdateLayoutWebSocket(Room room)
         {
-            _hubContext.Clients.Group(Building).SendAsync("updated", DateTime.Now.ToString());
+            _hubContext.Clients.Group(room.Location).SendAsync("updated", room.RoomId);
         }
 
         // GET: api/Rooms/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}/{clno}/{cano}")]
         [LinkRelation(LinkRelationList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMS_GET)]
-        public async Task<IActionResult> GetRoom([FromRoute] int id)
+        public async Task<IActionResult> GetRoom([FromRoute] int id, [FromRoute] string clno, [FromRoute] int cano)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var room = await _context.Room.Include(m => m.RoomAllocation) 
+            var room = await _context.Room.Include(m => m.RoomAllocation)
                                           .SingleOrDefaultAsync(m => m.RoomId == id);
 
             if (room == null)
             {
                 return NotFound();
             }
+
+            new LinksMaker(User, Url).FillRoomLinks(room, clno, cano);
 
             return Ok(room);
         }
@@ -86,7 +88,7 @@ namespace Ferrous.Controllers
                 }
             }
 
-            UpdateLayoutWebSocket(room.Location);
+            UpdateLayoutWebSocket(room);
             return NoContent();
         }
 
@@ -168,7 +170,7 @@ namespace Ferrous.Controllers
 
             await _context.SaveChangesAsync();
 
-            UpdateLayoutWebSocket(room.Location);
+            UpdateLayoutWebSocket(room);
 
             roomAllocation.Room = null;
             return Ok(roomAllocation);
@@ -192,7 +194,7 @@ namespace Ferrous.Controllers
 
             await _context.SaveChangesAsync();
 
-            UpdateLayoutWebSocket(room.Location);
+            UpdateLayoutWebSocket(room);
             return Ok(room);
         }
 
