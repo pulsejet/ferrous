@@ -87,15 +87,18 @@ namespace Ferrous.Misc
         {
             var idObject = new { id = building.Location, clno, cano };
 
-            building.Links = new LinkHelper()
+            var linkHelper = new LinkHelper()
                    .SetOptions(User, typeof(BuildingsController), Url)
                    .AddLink(nameof(BuildingsController.GetBuilding), idObject)
                    .AddLink(nameof(BuildingsController.PutBuilding), idObject)
-                   .AddLink(nameof(BuildingsController.DeleteBuilding), idObject)
+                   .AddLink(nameof(BuildingsController.DeleteBuilding), idObject);
 
-                   .SetOptions(User, typeof(ExportController), Url)
-                   .AddLink(nameof(ExportController.GetContingentArrivalBill), new {id = cano}, "bill")
-                   .GetLinks();
+            if (clno != "mark") {
+                linkHelper.SetOptions(User, typeof(ExportController), Url)
+                          .AddLink(nameof(ExportController.GetContingentArrivalBill), new {id = cano}, "bill");
+            }
+
+            building.Links = linkHelper.GetLinks();
 
             if (building.Room != null)
                 foreach (var room in building.Room)
