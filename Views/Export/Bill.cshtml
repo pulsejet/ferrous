@@ -1,0 +1,88 @@
+@using Ferrous.Models
+@model Ferrous.Models.ContingentArrival
+
+<html>
+
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 6px;
+            padding-left: 15px;
+            padding-right: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Room Bill</h1>
+    <div style="font-size: 14pt">
+        Contingent Leader Number - <b>@Model.ContingentLeaderNo </b>
+        <br>
+
+        Male - <b>@Model.Male
+        @if(Model.MaleOnSpot > 0) {
+            <text>
+                + @Model.MaleOnSpot = @(@Model.Male + @Model.MaleOnSpot)
+            </text>
+        } </b>
+        <br>
+
+        Female - <b>@Model.Female
+        @if(Model.FemaleOnSpot > 0) {
+            <text>
+                + @Model.FemaleOnSpot = @(@Model.Female + @Model.FemaleOnSpot)
+            </text>
+        } </b>
+    </div>
+
+    <br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Room</th>
+                <th>Lock no.</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach(var roomA in @Model.RoomAllocation){
+            <tr>
+                <td>@roomA.Room.Location</td>
+                <td>@roomA.Room.RoomName</td>
+                <td>@roomA.Room.LockNo</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <br>
+
+    @if(Model.MaleOnSpot > 0 || Model.FemaleOnSpot > 0) {
+        <text>
+        <h2>On-Spot Payment</h2>
+        <div style="font-size: 14pt">
+            @Model.MaleOnSpot x &#8377;2000 = <b>&#8377;@(@Model.MaleOnSpot*2000)</b> (M)
+            <br>
+            @Model.FemaleOnSpot x &#8377;2000 = <b>&#8377;@(@Model.FemaleOnSpot*2000)</b> (F)
+        </div>
+        <br>
+
+        <div style="font-size: 16pt">
+            Total: <b>
+                &#8377;@((@Model.FemaleOnSpot + @Model.MaleOnSpot) * 2000)
+            </b>
+        </div>
+        </text>
+    }
+
+    <br>
+    <span style="color:blue">Arrival Reference: #@Model.ContingentArrivalNo, @Model.CreatedOn</span>
+</body>
+</html>

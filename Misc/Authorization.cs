@@ -104,7 +104,9 @@ namespace Ferrous.Misc
             ROOM_MARK = 10002,
             ROOM_CREATE = 10003,
 
-            EXPORT_DATA = 11000
+            EXPORT_DATA = 11000,
+
+            BILL_CONTINGENT_ARRIVAL = 12001,
         }
 
         public enum ElevationLevels

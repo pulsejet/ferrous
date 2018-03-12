@@ -92,6 +92,9 @@ namespace Ferrous.Misc
                    .AddLink(nameof(BuildingsController.GetBuilding), idObject)
                    .AddLink(nameof(BuildingsController.PutBuilding), idObject)
                    .AddLink(nameof(BuildingsController.DeleteBuilding), idObject)
+
+                   .SetOptions(User, typeof(ExportController), Url)
+                   .AddLink(nameof(ExportController.GetContingentArrivalBill), new {id = cano}, "bill")
                    .GetLinks();
 
             if (building.Room != null)
@@ -112,6 +115,9 @@ namespace Ferrous.Misc
                 .SetOptions(User, typeof(ContingentArrivalsController), Url)
                 .AddLink(nameof(ContingentArrivalsController.PutContingentArrival), idObject)
                 .AddLink(nameof(ContingentArrivalsController.DeleteContingentArrival), idObject)
+
+                .SetOptions(User, typeof(ExportController), Url)
+                .AddLink(nameof(ExportController.GetContingentArrivalBill), idObject, "bill")
 
                 .SetOptions(User, typeof(RoomAllocationsController), Url)
                 .AddLink(nameof(RoomAllocationsController.PostRoomAllocation), null, "create_room_allocation")

@@ -15,7 +15,7 @@ using System.Collections.Generic;
 namespace Ferrous.Controllers
 {
     [Route("api/export")]
-    public class ExportController : ControllerBase
+    public class ExportController : Controller
     {
         private readonly ferrousContext _context;
 
@@ -30,6 +30,32 @@ namespace Ferrous.Controllers
         public List<Link> GetApiSpec()
         {
             return new LinksMaker(User, Url).API_SPEC();
+        }
+
+        [HttpGet("contingent-arrival-bill/{id}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BILL_CONTINGENT_ARRIVAL)]
+        public async Task<ActionResult> GetContingentArrivalBill([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var contingentArrival = await _context.ContingentArrival
+                .Include(m => m.RoomAllocation)
+                    .ThenInclude(m => m.Room)
+                .SingleOrDefaultAsync(m => m.ContingentArrivalNo == id);
+
+            contingentArrival.RoomAllocation = contingentArrival.RoomAllocation
+                    .OrderBy(m => m.Room.RoomName)
+                    .OrderBy(m => m.Room.Location).ToArray();
+
+            if (contingentArrival == null)
+            {
+                return NotFound();
+            }
+
+            return View("Bill", contingentArrival);
         }
 
         // GET: api/export
