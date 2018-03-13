@@ -161,43 +161,43 @@ namespace Ferrous.Controllers
             return _context.Room.Any(e => e.RoomId == id);
         }
 
-        // GET: api/Rooms/allot/CLNo/CANo
-        [HttpGet("{id}/allot/{clno}/{cano}")]
+        // GET: api/id/Rooms/allot/CLNo/CANo
+        [HttpPost("allot/{clno}/{cano}")]
         [LinkRelation(LinkRelationList.overridden)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_ALLOT)]
-        public async Task<IActionResult> RoomAllot([FromRoute] int id, [FromRoute] string clno, [FromRoute] int cano, [FromQuery] int partialno = -1)
+        public async Task<IActionResult> AllotRooms([FromBody] RoomAllocation[] roomAllocations, [FromRoute] string clno, [FromRoute] int cano)
         {
-            Room room = await _context.Room.Where(m => m.RoomId == id)
+            var ids = roomAllocations.Select(ra => ra.RoomId).ToArray();
+            Room[] rooms = await _context.Room.Where(m => ids.Contains(m.RoomId))
                                     .Include(m => m.RoomAllocation)
-                                    .SingleOrDefaultAsync();
-            if (room == null) return BadRequest();
+                                    .ToArrayAsync();
+            if (rooms == null) return BadRequest();
 
-            bool partial = partialno > 0;
-            bool empty = true;
+            foreach (var room in rooms) {
+                var NewRoomA = roomAllocations.Where(ra => ra.RoomId == room.RoomId).SingleOrDefault();
+                bool partial = NewRoomA.Partial > 0;
+                bool empty = true;
 
-            foreach (var roomA in room.RoomAllocation)
-            {
-                if (!(roomA.Partial > 0)) empty = false;
-                if (!partial) empty = false;
+                foreach (var roomA in room.RoomAllocation)
+                {
+                    if (!(roomA.Partial > 0)) empty = false;
+                    if (!partial) empty = false;
+                }
+
+                if (!empty || room.Status != 1) continue;
+
+                NewRoomA.ContingentLeaderNo = clno;
+                NewRoomA.ContingentArrivalNo = cano;
+                _context.Update(NewRoomA);
+
+                _context.Update(room);
             }
-
-            if (!empty || room.Status != 1) return BadRequest( "Not Empty");
-
-            RoomAllocation roomAllocation = new RoomAllocation();
-            roomAllocation.ContingentLeaderNo = clno;
-            roomAllocation.ContingentArrivalNo = cano;
-            roomAllocation.RoomId = id;
-            roomAllocation.Partial = partialno;
-            _context.Update(roomAllocation);
-
-            _context.Update(room);
 
             await _context.SaveChangesAsync();
 
-            UpdateLayoutWebSocket(new Room[] {room});
+            UpdateLayoutWebSocket(rooms);
 
-            roomAllocation.Room = null;
-            return Ok(roomAllocation);
+            return NoContent();
         }
 
         // POST: api/Rooms/mark
