@@ -161,7 +161,7 @@ namespace Ferrous.Controllers
             return _context.Room.Any(e => e.RoomId == id);
         }
 
-        // GET: api/id/Rooms/allot/CLNo/CANo
+        // POST: api/Rooms/allot/CLNo/CANo
         [HttpPost("allot/{clno}/{cano}")]
         [LinkRelation(LinkRelationList.overridden)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_ALLOT)]
@@ -188,8 +188,8 @@ namespace Ferrous.Controllers
 
                 NewRoomA.ContingentLeaderNo = clno;
                 NewRoomA.ContingentArrivalNo = cano;
-                _context.Update(NewRoomA);
 
+                _context.Update(NewRoomA);
                 _context.Update(room);
             }
 
