@@ -91,7 +91,11 @@ namespace Ferrous.Misc
                    .SetOptions(User, typeof(BuildingsController), Url)
                    .AddLink(nameof(BuildingsController.GetBuilding), idObject)
                    .AddLink(nameof(BuildingsController.PutBuilding), idObject)
-                   .AddLink(nameof(BuildingsController.DeleteBuilding), idObject);
+                   .AddLink(nameof(BuildingsController.DeleteBuilding), idObject)
+
+                   .SetOptions(User, typeof(RoomsController), Url)
+                   .AddLink(nameof(RoomsController.GetRoomList), new {clno, cano}, "list_rooms")
+                   .AddLink(nameof(RoomsController.MarkRooms), null, "mark", true);
 
             if (clno != "mark") {
                 linkHelper.SetOptions(User, typeof(ExportController), Url)
@@ -156,8 +160,7 @@ namespace Ferrous.Misc
                 .SetOptions(User, typeof(RoomsController), Url)
                 .AddLink(nameof(RoomsController.GetRoom), new { id = room.RoomId, clno = clno, cano = cano })
                 .AddLink(nameof(RoomsController.PutRoom), idObject)
-                .AddLink(nameof(RoomsController.DeleteRoom), idObject)
-                .AddLink(nameof(RoomsController.mark), idObject, "mark", true);
+                .AddLink(nameof(RoomsController.DeleteRoom), idObject);
 
             if (clno != "mark") {
                 var idObjectAllot = new { id = room.RoomId, clno = clno, cano = cano };

@@ -13,6 +13,7 @@ namespace Ferrous.Controllers
 {
     [Produces("application/json")]
     [Route("api/Rooms")]
+    [ApiController]
     public class RoomsController : ControllerBase
     {
         private readonly IHubContext<WebSocketHubs.BuildingUpdateHub> _hubContext;
@@ -25,9 +26,10 @@ namespace Ferrous.Controllers
             _hubContext = hubContext;
         }
 
-        public void UpdateLayoutWebSocket(Room room)
+        public void UpdateLayoutWebSocket(Room[] rooms)
         {
-            _hubContext.Clients.Group(room.Location).SendAsync("updated", room.RoomId);
+            if (rooms.Length == 0) return;
+            _hubContext.Clients.Group(rooms[0].Location).SendAsync("updated", rooms.Select(r => r.RoomId).ToArray());
         }
 
         // GET: api/Rooms/5
@@ -52,6 +54,28 @@ namespace Ferrous.Controllers
             new LinksMaker(User, Url).FillRoomLinks(room, clno, cano);
 
             return Ok(room);
+        }
+
+        // POST: api/Rooms/list/clno/cano (gets list of rooms)
+        [HttpPost("list/{clno}/{cano}")]
+        [LinkRelation(LinkRelationList.overridden)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOMS_GET)]
+        public async Task<ActionResult> GetRoomList([FromRoute] string clno, [FromRoute] int cano, [FromBody] List<int> ids)
+        {
+            var rooms = await _context.Room.Include(m => m.RoomAllocation)
+                                          .Where(m => ids.Contains(m.RoomId))
+                                          .ToListAsync();
+
+            if (rooms == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var room in rooms) {
+                new LinksMaker(User, Url).FillRoomLinks(room, clno, cano);
+            }
+
+            return Ok(rooms);
         }
 
         // PUT: api/Rooms/5
@@ -88,7 +112,7 @@ namespace Ferrous.Controllers
                 }
             }
 
-            UpdateLayoutWebSocket(room);
+            UpdateLayoutWebSocket(new Room[] {room});
             return NoContent();
         }
 
@@ -170,32 +194,33 @@ namespace Ferrous.Controllers
 
             await _context.SaveChangesAsync();
 
-            UpdateLayoutWebSocket(room);
+            UpdateLayoutWebSocket(new Room[] {room});
 
             roomAllocation.Room = null;
             return Ok(roomAllocation);
         }
 
-        // GET: api/Rooms/mark/CLNo
-        [HttpGet("{id}/mark")]
+        // POST: api/Rooms/mark
+        [HttpPost("mark")]
         [LinkRelation(LinkRelationList.overridden)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_MARK)]
-        public async Task<IActionResult> mark([FromRoute] int id, [FromQuery] int status)
+        public async Task<ActionResult> MarkRooms([FromBody] List<int> ids, [FromQuery] int status)
         {
-            Room room = await _context.Room.Where(m => m.RoomId == id)
+            var rooms = await _context.Room.Where(m => ids.Contains(m.RoomId))
                                     .Include(m => m.RoomAllocation)
-                                    .SingleOrDefaultAsync();
-            if (room == null) return BadRequest();
+                                    .ToListAsync();
+            if (rooms == null) return BadRequest();
 
-            if (room.RoomAllocation.Count > 0) return BadRequest("Not Empty");
-            room.Status = (short)status;
-
-            _context.Update(room);
+            foreach(var room in rooms) {
+                if (room.RoomAllocation.Count > 0) continue;
+                room.Status = (short)status;
+                _context.Update(room);
+            }
 
             await _context.SaveChangesAsync();
 
-            UpdateLayoutWebSocket(room);
-            return Ok(room);
+            UpdateLayoutWebSocket(rooms.ToArray());
+            return NoContent();
         }
 
         [HttpGet("CreateRoomRecords/{location}/{start}/{end}/{capacity}")]
