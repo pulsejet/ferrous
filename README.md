@@ -20,16 +20,20 @@ An entity attending the event. Has a unique Mood Indigo number (MINo).
 #### Room
 A unique room, which may be allocated to multiple people.
 
+The structure and implementation is not designed for scaling, since the user base is highly limited (typically <20 simultaneous users), but for accuracy and realiability.
+
 ## Features
-1. Location maps for easy allocation.
-2. Rooms may be allocated to multiple contingents partially, in case this is necessary.
-3. Live maps for survey by organizers.
-4. Permissions and elevation levels, for a heirarcy in organizers.
-5. Chunked arrivals, where contingents may arrive in chunks of few people.
-6. Export data to spreadsheet
+* Location maps for easy allocation.
+* Rooms may be allocated to multiple contingents partially, in case this is necessary.
+* Live maps for survey by organizers.
+* Permissions and elevation levels, for a heirarcy in organizers.
+* Chunked arrivals, where contingents may arrive in chunks of few people.
+* Export data to spreadsheet
 
 ## Usage
-The project can be built directly with the dotnet sdk used by `Ferrous.csproj`. It is recommended to use the client supplied, since development of the server takes place in close co-ordination with it. During development the client needs to be built and served separately, and traffic not relevant for the server is passed to `localhost:4200`, where the client should be served. For production, `dotnet publish` will automatically run the build script for `ClientApp` and the client will be bundled with the application, which can then be deployed directly, preferably behind an SSL reverse proxy.
+Build the project using the latest (preview) dotnet sdk. It is recommended to use the client supplied, since development of the server takes place in close co-ordination with it. During development the client needs to be built and served separately, and traffic not relevant for the server is passed to `localhost:4200`, where the client should be served. For production, `dotnet publish` will automatically run the build script for `ClientApp` and the client will be bundled with the application, which can then be deployed directly, preferably behind an SSL reverse proxy.
+
+Note: Make sure you run `git submodule update --init --recursive` so that all submodules are cloned.
 
 ## Contributing
 Pull requests and issues are welcome, as long as a few constraints are followed:
