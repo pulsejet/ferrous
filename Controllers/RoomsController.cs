@@ -186,6 +186,7 @@ namespace Ferrous.Controllers
 
                 if (!empty || room.Status != 1) continue;
 
+                if (!partial) NewRoomA.Partial = -1;
                 NewRoomA.ContingentLeaderNo = clno;
                 NewRoomA.ContingentArrivalNo = cano;
 
