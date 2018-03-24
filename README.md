@@ -4,6 +4,10 @@ Ferrous is just a Hospitality manager!
 [![CircleCI](https://circleci.com/gh/pulsejet/ferrous.svg?style=shield&circle-token=f96a250457ddb62753a7df5c7c65415a21c2545d)](https://circleci.com/gh/pulsejet/ferrous)
 [![Build Status](https://travis-ci.com/pulsejet/ferrous.svg?token=BsU3eVxjdePqSu3v4M8V&branch=master)](https://travis-ci.com/pulsejet/ferrous)
 
+[![versioneye](https://www.versioneye.com/user/projects/5ab6a94e0fb24f44b0618e81/badge.svg)](https://www.versioneye.com/user/projects/5ab6a94e0fb24f44b0618e81)
+[![license](https://img.shields.io/github/license/pulsejet/ferrous.svg)](https://github.com/pulsejet/ferrous/blob/master/LICENSE)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e04fef2b47524279a6b73642bb758ced)](https://www.codacy.com/app/pulsejet/ferrous?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pulsejet/ferrous&amp;utm_campaign=Badge_Grade)
+
 ## Introduction
 One of the biggest hurdles of managing large events which provide on-site accomodation is to properly distribute the available space with optimization to everyone. Ferrous aims to solve this problem by serving as a single platform to take control of everything from registering for accomodations to helping distribute them to guests.
 
