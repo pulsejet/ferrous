@@ -92,7 +92,7 @@ namespace Ferrous.Misc
                 (typeof(HttpPostAttribute), HTTPVerb.POST),
                 (typeof(HttpPutAttribute), HTTPVerb.PUT),
                 (typeof(HttpDeleteAttribute), HTTPVerb.DELETE)
-            }
+            };
             
             /* Get the HTTP verb from the routing attribute */
             string http_verb = HTTPVerb.GET;
