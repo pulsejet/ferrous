@@ -180,7 +180,7 @@ namespace Ferrous.Controllers
 
                 foreach (var roomA in room.RoomAllocation)
                 {
-                    if (!(roomA.Partial > 0)) empty = false;
+                    if (roomA.Partial <= 0) empty = false;
                     if (!partial) empty = false;
                 }
 
