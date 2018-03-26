@@ -101,7 +101,7 @@ namespace Ferrous.Misc
                 linkHelper.SetOptions(User, typeof(ExportController), Url)
                           .AddLink(nameof(ExportController.GetContingentArrivalBill), new {id = cano}, "bill")
                           .SetOptions(User, typeof(RoomsController), Url)
-                          .AddLink(nameof(RoomsController.AllotRooms), new {clno, cano}, "allot");;
+                          .AddLink(nameof(RoomsController.AllotRooms), new {clno, cano}, "allot");
             }
 
             building.Links = linkHelper.GetLinks();
