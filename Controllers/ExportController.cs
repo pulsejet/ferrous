@@ -275,8 +275,9 @@ namespace Ferrous.Controllers
         /// <param name="ws">ExcelWorksheet to set</param>
         void setColumnHeaders(string[] headers, ExcelWorksheet ws)
         {
-            for (int c = 0; c <= headers.Count() - 1; ++c)
+            for (int c = 0; c <= headers.Count() - 1; ++c) {
                 ws.Cells[1, c + 1].Value = headers[c];
+            }
             ws.Row(1).Style.Font.Bold = true;
         }
 

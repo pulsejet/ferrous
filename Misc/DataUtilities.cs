@@ -72,10 +72,13 @@ namespace Ferrous.Misc
                             }
                             break;
                         }
+
                         building.CapacityFilled += roomA.Partial;
                         building.CapacityEmpty -= roomA.Partial;
-                        if (roomA.ContingentLeaderNo == clno)
+
+                        if (roomA.ContingentLeaderNo == clno) {
                             building.AlreadyAllocated += roomA.Partial;
+                        }
                     }
                 }
                 building.Room = null;

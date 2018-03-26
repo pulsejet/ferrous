@@ -211,7 +211,7 @@ namespace Ferrous.Controllers
             var rooms = await _context.Room.Where(m => ids.Contains(m.RoomId))
                                     .Include(m => m.RoomAllocation)
                                     .ToListAsync();
-            if (rooms == null) return BadRequest();
+            if (rooms == null) { return BadRequest(); }
 
             foreach(var room in rooms) {
                 if (room.RoomAllocation.Count > 0) { continue; }
