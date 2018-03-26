@@ -83,7 +83,7 @@ namespace Ferrous.Misc
             /* Get rel and auth attributes */
             var relAtt = (LinkRelation)controllerMethod.GetCustomAttribute(typeof(LinkRelation));
             if (relAtt == null && overrideWithRel == String.Empty) {
-                throw new Exception("HTTPrel attribute not set for creating link");
+                throw new ArgumentNullException("HTTPrel attribute not set for creating link");
             }   
 
             /* List of verb attributes */
