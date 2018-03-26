@@ -66,7 +66,7 @@ namespace Ferrous.Controllers
             using (ExcelPackage package = new ExcelPackage())
             {
                 /* Fill up the package */
-                await FillContingentsWorksheet(package.Workbook.Worksheets.Add("Contingents"));
+                await FillContingentsWorksheet(package.Workbook.Worksheets.Add("Contingents")).ConfigureAwait(false);
                 FillPeopleWorksheet(package.Workbook.Worksheets.Add("People"));
                 FillRoomsWorksheet(package.Workbook.Worksheets.Add("Rooms"));
 

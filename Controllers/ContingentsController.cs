@@ -49,7 +49,7 @@ namespace Ferrous.Controllers
         [HttpGet("find"), LinkRelation(LinkRelationList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_GET_DETAILS)]
         public async Task<IActionResult> FindContingent([FromQuery] string id) {
-            return await GetContingent(id);
+            return await GetContingent(id).ConfigureAwait(false);
         }
 
         // GET: api/Contingents/5
