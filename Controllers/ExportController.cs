@@ -89,9 +89,10 @@ namespace Ferrous.Controllers
             int[] widths = { 11, 11, 11, 11, 11, 25 };
             setColumnWidths(widths, contingentsWorksheet);
 
-            for (int k = 2; k <= 5; k++)
+            for (int k = 2; k <= 5; k++) {
                 contingentsWorksheet.Column(k).Style.HorizontalAlignment =
                     ExcelHorizontalAlignment.Right;
+            }
 
             string[] headers = {
                         "CL No",
@@ -227,13 +228,14 @@ namespace Ferrous.Controllers
                     else if (room.Status == 1)
                     {
                         roomsWorksheet.Row(i).Style.Font.Color.SetColor(Color.White);
-                        if (Partial == 0)
+                        if (Partial == 0) {
                             roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
-                        else if (Partial < 0)
+                        } else if (Partial < 0) {
                             roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
-                        else if (Partial > 0)
+                        } else if (Partial > 0) {
                             roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(
                                 room.Capacity - Partial > 0 ? Color.Blue : Color.DarkRed);
+                        }
                     }
                 }
 
@@ -258,8 +260,9 @@ namespace Ferrous.Controllers
         /// <param name="ws">ExcelWorksheet to set</param>
         void setColumnWidths(int[] widths, ExcelWorksheet ws)
         {
-            for (int c = 0; c <= widths.Count() - 1; ++c)
+            for (int c = 0; c <= widths.Count() - 1; ++c) {
                 ws.Column(c + 1).Width = widths[c];
+            }
         }
 
         /// <summary>
@@ -282,8 +285,9 @@ namespace Ferrous.Controllers
         /// <param name="ws">ExcelWorksheet to set</param>
         void setRow(object[] cells, int rowno, ExcelWorksheet ws)
         {
-            for (int c = 0; c <= cells.Count() - 1; ++c)
+            for (int c = 0; c <= cells.Count() - 1; ++c) {
                 ws.Cells[rowno, c + 1].Value = cells[c];
+            }
         }
     }
 }

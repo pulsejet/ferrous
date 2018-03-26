@@ -69,7 +69,9 @@ namespace Ferrous.Controllers
                                             .Include(m => m.ContingentArrival)
                                             .SingleOrDefaultAsync();
 
-            if (contingent == null) return NotFound();
+            if (contingent == null) {
+                return NotFound();
+            }
 
             new LinksMaker(User, Url).FillContingentsLinks(contingent);
 
