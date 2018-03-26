@@ -171,7 +171,7 @@ namespace Ferrous.Controllers
             Room[] rooms = await _context.Room.Where(m => ids.Contains(m.RoomId))
                                     .Include(m => m.RoomAllocation)
                                     .ToArrayAsync();
-            if (rooms == null) return BadRequest();
+            if (rooms == null) { return BadRequest(); }
 
             foreach (var room in rooms) {
                 var NewRoomA = roomAllocations.Where(ra => ra.RoomId == room.RoomId).SingleOrDefault();
@@ -180,8 +180,8 @@ namespace Ferrous.Controllers
 
                 foreach (var roomA in room.RoomAllocation)
                 {
-                    if (roomA.Partial <= 0) empty = false;
-                    if (!partial) empty = false;
+                    if (roomA.Partial <= 0) { empty = false; }
+                    if (!partial) { empty = false; }
                 }
 
                 if (!empty || room.Status != 1) { continue; }
@@ -214,7 +214,7 @@ namespace Ferrous.Controllers
             if (rooms == null) return BadRequest();
 
             foreach(var room in rooms) {
-                if (room.RoomAllocation.Count > 0) continue;
+                if (room.RoomAllocation.Count > 0) { continue; }
                 room.Status = (short)status;
                 _context.Update(room);
             }

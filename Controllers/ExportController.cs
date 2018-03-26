@@ -224,8 +224,11 @@ namespace Ferrous.Controllers
                 {
                     roomsWorksheet.Row(i).Style.Fill.PatternType = ExcelFillStyle.Solid;
 
-                    if (room.Status == 4) roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.LightPink);
-                    else if (room.Status == 1)
+                    if (room.Status == 4)
+                    {
+                        roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.LightPink);
+                    }
+                    else if (room.Status == 1) 
                     {
                         roomsWorksheet.Row(i).Style.Font.Color.SetColor(Color.White);
                         if (Partial == 0) {

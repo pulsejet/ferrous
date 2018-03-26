@@ -62,7 +62,7 @@ namespace Ferrous.Controllers
         [HttpGet("getuser")]
         public IActionResult GetUser()
         {
-            if (!User.Identity.IsAuthenticated) return Unauthorized();
+            if (!User.Identity.IsAuthenticated) { return Unauthorized(); }
 
             List<FerrousIdentity> identities = LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE);
             FerrousIdentity id = identities.FirstOrDefault(m => m.username.ToLower() == User.Identity.Name.ToLower());

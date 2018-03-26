@@ -25,7 +25,7 @@ namespace Ferrous.Controllers
 
         public void UpdateLayoutWebSocket(Room[] rooms)
         {
-            if (rooms.Length == 0) return;
+            if (rooms.Length == 0) { return; }
             _hubContext.Clients.Group(rooms[0].Location).SendAsync("updated", rooms.Select(r => r.RoomId).ToArray());
         }
 

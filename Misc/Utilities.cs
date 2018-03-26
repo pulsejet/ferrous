@@ -29,15 +29,15 @@ namespace Ferrous.Misc
 
         public static int dbCInt(Object o)
         {
-            if (o is null) return 0;
-            if (int.TryParse(o.ToString(), out var test)) return test;
+            if (o is null) { return 0; }
+            if (int.TryParse(o.ToString(), out var test)) { return test; }
             return 0;
         }
 
         public static object IntIfNumber(Object o)
         {
-            if (o is null) return null;
-            if (int.TryParse(o.ToString(), out int test)) return test;
+            if (o is null) { return null; }
+            if (int.TryParse(o.ToString(), out int test)) { return test; }
             return o;
         }
 

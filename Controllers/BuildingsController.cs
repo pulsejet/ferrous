@@ -29,8 +29,9 @@ namespace Ferrous.Controllers
         public async Task<EnumContainer> GetBuildingsExtended([FromRoute] string id, [FromRoute] int cano)
         {
             var buildings = await DataUtilities.GetExtendedBuildings(_context, id);
-            foreach (var building in buildings)
+            foreach (var building in buildings) {
                 (new LinksMaker(User,Url)).FillBuildingsLinks(building, id, cano);
+            }
 
             return new EnumContainer(
                 buildings,
