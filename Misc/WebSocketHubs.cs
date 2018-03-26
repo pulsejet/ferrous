@@ -10,7 +10,6 @@ namespace Ferrous.WebSocketHubs
         public async Task JoinBuilding(string building)
         {
             await Groups.AddAsync(Context.ConnectionId, building);
-            return;
         }
     }
 }
