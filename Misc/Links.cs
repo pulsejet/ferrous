@@ -13,7 +13,7 @@ namespace Ferrous.Misc
 {
     public class LinkRelation : Attribute
     {
-        public string rel;
+        public string rel { get; set; }
         public LinkRelation(LinkRelationList rel)
         {
             this.rel = rel.ToString();
@@ -169,17 +169,17 @@ namespace Ferrous.Misc
             method = _method;
             href = _href;
         }
-        public string rel;
-        public string method;
-        public string href;
+        public string rel { get; set; }
+        public string method { get; set; }
+        public string href { get; set; }
     }
 
     /// <summary>
     /// Container for sending links with top level data
     /// </summary>
     public class EnumContainer {
-        public List<Link> Links;
-        public object Data;
+        public List<Link> Links { get; set; }
+        public object Data { get; set; }
 
         public EnumContainer(object data, List<Link>links)
         {
