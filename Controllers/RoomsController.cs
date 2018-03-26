@@ -112,7 +112,7 @@ namespace Ferrous.Controllers
                 }
             }
 
-            UpdateLayoutWebSocket(new Room[] {room});
+            UpdateLayoutWebSocket(new [] {room});
             return NoContent();
         }
 
