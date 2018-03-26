@@ -68,14 +68,17 @@ namespace Ferrous.Misc
                 .AddLink(nameof(ContingentArrivalsController.PostContingentArrival), null, "create_contingent_arrival")
                 .GetLinks();
 
-            foreach (var ca in contingent.ContingentArrival)
+            foreach (var ca in contingent.ContingentArrival) {
                 FillContingentArrivalLinks(ca);
+            }
 
-            foreach (var ra in contingent.RoomAllocation)
+            foreach (var ra in contingent.RoomAllocation) {
                 FillRoomAllocationLinks(ra);
+            }
 
-            foreach (var person in contingent.Person)
+            foreach (var person in contingent.Person) {
                 FillPersonLinks(person);
+            }
         }
 
         /// <summary>
@@ -106,9 +109,11 @@ namespace Ferrous.Misc
 
             building.Links = linkHelper.GetLinks();
 
-            if (building.Room != null)
-                foreach (var room in building.Room)
+            if (building.Room != null) {
+                foreach (var room in building.Room) {
                     FillRoomLinks(room, clno, cano);
+                }
+            }
         }
 
         /// <summary>
@@ -166,8 +171,9 @@ namespace Ferrous.Misc
 
             room.Links = linkHelper.GetLinks();
 
-            foreach (var roomA in room.RoomAllocation)
+            foreach (var roomA in room.RoomAllocation) {
                 FillRoomAllocationLinks(roomA);
+            }
         }
 
         /// <summary>

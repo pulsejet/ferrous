@@ -32,10 +32,10 @@ namespace Ferrous.Misc
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (!context.HttpContext.User.Identity.IsAuthenticated)
+            if (!context.HttpContext.User.Identity.IsAuthenticated) {
                 context.Result = new UnauthorizedResult();
 
-            else if (!hasPrivilege(
+            } else if (!hasPrivilege(
                 context.HttpContext.User.Identity.Name,
                 _elevationLevel,
                 _privilege))
@@ -45,17 +45,21 @@ namespace Ferrous.Misc
 
         public static bool hasPrivilege(string username, ElevationLevels minElevation, PrivilegeList priv = PrivilegeList.NONE)
         {
-            if (staticIdentities == null)
+            if (staticIdentities == null) {
                 staticIdentities = Utilities.LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE).ToImmutableList();
+            }
 
             if (username == String.Empty) return false;
 
             FerrousIdentity id = staticIdentities.FirstOrDefault(m => m.username == username);
             if (id == null) return false;
 
-            if (id.elevation <= (int)minElevation) return true;
+            if (id.elevation <= (int)minElevation) { return true; }
+
             if (priv != PrivilegeList.NONE &&
-                id.privileges.Contains((int)priv)) return true;
+                id.privileges.Contains((int)priv)) {
+                    return true;
+            }
 
             return false;
         }

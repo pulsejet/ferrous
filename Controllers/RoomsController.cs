@@ -28,7 +28,7 @@ namespace Ferrous.Controllers
 
         public void UpdateLayoutWebSocket(Room[] rooms)
         {
-            if (rooms.Length == 0) return;
+            if (rooms.Length == 0) { return; }
             _hubContext.Clients.Group(rooms[0].Location).SendAsync("updated", rooms.Select(r => r.RoomId).ToArray());
         }
 
@@ -184,9 +184,10 @@ namespace Ferrous.Controllers
                     if (!partial) empty = false;
                 }
 
-                if (!empty || room.Status != 1) continue;
+                if (!empty || room.Status != 1) { continue; }
 
-                if (!partial) NewRoomA.Partial = -1;
+                if (!partial) { NewRoomA.Partial = -1; }
+
                 NewRoomA.ContingentLeaderNo = clno;
                 NewRoomA.ContingentArrivalNo = cano;
 

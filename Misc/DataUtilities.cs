@@ -21,9 +21,9 @@ namespace Ferrous.Misc
                     OnSpotM = 0, OnSpotF = 0;
 
                 Parallel.ForEach(contingent.Person, person => {
-                    if (person == null) return;
-                    if (person.Sex == "M") RegMale += 1;
-                    else if (person.Sex == "F") RegFemale += 1;
+                    if (person == null) { return; }
+                    if (person.Sex == "M") { RegMale += 1; }
+                    else if (person.Sex == "F") { RegFemale += 1; }
                 });
 
                 Parallel.ForEach(contingent.ContingentArrival, ca =>
@@ -56,9 +56,11 @@ namespace Ferrous.Misc
                 building.CapacityEmpty = 0;
                 foreach (var room in building.Room)
                 {
-                    if (room.Status == 4) building.CapacityNotReady += room.Capacity;
-                    if (room.Status != 1) continue;
+                    if (room.Status == 4) { building.CapacityNotReady += room.Capacity; }
+                    if (room.Status != 1) { continue; }
+
                     building.CapacityEmpty += room.Capacity;
+
                     foreach (var roomA in room.RoomAllocation)
                     {
                         if (roomA.Partial <= 0)
