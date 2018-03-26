@@ -231,10 +231,9 @@ namespace Ferrous.Controllers
                             roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
                         else if (Partial < 0)
                             roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
-                        else if (Partial > 0 && room.Capacity - Partial > 0)
-                            roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.Blue);
-                        else if (Partial > 0 && room.Capacity - Partial <= 0)
-                            roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
+                        else if (Partial > 0)
+                            roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(
+                                room.Capacity - Partial > 0 ? Color.Blue : Color.DarkRed);
                     }
                 }
 
