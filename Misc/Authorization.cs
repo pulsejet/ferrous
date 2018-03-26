@@ -13,14 +13,22 @@ namespace Ferrous.Misc
 
         public static readonly string IDENTITIES_JSON_FILE = "identities.json";
 
-        public readonly ElevationLevels _elevationLevel;
-        public readonly PrivilegeList _privilege;
+        private readonly ElevationLevels _elevationLevel;
+        private readonly PrivilegeList _privilege;
 
         public Authorization(ElevationLevels elevationLevel, PrivilegeList privilege )
         {
             _elevationLevel = elevationLevel;
             _privilege = privilege;
         }
+
+        public ElevationLevels elevationLevel {
+            get { return _elevationLevel; }
+        }
+
+        public PrivilegeList privilege {
+            get { return _privilege; }
+        } 
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {

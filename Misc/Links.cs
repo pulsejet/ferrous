@@ -76,7 +76,7 @@ namespace Ferrous.Misc
             /* Check privileges */
             Authorization AuthAttr = (Authorization)controllerMethod.GetCustomAttribute(typeof(Authorization));
             if (AuthAttr != null && 
-                !hasPrivilege(user.Identity.Name, AuthAttr._elevationLevel, AuthAttr._privilege)) {
+                !hasPrivilege(user.Identity.Name, AuthAttr.elevationLevel, AuthAttr.privilege)) {
                 return this;
             }
 
