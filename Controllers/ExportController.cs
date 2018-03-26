@@ -11,6 +11,7 @@ using static Ferrous.Misc.Utilities;
 using static Ferrous.Misc.Authorization;
 using Ferrous.Misc;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Ferrous.Controllers
 {
@@ -205,17 +206,17 @@ namespace Ferrous.Controllers
             foreach (var room in rooms)
             {
                 int Partial = 0;
-                string roomAlloc = "";
+                StringBuilder roomAlloc = new StringBuilder();
                 foreach (var roomA in room.RoomAllocation)
                 {
                     if (roomA.Partial > 0)
                     {
-                        roomAlloc += roomA.ContingentLeaderNo + " - " + roomA.Partial + "; ";
+                        roomAlloc.Append(roomA.ContingentLeaderNo + " - " + roomA.Partial + "; ");
                         Partial += roomA.Partial;
                     }
                     else
                     {
-                        roomAlloc += roomA.ContingentLeaderNo;
+                        roomAlloc.Append(roomA.ContingentLeaderNo);
                         Partial = -1;
                     }
                 }
