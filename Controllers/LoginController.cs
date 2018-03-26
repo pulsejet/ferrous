@@ -20,7 +20,7 @@ namespace Ferrous.Controllers
             Response.Headers.Add("Content-Type", "application/octet-stream");
 
             List<FerrousIdentity> identities = LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE);
-            FerrousIdentity id = identities.FirstOrDefault(m => m.username.ToLower() == username.ToLower());
+            FerrousIdentity id = identities.FirstOrDefault(m => m.username.ToLowerInvariant() == username.ToLowerInvariant());
 
             if (id!=null && id.password == Misc.Utilities.SHA.GenerateSHA256String(id.salt + password))
             {
