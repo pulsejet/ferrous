@@ -9,9 +9,9 @@ namespace Ferrous.Misc
 {
     public static class Utilities
     {
-        public const string HTML_MIME_TYPE = "text/html";
-        public const string ROOT_URL = "/";
-        public const string LOGIN_URL = "/account/login.html";
+        public static readonly string HTML_MIME_TYPE = "text/html";
+        public static readonly string ROOT_URL = "/";
+        public static readonly string LOGIN_URL = "/account/login.html";
 
         public static string InlineFile(string path)
         {

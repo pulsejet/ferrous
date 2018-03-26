@@ -11,7 +11,7 @@ namespace Ferrous.Misc
     {
         private static ImmutableList<FerrousIdentity> staticIdentities;
 
-        public const string IDENTITIES_JSON_FILE = "identities.json";
+        public static readonly string IDENTITIES_JSON_FILE = "identities.json";
 
         public readonly ElevationLevels _elevationLevel;
         public readonly PrivilegeList _privilege;
