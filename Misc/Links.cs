@@ -30,10 +30,10 @@ namespace Ferrous.Misc
 
     public static class HTTPVerb
     {
-        public static string GET = "GET";
-        public static string POST = "POST";
-        public static string PUT = "PUT";
-        public static string DELETE = "DELETE";
+        public static readonly string GET = "GET";
+        public static readonly string POST = "POST";
+        public static readonly string PUT = "PUT";
+        public static readonly string DELETE = "DELETE";
     }
 
     public class LinkHelper
