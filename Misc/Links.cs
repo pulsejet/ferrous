@@ -105,16 +105,16 @@ namespace Ferrous.Misc
             }
 
             /* Add query parameters */
+            var url_parameters_builder = new System.Text.StringBuilder();
             string url_parameters = String.Empty;
             if (hasQueryParams && controllerMethod.GetParameters().Count() > 0) {
-                url_parameters = "{?";
+                url_parameters_builder.Append("{?");
                 foreach (var param in controllerMethod.GetParameters()){
                    if (param.GetCustomAttribute(typeof(FromQueryAttribute)) != null) {
-                       url_parameters += param.Name + ",";
+                       url_parameters_builder.Append(param.Name + ",");
                    }
                 }
-                url_parameters = url_parameters.TrimEnd(',');
-                url_parameters += "}";
+                url_parameters = url_parameters_builder.ToString().TrimEnd(',') + "}";
             }
 
             /* Add the link */

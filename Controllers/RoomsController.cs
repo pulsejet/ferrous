@@ -8,6 +8,7 @@ using Ferrous.Models;
 using Microsoft.AspNetCore.SignalR;
 using static Ferrous.Misc.Authorization;
 using Ferrous.Misc;
+using System.Text;
 
 namespace Ferrous.Controllers
 {
@@ -230,12 +231,12 @@ namespace Ferrous.Controllers
         [Authorization(ElevationLevels.SuperUser, PrivilegeList.ROOM_CREATE)]
         public IActionResult CreateRoomRecords([FromRoute] string location, [FromRoute] int start, [FromRoute] int end, [FromRoute] int capacity)
         {
-            string str = "";
+            StringBuilder str = new StringBuilder();
             for (int i = start; i<= end; i++)
             {
                 if (_context.Room.Where(m => m.Location == location && m.RoomName == i.ToString()).Count() > 0)
                 {
-                    str += i.ToString() + " ";
+                    str.Append(i.ToString() + " ");
                     continue;
                 }
                 Room room = new Room();
