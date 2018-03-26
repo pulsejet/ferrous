@@ -62,11 +62,11 @@ namespace Ferrous.Misc
 
         public class FerrousIdentity
         {
-            public string username;
-            public string salt;
-            public string password;
-            public int elevation;
-            public ImmutableList<int> privileges;
+            public string username { get; set; }
+            public string salt { get; set; }
+            public string password { get; set; }
+            public int elevation { get; set; }
+            public ImmutableList<int> privileges { get; set; }
         }
 
         public enum PrivilegeList
