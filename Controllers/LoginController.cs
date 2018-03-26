@@ -66,7 +66,8 @@ namespace Ferrous.Controllers
 
             List<FerrousIdentity> identities = LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE);
             FerrousIdentity id = identities.FirstOrDefault(m => m.username.ToLower() == User.Identity.Name.ToLower());
-            id.password = id.salt = null;
+            id.password = null;
+            id.salt = null;
 
             return new JsonResult(id);
         }
