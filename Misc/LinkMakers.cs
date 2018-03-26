@@ -160,7 +160,7 @@ namespace Ferrous.Misc
 
             var linkHelper = new LinkHelper()
                 .SetOptions(User, typeof(RoomsController), Url)
-                .AddLink(nameof(RoomsController.GetRoom), new { id = room.RoomId, clno = clno, cano = cano })
+                .AddLink(nameof(RoomsController.GetRoom), new { id = room.RoomId, clno, cano })
                 .AddLink(nameof(RoomsController.PutRoom), idObject)
                 .AddLink(nameof(RoomsController.DeleteRoom), idObject);
 
