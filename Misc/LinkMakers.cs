@@ -11,8 +11,8 @@ namespace Ferrous.Misc
 {
     public class LinksMaker
     {
-        private ClaimsPrincipal User;
-        private IUrlHelper Url;
+        readonly private ClaimsPrincipal User;
+        readonly private IUrlHelper Url;
 
         public LinksMaker(ClaimsPrincipal User, IUrlHelper Url)
         {
