@@ -6,7 +6,7 @@ using static Ferrous.Misc.Utilities;
 
 namespace Ferrous.Misc
 {
-    public class DataUtilities
+    public static class DataUtilities
     {
         public async static Task<Contingents[]> GetExtendedContingents(ferrousContext _context)
         {

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Ferrous.Misc
 {
-    public class Utilities
+    public static class Utilities
     {
         public const string HTML_MIME_TYPE = "text/html";
         public const string ROOT_URL = "/";
