@@ -35,7 +35,7 @@ namespace Ferrous.Misc
                 context.Result = new StatusCodeResult(403);
         }
 
-        public static bool hasPrivilege(string username, ElevationLevels minElevation, PrivilegeList hasPrivilege = PrivilegeList.NONE)
+        public static bool hasPrivilege(string username, ElevationLevels minElevation, PrivilegeList priv = PrivilegeList.NONE)
         {
             if (staticIdentities == null)
                 staticIdentities = Utilities.LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE).ToImmutableList();
@@ -46,8 +46,8 @@ namespace Ferrous.Misc
             if (id == null) return false;
 
             if (id.elevation <= (int)minElevation) return true;
-            if (hasPrivilege != PrivilegeList.NONE &&
-                id.privileges.Contains((int)hasPrivilege)) return true;
+            if (priv != PrivilegeList.NONE &&
+                id.privileges.Contains((int)priv)) return true;
 
             return false;
         }
