@@ -12,7 +12,7 @@ install:
 - nvm use node
 script:
 - dotnet publish --configuration Release
-- tar -zcvf release.tar.gz ./bin/Release/netcoreapp2.1/publish/
+- cd ./bin/Release/netcoreapp2.1/publish/ && tar -zcvf ../../../../release.tar.gz . && cd -
 deploy:
   provider: releases
   api_key:
