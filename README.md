@@ -1,7 +1,7 @@
 # Ferrous
 Ferrous is just a Hospitality manager!
 
-[![Build Status](https://travis-ci.org/pulsejet/ferrous.svg?token=BsU3eVxjdePqSu3v4M8V&branch=master)](https://travis-ci.com/pulsejet/ferrous)
+[![Build Status](https://travis-ci.org/pulsejet/ferrous.svg?branch=master)](https://travis-ci.org/pulsejet/ferrous)
 
 [![versioneye](https://www.versioneye.com/user/projects/5ab6a94e0fb24f44b0618e81/badge.svg)](https://www.versioneye.com/user/projects/5ab6a94e0fb24f44b0618e81)
 [![license](https://img.shields.io/github/license/pulsejet/ferrous.svg)](https://github.com/pulsejet/ferrous/blob/master/LICENSE)
