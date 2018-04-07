@@ -1,16 +1,18 @@
-sudo: required #is required to use docker service in travis
+language: csharp
+mono: none
+dotnet: 2.1.300
+dist: trusty
 
-language: generic
-
-services:
-  - docker # required, but travis uses older version of docker :(
+cache:
+  directories:
+    - "ClientApp/node_modules"
+    - "~/.local/share/NuGet/Cache"
 
 install:
-  - echo "No installs necessary" # put your normal pre-testing installs here
+  - dotnet restore
+  - nvm install node
+  - nvm use node
+  - npm install --prefix ./ClientApp
 
 script:
-  - echo "No tests for now!" # put your normal testing scripts here
-
-after_success:
-  - docker --version  # document the version travis is using
-  - docker build .
+  - dotnet publish --configuration Release
