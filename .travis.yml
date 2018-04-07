@@ -2,17 +2,23 @@ language: csharp
 mono: none
 dotnet: 2.1.300
 dist: trusty
-
 cache:
   directories:
-    - "ClientApp/node_modules"
-    - "~/.local/share/NuGet/Cache"
-
+  - ClientApp/node_modules
+  - "~/.local/share/NuGet/Cache"
 install:
-  - dotnet restore
-  - nvm install node
-  - nvm use node
-  - npm install --prefix ./ClientApp
-
+- dotnet restore
+- nvm install node
+- nvm use node
 script:
-  - dotnet publish --configuration Release
+- dotnet publish --configuration Release
+- tar -zcvf release.tar.gz ./bin/Release/netcoreapp2.1/publish/
+deploy:
+  provider: releases
+  api_key:
+    secure: 1ugTh4DkTt//wgnFRNOIacya80670n0JMwUUQhk7xYohFU8dNcZCWpzlZ8QwkNPwL4Wl95ip6mkvmTgLXf8RgjVG9udoriewqxdEuhgPGTKDyWtia7ckefNnsm2xQPI4Gudj6Mq+ZOP86WwZgt6qxkz4pGLVq9n6BIBHrYBOlhNuOiTR4JVzkQa8rnmmu41WKllB0KibHH93HnTapk5rs9HlD6uEWfAbgCaMUCgvSWj8w5EaFwHc7WbK5IG1SQtLb60qoCFfCmIiDXgDKiFxWhUz7M57EvXVoM5BRMbN9Xvj9/ZoBXL6ELy6CY5gahOGZ7XqH89MUteXGpwghdFMwiWt5R3YFcCVJn86zppZ93VHUixMyJ6GuYNrmMo3HADjRoH2ivMLkumF/hAMvYFKIOPhU1ATvqonfgF+xtZM7Y3q3HGXYhk2IIGql3pii4kfL20p3wXaMsb8tSayqj4T5uzPFSQVe10VVhob97TVW8Lo+WW8FDKBbBr9NW/UwaMdNE+xaehDVRovTkkl3+1Y0AZ/CB2fQxt7bWHC8Mn3Xjp12eq2G3LQdkTIT0A7WrOGd1SfyWtUrrhco3cAC0yfm0HciZZzVkGrlmD1ZO/HznMrmyy1Uz+WxjcpcWs4ZLuihnd03fKayHB/oBX8ReVK50lcU7HulNQHidZYwjR5gUE=
+  file: release.tar.gz
+  skip_cleanup: true
+  on:
+    repo: pulsejet/ferrous
+    tags: true
