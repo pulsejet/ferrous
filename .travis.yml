@@ -2,18 +2,12 @@ sudo: required #is required to use docker service in travis
 
 language: csharp
 mono: none
-dotnet: 2.1.300-preview1
+dotnet: 2.1.103
 dist: trusty
 
-services:
-  - docker # required, but travis uses older version of docker :(
-
 install:
-  - echo "No installs necessary" # put your normal pre-testing installs here
+  - dotnet restore
 
 script:
-  - echo "No tests for now!" # put your normal testing scripts here
-
-after_success:
-  - docker --version  # document the version travis is using
-  - docker build .
+  - cd ClientApp && npm install && cd ..
+  - dotnet publish --output /app/ --configuration Release
