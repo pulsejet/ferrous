@@ -14,4 +14,4 @@ install:
 
 script:
   - npm install --prefix ./ClientApp
-  - dotnet publish --output /app/ --configuration Release
+  - dotnet publish --configuration Release
