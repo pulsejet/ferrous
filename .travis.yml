@@ -5,9 +5,13 @@ mono: none
 dotnet: 2.1.300
 dist: trusty
 
+cache:
+  directories:
+    - "ClientApp/node_modules"
+
 install:
   - dotnet restore
 
 script:
-  - cd ClientApp && npm install && cd ..
+  - npm install --prefix ./ClientApp
   - dotnet publish --output /app/ --configuration Release
