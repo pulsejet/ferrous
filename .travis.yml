@@ -1,5 +1,3 @@
-sudo: required #is required to use docker service in travis
-
 language: csharp
 mono: none
 dotnet: 2.1.300
