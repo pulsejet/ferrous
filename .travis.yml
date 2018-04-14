@@ -1,14 +1,15 @@
-language: csharp
-mono: none
-dotnet: 2.1.300
+language: generic
 dist: trusty
 cache:
   directories:
   - ClientApp/node_modules
   - "~/.local/share/NuGet/Cache"
 install:
+- wget -O dotnet.tar.gz https://download.microsoft.com/download/3/7/C/37C0D2E3-2056-4F9A-A67C-14DEFBD70F06/dotnet-sdk-2.1.300-preview2-008530-linux-x64.tar.gz
+- mkdir -p $HOME/dotnet && tar zxf dotnet.tar.gz -C $HOME/dotnet
+- export PATH=$PATH:$HOME/dotnet
 - dotnet restore
-- nvm install node
+- nvm install 8.9.4
 - nvm use node
 script:
 - dotnet publish --configuration Release
