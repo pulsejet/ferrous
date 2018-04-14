@@ -14,7 +14,7 @@ namespace Ferrous.Models
         [StringLength(1)]
         public string Sex { get; set; }
 
-        public Contingents ContingentLeaderNoNavigation { get; set; }
+        public Contingent ContingentLeaderNoNavigation { get; set; }
 
         public List<Misc.Link> links;
     }

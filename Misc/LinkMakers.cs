@@ -52,7 +52,7 @@ namespace Ferrous.Misc
         /// </summary>
         /// <param name="contingent">Contingent object</param>
         /// <returns></returns>
-        public void FillContingentsLinks(Contingents contingent)
+        public void FillContingentsLinks(Contingent contingent)
         {
             var idObject = new { id = contingent.ContingentLeaderNo };
 

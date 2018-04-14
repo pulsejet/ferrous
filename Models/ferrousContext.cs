@@ -6,7 +6,7 @@ namespace Ferrous.Models
     {
         public virtual DbSet<Building> Building { get; set; }
         public virtual DbSet<ContingentArrival> ContingentArrival { get; set; }
-        public virtual DbSet<Contingents> Contingents { get; set; }
+        public virtual DbSet<Contingent> Contingents { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<RoomAllocation> RoomAllocation { get; set; }

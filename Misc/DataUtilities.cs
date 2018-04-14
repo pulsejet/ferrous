@@ -8,9 +8,9 @@ namespace Ferrous.Misc
 {
     public static class DataUtilities
     {
-        public async static Task<Contingents[]> GetExtendedContingents(ferrousContext _context)
+        public async static Task<Contingent[]> GetExtendedContingents(ferrousContext _context)
         {
-            Contingents[] cts = await _context.Contingents
+            Contingent[] cts = await _context.Contingents
                                         .Include(m => m.Person)
                                         .Include(m => m.ContingentArrival).ToArrayAsync();
 

@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ferrous.Models
 {
-    public partial class Contingents
+    public partial class Contingent
     {
-        public Contingents()
+        public Contingent()
         {
             ContingentArrival = new HashSet<ContingentArrival>();
             Person = new HashSet<Person>();

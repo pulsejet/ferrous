@@ -8,7 +8,7 @@
         public int AlreadyAllocated;
     }
 
-    public partial class Contingents
+    public partial class Contingent
     {
         public string Male;
         public string Female;

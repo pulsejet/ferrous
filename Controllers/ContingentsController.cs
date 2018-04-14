@@ -62,7 +62,7 @@ namespace Ferrous.Controllers
                 return BadRequest(ModelState);
             }
 
-            Contingents contingent = await _context.Contingents.Where(m => m.ContingentLeaderNo == id)
+            Contingent contingent = await _context.Contingents.Where(m => m.ContingentLeaderNo == id)
                                             .Include(m => m.RoomAllocation)
                                                 .ThenInclude(m => m.Room)
                                             .Include(m => m.Person)
@@ -81,7 +81,7 @@ namespace Ferrous.Controllers
         // PUT: api/Contingents/5
         [HttpPut("{id}"), LinkRelation(LinkRelationList.update)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_PUT)]
-        public async Task<IActionResult> PutContingent([FromRoute] string id, [FromBody] Contingents contingents)
+        public async Task<IActionResult> PutContingent([FromRoute] string id, [FromBody] Contingent contingents)
         {
             if (!ModelState.IsValid)
             {
@@ -117,7 +117,7 @@ namespace Ferrous.Controllers
         // POST: api/Contingents
         [HttpPost, LinkRelation(LinkRelationList.create)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENT_POST)]
-        public async Task<IActionResult> PostContingent([FromBody] Contingents contingents)
+        public async Task<IActionResult> PostContingent([FromBody] Contingent contingents)
         {
             if (!ModelState.IsValid)
             {

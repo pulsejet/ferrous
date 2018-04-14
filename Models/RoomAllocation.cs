@@ -18,7 +18,7 @@ namespace Ferrous.Models
 
         [JsonIgnore]
         public ContingentArrival ContingentArrivalNoNavigation { get; set; }
-        public Contingents ContingentLeaderNoNavigation { get; set; }
+        public Contingent ContingentLeaderNoNavigation { get; set; }
         public Room Room { get; set; }
 
         public List<Misc.Link> Links;

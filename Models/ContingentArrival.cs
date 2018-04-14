@@ -23,7 +23,7 @@ namespace Ferrous.Models
         public int? Male { get; set; }
         public int? MaleOnSpot { get; set; }
 
-        public Contingents ContingentLeaderNoNavigation { get; set; }
+        public Contingent ContingentLeaderNoNavigation { get; set; }
         public ICollection<RoomAllocation> RoomAllocation { get; set; }
 
         public List<Misc.Link> Links;
