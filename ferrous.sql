@@ -7,7 +7,7 @@
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE TABLE "Building" (
         "Location" text NOT NULL,
         "DefaultCapacity" integer NOT NULL,
@@ -19,7 +19,7 @@ END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE TABLE "Contingents" (
         "ContingentLeaderNo" text NOT NULL,
         "Remark" text NULL,
@@ -30,9 +30,9 @@ END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE TABLE "Room" (
-        "RoomId" integer NOT NULL,
+        "RoomId" serial NOT NULL,
         "Capacity" integer NOT NULL,
         "Location" text NULL,
         "LocationExtra" text NULL,
@@ -48,9 +48,9 @@ END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE TABLE "ContingentArrival" (
-        "ContingentArrivalNo" integer NOT NULL,
+        "ContingentArrivalNo" serial NOT NULL,
         "ContingentLeaderNo" text NULL,
         "CreatedOn" timestamp without time zone NOT NULL,
         "Female" integer NULL,
@@ -65,12 +65,14 @@ END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE TABLE "Person" (
         "Mino" text NOT NULL,
         "College" text NULL,
         "ContingentLeaderNo" text NULL,
         "Name" text NULL,
+        "Phone" text NULL,
+        "Email" text NULL,
         "Sex" varchar(1) NULL,
         CONSTRAINT "PK_Person" PRIMARY KEY ("Mino"),
         CONSTRAINT "FK_Person_Contingents_ContingentLeaderNo" FOREIGN KEY ("ContingentLeaderNo") REFERENCES "Contingents" ("ContingentLeaderNo") ON DELETE RESTRICT
@@ -80,9 +82,9 @@ END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE TABLE "RoomAllocation" (
-        "Sno" integer NOT NULL,
+        "Sno" serial NOT NULL,
         "ContingentArrivalNo" integer NULL,
         "ContingentLeaderNo" text NULL,
         "Partial" integer NOT NULL,
@@ -97,107 +99,50 @@ END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE INDEX "IX_ContingentArrival_ContingentLeaderNo" ON "ContingentArrival" ("ContingentLeaderNo");
     END IF;
 END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE INDEX "IX_Person_ContingentLeaderNo" ON "Person" ("ContingentLeaderNo");
     END IF;
 END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE INDEX "IX_Room_Location" ON "Room" ("Location");
     END IF;
 END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE INDEX "IX_RoomAllocation_ContingentArrivalNo" ON "RoomAllocation" ("ContingentArrivalNo");
     END IF;
 END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE INDEX "IX_RoomAllocation_ContingentLeaderNo" ON "RoomAllocation" ("ContingentLeaderNo");
     END IF;
 END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     CREATE INDEX "IX_RoomAllocation_RoomId" ON "RoomAllocation" ("RoomId");
     END IF;
 END $$;
 
 DO $$
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180206191730_Init') THEN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-    VALUES ('20180206191730_Init', '2.1.0-preview2-30571');
-    END IF;
-END $$;
-
-DO $$
-BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414064847_ContingentsRename') THEN
-    ALTER TABLE "RoomAllocation" ALTER COLUMN "Sno" TYPE integer;
-    ALTER TABLE "RoomAllocation" ALTER COLUMN "Sno" SET NOT NULL;
-    ALTER TABLE "RoomAllocation" ALTER COLUMN "Sno" DROP DEFAULT;
-    END IF;
-END $$;
-
-DO $$
-BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414064847_ContingentsRename') THEN
-    ALTER TABLE "Room" ALTER COLUMN "RoomId" TYPE integer;
-    ALTER TABLE "Room" ALTER COLUMN "RoomId" SET NOT NULL;
-    ALTER TABLE "Room" ALTER COLUMN "RoomId" DROP DEFAULT;
-    END IF;
-END $$;
-
-DO $$
-BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414064847_ContingentsRename') THEN
-    ALTER TABLE "ContingentArrival" ALTER COLUMN "ContingentArrivalNo" TYPE integer;
-    ALTER TABLE "ContingentArrival" ALTER COLUMN "ContingentArrivalNo" SET NOT NULL;
-    ALTER TABLE "ContingentArrival" ALTER COLUMN "ContingentArrivalNo" DROP DEFAULT;
-    END IF;
-END $$;
-
-DO $$
-BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414064847_ContingentsRename') THEN
-    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-    VALUES ('20180414064847_ContingentsRename', '2.1.0-preview2-30571');
-    END IF;
-END $$;
-
-DO $$
-BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414065807_ExtendPerson') THEN
-    ALTER TABLE "Person" ADD "Email" text NULL;
-    END IF;
-END $$;
-
-DO $$
-BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414065807_ExtendPerson') THEN
-    ALTER TABLE "Person" ADD "Phone" text NULL;
-    END IF;
-END $$;
-
-DO $$
-BEGIN
-    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414065807_ExtendPerson') THEN
-    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-    VALUES ('20180414065807_ExtendPerson', '2.1.0-preview2-30571');
+    VALUES ('20180414091319_Init', '2.1.0-preview2-30571');
     END IF;
 END $$;

@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ferrous.Migrations
 {
     [DbContext(typeof(ferrousContext))]
-    [Migration("20180414065807_ExtendPerson")]
-    partial class ExtendPerson
+    [Migration("20180414091319_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

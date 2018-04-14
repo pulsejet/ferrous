@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Ferrous.Migrations
 {
@@ -37,7 +38,8 @@ namespace Ferrous.Migrations
                 name: "Room",
                 columns: table => new
                 {
-                    RoomId = table.Column<int>(nullable: false),
+                    RoomId = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Capacity = table.Column<int>(nullable: false),
                     Location = table.Column<string>(nullable: true),
                     LocationExtra = table.Column<string>(nullable: true),
@@ -61,7 +63,8 @@ namespace Ferrous.Migrations
                 name: "ContingentArrival",
                 columns: table => new
                 {
-                    ContingentArrivalNo = table.Column<int>(nullable: false),
+                    ContingentArrivalNo = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     ContingentLeaderNo = table.Column<string>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     Female = table.Column<int>(nullable: true),
@@ -88,6 +91,8 @@ namespace Ferrous.Migrations
                     College = table.Column<string>(nullable: true),
                     ContingentLeaderNo = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
                     Sex = table.Column<string>(maxLength: 1, nullable: true)
                 },
                 constraints: table =>
@@ -105,7 +110,8 @@ namespace Ferrous.Migrations
                 name: "RoomAllocation",
                 columns: table => new
                 {
-                    Sno = table.Column<int>(nullable: false),
+                    Sno = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     ContingentArrivalNo = table.Column<int>(nullable: true),
                     ContingentLeaderNo = table.Column<string>(nullable: true),
                     Partial = table.Column<int>(nullable: false),
