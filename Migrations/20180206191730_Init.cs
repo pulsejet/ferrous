@@ -37,8 +37,7 @@ namespace Ferrous.Migrations
                 name: "Room",
                 columns: table => new
                 {
-                    RoomId = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    RoomId = table.Column<int>(nullable: false),
                     Capacity = table.Column<int>(nullable: false),
                     Location = table.Column<string>(nullable: true),
                     LocationExtra = table.Column<string>(nullable: true),
@@ -62,8 +61,7 @@ namespace Ferrous.Migrations
                 name: "ContingentArrival",
                 columns: table => new
                 {
-                    ContingentArrivalNo = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    ContingentArrivalNo = table.Column<int>(nullable: false),
                     ContingentLeaderNo = table.Column<string>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     Female = table.Column<int>(nullable: true),
@@ -107,8 +105,7 @@ namespace Ferrous.Migrations
                 name: "RoomAllocation",
                 columns: table => new
                 {
-                    Sno = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Sno = table.Column<int>(nullable: false),
                     ContingentArrivalNo = table.Column<int>(nullable: true),
                     ContingentLeaderNo = table.Column<string>(nullable: true),
                     Partial = table.Column<int>(nullable: false),
