@@ -11,9 +11,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ferrous.Migrations
 {
     [DbContext(typeof(ferrousContext))]
-    partial class ferrousContextModelSnapshot : ModelSnapshot
+    [Migration("20180414065807_ExtendPerson")]
+    partial class ExtendPerson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

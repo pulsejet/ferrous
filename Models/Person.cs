@@ -10,6 +10,10 @@ namespace Ferrous.Models
         public string College { get; set; }
         public string ContingentLeaderNo { get; set; }
         public string Name { get; set; }
+        public string Phone { get; set; }
+
+        [EmailAddress]
+        public string Email { get; set; }
 
         [StringLength(1)]
         public string Sex { get; set; }
