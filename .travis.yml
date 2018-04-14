@@ -9,7 +9,7 @@ install:
 - mkdir -p $HOME/dotnet && tar zxf dotnet.tar.gz -C $HOME/dotnet
 - export PATH=$PATH:$HOME/dotnet
 - dotnet restore
-- nvm install node
+- nvm install 8.9.4
 - nvm use node
 script:
 - dotnet publish --configuration Release
