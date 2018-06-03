@@ -75,9 +75,9 @@ namespace Ferrous.Controllers
             return Ok(contingentArrival);
         }
 
-        [HttpGet("desk1/approve/{cano}"), LinkRelation(LinkRelationList.overridden)]
+        [HttpPut("desk1/approve/{cano}"), LinkRelation(LinkRelationList.overridden)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_PUT)]
-        public async Task<IActionResult> ApproveContingentArrival([FromRoute] int cano)
+        public async Task<IActionResult> ApproveContingentArrival([FromRoute] int cano, [FromBody] ContingentArrival contingentArrivalPut)
         {
             var contingentArrival = await _context.ContingentArrival
                                                 .Include(m => m.CAPeople)
@@ -86,6 +86,10 @@ namespace Ferrous.Controllers
             {
                 return NotFound();
             }
+
+            /* Set M/F count from posted data */
+            contingentArrival.Male = contingentArrivalPut.Male;
+            contingentArrival.Female = contingentArrivalPut.Female;
 
             /* Mark people as done with */
             foreach (CAPerson caPerson in contingentArrival.CAPeople) {

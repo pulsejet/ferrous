@@ -23,11 +23,13 @@ namespace Ferrous.Controllers
         [HttpPost("form1")]
         public async Task<IActionResult> PostForm1([FromBody] ExtContingentArrival extContingentArrival) {
 
+            /* Check if contingent exists */
             var contingent = await _context.Contingents.SingleOrDefaultAsync(m => m.ContingentLeaderNo == extContingentArrival.ContingentLeaderNo);
             if (contingent == null) {
                 return BadRequest(new {message = "Not a contingent leader - " + extContingentArrival.ContingentLeaderNo});
             }
 
+            /* Add contingent arrival */
             var contingentArrival = new ContingentArrival();
             contingentArrival.CreatedOn = DateTime.UtcNow.AddHours(5).AddMinutes(30);
             contingentArrival.Male = extContingentArrival.Male;
@@ -36,6 +38,7 @@ namespace Ferrous.Controllers
             _context.ContingentArrival.Add(contingentArrival);
             await _context.SaveChangesAsync();
 
+            /* Make CAPerson entries */
             foreach (string mino in extContingentArrival.Minos) {
                 var caPerson = new CAPerson();
                 caPerson.Mino = mino;
@@ -50,6 +53,7 @@ namespace Ferrous.Controllers
 
         public class ExtContingentArrival {
             public string ContingentLeaderNo;
+            public string FillerMINo;
             public int Male;
             public int Female;
             public string[] Minos;
