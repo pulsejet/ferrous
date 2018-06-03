@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html ng-app="ferrousExt">
+<head>
+    <title>Mood Indigo Accomodation</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.10/angular.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div style="width: 70%; margin: 0 auto; padding: 30px;">
+        <h1> Mood Indigo Accomodation</h1>
+
+        <div ng-show="!nextstep">
+            <div class="form-group">
+                <label for="clno">Contingent Leader No.</label>
+                <input type="text" class="form-control" id="clno" ng-model="clno" ng-init="clno = 'MI-'">
+            </div>
+            <div class="form-group">
+                <label for="mino">Your Mood Indigo Registration No.</label>
+                <input type="text" class="form-control" id="mino" ng-model="mino" ng-init="mino = 'MI-'">
+            </div>
+            <div class="form-group">
+                <label for="male">People with you (Male)</label>
+                <input type="number" class="form-control" id="male" ng-model="male" ng-init="male = 0">
+            </div>
+            <div class="form-group">
+                <label for="female">People with you (Female)</label>
+                <input type="number" class="form-control" id="female" ng-model="female" ng-init="female = 0">
+            </div>
+
+            <button class="btn btn-primary"
+                    ng-click="nextstep = true">
+                Proceed
+            </button>
+        </div>
+
+        <div ng-controller="steptwo"
+            ng-if="nextstep">
+            <div ng-repeat="n in [].constructor(male + female) track by $index">
+                <div class="form-group">
+                    <label for="mi">Registration Number</label>
+                    <input type="text" class="form-control" id="mi" ng-model="minos[$index]" ng-init="minos[$index] = 'MI-'">
+                </div>
+            </div>
+            <button class="btn btn-danger"
+                    ng-click="submit()">
+                Submit
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        var app = angular.module('ferrousExt', []);
+        app.controller('steptwo', function($scope, $http) {
+            $scope.minos = []
+
+            $scope.submit = function() {
+                data = {
+                    "contingentLeaderNo": clno.value,
+                    "mino": mino.value,
+                    "male": male.value,
+                    "female": female.value,
+                    "minos": $scope.minos
+                }
+
+                $http.post("/api/ext/form1", data)
+                    .then(function(response) {
+                    alert("Your PIN is " + response.data.contingentArrivalNo);
+                }).catch( function(reason) {
+                    alert(reason.data);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
