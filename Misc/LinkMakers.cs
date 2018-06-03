@@ -24,7 +24,7 @@ namespace Ferrous.Misc
         /// Generate the API Spec
         /// </summary>
         /// <returns>List of links defined in API_SPEC</returns>
-        public List<Link> API_SPEC() => 
+        public List<Link> API_SPEC() =>
             new LinkHelper()
                 .SetOptions(User, typeof(ContingentsController), Url)
                 .AddLink(nameof(ContingentsController.GetContingents), null, "contingents")
@@ -40,6 +40,9 @@ namespace Ferrous.Misc
                 .AddLink(nameof(LoginController.login), null, "login", true)
                 .AddLink(nameof(LoginController.Logout), null, "logout")
                 .AddLink(nameof(LoginController.GetUser), null, "getuser")
+
+                .SetOptions(User, typeof(ContingentArrivalsController), Url)
+                .AddLink(nameof(ContingentArrivalsController.GetDesk1), null, "desk1", true)
 
                 /* Add websocket */
                 .AddAbsoluteContentLink(WebSocketHubs.BuildingUpdateHub.BuildingWebsocketUrl, "building_websocket")
@@ -125,10 +128,13 @@ namespace Ferrous.Misc
         {
             var idObject = new { id = contingentArrival.ContingentArrivalNo };
             var idObjectBuilding = new { id = contingentArrival.ContingentLeaderNo, cano = contingentArrival.ContingentArrivalNo };
+            var desk1obj = new {cano = contingentArrival.ContingentArrivalNo};
             contingentArrival.Links = new LinkHelper()
                 .SetOptions(User, typeof(ContingentArrivalsController), Url)
                 .AddLink(nameof(ContingentArrivalsController.PutContingentArrival), idObject)
                 .AddLink(nameof(ContingentArrivalsController.DeleteContingentArrival), idObject)
+                .AddLink(nameof(ContingentArrivalsController.PostCAPerson), desk1obj, "add_caperson")
+                .AddLink(nameof(ContingentArrivalsController.ApproveContingentArrival), desk1obj, "approve")
 
                 .SetOptions(User, typeof(ExportController), Url)
                 .AddLink(nameof(ExportController.GetContingentArrivalBill), idObject, "bill")
@@ -139,6 +145,13 @@ namespace Ferrous.Misc
                 .SetOptions(User, typeof(BuildingsController), Url)
                 .AddLink(nameof(BuildingsController.GetBuildingsExtended), idObjectBuilding, "buildings")
 
+                .GetLinks();
+        }
+
+        public void FillCAPersonLinks(CAPerson caPerson) {
+            caPerson.Links = new LinkHelper()
+                .SetOptions(User, typeof(ContingentArrivalsController), Url)
+                .AddLink(nameof(ContingentArrivalsController.DeleteCAPerson), new { id = caPerson.Sno })
                 .GetLinks();
         }
 

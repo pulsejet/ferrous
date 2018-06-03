@@ -11,9 +11,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ferrous.Migrations
 {
     [DbContext(typeof(ferrousContext))]
-    partial class ferrousContextModelSnapshot : ModelSnapshot
+    [Migration("20180603080245_casex")]
+    partial class casex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,13 +112,9 @@ namespace Ferrous.Migrations
                     b.Property<string>("Sex")
                         .HasMaxLength(1);
 
-                    b.Property<int?>("allottedCAContingentArrivalNo");
-
                     b.HasKey("Mino");
 
                     b.HasIndex("ContingentLeaderNo");
-
-                    b.HasIndex("allottedCAContingentArrivalNo");
 
                     b.ToTable("Person");
                 });
@@ -191,10 +188,6 @@ namespace Ferrous.Migrations
                     b.HasOne("Ferrous.Models.Contingent", "ContingentLeaderNoNavigation")
                         .WithMany("Person")
                         .HasForeignKey("ContingentLeaderNo");
-
-                    b.HasOne("Ferrous.Models.ContingentArrival", "allottedCA")
-                        .WithMany()
-                        .HasForeignKey("allottedCAContingentArrivalNo");
                 });
 
             modelBuilder.Entity("Ferrous.Models.Room", b =>

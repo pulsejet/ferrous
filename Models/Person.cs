@@ -20,6 +20,8 @@ namespace Ferrous.Models
 
         public Contingent ContingentLeaderNoNavigation { get; set; }
 
+        public ContingentArrival allottedCA { get; set; }
+
         public List<Misc.Link> links;
     }
 }

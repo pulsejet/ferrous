@@ -21,7 +21,7 @@ namespace Ferrous.Controllers
         {
             _context = context;
         }
-    
+
         // DEPRECATED
         // GET: api/ContingentArrivals
         [HttpGet]
@@ -54,8 +54,7 @@ namespace Ferrous.Controllers
 
             return Ok(contingentArrival);
         }
-        
-        // DEPRECATED
+
         // GET: api/ContingentArrivals/5
         [HttpGet("{id}")]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET_DETAILS)]
@@ -74,6 +73,127 @@ namespace Ferrous.Controllers
             }
 
             return Ok(contingentArrival);
+        }
+
+        [HttpGet("desk1/approve/{cano}"), LinkRelation(LinkRelationList.overridden)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_PUT)]
+        public async Task<IActionResult> ApproveContingentArrival([FromRoute] int cano)
+        {
+            var contingentArrival = await _context.ContingentArrival
+                                                .Include(m => m.CAPeople)
+                                                .SingleOrDefaultAsync(m => m.ContingentArrivalNo == cano);
+            if (contingentArrival == null)
+            {
+                return NotFound();
+            }
+
+            /* Mark people as done with */
+            foreach (CAPerson caPerson in contingentArrival.CAPeople) {
+                Person person = await _context.Person.SingleOrDefaultAsync(m => m.Mino == caPerson.Mino);
+                if (person != null) {
+                    person.allottedCA = contingentArrival;
+                }
+            }
+
+            /* Approve! */
+            contingentArrival.Approved = true;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(contingentArrival);
+        }
+
+        // GET: api/ContingentArrivals/desk1?id=5
+        [HttpGet("desk1"), LinkRelation(LinkRelationList.self)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET_DETAILS)]
+        public async Task<IActionResult> GetDesk1([FromQuery] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var contingentArrival = await _context.ContingentArrival
+                                                .Include(m => m.CAPeople)
+                                                .SingleOrDefaultAsync(m => m.ContingentArrivalNo == id);
+
+            List<string> minos = contingentArrival.CAPeople.Select(m => m.Mino).ToList();
+            Person[] people = await _context.Person.Where(m => minos.Contains(m.Mino))
+                                                    .Include(m => m.allottedCA)
+                                                    .ToArrayAsync();
+
+            foreach (CAPerson caPerson in contingentArrival.CAPeople) {
+                FillCAPerson(caPerson, people, contingentArrival.ContingentLeaderNo);
+            }
+
+            await _context.SaveChangesAsync();
+
+            contingentArrival.PeopleFemale = contingentArrival.CAPeople.Count(m => m.Sex.ToUpper() == "F");
+            contingentArrival.PeopleMale = contingentArrival.CAPeople.Count(m => m.Sex.ToUpper() == "M");
+
+            new LinksMaker(User, Url).FillContingentArrivalLinks(contingentArrival);
+
+            if (contingentArrival == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(contingentArrival);
+        }
+
+        public void FillCAPerson(CAPerson caPerson, Person[] people, string clno) {
+            new LinksMaker(User, Url).FillCAPersonLinks(caPerson);
+            var person = people.SingleOrDefault(m => m.Mino == caPerson.Mino);
+            if (person != null) {
+                caPerson.person = person;
+                new LinksMaker(User, Url).FillPersonLinks(person);
+
+                caPerson.Sex = person.Sex;
+                if (person.ContingentLeaderNo != clno) {
+                    // Bad Contingent Leader
+                    caPerson.flags += "BCL";
+                }
+                if (person.allottedCA != null) {
+                    // Person already approved (in another subcontingent etc)
+                    caPerson.flags += "PAA";
+                }
+            } else {
+                // No Registered Person
+                caPerson.flags += "NRP";
+                caPerson.Sex = "?";
+            }
+        }
+
+        // POST: api/ContingentArrivals/desk1/cap?id=5
+        [HttpPost("desk1/cap/{cano}"), LinkRelation(LinkRelationList.overridden)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_PUT)]
+        public async Task<IActionResult> PostCAPerson([FromRoute] int cano, [FromBody] CAPerson caPerson)
+        {
+            caPerson.ContingentArrivalNavigation = await _context.ContingentArrival.SingleOrDefaultAsync(m => m.ContingentArrivalNo == cano);
+            _context.CAPerson.Add(caPerson);
+            await _context.SaveChangesAsync();
+
+            Person[] people = await _context.Person.Where(m => m.Mino == caPerson.Mino).ToArrayAsync();
+            FillCAPerson(caPerson, people, caPerson.ContingentArrivalNavigation.ContingentLeaderNo);
+
+            return CreatedAtAction("PostCAPerson", new { id = caPerson.Sno }, caPerson);
+        }
+
+        // DELETE: api/ContingentArrivals/desk1/5
+        [HttpDelete("desk1/cap/{id}"), LinkRelation(LinkRelationList.delete)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_PUT)]
+        public async Task<IActionResult> DeleteCAPerson([FromRoute] int id)
+        {
+            var caPerson = await _context.CAPerson.SingleOrDefaultAsync(m => m.Sno == id);
+            if (caPerson == null)
+            {
+                return NotFound();
+            }
+
+            _context.CAPerson.Remove(caPerson);
+            await _context.SaveChangesAsync();
+
+            return Ok(caPerson);
         }
 
         // PUT: api/ContingentArrivals/5

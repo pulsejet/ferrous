@@ -10,6 +10,7 @@ namespace Ferrous.Models
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<RoomAllocation> RoomAllocation { get; set; }
+        public virtual DbSet<CAPerson> CAPerson { get; set; }
 
         public ferrousContext(DbContextOptions<ferrousContext> options)
             : base(options)

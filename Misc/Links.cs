@@ -75,7 +75,7 @@ namespace Ferrous.Misc
 
             /* Check privileges */
             Authorization AuthAttr = (Authorization)controllerMethod.GetCustomAttribute(typeof(Authorization));
-            if (AuthAttr != null && 
+            if (AuthAttr != null &&
                 !hasPrivilege(user.Identity.Name, AuthAttr.elevationLevel, AuthAttr.privilege)) {
                 return this;
             }
@@ -84,7 +84,7 @@ namespace Ferrous.Misc
             var relAtt = (LinkRelation)controllerMethod.GetCustomAttribute(typeof(LinkRelation));
             if (relAtt == null && overrideWithRel == String.Empty) {
                 throw new ArgumentNullException("HTTPrel attribute not set for creating link");
-            }   
+            }
 
             /* List of verb attributes */
             var Attributes = new List<(Type, string)> {
@@ -93,7 +93,7 @@ namespace Ferrous.Misc
                 (typeof(HttpPutAttribute), HTTPVerb.PUT),
                 (typeof(HttpDeleteAttribute), HTTPVerb.DELETE)
             };
-            
+
             /* Get the HTTP verb from the routing attribute */
             string http_verb = HTTPVerb.GET;
 
