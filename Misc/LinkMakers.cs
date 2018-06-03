@@ -128,13 +128,16 @@ namespace Ferrous.Misc
         {
             var idObject = new { id = contingentArrival.ContingentArrivalNo };
             var idObjectBuilding = new { id = contingentArrival.ContingentLeaderNo, cano = contingentArrival.ContingentArrivalNo };
-            var desk1obj = new {cano = contingentArrival.ContingentArrivalNo};
+            var desk1obj = new { cano = contingentArrival.ContingentArrivalNo};
             contingentArrival.Links = new LinkHelper()
                 .SetOptions(User, typeof(ContingentArrivalsController), Url)
                 .AddLink(nameof(ContingentArrivalsController.PutContingentArrival), idObject)
                 .AddLink(nameof(ContingentArrivalsController.DeleteContingentArrival), idObject)
                 .AddLink(nameof(ContingentArrivalsController.PostCAPerson), desk1obj, "add_caperson")
                 .AddLink(nameof(ContingentArrivalsController.ApproveContingentArrival), desk1obj, "approve")
+
+                .SetOptions(User, typeof(ContingentsController), Url)
+                .AddLink(nameof(ContingentsController.GetContingent), new { id = contingentArrival.ContingentLeaderNo }, "contingent")
 
                 .SetOptions(User, typeof(ExportController), Url)
                 .AddLink(nameof(ExportController.GetContingentArrivalBill), idObject, "bill")

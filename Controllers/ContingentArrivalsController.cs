@@ -115,6 +115,7 @@ namespace Ferrous.Controllers
 
             var contingentArrival = await _context.ContingentArrival
                                                 .Include(m => m.CAPeople)
+                                                .Include(m => m.RoomAllocation)
                                                 .SingleOrDefaultAsync(m => m.ContingentArrivalNo == id);
 
             List<string> minos = contingentArrival.CAPeople.Select(m => m.Mino).ToList();
