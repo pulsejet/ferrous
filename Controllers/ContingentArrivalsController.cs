@@ -122,6 +122,11 @@ namespace Ferrous.Controllers
                                                 .Include(m => m.RoomAllocation)
                                                 .SingleOrDefaultAsync(m => m.ContingentArrivalNo == id);
 
+            if (contingentArrival == null)
+            {
+                return NotFound();
+            }
+
             List<string> minos = contingentArrival.CAPeople.Select(m => m.Mino).ToList();
             Person[] people = await _context.Person.Where(m => minos.Contains(m.Mino))
                                                     .Include(m => m.allottedCA)
@@ -137,11 +142,6 @@ namespace Ferrous.Controllers
             contingentArrival.PeopleMale = contingentArrival.CAPeople.Count(m => m.Sex.ToUpper() == "M");
 
             new LinksMaker(User, Url).FillContingentArrivalLinks(contingentArrival);
-
-            if (contingentArrival == null)
-            {
-                return NotFound();
-            }
 
             return Ok(contingentArrival);
         }

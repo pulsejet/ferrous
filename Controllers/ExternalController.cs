@@ -52,12 +52,12 @@ namespace Ferrous.Controllers
         }
 
         public class ExtContingentArrival {
-            public string ContingentLeaderNo;
-            public string FillerMINo;
-            public int Male;
-            public int Female;
-            public string[] Minos;
-            public string[] OnSpotMinos;
+            public string ContingentLeaderNo {get; set; }
+            public string FillerMINo {get; set; }
+            public int Male {get; set; }
+            public int Female {get; set; }
+            public string[] Minos {get; set; }
+            public string[] OnSpotMinos {get; set; }
         }
 
     }

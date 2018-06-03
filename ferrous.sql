@@ -146,3 +146,117 @@ BEGIN
     VALUES ('20180414091319_Init', '2.1.0-preview2-30571');
     END IF;
 END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603073712_caperson') THEN
+    ALTER TABLE "ContingentArrival" ADD "Approved" boolean NOT NULL DEFAULT FALSE;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603073712_caperson') THEN
+    ALTER TABLE "ContingentArrival" ADD "Remark" text NULL;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603073712_caperson') THEN
+    CREATE TABLE "CAPerson" (
+        "Sno" serial NOT NULL,
+        "ContingentArrivalNavigationContingentArrivalNo" integer NULL,
+        "Mino" text NULL,
+        CONSTRAINT "PK_CAPerson" PRIMARY KEY ("Sno"),
+        CONSTRAINT "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~" FOREIGN KEY ("ContingentArrivalNavigationContingentArrivalNo") REFERENCES "ContingentArrival" ("ContingentArrivalNo") ON DELETE RESTRICT
+    );
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603073712_caperson') THEN
+    CREATE INDEX "IX_CAPerson_ContingentArrivalNavigationContingentArrivalNo" ON "CAPerson" ("ContingentArrivalNavigationContingentArrivalNo");
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603073712_caperson') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20180603073712_caperson', '2.1.0-preview2-30571');
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603080245_casex') THEN
+    ALTER TABLE "CAPerson" DROP CONSTRAINT "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationContingentArrivalNo";
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603080245_casex') THEN
+    ALTER TABLE "CAPerson" ADD "Sex" varchar(1) NULL;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603080245_casex') THEN
+    ALTER TABLE "CAPerson" ADD CONSTRAINT "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~" FOREIGN KEY ("ContingentArrivalNavigationContingentArrivalNo") REFERENCES "ContingentArrival" ("ContingentArrivalNo") ON DELETE RESTRICT;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603080245_casex') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20180603080245_casex', '2.1.0-preview2-30571');
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603085047_allottedca') THEN
+    ALTER TABLE "CAPerson" DROP CONSTRAINT "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationContingentArrivalNo";
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603085047_allottedca') THEN
+    ALTER TABLE "Person" ADD "allottedCAContingentArrivalNo" integer NULL;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603085047_allottedca') THEN
+    CREATE INDEX "IX_Person_allottedCAContingentArrivalNo" ON "Person" ("allottedCAContingentArrivalNo");
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603085047_allottedca') THEN
+    ALTER TABLE "CAPerson" ADD CONSTRAINT "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~" FOREIGN KEY ("ContingentArrivalNavigationContingentArrivalNo") REFERENCES "ContingentArrival" ("ContingentArrivalNo") ON DELETE RESTRICT;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603085047_allottedca') THEN
+    ALTER TABLE "Person" ADD CONSTRAINT "FK_Person_ContingentArrival_allottedCAContingentArrivalNo" FOREIGN KEY ("allottedCAContingentArrivalNo") REFERENCES "ContingentArrival" ("ContingentArrivalNo") ON DELETE RESTRICT;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603085047_allottedca') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20180603085047_allottedca', '2.1.0-preview2-30571');
+    END IF;
+END $$;
