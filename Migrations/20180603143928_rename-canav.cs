@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferrous.Migrations
 {
-    public partial class casex : Migration
+    public partial class renamecanav : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,16 +12,20 @@ namespace Ferrous.Migrations
                 name: "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~",
                 table: "CAPerson");
 
-            migrationBuilder.AddColumn<string>(
-                name: "Sex",
+            migrationBuilder.RenameColumn(
+                name: "ContingentArrivalNavigationContingentArrivalNo",
                 table: "CAPerson",
-                maxLength: 1,
-                nullable: true);
+                newName: "CANavContingentArrivalNo");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_CAPerson_ContingentArrivalNavigationContingentArrivalNo",
+                table: "CAPerson",
+                newName: "IX_CAPerson_CANavContingentArrivalNo");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~",
+                name: "FK_CAPerson_ContingentArrival_CANavContingentArrivalNo",
                 table: "CAPerson",
-                column: "ContingentArrivalNavigationContingentArrivalNo",
+                column: "CANavContingentArrivalNo",
                 principalTable: "ContingentArrival",
                 principalColumn: "ContingentArrivalNo",
                 onDelete: ReferentialAction.Restrict);
@@ -30,12 +34,18 @@ namespace Ferrous.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~",
+                name: "FK_CAPerson_ContingentArrival_CANavContingentArrivalNo",
                 table: "CAPerson");
 
-            migrationBuilder.DropColumn(
-                name: "Sex",
-                table: "CAPerson");
+            migrationBuilder.RenameColumn(
+                name: "CANavContingentArrivalNo",
+                table: "CAPerson",
+                newName: "ContingentArrivalNavigationContingentArrivalNo");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_CAPerson_CANavContingentArrivalNo",
+                table: "CAPerson",
+                newName: "IX_CAPerson_ContingentArrivalNavigationContingentArrivalNo");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~",

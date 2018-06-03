@@ -46,7 +46,7 @@ namespace Ferrous.Models
         public int Sno { get; set; }
 
         [JsonIgnore]
-        public ContingentArrival ContingentArrivalNavigation { get; set; }
+        public ContingentArrival CANav { get; set; }
         public string Mino { get; set; }
 
         [StringLength(1)]

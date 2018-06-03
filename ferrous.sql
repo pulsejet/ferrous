@@ -192,7 +192,7 @@ END $$;
 DO $$
 BEGIN
     IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603080245_casex') THEN
-    ALTER TABLE "CAPerson" DROP CONSTRAINT "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationContingentArrivalNo";
+    ALTER TABLE "CAPerson" DROP CONSTRAINT "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~";
     END IF;
 END $$;
 
@@ -221,7 +221,7 @@ END $$;
 DO $$
 BEGIN
     IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603085047_allottedca') THEN
-    ALTER TABLE "CAPerson" DROP CONSTRAINT "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationContingentArrivalNo";
+    ALTER TABLE "CAPerson" DROP CONSTRAINT "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~";
     END IF;
 END $$;
 
@@ -258,5 +258,41 @@ BEGIN
     IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603085047_allottedca') THEN
     INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
     VALUES ('20180603085047_allottedca', '2.1.0-preview2-30571');
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603143928_rename-canav') THEN
+    ALTER TABLE "CAPerson" DROP CONSTRAINT "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~";
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603143928_rename-canav') THEN
+    ALTER TABLE "CAPerson" RENAME COLUMN "ContingentArrivalNavigationContingentArrivalNo" TO "CANavContingentArrivalNo";
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603143928_rename-canav') THEN
+    ALTER INDEX "IX_CAPerson_ContingentArrivalNavigationContingentArrivalNo" RENAME TO "IX_CAPerson_CANavContingentArrivalNo";
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603143928_rename-canav') THEN
+    ALTER TABLE "CAPerson" ADD CONSTRAINT "FK_CAPerson_ContingentArrival_CANavContingentArrivalNo" FOREIGN KEY ("CANavContingentArrivalNo") REFERENCES "ContingentArrival" ("ContingentArrivalNo") ON DELETE RESTRICT;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603143928_rename-canav') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20180603143928_rename-canav', '2.1.0-preview2-30571');
     END IF;
 END $$;

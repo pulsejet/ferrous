@@ -9,7 +9,7 @@ namespace Ferrous.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationContingentArrivalNo",
+                name: "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~",
                 table: "CAPerson");
 
             migrationBuilder.AddColumn<int>(
@@ -58,7 +58,7 @@ namespace Ferrous.Migrations
                 table: "Person");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationContingentArrivalNo",
+                name: "FK_CAPerson_ContingentArrival_ContingentArrivalNavigationConti~",
                 table: "CAPerson",
                 column: "ContingentArrivalNavigationContingentArrivalNo",
                 principalTable: "ContingentArrival",

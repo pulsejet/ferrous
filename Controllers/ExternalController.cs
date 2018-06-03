@@ -42,7 +42,7 @@ namespace Ferrous.Controllers
             foreach (string mino in extContingentArrival.Minos) {
                 var caPerson = new CAPerson();
                 caPerson.Mino = mino;
-                caPerson.ContingentArrivalNavigation = contingentArrival;
+                caPerson.CANav = contingentArrival;
                 _context.CAPerson.Add(caPerson);
             }
 

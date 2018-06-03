@@ -174,12 +174,12 @@ namespace Ferrous.Controllers
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_PUT)]
         public async Task<IActionResult> PostCAPerson([FromRoute] int cano, [FromBody] CAPerson caPerson)
         {
-            caPerson.ContingentArrivalNavigation = await _context.ContingentArrival.SingleOrDefaultAsync(m => m.ContingentArrivalNo == cano);
+            caPerson.CANav = await _context.ContingentArrival.SingleOrDefaultAsync(m => m.ContingentArrivalNo == cano);
             _context.CAPerson.Add(caPerson);
             await _context.SaveChangesAsync();
 
             Person[] people = await _context.Person.Where(m => m.Mino == caPerson.Mino).ToArrayAsync();
-            FillCAPerson(caPerson, people, caPerson.ContingentArrivalNavigation.ContingentLeaderNo);
+            FillCAPerson(caPerson, people, caPerson.CANav.ContingentLeaderNo);
 
             return CreatedAtAction("PostCAPerson", new { id = caPerson.Sno }, caPerson);
         }
