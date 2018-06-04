@@ -1,3 +1,5 @@
+Remove-Item -Recurse -Force built
+Remove-Item publish.zip
 dotnet publish -c release -r linux-x64 -o built
 dotnet ef migrations script -i -o ferrous.sql
 Add-Type -A System.IO.Compression.FileSystem

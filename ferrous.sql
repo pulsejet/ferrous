@@ -143,7 +143,7 @@ DO $$
 BEGIN
     IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180414091319_Init') THEN
     INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-    VALUES ('20180414091319_Init', '2.1.0-preview2-30571');
+    VALUES ('20180414091319_Init', '2.1.0-rtm-30799');
     END IF;
 END $$;
 
@@ -185,7 +185,7 @@ DO $$
 BEGIN
     IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603073712_caperson') THEN
     INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-    VALUES ('20180603073712_caperson', '2.1.0-preview2-30571');
+    VALUES ('20180603073712_caperson', '2.1.0-rtm-30799');
     END IF;
 END $$;
 
@@ -214,7 +214,7 @@ DO $$
 BEGIN
     IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603080245_casex') THEN
     INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-    VALUES ('20180603080245_casex', '2.1.0-preview2-30571');
+    VALUES ('20180603080245_casex', '2.1.0-rtm-30799');
     END IF;
 END $$;
 
@@ -257,7 +257,7 @@ DO $$
 BEGIN
     IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603085047_allottedca') THEN
     INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-    VALUES ('20180603085047_allottedca', '2.1.0-preview2-30571');
+    VALUES ('20180603085047_allottedca', '2.1.0-rtm-30799');
     END IF;
 END $$;
 
@@ -293,6 +293,6 @@ DO $$
 BEGIN
     IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20180603143928_rename-canav') THEN
     INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-    VALUES ('20180603143928_rename-canav', '2.1.0-preview2-30571');
+    VALUES ('20180603143928_rename-canav', '2.1.0-rtm-30799');
     END IF;
 END $$;

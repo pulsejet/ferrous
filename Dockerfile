@@ -1,5 +1,5 @@
 # Stage 1
-FROM microsoft/aspnetcore-build:2.1.300-preview1 AS builder
+FROM microsoft/dotnet:2.1.300-sdk-stretch AS builder
 WORKDIR /source
 
 # caches restore result by copying csproj file separately

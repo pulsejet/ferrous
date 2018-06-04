@@ -9,7 +9,7 @@ namespace Ferrous.WebSocketHubs
         public static readonly string BuildingWebsocketUrl = "/api/websocket/building";
         public async Task JoinBuilding(string building)
         {
-            await Groups.AddAsync(Context.ConnectionId, building);
+            await Groups.AddToGroupAsync(Context.ConnectionId, building);
         }
     }
 }
