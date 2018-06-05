@@ -243,6 +243,7 @@ namespace Ferrous.Controllers
                 room.Location = location;
                 room.RoomName = i.ToString();
                 room.Capacity = capacity;
+                room.Status = 0;
                 _context.Add(room);
                 _context.SaveChanges();
             }
