@@ -1,4 +1,11 @@
 [
+{
+    "username":"super",
+    "salt":"sh",
+    "password":"EB0AFEF7FC67DF48FB86182FCC0508034A942772CEA6640A2982153B87812042",
+    "elevation":"0",
+    "privileges":[0]
+},
 
 {
     "username":"cg",
