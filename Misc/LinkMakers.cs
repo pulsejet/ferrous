@@ -46,6 +46,7 @@ namespace Ferrous.Misc
 
                 .SetOptions(User, typeof(ExternalController), Url)
                 .AddLink(nameof(ExternalController.PostForm1), null, "postform1")
+                .AddLink(nameof(ExternalController.ValidatePostForm1), null, "validatepostform1")
 
                 /* Add websocket */
                 .AddAbsoluteContentLink(WebSocketHubs.BuildingUpdateHub.BuildingWebsocketUrl, "building_websocket")

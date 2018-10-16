@@ -20,6 +20,35 @@ namespace Ferrous.Controllers
             _context = context;
         }
 
+        [HttpPost("validate-form1")]
+        [Misc.LinkRelation(Misc.LinkRelationList.overridden)]
+        public async Task<IActionResult> ValidatePostForm1([FromBody] ExtContingentArrival extContingentArrival) {
+            var contingent = await _context.Contingents.SingleOrDefaultAsync(m => m.ContingentLeaderNo == extContingentArrival.ContingentLeaderNo);
+            if (contingent == null) {
+                return BadRequest(new {message = "Not a contingent leader - " + extContingentArrival.ContingentLeaderNo});
+            }
+
+            var people = await _context.Person.ToListAsync();
+
+            var contingentArrival = new ContingentArrival();
+            contingentArrival.Male = extContingentArrival.Male;
+            contingentArrival.Female = extContingentArrival.Female;
+            contingentArrival.ContingentLeaderNo = extContingentArrival.ContingentLeaderNo;
+            ContingentArrivalsController contingentArrivalsController = new ContingentArrivalsController(_context);
+
+            /* Make CAPerson entries */
+            foreach (string mino in extContingentArrival.Minos) {
+                var caPerson = new CAPerson();
+                caPerson.Mino = mino;
+                caPerson.CANav = contingentArrival;
+                caPerson.person = people.SingleOrDefault(m => m.Mino == mino);
+                contingentArrivalsController.FillCAPerson(caPerson, people.ToArray(), contingent.ContingentLeaderNo, false);
+                contingentArrival.CAPeople.Add(caPerson);
+            }
+
+            return Ok(contingentArrival);
+        }
+
         [HttpPost("form1")]
         [Misc.LinkRelation(Misc.LinkRelationList.overridden)]
         public async Task<IActionResult> PostForm1([FromBody] ExtContingentArrival extContingentArrival) {

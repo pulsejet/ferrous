@@ -146,12 +146,17 @@ namespace Ferrous.Controllers
             return Ok(contingentArrival);
         }
 
-        public void FillCAPerson(CAPerson caPerson, Person[] people, string clno) {
-            new LinksMaker(User, Url).FillCAPersonLinks(caPerson);
+        public void FillCAPerson(CAPerson caPerson, Person[] people, string clno, bool links = true) {
+            if (links) {
+                new LinksMaker(User, Url).FillCAPersonLinks(caPerson);
+            }
             var person = people.SingleOrDefault(m => m.Mino == caPerson.Mino);
             if (person != null) {
                 caPerson.person = person;
-                new LinksMaker(User, Url).FillPersonLinks(person);
+
+                if (links) {
+                    new LinksMaker(User, Url).FillPersonLinks(person);
+                }
 
                 caPerson.Sex = person.Sex;
                 if (person.ContingentLeaderNo != clno) {
