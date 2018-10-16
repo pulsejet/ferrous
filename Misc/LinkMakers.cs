@@ -44,6 +44,9 @@ namespace Ferrous.Misc
                 .SetOptions(User, typeof(ContingentArrivalsController), Url)
                 .AddLink(nameof(ContingentArrivalsController.GetDesk1), null, "desk1", true)
 
+                .SetOptions(User, typeof(ExternalController), Url)
+                .AddLink(nameof(ExternalController.PostForm1), null, "postform1")
+
                 /* Add websocket */
                 .AddAbsoluteContentLink(WebSocketHubs.BuildingUpdateHub.BuildingWebsocketUrl, "building_websocket")
                 .AddStringLink(nameof(WebSocketHubs.BuildingUpdateHub.JoinBuilding), "building_websocket_join")

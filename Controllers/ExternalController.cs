@@ -21,6 +21,7 @@ namespace Ferrous.Controllers
         }
 
         [HttpPost("form1")]
+        [Misc.LinkRelation(Misc.LinkRelationList.overridden)]
         public async Task<IActionResult> PostForm1([FromBody] ExtContingentArrival extContingentArrival) {
 
             /* Check if contingent exists */
