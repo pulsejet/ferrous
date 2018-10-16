@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Ferrous.Models;
 using static Ferrous.Misc.Authorization;
 using Ferrous.Misc;
+using System.IO;
 
 namespace Ferrous.Controllers
 {
@@ -156,6 +157,27 @@ namespace Ferrous.Controllers
         private bool PersonExists(string id)
         {
             return _context.Person.Any(e => e.Mino == id);
+        }
+
+        [HttpGet("forward"), LinkRelation(LinkRelationList.overridden)]
+        [Misc.Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_GET_DETAILS)]
+        public async Task<IActionResult> GetPersonForward([FromQuery] string id){
+            var httpWebRequest = (System.Net.HttpWebRequest) System.Net.WebRequest.Create("https://api2.moodi.org/user/" + id);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream())) {
+                string json = "";
+                streamWriter.Write(json);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            var httpResponse = await httpWebRequest.GetResponseAsync();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream())) {
+                var result = streamReader.ReadToEnd();
+                return Content(result, "application/json");
+            }
         }
     }
 }
