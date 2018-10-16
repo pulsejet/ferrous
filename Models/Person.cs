@@ -18,6 +18,7 @@ namespace Ferrous.Models
         [StringLength(1)]
         public string Sex { get; set; }
 
+        [Newtonsoft.Json.JsonIgnore]
         public Contingent ContingentLeaderNoNavigation { get; set; }
 
         public ContingentArrival allottedCA { get; set; }
