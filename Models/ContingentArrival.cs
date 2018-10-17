@@ -24,6 +24,9 @@ namespace Ferrous.Models
         public int? MaleOnSpot { get; set; }
         public int? FemaleOnSpot { get; set; }
 
+        public int? MaleOnSpotDemand { get; set; }
+        public int? FemaleOnSpotDemand { get; set; }
+
         public Contingent ContingentLeaderNoNavigation { get; set; }
         public ICollection<RoomAllocation> RoomAllocation { get; set; }
 

@@ -30,10 +30,7 @@ namespace Ferrous.Controllers
 
             var people = await _context.Person.ToListAsync();
 
-            var contingentArrival = new ContingentArrival();
-            contingentArrival.Male = extContingentArrival.Male;
-            contingentArrival.Female = extContingentArrival.Female;
-            contingentArrival.ContingentLeaderNo = extContingentArrival.ContingentLeaderNo;
+            var contingentArrival = fillFromExt(extContingentArrival);
             ContingentArrivalsController contingentArrivalsController = new ContingentArrivalsController(_context);
 
             /* Make CAPerson entries */
@@ -60,11 +57,7 @@ namespace Ferrous.Controllers
             }
 
             /* Add contingent arrival */
-            var contingentArrival = new ContingentArrival();
-            contingentArrival.CreatedOn = DateTime.UtcNow.AddHours(5).AddMinutes(30);
-            contingentArrival.Male = extContingentArrival.Male;
-            contingentArrival.Female = extContingentArrival.Female;
-            contingentArrival.ContingentLeaderNo = extContingentArrival.ContingentLeaderNo;
+            var contingentArrival = fillFromExt(extContingentArrival);
             _context.ContingentArrival.Add(contingentArrival);
             await _context.SaveChangesAsync();
 
@@ -81,11 +74,24 @@ namespace Ferrous.Controllers
             return CreatedAtAction("GetContingentArrival", new { id = contingentArrival.ContingentArrivalNo }, contingentArrival);
         }
 
+        private ContingentArrival fillFromExt(ExtContingentArrival extContingentArrival)  {
+            var contingentArrival = new ContingentArrival();
+            contingentArrival.CreatedOn = DateTime.UtcNow.AddHours(5).AddMinutes(30);
+            contingentArrival.Male = extContingentArrival.Male;
+            contingentArrival.Female = extContingentArrival.Female;
+            contingentArrival.MaleOnSpotDemand = extContingentArrival.MaleOnSpotDemand;
+            contingentArrival.FemaleOnSpotDemand = extContingentArrival.FemaleOnSpotDemand;
+            contingentArrival.ContingentLeaderNo = extContingentArrival.ContingentLeaderNo;
+            return contingentArrival;
+        }
+
         public class ExtContingentArrival {
             public string ContingentLeaderNo {get; set; }
             public string FillerMINo {get; set; }
             public int Male {get; set; }
             public int Female {get; set; }
+            public int MaleOnSpotDemand {get; set; }
+            public int FemaleOnSpotDemand {get; set; }
             public string[] Minos {get; set; }
             public string[] OnSpotMinos {get; set; }
         }
