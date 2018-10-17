@@ -56,15 +56,24 @@ namespace Ferrous.Misc
                 building.CapacityEmpty = 0;
                 foreach (var room in building.Room)
                 {
-                    if (room.Status == 4) { building.CapacityNotReady += room.Capacity; }
+                    if (room.Status == 4) {
+                        building.CapacityNotReady += room.Capacity;
+                        building.RoomsNotReady++;
+                    }
                     if (room.Status != 1) { continue; }
 
+                    building.RoomsTotal++;
                     building.CapacityEmpty += room.Capacity;
+
+                    int partialSum = 0;
 
                     foreach (var roomA in room.RoomAllocation)
                     {
+                        partialSum += roomA.Partial;
+
                         if (roomA.Partial <= 0)
                         {
+                            building.RoomsFilled++;
                             building.CapacityFilled += room.Capacity;
                             building.CapacityEmpty -= room.Capacity;
                             if (roomA.ContingentLeaderNo == clno) {
@@ -79,6 +88,16 @@ namespace Ferrous.Misc
                         if (roomA.ContingentLeaderNo == clno) {
                             building.AlreadyAllocated += roomA.Partial;
                         }
+                    }
+
+                    if (room.RoomAllocation.Count > 0) {
+                        if (partialSum <= 0) {
+                            building.RoomsFilled++;
+                        } else {
+                            building.RoomsPartial++;
+                        }
+                    } else {
+                        building.RoomsEmpty++;
                     }
                 }
                 building.Room = null;
