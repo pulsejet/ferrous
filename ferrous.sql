@@ -296,3 +296,25 @@ BEGIN
     VALUES ('20180603143928_rename-canav', '2.1.0-rtm-30799');
     END IF;
 END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20181017103904_onspotdemand') THEN
+    ALTER TABLE "ContingentArrival" ADD "FemaleOnSpotDemand" integer NULL;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20181017103904_onspotdemand') THEN
+    ALTER TABLE "ContingentArrival" ADD "MaleOnSpotDemand" integer NULL;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20181017103904_onspotdemand') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20181017103904_onspotdemand', '2.1.0-rtm-30799');
+    END IF;
+END $$;
