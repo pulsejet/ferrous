@@ -258,6 +258,7 @@ namespace Ferrous.Controllers
             RoomNo = 2,
             LockNo = 3,
             Status = 4,
+            Remark = 5,
         }
 
         [LinkRelation(LinkRelationList.overridden)]
@@ -285,6 +286,7 @@ namespace Ferrous.Controllers
                         string roomNo = getValue(workSheet, i, UploadSheetColumns.RoomNo);
                         string lockNo = getValue(workSheet, i, UploadSheetColumns.LockNo);
                         int status = getStatusInt(getValue(workSheet, i, UploadSheetColumns.Status));
+                        string remark = getValue(workSheet, i, UploadSheetColumns.Remark);
 
                         /* Check for invalid entries */
                         if (hostel == String.Empty || roomNo == String.Empty) {
@@ -310,6 +312,10 @@ namespace Ferrous.Controllers
                         /* Update valid rooms */
                         if (lockNo != "-1" && lockNo != String.Empty) {
                             room.LockNo = lockNo;
+                        }
+
+                        if (remark != "-1" && remark != String.Empty) {
+                            room.Remark = remark;
                         }
 
                         /* Update room statuses */
@@ -341,6 +347,7 @@ namespace Ferrous.Controllers
                 setValue(workSheet, 1, UploadSheetColumns.RoomNo);
                 setValue(workSheet, 1, UploadSheetColumns.LockNo);
                 setValue(workSheet, 1, UploadSheetColumns.Status);
+                setValue(workSheet, 1, UploadSheetColumns.Remark);
 
                 workSheet.Protection.IsProtected = true;
                 workSheet.Cells.Style.Locked = false;
