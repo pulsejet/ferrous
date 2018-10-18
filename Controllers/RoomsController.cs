@@ -343,19 +343,39 @@ namespace Ferrous.Controllers
         public ActionResult UploadSheetSample() {
             using (ExcelPackage package = new ExcelPackage()) {
                 var workSheet = package.Workbook.Worksheets.Add("Rooms");
+
+                /* Protection settings */
+                workSheet.Protection.IsProtected = true;
+                workSheet.Cells.Style.Locked = false;
+                workSheet.Protection.AllowSelectUnlockedCells = true;
+                workSheet.Protection.AllowSelectLockedCells = false;
+
+                /* Add first row */
                 setValue(workSheet, 1, UploadSheetColumns.Hostel);
                 setValue(workSheet, 1, UploadSheetColumns.RoomNo);
                 setValue(workSheet, 1, UploadSheetColumns.LockNo);
                 setValue(workSheet, 1, UploadSheetColumns.Status);
                 setValue(workSheet, 1, UploadSheetColumns.Remark);
 
-                workSheet.Protection.IsProtected = true;
-                workSheet.Cells.Style.Locked = false;
-                workSheet.Protection.AllowSelectUnlockedCells = true;
-                workSheet.Protection.AllowSelectLockedCells = false;
-
+                /* Style first row */
                 workSheet.Row(1).Style.Font.Bold = true;
                 workSheet.Row(1).Style.Locked = true;
+
+                /* Add hostels title */
+                int HOSTELS_ROW = 4;
+                int HOSTELS_COLUMN = 9;
+                workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN].Value = "Code";
+                workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN + 1].Value = "Location";
+                workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN].Style.Font.Bold = true;
+                workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN + 1].Style.Font.Bold = true;
+
+                /* Add hostels list */
+                int row = HOSTELS_ROW + 1;
+                foreach (Building building in _context.Building.OrderBy(b => b.Location).ToArray()) {
+                    workSheet.Cells[row, HOSTELS_COLUMN].Value = building.Location;
+                    workSheet.Cells[row, HOSTELS_COLUMN + 1].Value = building.LocationFullName;
+                    row += 1;
+                }
 
                 /* Return the file */
                 var stream = new MemoryStream(package.GetAsByteArray());
