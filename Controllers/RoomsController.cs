@@ -12,6 +12,7 @@ using System.Text;
 using System.Net.Http.Headers;
 using OfficeOpenXml;
 using System.IO;
+using OfficeOpenXml.Style;
 
 namespace Ferrous.Controllers
 {
@@ -343,6 +344,17 @@ namespace Ferrous.Controllers
         public ActionResult UploadSheetSample() {
             using (ExcelPackage package = new ExcelPackage()) {
                 var workSheet = package.Workbook.Worksheets.Add("Rooms");
+                var allWorkSheet = package.Workbook.Worksheets.Add("AllRooms");
+
+                /* Fill all rooms worksheet */
+                int row = 1;
+                foreach (var room in _context.Room.ToArray()) {
+                    allWorkSheet.Cells[row, 1].Value = $"{room.Location}|{room.RoomName}";
+                    allWorkSheet.Cells[row, 2].Value = room.RoomId.ToString();
+                    allWorkSheet.Cells[row, 3].Value = "YES";
+                    allWorkSheet.Cells[row, 4].Value = getStatusStr(room.Status);
+                    row++;
+                }
 
                 /* Protection settings */
                 workSheet.Protection.IsProtected = true;
@@ -357,9 +369,27 @@ namespace Ferrous.Controllers
                 setValue(workSheet, 1, UploadSheetColumns.Status);
                 setValue(workSheet, 1, UploadSheetColumns.Remark);
 
+                /* Show is valid */
+                int lastColumn = (int) UploadSheetColumns.Remark + 1;
+                workSheet.Cells[1, lastColumn].Value = "Is Valid";
+                for (int i = 2; i < 200; i++) {
+                    workSheet.Cells[i, lastColumn].Formula = $"IFERROR(VLOOKUP(CONCATENATE(A{i}, \"|\", B{i}), AllRooms!A:C, 3, FALSE), \"\")";
+                }
+                workSheet.Column(lastColumn).Style.Locked = true;
+                workSheet.Column(lastColumn).Style.Border.Left.Style = ExcelBorderStyle.Thin;
+
+                /* Show status */
+                lastColumn++;
+                workSheet.Cells[1, lastColumn].Value = "Current";
+                for (int i = 2; i < 200; i++) {
+                    workSheet.Cells[i, lastColumn].Formula = $"IFERROR(VLOOKUP(CONCATENATE(A{i}, \"|\", B{i}), AllRooms!A:D, 4, FALSE), \"\")";
+                }
+                workSheet.Column(lastColumn).Style.Locked = true;
+
                 /* Style first row */
                 workSheet.Row(1).Style.Font.Bold = true;
                 workSheet.Row(1).Style.Locked = true;
+                workSheet.View.FreezePanes(2, ++lastColumn);
 
                 /* Add hostels title */
                 int HOSTELS_ROW = 4;
@@ -370,11 +400,11 @@ namespace Ferrous.Controllers
                 workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN + 1].Style.Font.Bold = true;
 
                 /* Add hostels list */
-                int row = HOSTELS_ROW + 1;
+                row = HOSTELS_ROW + 1;
                 foreach (Building building in _context.Building.OrderBy(b => b.Location).ToArray()) {
                     workSheet.Cells[row, HOSTELS_COLUMN].Value = building.Location;
                     workSheet.Cells[row, HOSTELS_COLUMN + 1].Value = building.LocationFullName;
-                    row += 1;
+                    row++;
                 }
 
                 /* Return the file */
@@ -407,6 +437,19 @@ namespace Ferrous.Controllers
                     return 4;
                 default:
                     return -5;
+            }
+        }
+
+        private string getStatusStr(int? status) {
+            switch (status) {
+                case 0:
+                    return "UAVL";
+                case 1:
+                    return "AVLB";
+                case 4:
+                    return "NRDY";
+                default:
+                    return "UNKN";
             }
         }
     }
