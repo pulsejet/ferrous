@@ -274,7 +274,6 @@ namespace Ferrous.Controllers
 
                     /* Maintain a list of updated rooms to return */
                     var updatedRooms = new List<Room>();
-                    var failedRooms = new List<String>();
 
                     /* Read the worksheet */
                     using (ExcelPackage package = new ExcelPackage(stream)) {
@@ -299,7 +298,13 @@ namespace Ferrous.Controllers
 
                             /* Check invalid rooms */
                             if (room == null) {
-                                failedRooms.Add($"{hostel} {room}");
+                                room = new Room();
+                                room.Location = hostel;
+                                room.RoomName = roomNo;
+                                room.LockNo = lockNo;
+                                room.Status = status;
+                                room.Remark = "NOT FOUND";
+                                updatedRooms.Add(room);
                                 continue;
                             }
 
