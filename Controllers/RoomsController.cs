@@ -11,6 +11,7 @@ using Ferrous.Misc;
 using System.Text;
 using System.Net.Http.Headers;
 using OfficeOpenXml;
+using System.IO;
 
 namespace Ferrous.Controllers
 {
@@ -264,78 +265,101 @@ namespace Ferrous.Controllers
         [HttpPost("upload-sheet"), DisableRequestSizeLimit]
         public async Task<ActionResult> UploadSheet()
         {
-            // try
+            var file = Request.Form.Files[0];
+            if (file.Length > 0)
             {
-                var file = Request.Form.Files[0];
-                if (file.Length > 0)
-                {
-                    string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var stream = file.OpenReadStream();
+                string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                var stream = file.OpenReadStream();
 
-                    /* Maintain a list of updated rooms to return */
-                    var updatedRooms = new List<Room>();
+                /* Maintain a list of updated rooms to return */
+                var updatedRooms = new List<Room>();
 
-                    /* Read the worksheet */
-                    using (ExcelPackage package = new ExcelPackage(stream)) {
-                        ExcelWorksheet workSheet = package.Workbook.Worksheets[0];
-                        for (int i = workSheet.Dimension.Start.Row + 1;
-                                i <= workSheet.Dimension.End.Row;
-                                i++)
-                        {
-                            string hostel = getValue(workSheet, i, UploadSheetColumns.Hostel);
-                            string roomNo = getValue(workSheet, i, UploadSheetColumns.RoomNo);
-                            string lockNo = getValue(workSheet, i, UploadSheetColumns.LockNo);
-                            int status = getStatusInt(getValue(workSheet, i, UploadSheetColumns.Status));
+                /* Read the worksheet */
+                using (ExcelPackage package = new ExcelPackage(stream)) {
+                    ExcelWorksheet workSheet = package.Workbook.Worksheets[0];
+                    for (int i = workSheet.Dimension.Start.Row + 1;
+                            i <= workSheet.Dimension.End.Row;
+                            i++)
+                    {
+                        string hostel = getValue(workSheet, i, UploadSheetColumns.Hostel);
+                        string roomNo = getValue(workSheet, i, UploadSheetColumns.RoomNo);
+                        string lockNo = getValue(workSheet, i, UploadSheetColumns.LockNo);
+                        int status = getStatusInt(getValue(workSheet, i, UploadSheetColumns.Status));
 
-                            /* Check for invalid entries */
-                            if (hostel == String.Empty || roomNo == String.Empty) {
-                                continue;
-                            }
-
-                            /* Get the room if it exists */
-                            Room room = await _context.Room.SingleOrDefaultAsync(
-                                r => r.Location == hostel && r.RoomName == roomNo);
-
-                            /* Check invalid rooms */
-                            if (room == null) {
-                                room = new Room();
-                                room.Location = hostel;
-                                room.RoomName = roomNo;
-                                room.LockNo = lockNo;
-                                room.Status = status;
-                                room.Remark = "NOT FOUND";
-                                updatedRooms.Add(room);
-                                continue;
-                            }
-
-                            /* Update valid rooms */
-                            if (lockNo != "-1" && lockNo != String.Empty) {
-                                room.LockNo = lockNo;
-                            }
-
-                            /* Update room statuses */
-                            if (status != -5) {
-                                room.Status = status;
-                            }
-
-                            /* Save */
-                            _context.Update(room);
-
-                            /* Update final list */
-                            updatedRooms.Add(room);
+                        /* Check for invalid entries */
+                        if (hostel == String.Empty || roomNo == String.Empty) {
+                            continue;
                         }
 
-                        await _context.SaveChangesAsync();
+                        /* Get the room if it exists */
+                        Room room = await _context.Room.SingleOrDefaultAsync(
+                            r => r.Location == hostel && r.RoomName == roomNo);
 
-                        return Ok(updatedRooms);
+                        /* Check invalid rooms */
+                        if (room == null) {
+                            room = new Room();
+                            room.Location = hostel;
+                            room.RoomName = roomNo;
+                            room.LockNo = lockNo;
+                            room.Status = status;
+                            room.Remark = "NOT FOUND";
+                            updatedRooms.Add(room);
+                            continue;
+                        }
+
+                        /* Update valid rooms */
+                        if (lockNo != "-1" && lockNo != String.Empty) {
+                            room.LockNo = lockNo;
+                        }
+
+                        /* Update room statuses */
+                        if (status != -5) {
+                            room.Status = status;
+                        }
+
+                        /* Save */
+                        _context.Update(room);
+
+                        /* Update final list */
+                        updatedRooms.Add(room);
                     }
+
+                    await _context.SaveChangesAsync();
                 }
-                return Ok("Upload Successful.");
+                return Ok(updatedRooms);
             }
-            /*catch (System.Exception ex)
-            {
-                return Ok("Upload Failed: " + ex.Message);
-            } */
+            return BadRequest("Nothing found here");
+        }
+
+        [LinkRelation(LinkRelationList.overridden)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_PUT)]
+        [HttpGet("upload-sheet"), DisableRequestSizeLimit]
+        public ActionResult UploadSheetSample() {
+            using (ExcelPackage package = new ExcelPackage()) {
+                var workSheet = package.Workbook.Worksheets.Add("Rooms");
+                setValue(workSheet, 1, UploadSheetColumns.Hostel);
+                setValue(workSheet, 1, UploadSheetColumns.RoomNo);
+                setValue(workSheet, 1, UploadSheetColumns.LockNo);
+                setValue(workSheet, 1, UploadSheetColumns.Status);
+
+                workSheet.Protection.IsProtected = true;
+                workSheet.Cells.Style.Locked = false;
+                workSheet.Protection.AllowSelectUnlockedCells = true;
+                workSheet.Protection.AllowSelectLockedCells = false;
+
+                workSheet.Row(1).Style.Font.Bold = true;
+                workSheet.Row(1).Style.Locked = true;
+
+                /* Return the file */
+                var stream = new MemoryStream(package.GetAsByteArray());
+                return File(stream,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "rooms.xlsx");
+            }
+        }
+
+        private void setValue(ExcelWorksheet workSheet, int i, UploadSheetColumns column) {
+            workSheet.Cells[i, (int) column].Value = column.ToString();
         }
 
         private string getValue(ExcelWorksheet workSheet, int i, UploadSheetColumns column) {
