@@ -51,6 +51,7 @@ namespace Ferrous.Misc
 
                 .SetOptions(User, typeof(RoomsController), Url)
                 .AddLink(nameof(RoomsController.UploadSheet), null, "upload-sheet")
+                .AddLink(nameof(RoomsController.UploadSheetSample), null, "upload-sheet-sample")
 
                 /* Add websocket */
                 .AddAbsoluteContentLink(WebSocketHubs.BuildingUpdateHub.BuildingWebsocketUrl, "building_websocket")
