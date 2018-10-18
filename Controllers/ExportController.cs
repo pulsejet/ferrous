@@ -73,7 +73,7 @@ namespace Ferrous.Controllers
 
                 /* Return the file */
                 var stream = new MemoryStream(package.GetAsByteArray());
-                return File(stream, 
+                return File(stream,
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     "export.xlsx");
             }
@@ -96,27 +96,26 @@ namespace Ferrous.Controllers
             }
 
             string[] headers = {
-                        "CL No",
-                        "Reg (M)",
-                        "Reg (F)",
-                        "Arrived (M)",
-                        "Arrived (F)",
-                        "Remark"
-                    };
+                "CL No",
+                "Reg (M)",
+                "Reg (F)",
+                "Arrived (M)",
+                "Arrived (F)",
+                "Remark"
+            };
             setColumnHeaders(headers, contingentsWorksheet);
 
             int rowno = 2;
             foreach (var contingent in contingents)
             {
-                object[] cells =
-                {
-                            contingent.ContingentLeaderNo,
-                            IntIfNumber(contingent.Male),
-                            IntIfNumber(contingent.Female),
-                            IntIfNumber(contingent.ArrivedM),
-                            IntIfNumber(contingent.ArrivedF),
-                            contingent.Remark
-                        };
+                object[] cells = {
+                    contingent.ContingentLeaderNo,
+                    IntIfNumber(contingent.Male),
+                    IntIfNumber(contingent.Female),
+                    IntIfNumber(contingent.ArrivedM),
+                    IntIfNumber(contingent.ArrivedF),
+                    contingent.Remark
+                };
                 setRow(cells, rowno++, contingentsWorksheet);
             }
             return 1;
@@ -166,14 +165,13 @@ namespace Ferrous.Controllers
                     peopleWorksheet.Row(i).Style.Font.Bold = true;
                 }
 
-                object[] cells =
-                {
-                            person.Mino,
-                            person.Name,
-                            person.College,
-                            person.Sex,
-                            person.ContingentLeaderNo
-                        };
+                object[] cells = {
+                    person.Mino,
+                    person.Name,
+                    person.College,
+                    person.Sex,
+                    person.ContingentLeaderNo
+                };
                 setRow(cells, i++, peopleWorksheet);
             }
         }
@@ -193,13 +191,13 @@ namespace Ferrous.Controllers
             setColumnWidths(widths, roomsWorksheet);
 
             string[] headers = {
-                        "Location",
-                        "Room",
-                        "Allocated",
-                        "Capacity",
-                        "Lock No",
-                        "Remark"
-                    };
+                "Location",
+                "Room",
+                "Allocated",
+                "Capacity",
+                "Lock No",
+                "Remark"
+            };
             setColumnHeaders(headers, roomsWorksheet);
 
             int i = 2;
@@ -229,7 +227,7 @@ namespace Ferrous.Controllers
                     {
                         roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.LightPink);
                     }
-                    else if (room.Status == 1) 
+                    else if (room.Status == 1)
                     {
                         roomsWorksheet.Row(i).Style.Font.Color.SetColor(Color.White);
                         if (Partial == 0) {
@@ -243,15 +241,14 @@ namespace Ferrous.Controllers
                     }
                 }
 
-                object[] cells =
-                {
-                            room.Location,
-                            IntIfNumber(room.RoomName),
-                            roomAlloc,
-                            room.Capacity,
-                            IntIfNumber(room.LockNo),
-                            room.Remark
-                        };
+                object[] cells = {
+                    room.Location,
+                    IntIfNumber(room.RoomName),
+                    roomAlloc,
+                    room.Capacity,
+                    IntIfNumber(room.LockNo),
+                    room.Remark
+                };
                 setRow(cells, i++, roomsWorksheet);
             }
         }
