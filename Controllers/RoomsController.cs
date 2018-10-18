@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.SignalR;
 using static Ferrous.Misc.Authorization;
 using Ferrous.Misc;
 using System.Text;
+using System.Net.Http.Headers;
+using OfficeOpenXml;
 
 namespace Ferrous.Controllers
 {
@@ -249,6 +251,107 @@ namespace Ferrous.Controllers
             }
             return Content("Done -- " + str);
         }
-    }
 
+        private enum UploadSheetColumns {
+            Hostel = 1,
+            RoomNo = 2,
+            LockNo = 3,
+            Status = 4,
+        }
+
+        [LinkRelation(LinkRelationList.overridden)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_PUT)]
+        [HttpPost("upload-sheet"), DisableRequestSizeLimit]
+        public async Task<ActionResult> UploadSheet()
+        {
+            // try
+            {
+                var file = Request.Form.Files[0];
+                if (file.Length > 0)
+                {
+                    string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var stream = file.OpenReadStream();
+
+                    /* Maintain a list of updated rooms to return */
+                    var updatedRooms = new List<Room>();
+                    var failedRooms = new List<String>();
+
+                    /* Read the worksheet */
+                    using (ExcelPackage package = new ExcelPackage(stream)) {
+                        ExcelWorksheet workSheet = package.Workbook.Worksheets[0];
+                        for (int i = workSheet.Dimension.Start.Row + 1;
+                                i <= workSheet.Dimension.End.Row;
+                                i++)
+                        {
+                            string hostel = getValue(workSheet, i, UploadSheetColumns.Hostel);
+                            string roomNo = getValue(workSheet, i, UploadSheetColumns.RoomNo);
+                            string lockNo = getValue(workSheet, i, UploadSheetColumns.LockNo);
+                            int status = getStatusInt(getValue(workSheet, i, UploadSheetColumns.Status));
+
+                            /* Check for invalid entries */
+                            if (hostel == String.Empty || roomNo == String.Empty) {
+                                continue;
+                            }
+
+                            /* Get the room if it exists */
+                            Room room = await _context.Room.SingleOrDefaultAsync(
+                                r => r.Location == hostel && r.RoomName == roomNo);
+
+                            /* Check invalid rooms */
+                            if (room == null) {
+                                failedRooms.Add($"{hostel} {room}");
+                                continue;
+                            }
+
+                            /* Update valid rooms */
+                            if (lockNo != "-1" && lockNo != String.Empty) {
+                                room.LockNo = lockNo;
+                            }
+
+                            /* Update room statuses */
+                            if (status != -5) {
+                                room.Status = status;
+                            }
+
+                            /* Save */
+                            _context.Update(room);
+
+                            /* Update final list */
+                            updatedRooms.Add(room);
+                        }
+
+                        await _context.SaveChangesAsync();
+
+                        return Ok(updatedRooms);
+                    }
+                }
+                return Ok("Upload Successful.");
+            }
+            /*catch (System.Exception ex)
+            {
+                return Ok("Upload Failed: " + ex.Message);
+            } */
+        }
+
+        private string getValue(ExcelWorksheet workSheet, int i, UploadSheetColumns column) {
+            var value = workSheet.Cells[i, (int) column].Value;
+            if (value != null) {
+                return value.ToString();
+            }
+            return String.Empty;
+        }
+
+        private int getStatusInt(string status) {
+            switch (status.ToUpper()) {
+                case "UAVL":
+                    return 0;
+                case "AVLB":
+                    return 1;
+                case "NRDY":
+                    return 4;
+                default:
+                    return -5;
+            }
+        }
+    }
 }

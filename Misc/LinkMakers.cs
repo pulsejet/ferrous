@@ -49,6 +49,9 @@ namespace Ferrous.Misc
                 .AddLink(nameof(ExternalController.PostForm1), null, "postform1")
                 .AddLink(nameof(ExternalController.ValidatePostForm1), null, "validatepostform1")
 
+                .SetOptions(User, typeof(RoomsController), Url)
+                .AddLink(nameof(RoomsController.UploadSheet), null, "upload-sheet")
+
                 /* Add websocket */
                 .AddAbsoluteContentLink(WebSocketHubs.BuildingUpdateHub.BuildingWebsocketUrl, "building_websocket")
                 .AddStringLink(nameof(WebSocketHubs.BuildingUpdateHub.JoinBuilding), "building_websocket_join")
