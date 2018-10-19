@@ -275,6 +275,7 @@ namespace Ferrous.Controllers
 
                 /* Maintain a list of updated rooms to return */
                 var updatedRooms = new List<Room>();
+                var failedRooms = new List<Room>();
 
                 /* Read the worksheet */
                 using (ExcelPackage package = new ExcelPackage(stream)) {
@@ -306,7 +307,7 @@ namespace Ferrous.Controllers
                             room.LockNo = lockNo;
                             room.Status = status;
                             room.Remark = "NOT FOUND";
-                            updatedRooms.Add(room);
+                            failedRooms.Add(room);
                             continue;
                         }
 
@@ -333,7 +334,11 @@ namespace Ferrous.Controllers
 
                     await _context.SaveChangesAsync();
                 }
-                return Ok(updatedRooms);
+
+                /* Update web socket */
+                UpdateLayoutWebSocket(updatedRooms.ToArray());
+
+                return Ok(updatedRooms.Concat(failedRooms));
             }
             return BadRequest("Nothing found here");
         }
