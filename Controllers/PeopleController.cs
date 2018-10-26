@@ -8,6 +8,9 @@ using Ferrous.Models;
 using static Ferrous.Misc.Authorization;
 using Ferrous.Misc;
 using System.IO;
+using System.Net.Http.Headers;
+using OfficeOpenXml;
+using System;
 
 namespace Ferrous.Controllers
 {
@@ -178,6 +181,83 @@ namespace Ferrous.Controllers
                 var result = streamReader.ReadToEnd();
                 return Content(result, "application/json");
             }
+        }
+
+        private enum UploadSheetColumns {
+            name = 1,
+            mino = 2,
+            college = 3,
+            city = 4,
+            purchaser = 5,
+            gender = 6,
+            clno = 7,
+            rem = 8,
+        }
+
+        [LinkRelation(LinkRelationList.overridden)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_POST)]
+        [HttpPost("upload-sheet"), DisableRequestSizeLimit]
+        public async Task<ActionResult> UploadSheet()
+        {
+            var file = Request.Form.Files[0];
+            if (file.Length > 0)
+            {
+                string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                var stream = file.OpenReadStream();
+
+                /* Maintain a list of updated things */
+                var updatedPeople = new List<Person>();
+                var updatedContingents = new List<Contingent>();
+
+                /* Read the worksheet */
+                using (ExcelPackage package = new ExcelPackage(stream)) {
+                    ExcelWorksheet workSheet = package.Workbook.Worksheets[0];
+                    for (int i = workSheet.Dimension.Start.Row + 1;
+                            i <= workSheet.Dimension.End.Row;
+                            i++)
+                    {
+                        string clno = getValue(workSheet, i, UploadSheetColumns.clno);
+                        string mino = getValue(workSheet, i, UploadSheetColumns.mino);
+                        Contingent contingent = _context.Contingents.SingleOrDefault(c => c.ContingentLeaderNo == clno);
+
+                        /* Create contingent if it does not exist */
+                        if (contingent == null) {
+                            contingent = new Contingent();
+                            contingent.ContingentLeaderNo = clno;
+                            _context.Contingents.Add(contingent);
+                            _context.SaveChanges();
+                            updatedContingents.Add(contingent);
+                        }
+
+                        Person person = _context.Person.SingleOrDefault(p => p.Mino == mino);
+
+                        /* Create person if does not exist */
+                        if (person == null) {
+                            person = new Person();
+                            person.Name = getValue(workSheet, i, UploadSheetColumns.name);
+                            person.ContingentLeaderNo = clno;
+                            person.Mino = mino;
+                            person.College = getValue(workSheet, i, UploadSheetColumns.college);
+                            person.Sex = (getValue(workSheet, i, UploadSheetColumns.gender).ToLower().Contains('f')) ? "F" : "M";
+                            _context.Person.Add(person);
+                            _context.SaveChanges();
+                            updatedPeople.Add(person);
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+                return Ok();
+            }
+            return BadRequest("Nothing found here");
+        }
+
+        private string getValue(ExcelWorksheet workSheet, int i, UploadSheetColumns column) {
+            var value = workSheet.Cells[i, (int) column].Value;
+            if (value != null) {
+                return value.ToString();
+            }
+            return String.Empty;
         }
     }
 }
