@@ -34,6 +34,8 @@ namespace Ferrous.Models
         public int? Male { get; set; }
         public int PeopleFemale = 0;
         public int PeopleMale = 0;
+        public int AllottedMale = 0;
+        public int AllottedFemale = 0;
 
         public ICollection<CAPerson> CAPeople { get; set; }
         public bool Approved { get; set; }

@@ -12,6 +12,9 @@ namespace Ferrous.Models
 
         [Key]
         public string Location { get; set; }
+
+        [StringLength(1)]
+        public string Sex { get; set; }
         public int DefaultCapacity { get; set; }
         public string LocationFullName { get; set; }
 

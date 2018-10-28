@@ -26,7 +26,7 @@ namespace Ferrous.Controllers
         // GET: api/ContingentArrivals
         [HttpGet]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET)]
-        public IEnumerable<ContingentArrival> GetContingentArrival()
+        public IEnumerable<ContingentArrival> GetContingentArrivals()
         {
             return _context.ContingentArrival;
         }
@@ -35,7 +35,7 @@ namespace Ferrous.Controllers
         // GET: api/ContingentArrivals/byCL/5
         [HttpGet("byCL/{clno}")]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET)]
-        public async Task<IActionResult> GetContingentArrival([FromRoute] string clno)
+        public async Task<IActionResult> GetContingentArrivalCl([FromRoute] string clno)
         {
             if (!ModelState.IsValid)
             {
@@ -55,6 +55,28 @@ namespace Ferrous.Controllers
             return Ok(contingentArrival);
         }
 
+        public void setAllotted(ContingentArrival contingentArrival) {
+            foreach (var x in contingentArrival.RoomAllocation) {
+                /* Get count */
+                int count = 0;
+                if (x.Partial < 0) {
+                    count = x.Room.Capacity;
+                } else {
+                    count = x.Partial;
+                }
+
+                /* Check sex */
+                if (x.Room.LocationNavigation != null &&
+                    x.Room.LocationNavigation.Sex != null &&
+                    x.Room.LocationNavigation.Sex.ToUpper() == "M")
+                {
+                    contingentArrival.AllottedMale += count;
+                } else {
+                    contingentArrival.AllottedFemale += count;
+                }
+            }
+        }
+
         // GET: api/ContingentArrivals/5
         [HttpGet("{id}")]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET_DETAILS)]
@@ -65,7 +87,14 @@ namespace Ferrous.Controllers
                 return BadRequest(ModelState);
             }
 
-            var contingentArrival = await _context.ContingentArrival.SingleOrDefaultAsync(m => m.ContingentArrivalNo == id);
+            var contingentArrival = await _context.ContingentArrival
+                                                .Include(m => m.RoomAllocation)
+                                                .ThenInclude(m => m.Room)
+                                                .ThenInclude(m => m.LocationNavigation)
+                                                .SingleOrDefaultAsync(m => m.ContingentArrivalNo == id);
+
+            setAllotted(contingentArrival);
+            contingentArrival.RoomAllocation = null;
 
             if (contingentArrival == null)
             {
