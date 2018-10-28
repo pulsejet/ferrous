@@ -62,7 +62,7 @@ namespace Ferrous.Controllers
                 return BadRequest(ModelState);
             }
 
-            Contingent contingent = await _context.Contingents.Where(m => m.ContingentLeaderNo == id)
+            Contingent contingent = await _context.Contingents.Where(m => m.ContingentLeaderNo.ToUpperInvariant() == id.ToUpperInvariant())
                                             .Include(m => m.RoomAllocation)
                                                 .ThenInclude(m => m.Room)
                                             .Include(m => m.Person)

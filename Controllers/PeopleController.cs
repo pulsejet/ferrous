@@ -46,6 +46,13 @@ namespace Ferrous.Controllers
             );
         }
 
+        // GET: api/People/search?id=2
+        [HttpGet("find"), LinkRelation(LinkRelationList.self)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PEOPLE_GET)]
+        public async Task<IActionResult> FindPerson([FromQuery] string id) {
+            return await GetPerson(id).ConfigureAwait(false);
+        }
+
         // GET: api/People/5
         [HttpGet("{id}"), LinkRelation(LinkRelationList.self)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_GET_DETAILS)]
@@ -56,7 +63,7 @@ namespace Ferrous.Controllers
                 return BadRequest(ModelState);
             }
 
-            var person = await _context.Person.SingleOrDefaultAsync(m => m.Mino == id);
+            var person = await _context.Person.SingleOrDefaultAsync(m => m.Mino.ToUpperInvariant() == id.ToUpperInvariant());
 
             if (person == null)
             {

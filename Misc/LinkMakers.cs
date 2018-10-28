@@ -37,6 +37,7 @@ namespace Ferrous.Misc
                 .AddLink(nameof(PeopleController.GetPeople), null, "people")
                 .AddLink(nameof(PeopleController.GetPersonForward), null, "person_forward", true)
                 .AddLink(nameof(PeopleController.UploadSheet), null, "upload-people-sheet")
+                .AddLink(nameof(PeopleController.FindPerson), null, "find-person", true)
 
                 .SetOptions(User, typeof(LoginController), Url)
                 .AddLink(nameof(LoginController.login), null, "login", true)
