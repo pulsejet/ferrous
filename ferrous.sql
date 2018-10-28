@@ -318,3 +318,18 @@ BEGIN
     VALUES ('20181017103904_onspotdemand', '2.1.0-rtm-30799');
     END IF;
 END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20181028091013_buildingsex') THEN
+    ALTER TABLE "Building" ADD "Sex" varchar(1) NULL;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20181028091013_buildingsex') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20181028091013_buildingsex', '2.1.0-rtm-30799');
+    END IF;
+END $$;
