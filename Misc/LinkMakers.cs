@@ -159,6 +159,7 @@ namespace Ferrous.Misc
 
                 .SetOptions(User, typeof(BuildingsController), Url)
                 .AddLink(nameof(BuildingsController.GetBuildingsExtended), idObjectBuilding, "buildings")
+                .AddLink(nameof(BuildingsController.GetBuildingsMin), idObjectBuilding, "buildings-min")
 
                 .GetLinks();
         }

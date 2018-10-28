@@ -43,6 +43,19 @@ namespace Ferrous.Controllers
             );
         }
 
+        // GET: api/Buildings/n
+        [HttpGet("m/{id}/{cano}")]
+        [LinkRelation(LinkRelationList.self)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDINGS_GET)]
+        public Building[] GetBuildingsMin([FromRoute] string id, [FromRoute] int cano)
+        {
+            var buildings = _context.Building.ToArray();
+            foreach (var building in buildings) {
+                (new LinksMaker(User,Url)).FillBuildingsLinks(building, id, cano);
+            }
+            return buildings;
+        }
+
         // GET: api/Buildings/5
         [HttpGet("{id}/{clno}/{cano}")]
         [LinkRelation(LinkRelationList.self)]
