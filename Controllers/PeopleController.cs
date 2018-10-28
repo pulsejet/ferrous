@@ -63,7 +63,10 @@ namespace Ferrous.Controllers
                 return BadRequest(ModelState);
             }
 
-            var person = await _context.Person.SingleOrDefaultAsync(m => m.Mino.ToUpperInvariant() == id.ToUpperInvariant());
+            var person = await _context.Person
+                                       .Include(p => p.allottedCA)
+                                       .SingleOrDefaultAsync(
+                                           m => m.Mino.ToUpperInvariant() == id.ToUpperInvariant());
 
             if (person == null)
             {
