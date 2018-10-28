@@ -89,12 +89,14 @@ namespace Ferrous.Controllers
 
             var contingentArrival = await _context.ContingentArrival
                                                 .Include(m => m.RoomAllocation)
-                                                .ThenInclude(m => m.Room)
-                                                .ThenInclude(m => m.LocationNavigation)
+                                                    .ThenInclude(m => m.Room)
+                                                        .ThenInclude(m => m.LocationNavigation)
                                                 .SingleOrDefaultAsync(m => m.ContingentArrivalNo == id);
 
             setAllotted(contingentArrival);
             contingentArrival.RoomAllocation = null;
+
+            new LinksMaker(User, Url).FillContingentArrivalLinks(contingentArrival);
 
             if (contingentArrival == null)
             {
