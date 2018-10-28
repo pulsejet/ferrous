@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Ferrous.Models
 {
@@ -22,6 +23,7 @@ namespace Ferrous.Models
         public string RoomName { get; set; }
         public int? Status { get; set; }
 
+        [JsonIgnore]
         public Building LocationNavigation { get; set; }
         public ICollection<RoomAllocation> RoomAllocation { get; set; }
 

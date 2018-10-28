@@ -151,6 +151,8 @@ namespace Ferrous.Controllers
             var contingentArrival = await _context.ContingentArrival
                                                 .Include(m => m.CAPeople)
                                                 .Include(m => m.RoomAllocation)
+                                                    .ThenInclude(m => m.Room)
+                                                        .ThenInclude(m => m.LocationNavigation)
                                                 .SingleOrDefaultAsync(m => m.ContingentArrivalNo == id);
 
             if (contingentArrival == null)
@@ -167,12 +169,19 @@ namespace Ferrous.Controllers
                 FillCAPerson(caPerson, people, contingentArrival.ContingentLeaderNo);
             }
 
+            var linksMaker = new LinksMaker(User, Url);
+            foreach (var roomA in contingentArrival.RoomAllocation) {
+                linksMaker.FillRoomAllocationLinks(roomA);
+            }
+
+            setAllotted(contingentArrival);
+
             await _context.SaveChangesAsync();
 
             contingentArrival.PeopleFemale = contingentArrival.CAPeople.Count(m => m.Sex.ToUpper() == "F");
             contingentArrival.PeopleMale = contingentArrival.CAPeople.Count(m => m.Sex.ToUpper() == "M");
 
-            new LinksMaker(User, Url).FillContingentArrivalLinks(contingentArrival);
+            linksMaker.FillContingentArrivalLinks(contingentArrival);
 
             return Ok(contingentArrival);
         }
