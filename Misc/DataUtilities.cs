@@ -60,6 +60,12 @@ namespace Ferrous.Misc
                         building.CapacityNotReady += room.Capacity;
                         building.RoomsNotReady++;
                     }
+
+                    if (room.Status == 6) {
+                        building.CapacityMaintainance += room.Capacity;
+                        building.RoomsMaintainance++;
+                    }
+
                     if (room.Status != 1) { continue; }
 
                     building.RoomsTotal++;

@@ -219,13 +219,18 @@ namespace Ferrous.Controllers
                     }
                 }
 
-                if (room.Status == 4 || room.Status == 1)
+                if (room.Status == 6 || room.Status == 4 || room.Status == 1)
                 {
                     roomsWorksheet.Row(i).Style.Fill.PatternType = ExcelFillStyle.Solid;
 
                     if (room.Status == 4)
                     {
                         roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.LightPink);
+                    }
+                    else if (room.Status == 6)
+                    {
+                        roomsWorksheet.Row(i).Style.Font.Color.SetColor(Color.White);
+                        roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.Magenta);
                     }
                     else if (room.Status == 1)
                     {
