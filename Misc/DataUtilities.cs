@@ -88,6 +88,11 @@ namespace Ferrous.Misc
                             break;
                         }
 
+                        /* Prevent overfilled rooms from changing stats */
+                        if (roomA.Partial > room.Capacity) {
+                            roomA.Partial = room.Capacity;
+                        }
+
                         building.CapacityFilled += roomA.Partial;
                         building.CapacityEmpty -= roomA.Partial;
 
