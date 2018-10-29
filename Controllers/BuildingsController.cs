@@ -28,7 +28,32 @@ namespace Ferrous.Controllers
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDINGS_GET)]
         public async Task<EnumContainer> GetBuildingsExtended([FromRoute] string id, [FromRoute] int cano)
         {
-            var buildings = await DataUtilities.GetExtendedBuildings(_context, id);
+            Building[] buildings = await _context.Building
+                                        .Include(m => m.Room)
+                                            .ThenInclude(m => m.RoomAllocation)
+                                        .ToArrayAsync();
+
+            buildings = DataUtilities.GetExtendedBuildings(buildings, id);
+            return FillEBuildingsLinks(buildings, id, cano);
+        }
+
+        // POST: api/Buildings/stats-update
+        [HttpPost("stats-update")]
+        [LinkRelation(LinkRelationList.overridden)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDINGS_GET)]
+        public async Task<EnumContainer> GetStatsUpdate([FromBody] int[] roomIds)
+        {
+            Building[] buildings = await _context.Building
+                                        .Include(m => m.Room)
+                                            .ThenInclude(m => m.RoomAllocation)
+                                        .Where(m => m.Room.Any(r => roomIds.Contains(r.RoomId)))
+                                        .ToArrayAsync();
+
+            buildings = DataUtilities.GetExtendedBuildings(buildings, "mark");
+            return FillEBuildingsLinks(buildings, "mark", 0);
+        }
+
+        public EnumContainer FillEBuildingsLinks(Building[] buildings, string id, int cano) {
             foreach (var building in buildings) {
                 (new LinksMaker(User,Url)).FillBuildingsLinks(building, id, cano);
             }
