@@ -81,6 +81,7 @@ namespace Ferrous.Controllers
         private ContingentArrival fillFromExt(ExtContingentArrival extContingentArrival)  {
             var contingentArrival = new ContingentArrival();
             contingentArrival.CreatedOn = DateTime.UtcNow.AddHours(5).AddMinutes(30);
+            contingentArrival.FillerMiNo = extContingentArrival.FillerMiNo;
             contingentArrival.Male = extContingentArrival.Male;
             contingentArrival.Female = extContingentArrival.Female;
             contingentArrival.MaleOnSpotDemand = extContingentArrival.MaleOnSpotDemand;
@@ -91,7 +92,7 @@ namespace Ferrous.Controllers
 
         public class ExtContingentArrival {
             public string ContingentLeaderNo {get; set; }
-            public string FillerMINo {get; set; }
+            public string FillerMiNo {get; set; }
             public int Male {get; set; }
             public int Female {get; set; }
             public int MaleOnSpotDemand {get; set; }

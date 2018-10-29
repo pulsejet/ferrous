@@ -19,6 +19,7 @@ namespace Ferrous.Models
         public int ContingentArrivalNo { get; set; }
 
         public string ContingentLeaderNo { get; set; }
+        public string FillerMiNo { get; set; }
         public DateTime CreatedOn { get; set; }
 
         public int? MaleOnSpot { get; set; }
