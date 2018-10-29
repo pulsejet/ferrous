@@ -214,6 +214,67 @@ namespace Ferrous.Controllers
             }
         }
 
+        // GET: api/ContingentArrivals/stats
+        [HttpGet("stats"), LinkRelation(LinkRelationList.overridden)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET_DETAILS)]
+        public async Task<ActionResult> GetStats() {
+            ContingentArrival[] contingentArrivals = await _context.ContingentArrival
+                                                .Include(m => m.RoomAllocation)
+                                                .ToArrayAsync();
+
+            /* Counts approved from Desk 1 */
+            var d1Approved = contingentArrivals.Where(ca => ca.Approved == true);
+            int? d1ApprovedMale = d1Approved.Select(m => m.Male).Sum();
+            int? d1ApprovedFemale = d1Approved.Select(m => m.Female).Sum();
+
+            /* Registered people total */
+            int regMale = await _context.Person.Where(p => p.Sex == "M").CountAsync();
+            int regFemale = await _context.Person.Where(p => p.Sex == "F").CountAsync();
+
+            /* Registered people approved from Desk 1 */
+            int regApprovedMale = await _context.Person.Where(p => p.Sex == "M" && p.allottedCA != null).CountAsync();
+            int regApprovedFemale = await _context.Person.Where(p => p.Sex == "F" && p.allottedCA != null).CountAsync();
+
+            /* On Spot given from Desk 2 */
+            int? onSpotGivenMale = contingentArrivals.Select(m => m.MaleOnSpot).Sum();
+            int? onSpotGivenFemale = contingentArrivals.Select(m => m.FemaleOnSpot).Sum();
+
+            /* On Spot demand (forms with non-zero allocated on-spot) */
+            var pendingOnSpot =  contingentArrivals.Where(m => m.MaleOnSpot == null && m.FemaleOnSpot == null);
+            int? onSpotPendingDemandMale = pendingOnSpot.Select(m => m.MaleOnSpotDemand).Sum();
+            int? onSpotPendingDemandFemale = pendingOnSpot.Select(m => m.FemaleOnSpotDemand).Sum();
+
+            /* Forms filled not approved from Desk 1 */
+            var pendingApproval = contingentArrivals.Where(m => !m.Approved);
+            int? regPendingApprovalMale = pendingApproval.Select(m => m.Male).Sum();
+            int? regPendingApprovalFemale = pendingApproval.Select(m => m.Female).Sum();
+
+            /* Registered people with rooms given from desk 2 (EXCLUDING On Spot) */
+            var withRooms = contingentArrivals.Where(m => m.RoomAllocation.Any());
+            int? regWithRoomsMale = withRooms.Select(m => m.Male).Sum();
+            int? regWithRoomsFemale = withRooms.Select(m => m.Female).Sum();
+
+            return Ok(new {
+                M = new {
+                    reg = regMale,
+                    d1Approved = d1ApprovedMale,
+                    regApproved = regApprovedMale,
+                    regPendingApproval = regPendingApprovalMale,
+                    onSpotGiven = onSpotGivenMale,
+                    onSpotPendingDemand = onSpotPendingDemandMale,
+                    regWithRooms = regWithRoomsMale,
+                }, F = new {
+                    reg = regFemale,
+                    d1Approved = d1ApprovedFemale,
+                    regApproved = regApprovedFemale,
+                    regPendingApproval = regPendingApprovalFemale,
+                    onSpotGiven = onSpotGivenFemale,
+                    onSpotPendingDemand = onSpotPendingDemandFemale,
+                    regWithRooms = regWithRoomsFemale,
+                }
+            });
+        }
+
         // POST: api/ContingentArrivals/desk1/cap?id=5
         [HttpPost("desk1/cap/{cano}"), LinkRelation(LinkRelationList.overridden)]
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_PUT)]
