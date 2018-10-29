@@ -32,6 +32,7 @@ namespace Ferrous.Misc
 
                 .SetOptions(User, typeof(BuildingsController), Url)
                 .AddLink(nameof(BuildingsController.GetBuildingsExtended), new { id = "mark", cano = "mark" }, "mark_buildings")
+                .AddLink(nameof(BuildingsController.GetStatsUpdate), null, "stats-update")
 
                 .SetOptions(User, typeof(PeopleController), Url)
                 .AddLink(nameof(PeopleController.GetPeople), null, "people")

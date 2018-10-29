@@ -180,7 +180,7 @@ namespace Ferrous.Controllers
             httpWebRequest.Method = "POST";
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream())) {
-                string json = "";
+                string json = "{\"secret\":\"mimi123\"}";
                 streamWriter.Write(json);
                 streamWriter.Flush();
                 streamWriter.Close();

@@ -1,6 +1,8 @@
 ﻿using Ferrous.Models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static Ferrous.Misc.Utilities;
 
@@ -45,12 +47,18 @@ namespace Ferrous.Misc
             return cts;
         }
 
-        public async static Task<Building[]> GetExtendedBuildings(ferrousContext _context, string clno)
-        {
-            Building[] buildings = await _context.Building.Include(m => m.Room)
-                                                 .ThenInclude(m => m.RoomAllocation)
-                                                 .ToArrayAsync();
+        public static void UpdateWebSock(Room[] rooms, IHubContext<WebSocketHubs.BuildingUpdateHub> hubContext) {
+            if (rooms.Length == 0) { return; }
+            int[] roomIds = rooms.Select(r => r.RoomId).ToArray();
+            List<string> locations = rooms.Select(r => r.Location).Distinct().ToList();
+            locations.Add("ALL");
+            foreach (string group in locations) {
+                hubContext.Clients.Group(group).SendAsync("updated", roomIds);
+            }
+        }
 
+        public static Building[] GetExtendedBuildings(Building[] buildings, string clno)
+        {
             Parallel.ForEach(buildings, building =>
             {
                 building.CapacityEmpty = 0;
