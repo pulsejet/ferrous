@@ -226,7 +226,7 @@ namespace Ferrous.Controllers
             int? regPendingApprovalMale = pendingApproval.Select(m => m.Male).Sum();
             int? regPendingApprovalFemale = pendingApproval.Select(m => m.Female).Sum();
 
-            /* Registered people with rooms given from desk 2 (EXCLUDING On Spot) */
+            /* Desk-1-Approved people with rooms given from desk 2 (EXCLUDING On Spot) */
             var withRooms = contingentArrivals.Where(m => m.RoomAllocation.Any());
             int? regWithRoomsMale = withRooms.Select(m => m.Male).Sum();
             int? regWithRoomsFemale = withRooms.Select(m => m.Female).Sum();
