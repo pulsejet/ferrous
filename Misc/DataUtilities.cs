@@ -71,6 +71,8 @@ namespace Ferrous.Misc
                 building.CapacityEmpty = 0;
                 foreach (var room in building.Room)
                 {
+                    building.RoomsTotal++;
+
                     if (room.Status == 4) {
                         building.CapacityNotReady += room.Capacity;
                         building.RoomsNotReady++;
@@ -83,7 +85,6 @@ namespace Ferrous.Misc
 
                     if (room.Status != 1) { continue; }
 
-                    building.RoomsTotal++;
                     building.CapacityEmpty += room.Capacity;
 
                     int partialSum = 0;
