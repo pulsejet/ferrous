@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferrous.Misc;
 using Ferrous.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferrous.Controllers
@@ -14,10 +16,12 @@ namespace Ferrous.Controllers
     public class ExternalController : Controller
     {
         private readonly ferrousContext _context;
+        private readonly IHubContext<WebSocketHubs.BuildingUpdateHub> _hubContext;
 
-        public ExternalController(ferrousContext context)
+        public ExternalController(ferrousContext context, IHubContext<WebSocketHubs.BuildingUpdateHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         [HttpPost("validate-form1")]
@@ -31,7 +35,6 @@ namespace Ferrous.Controllers
             var people = await _context.Person.ToListAsync();
 
             var contingentArrival = fillFromExt(extContingentArrival);
-            ContingentArrivalsController contingentArrivalsController = new ContingentArrivalsController(_context);
 
             /* Make CAPerson entries */
             foreach (string mino in extContingentArrival.Minos) {
@@ -39,7 +42,7 @@ namespace Ferrous.Controllers
                 caPerson.Mino = mino;
                 caPerson.CANav = contingentArrival;
                 caPerson.person = people.SingleOrDefault(m => m.Mino == mino);
-                contingentArrivalsController.FillCAPerson(caPerson, people.ToArray(), contingent.ContingentLeaderNo, false);
+                DataUtilities.FillCAPerson(User, Url, caPerson, people.ToArray(), contingent.ContingentLeaderNo, false);
                 contingentArrival.CAPeople.Add(caPerson);
             }
 
@@ -71,6 +74,7 @@ namespace Ferrous.Controllers
 
             await _context.SaveChangesAsync();
 
+            DataUtilities.UpdateWebSock(null, _hubContext);
             return CreatedAtAction("GetContingentArrival", new { id = contingentArrival.ContingentArrivalNo }, contingentArrival);
         }
 

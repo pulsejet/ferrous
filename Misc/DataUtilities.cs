@@ -1,8 +1,10 @@
 ﻿using Ferrous.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using static Ferrous.Misc.Utilities;
 
@@ -50,9 +52,12 @@ namespace Ferrous.Misc
         }
 
         public static void UpdateWebSock(Room[] rooms, IHubContext<WebSocketHubs.BuildingUpdateHub> hubContext) {
-            if (rooms.Length == 0) { return; }
-            int[] roomIds = rooms.Select(r => r.RoomId).ToArray();
-            List<string> locations = rooms.Select(r => r.Location).Distinct().ToList();
+            var locations = new List<string>();
+            int[] roomIds = {};
+            if (rooms != null && rooms.Length > 0) {
+                roomIds = rooms.Select(r => r.RoomId).ToArray();
+                locations = rooms.Select(r => r.Location).Distinct().ToList();
+            }
             locations.Add("ALL");
             foreach (string group in locations) {
                 hubContext.Clients.Group(group).SendAsync("updated", roomIds);
@@ -125,6 +130,34 @@ namespace Ferrous.Misc
             });
 
             return buildings;
+        }
+
+        public static void FillCAPerson(ClaimsPrincipal user, IUrlHelper url, CAPerson caPerson, Person[] people, string clno, bool links = true) {
+            if (links) {
+                new LinksMaker(user, url).FillCAPersonLinks(caPerson);
+            }
+            var person = people.SingleOrDefault(m => m.Mino == caPerson.Mino);
+            if (person != null) {
+                caPerson.person = person;
+
+                if (links) {
+                    new LinksMaker(user, url).FillPersonLinks(person);
+                }
+
+                caPerson.Sex = person.Sex;
+                if (person.ContingentLeaderNo != clno) {
+                    // Bad Contingent Leader
+                    caPerson.flags += "BCL";
+                }
+                if (person.allottedCA != null) {
+                    // Person already approved (in another subcontingent etc)
+                    caPerson.flags += "PAA";
+                }
+            } else {
+                // No Registered Person
+                caPerson.flags += "NRP";
+                caPerson.Sex = "?";
+            }
         }
     }
 }

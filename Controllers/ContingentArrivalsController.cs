@@ -8,6 +8,7 @@ using Ferrous.Models;
 using static Ferrous.Misc.Authorization;
 using System.Security.Claims;
 using Ferrous.Misc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Ferrous.Controllers
 {
@@ -16,10 +17,12 @@ namespace Ferrous.Controllers
     public class ContingentArrivalsController : ControllerBase
     {
         private readonly ferrousContext _context;
+        private readonly IHubContext<WebSocketHubs.BuildingUpdateHub> _hubContext;
 
-        public ContingentArrivalsController(ferrousContext context)
+        public ContingentArrivalsController(ferrousContext context, IHubContext<WebSocketHubs.BuildingUpdateHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         // DEPRECATED
@@ -135,6 +138,8 @@ namespace Ferrous.Controllers
 
             await _context.SaveChangesAsync();
 
+            DataUtilities.UpdateWebSock(null, _hubContext);
+
             return Ok(contingentArrival);
         }
 
@@ -166,7 +171,7 @@ namespace Ferrous.Controllers
                                                     .ToArrayAsync();
 
             foreach (CAPerson caPerson in contingentArrival.CAPeople) {
-                FillCAPerson(caPerson, people, contingentArrival.ContingentLeaderNo);
+                DataUtilities.FillCAPerson(User, Url, caPerson, people, contingentArrival.ContingentLeaderNo);
             }
 
             var linksMaker = new LinksMaker(User, Url);
@@ -184,34 +189,6 @@ namespace Ferrous.Controllers
             linksMaker.FillContingentArrivalLinks(contingentArrival);
 
             return Ok(contingentArrival);
-        }
-
-        public void FillCAPerson(CAPerson caPerson, Person[] people, string clno, bool links = true) {
-            if (links) {
-                new LinksMaker(User, Url).FillCAPersonLinks(caPerson);
-            }
-            var person = people.SingleOrDefault(m => m.Mino == caPerson.Mino);
-            if (person != null) {
-                caPerson.person = person;
-
-                if (links) {
-                    new LinksMaker(User, Url).FillPersonLinks(person);
-                }
-
-                caPerson.Sex = person.Sex;
-                if (person.ContingentLeaderNo != clno) {
-                    // Bad Contingent Leader
-                    caPerson.flags += "BCL";
-                }
-                if (person.allottedCA != null) {
-                    // Person already approved (in another subcontingent etc)
-                    caPerson.flags += "PAA";
-                }
-            } else {
-                // No Registered Person
-                caPerson.flags += "NRP";
-                caPerson.Sex = "?";
-            }
         }
 
         // GET: api/ContingentArrivals/stats
@@ -285,7 +262,7 @@ namespace Ferrous.Controllers
             await _context.SaveChangesAsync();
 
             Person[] people = await _context.Person.Where(m => m.Mino == caPerson.Mino).ToArrayAsync();
-            FillCAPerson(caPerson, people, caPerson.CANav.ContingentLeaderNo);
+            DataUtilities.FillCAPerson(User, Url, caPerson, people, caPerson.CANav.ContingentLeaderNo);
 
             return CreatedAtAction("PostCAPerson", new { id = caPerson.Sno }, caPerson);
         }
@@ -303,6 +280,8 @@ namespace Ferrous.Controllers
 
             _context.CAPerson.Remove(caPerson);
             await _context.SaveChangesAsync();
+
+            DataUtilities.UpdateWebSock(null, _hubContext);
 
             return Ok(caPerson);
         }
@@ -340,6 +319,8 @@ namespace Ferrous.Controllers
                     throw;
                 }
             }
+
+            DataUtilities.UpdateWebSock(null, _hubContext);
 
             return NoContent();
         }
