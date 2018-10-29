@@ -116,7 +116,7 @@ namespace Ferrous.Misc
                     }
 
                     if (room.RoomAllocation.Count > 0) {
-                        if (partialSum <= 0) {
+                        if (partialSum < 0 || partialSum >= room.Capacity) {
                             building.RoomsFilled++;
                         } else {
                             building.RoomsPartial++;
