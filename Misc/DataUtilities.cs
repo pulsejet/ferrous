@@ -94,7 +94,6 @@ namespace Ferrous.Misc
 
                         if (roomA.Partial <= 0)
                         {
-                            building.RoomsFilled++;
                             building.CapacityFilled += room.Capacity;
                             building.CapacityEmpty -= room.Capacity;
                             if (roomA.ContingentLeaderNo == clno) {
