@@ -16,25 +16,27 @@ namespace Ferrous.Misc
                                         .Include(m => m.Person)
                                         .Include(m => m.ContingentArrival).ToArrayAsync();
 
-            foreach (var contingent in cts)
+            Parallel.ForEach(cts, contingent =>
             {
                 int RegMale = 0, RegFemale = 0,
                     ArrivedM = 0, ArrivedF = 0,
                     OnSpotM = 0, OnSpotF = 0;
 
-                Parallel.ForEach(contingent.Person, person => {
-                    if (person == null) { return; }
+                foreach (var person in contingent.Person) {
+                    if (person == null) { continue; }
                     if (person.Sex == "M") { RegMale += 1; }
                     else if (person.Sex == "F") { RegFemale += 1; }
-                });
+                };
 
-                Parallel.ForEach(contingent.ContingentArrival, ca =>
+                foreach (var ca in contingent.ContingentArrival)
                 {
-                    ArrivedM += dbCInt(ca.Male);
-                    ArrivedF += dbCInt(ca.Female);
-                    OnSpotM += dbCInt(ca.MaleOnSpot);
-                    OnSpotF += dbCInt(ca.FemaleOnSpot);
-                });
+                    if (ca.Approved) {
+                        ArrivedM += dbCInt(ca.Male);
+                        ArrivedF += dbCInt(ca.Female);
+                        OnSpotM += dbCInt(ca.MaleOnSpot);
+                        OnSpotF += dbCInt(ca.FemaleOnSpot);
+                    }
+                };
 
                 contingent.Male = RegMale.ToString();
                 contingent.Female = RegFemale.ToString();
@@ -42,7 +44,7 @@ namespace Ferrous.Misc
                 contingent.ArrivedF = ArrivedF.ToString() + ((OnSpotF > 0) ? " + " + OnSpotF : "");
                 contingent.Person = new HashSet<Person>();
                 contingent.ContingentArrival = new HashSet<ContingentArrival>();
-            }
+            });
 
             return cts;
         }

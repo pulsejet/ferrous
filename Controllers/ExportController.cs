@@ -99,8 +99,8 @@ namespace Ferrous.Controllers
                 "CL No",
                 "Reg (M)",
                 "Reg (F)",
-                "Arrived (M)",
-                "Arrived (F)",
+                "D1 Approved (M)",
+                "D1 Approved (F)",
                 "Remark"
             };
             setColumnHeaders(headers, contingentsWorksheet);
