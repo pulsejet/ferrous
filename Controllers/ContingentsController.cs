@@ -95,6 +95,8 @@ namespace Ferrous.Controllers
 
             _context.Entry(contingents).State = EntityState.Modified;
 
+            Utilities.Log(_context, HttpContext, $"Update contingent {contingents.ContingentLeaderNo}", 1, true);
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -127,6 +129,7 @@ namespace Ferrous.Controllers
             _context.Contingents.Add(contingents);
             try
             {
+                Utilities.Log(_context, HttpContext, $"Create contingent {contingents.ContingentLeaderNo}", 1, true);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
@@ -160,6 +163,7 @@ namespace Ferrous.Controllers
                 return NotFound();
             }
 
+            Utilities.Log(_context, HttpContext, $"Delete contingent {contingents.ContingentLeaderNo}", 1, true);
             _context.Contingents.Remove(contingents);
             await _context.SaveChangesAsync();
 

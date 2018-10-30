@@ -98,6 +98,8 @@ namespace Ferrous.Controllers
                 return BadRequest();
             }
 
+            Utilities.Log(_context, HttpContext, $"Update room {room.RoomId} ({room.Location} {room.RoomName})", 2, true);
+
             _context.Entry(room).State = EntityState.Modified;
 
             try
@@ -197,6 +199,8 @@ namespace Ferrous.Controllers
 
                 _context.Update(NewRoomA);
                 _context.Update(room);
+
+                Utilities.Log(_context, HttpContext, $"Allot room {room.RoomId} ({room.Location} {room.RoomName}) to {clno} #{cano} (p {NewRoomA.Partial})", 2, true);
             }
 
             await _context.SaveChangesAsync();
@@ -221,6 +225,7 @@ namespace Ferrous.Controllers
                 if (room.RoomAllocation.Count > 0) { continue; }
                 room.Status = (short)status;
                 _context.Update(room);
+                Utilities.Log(_context, HttpContext, $"Mark room {room.RoomId} ({room.Location} {room.RoomName}) status={status}", 2, true);
             }
 
             await _context.SaveChangesAsync();
@@ -329,6 +334,8 @@ namespace Ferrous.Controllers
 
                         /* Update final list */
                         updatedRooms.Add(room);
+
+                        Utilities.Log(_context, HttpContext, $"Sheet-update room {room.RoomId} ({room.Location} {room.RoomName}) status={status} lockNo={lockNo}", 2, true);
                     }
 
                     await _context.SaveChangesAsync();

@@ -142,6 +142,7 @@ namespace Ferrous.Controllers
             /* Approve! */
             contingentArrival.Approved = true;
 
+            Utilities.Log(_context, HttpContext, $"Approve subcontingent {contingentArrival.ContingentArrivalNo} {contingentArrival.ContingentLeaderNo})", 2, true);
             await _context.SaveChangesAsync();
 
             DataUtilities.UpdateWebSock(null, _hubContext);
@@ -179,6 +180,7 @@ namespace Ferrous.Controllers
             /* UnApprove! */
             contingentArrival.Approved = false;
 
+            Utilities.Log(_context, HttpContext, $"Unapprove subcontingent {contingentArrival.ContingentArrivalNo} {contingentArrival.ContingentLeaderNo})", 1, true);
             await _context.SaveChangesAsync();
 
             DataUtilities.UpdateWebSock(null, _hubContext);
@@ -303,6 +305,8 @@ namespace Ferrous.Controllers
         {
             caPerson.CANav = await _context.ContingentArrival.SingleOrDefaultAsync(m => m.ContingentArrivalNo == cano);
             _context.CAPerson.Add(caPerson);
+
+            Utilities.Log(_context, HttpContext, $"Add person {caPerson.Mino} to subcontingent #{caPerson.CANav.ContingentArrivalNo} {caPerson.CANav.ContingentLeaderNo})", 2, true);
             await _context.SaveChangesAsync();
 
             Person[] people = await _context.Person.Where(m => m.Mino == caPerson.Mino).ToArrayAsync();
@@ -323,6 +327,7 @@ namespace Ferrous.Controllers
             }
 
             _context.CAPerson.Remove(caPerson);
+            Utilities.Log(_context, HttpContext, $"Remove person {caPerson.Mino} from subcontingent #{caPerson.CANav.ContingentArrivalNo} {caPerson.CANav.ContingentLeaderNo})", 2, true);
             await _context.SaveChangesAsync();
 
             DataUtilities.UpdateWebSock(null, _hubContext);
@@ -350,6 +355,7 @@ namespace Ferrous.Controllers
 
             try
             {
+                Utilities.Log(_context, HttpContext, $"Update subcontingent #{contingentArrival.ContingentArrivalNo} {contingentArrival.ContingentLeaderNo})", 1, true);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -385,6 +391,7 @@ namespace Ferrous.Controllers
             await _context.SaveChangesAsync();
 
             new LinksMaker(User, Url).FillContingentArrivalLinks(contingentArrival);
+            Utilities.Log(_context, HttpContext, $"Create subcontingent #{contingentArrival.ContingentArrivalNo} {contingentArrival.ContingentLeaderNo})", 0, true);
 
             return CreatedAtAction("GetContingentArrival", new { id = contingentArrival.ContingentArrivalNo }, contingentArrival);
         }
@@ -406,6 +413,7 @@ namespace Ferrous.Controllers
                 return NotFound();
             }
 
+            Utilities.Log(_context, HttpContext, $"Delete subcontingent #{contingentArrival.ContingentArrivalNo} {contingentArrival.ContingentLeaderNo})", 1, true);
             _context.ContingentArrival.Remove(contingentArrival);
             await _context.SaveChangesAsync();
 

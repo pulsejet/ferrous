@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Ferrous.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Ferrous.Misc
 {
@@ -76,6 +78,18 @@ namespace Ferrous.Misc
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
             .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public static void Log(ferrousContext dbContext, HttpContext httpContext, string message, int level, bool no_save = false) {
+            var entry = new LogEntry();
+            entry.Timestamp = DateTime.Now;
+            entry.username = httpContext.User.Identity.Name;
+            entry.message = message;
+            entry.level = level;
+            dbContext.Add(entry);
+            if (!no_save) {
+                dbContext.SaveChanges();
+            }
         }
     }
 }

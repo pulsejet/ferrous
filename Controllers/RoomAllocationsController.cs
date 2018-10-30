@@ -107,6 +107,8 @@ namespace Ferrous.Controllers
             }
 
             _context.RoomAllocation.Add(roomAllocation);
+            Utilities.Log(_context, HttpContext, $"Create room allocation for room id {roomAllocation.RoomId}", 2, true);
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRoomAllocation", new { id = roomAllocation.Sno }, roomAllocation);
@@ -132,6 +134,7 @@ namespace Ferrous.Controllers
             }
 
             _context.RoomAllocation.Remove(roomAllocation);
+            Utilities.Log(_context, HttpContext, $"Remove room allocation for room id {roomAllocation.RoomId} ({roomAllocation.Room.Location} {roomAllocation.Room.RoomName}) #{roomAllocation.ContingentArrivalNo} {roomAllocation.ContingentLeaderNo}", 2, true);
             await _context.SaveChangesAsync();
 
             UpdateLayoutWebSocket(new Room[] {roomAllocation.Room});

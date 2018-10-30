@@ -11,6 +11,7 @@ namespace Ferrous.Models
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<RoomAllocation> RoomAllocation { get; set; }
         public virtual DbSet<CAPerson> CAPerson { get; set; }
+        public virtual DbSet<LogEntry> LogEntry { get; set; }
 
         public ferrousContext(DbContextOptions<ferrousContext> options)
             : base(options)

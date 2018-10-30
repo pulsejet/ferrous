@@ -94,6 +94,7 @@ namespace Ferrous.Controllers
                 return BadRequest();
             }
 
+            Utilities.Log(_context, HttpContext, $"Update person {person.Mino} {person.Name}", 1, true);
             _context.Entry(person).State = EntityState.Modified;
 
             try
@@ -126,6 +127,7 @@ namespace Ferrous.Controllers
             }
 
             _context.Person.Add(person);
+            Utilities.Log(_context, HttpContext, $"Add person {person.Mino} {person.Name}", 1, true);
             try
             {
                 await _context.SaveChangesAsync();
@@ -160,6 +162,8 @@ namespace Ferrous.Controllers
             {
                 return NotFound();
             }
+
+            Utilities.Log(_context, HttpContext, $"Delete person {person.Mino} {person.Name}", 1, true);
 
             _context.Person.Remove(person);
             await _context.SaveChangesAsync();
