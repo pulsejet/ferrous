@@ -60,6 +60,9 @@ namespace Ferrous.Misc
                 .AddLink(nameof(RoomsController.UploadSheet), null, "upload-sheet")
                 .AddLink(nameof(RoomsController.UploadSheetSample), null, "upload-sheet-sample")
 
+                .SetOptions(User, typeof(ExportController), Url)
+                .AddLink(nameof(ExportController.GetLogs), new {page=1}, "get-logs")
+
                 /* Add websocket */
                 .AddAbsoluteContentLink(WebSocketHubs.BuildingUpdateHub.BuildingWebsocketUrl, "building_websocket")
                 .AddStringLink(nameof(WebSocketHubs.BuildingUpdateHub.JoinBuilding), "building_websocket_join")

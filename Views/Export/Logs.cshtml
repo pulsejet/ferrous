@@ -1,0 +1,45 @@
+@using Ferrous.Models
+@model Ferrous.Models.LogEntry[]
+
+<html>
+
+<head>
+    <title>Ferrous Logs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href='/api/export/logs/@ViewData["prev"]'>Newer</a>
+    <a href='/api/export/logs/@ViewData["next"]'>Older</a>
+    <table>
+        <thead>
+            <th>S.No</th>
+            <th>Time</th>
+            <th>User</th>
+            <th>Message</th>
+            <th>Level</th>
+        </thead>
+        <tbody>
+        @foreach(var entry in @Model){
+                <tr>
+                    <td>@entry.Id</td>
+                    <td>@entry.Timestamp</td>
+                    <td>@entry.username</td>
+                    <td>@entry.message</td>
+                    <td>@entry.level</td>
+                </tr>
+        }
+        </tbody>
+    </table>
+</body>

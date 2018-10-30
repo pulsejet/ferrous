@@ -12,6 +12,7 @@ using static Ferrous.Misc.Authorization;
 using Ferrous.Misc;
 using System.Collections.Generic;
 using System.Text;
+using System;
 
 namespace Ferrous.Controllers
 {
@@ -57,6 +58,20 @@ namespace Ferrous.Controllers
             }
 
             return View("Bill", contingentArrival);
+        }
+
+        [HttpGet("logs/{page}")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.VIEW_LOGS)]
+        public ActionResult GetLogs([FromRoute] int page)
+        {
+            const int maxNo = 5000;
+            var entries = _context.LogEntry.OrderByDescending(m => m.Timestamp)
+                                           .Skip(maxNo * (page - 1)).Take(maxNo)
+                                           .ToArray();
+
+            ViewData["prev"] = page == 1 ? 1 : page - 1;
+            ViewData["next"] = page + 1;
+            return View("Logs", entries);
         }
 
         // GET: api/export

@@ -126,7 +126,8 @@ namespace Ferrous.Misc
             EXPORT_DATA = 11000,
 
             BILL_CONTINGENT_ARRIVAL = 12001,
-            MANAGE_USERS = 100000
+            MANAGE_USERS = 100000,
+            VIEW_LOGS = 100001
         }
 
         public enum ElevationLevels
