@@ -28,7 +28,7 @@ namespace Ferrous.Misc
 
         public PrivilegeList privilege {
             get { return _privilege; }
-        } 
+        }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
@@ -106,6 +106,8 @@ namespace Ferrous.Misc
             ROOM_PUT = 23,
             ROOM_POST = 24,
             ROOM_DELETE = 25,
+            DESK1_APPROVE = 101,
+            DESK1_UNAPPROVE = 102,
 
             CONTINGENTARRIVALS_GET = 26,
             CONTINGENTARRIVALS_GET_DETAILS = 27,

@@ -150,6 +150,7 @@ namespace Ferrous.Misc
                 .AddLink(nameof(ContingentArrivalsController.DeleteContingentArrival), idObject)
                 .AddLink(nameof(ContingentArrivalsController.PostCAPerson), desk1obj, "add_caperson")
                 .AddLink(nameof(ContingentArrivalsController.ApproveContingentArrival), desk1obj, "approve")
+                .AddLink(nameof(ContingentArrivalsController.UnApproveContingentArrival), desk1obj, "unapprove")
 
                 .SetOptions(User, typeof(ContingentsController), Url)
                 .AddLink(nameof(ContingentsController.GetContingent), new { id = contingentArrival.ContingentLeaderNo }, "contingent")

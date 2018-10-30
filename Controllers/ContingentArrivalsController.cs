@@ -110,13 +110,13 @@ namespace Ferrous.Controllers
         }
 
         [HttpPut("desk1/approve/{cano}"), LinkRelation(LinkRelationList.overridden)]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_PUT)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.DESK1_APPROVE)]
         public async Task<IActionResult> ApproveContingentArrival([FromRoute] int cano, [FromBody] ContingentArrival contingentArrivalPut)
         {
             var contingentArrival = await _context.ContingentArrival
                                                 .Include(m => m.CAPeople)
                                                 .SingleOrDefaultAsync(m => m.ContingentArrivalNo == cano);
-            if (contingentArrival == null)
+            if (contingentArrival == null || contingentArrival.Approved)
             {
                 return NotFound();
             }
@@ -126,11 +126,17 @@ namespace Ferrous.Controllers
             contingentArrival.Female = contingentArrivalPut.Female;
 
             /* Mark people as done with */
+            String[] minos = contingentArrival.CAPeople.Select(cap => cap.Mino).ToArray();
+            Person[] people = await _context.Person.Where(m => minos.Contains(m.Mino)).ToArrayAsync();
+            var linksMaker = new LinksMaker(User, Url);
             foreach (CAPerson caPerson in contingentArrival.CAPeople) {
-                Person person = await _context.Person.SingleOrDefaultAsync(m => m.Mino == caPerson.Mino);
+                linksMaker.FillCAPersonLinks(caPerson);
+                Person person = people.SingleOrDefault(m => m.Mino == caPerson.Mino);
                 if (person != null) {
                     person.allottedCA = contingentArrival;
+                    _context.Update(person);
                 }
+                DataUtilities.FillCAPerson(User, Url, caPerson, people, contingentArrival.ContingentLeaderNo, false);
             }
 
             /* Approve! */
@@ -140,6 +146,44 @@ namespace Ferrous.Controllers
 
             DataUtilities.UpdateWebSock(null, _hubContext);
 
+            linksMaker.FillContingentArrivalLinks(contingentArrival);
+            return Ok(contingentArrival);
+        }
+
+        [HttpPut("desk1/unapprove/{cano}"), LinkRelation(LinkRelationList.overridden)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.DESK1_UNAPPROVE)]
+        public async Task<IActionResult> UnApproveContingentArrival([FromRoute] int cano)
+        {
+            var contingentArrival = await _context.ContingentArrival
+                                                .Include(m => m.CAPeople)
+                                                .SingleOrDefaultAsync(m => m.ContingentArrivalNo == cano);
+            if (contingentArrival == null || !contingentArrival.Approved) { return NotFound(); }
+
+            /* Mark people as done with */
+            String[] minos = contingentArrival.CAPeople.Select(cap => cap.Mino).ToArray();
+            Person[] people = await _context.Person
+                                                .Include(p => p.allottedCA)
+                                                .Where(m => minos.Contains(m.Mino)).ToArrayAsync();
+
+            var linksMaker = new LinksMaker(User, Url);
+            foreach (CAPerson caPerson in contingentArrival.CAPeople) {
+                linksMaker.FillCAPersonLinks(caPerson);
+                Person person = people.SingleOrDefault(m => m.Mino == caPerson.Mino);
+                if (person != null && person.allottedCA.ContingentArrivalNo == contingentArrival.ContingentArrivalNo) {
+                    person.allottedCA = null;
+                    _context.Update(person);
+                }
+                DataUtilities.FillCAPerson(User, Url, caPerson, people, contingentArrival.ContingentLeaderNo, false);
+            }
+
+            /* UnApprove! */
+            contingentArrival.Approved = false;
+
+            await _context.SaveChangesAsync();
+
+            DataUtilities.UpdateWebSock(null, _hubContext);
+
+            linksMaker.FillContingentArrivalLinks(contingentArrival);
             return Ok(contingentArrival);
         }
 
