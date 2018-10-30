@@ -151,7 +151,7 @@ namespace Ferrous.Controllers
         }
 
         [HttpPut("desk1/unapprove/{cano}"), LinkRelation(LinkRelationList.overridden)]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.DESK1_UNAPPROVE)]
+        [Authorization(ElevationLevels.SuperUser, PrivilegeList.DESK1_UNAPPROVE)]
         public async Task<IActionResult> UnApproveContingentArrival([FromRoute] int cano)
         {
             var contingentArrival = await _context.ContingentArrival
