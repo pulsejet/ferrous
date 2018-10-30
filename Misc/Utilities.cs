@@ -27,6 +27,14 @@ namespace Ferrous.Misc
             }
         }
 
+        public static void WriteJson<T>(string path, List<T> list)
+        {
+            using (StreamWriter w = new StreamWriter(path))
+            {
+                w.Write(Newtonsoft.Json.JsonConvert.SerializeObject(list, Newtonsoft.Json.Formatting.Indented));
+            }
+        }
+
         public static int dbCInt(Object o)
         {
             if (o is null) { return 0; }
@@ -60,6 +68,14 @@ namespace Ferrous.Misc
                 }
                 return result.ToString();
             }
+        }
+
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

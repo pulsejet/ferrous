@@ -44,6 +44,9 @@ namespace Ferrous.Misc
                 .AddLink(nameof(LoginController.login), null, "login", true)
                 .AddLink(nameof(LoginController.Logout), null, "logout")
                 .AddLink(nameof(LoginController.GetUser), null, "getuser")
+                .AddLink(nameof(LoginController.GetAllUsers), null, "get-all-users")
+                .AddLink(nameof(LoginController.PostAllUsers), null, "post-all-users", true)
+                .AddLink(nameof(LoginController.GetAllPrivileges), null, "all-privileges")
 
                 .SetOptions(User, typeof(ContingentArrivalsController), Url)
                 .AddLink(nameof(ContingentArrivalsController.GetDesk1), null, "desk1", true)

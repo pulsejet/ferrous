@@ -44,10 +44,14 @@ namespace Ferrous.Misc
             }
         }
 
+        public static void reloadIdentities() {
+            staticIdentities = Utilities.LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE).ToImmutableList();
+        }
+
         public static bool hasPrivilege(string username, ElevationLevels minElevation, PrivilegeList priv = PrivilegeList.NONE)
         {
             if (staticIdentities == null) {
-                staticIdentities = Utilities.LoadJson<FerrousIdentity>(IDENTITIES_JSON_FILE).ToImmutableList();
+                reloadIdentities();
             }
 
             if (username == String.Empty) { return false; }
@@ -122,6 +126,7 @@ namespace Ferrous.Misc
             EXPORT_DATA = 11000,
 
             BILL_CONTINGENT_ARRIVAL = 12001,
+            MANAGE_USERS = 100000
         }
 
         public enum ElevationLevels
