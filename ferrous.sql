@@ -333,3 +333,18 @@ BEGIN
     VALUES ('20181028091013_buildingsex', '2.1.0-rtm-30799');
     END IF;
 END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20181029225719_FillerMiNoCA') THEN
+    ALTER TABLE "ContingentArrival" ADD "FillerMiNo" text NULL;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20181029225719_FillerMiNoCA') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20181029225719_FillerMiNoCA', '2.1.0-rtm-30799');
+    END IF;
+END $$;
