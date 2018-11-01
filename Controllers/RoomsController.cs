@@ -271,7 +271,7 @@ namespace Ferrous.Controllers
         }
 
         [LinkRelation(LinkRelationList.overridden)]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_PUT)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.UPLOAD_ROOM_SHEET)]
         [HttpPost("upload-sheet"), DisableRequestSizeLimit]
         public async Task<ActionResult> UploadSheet()
         {
@@ -354,7 +354,7 @@ namespace Ferrous.Controllers
         }
 
         [LinkRelation(LinkRelationList.overridden)]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.ROOM_PUT)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.UPLOAD_ROOM_SHEET)]
         [HttpGet("upload-sheet"), DisableRequestSizeLimit]
         public ActionResult UploadSheetSample() {
             using (ExcelPackage package = new ExcelPackage()) {

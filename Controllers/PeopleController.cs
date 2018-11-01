@@ -209,7 +209,7 @@ namespace Ferrous.Controllers
         }
 
         [LinkRelation(LinkRelationList.overridden)]
-        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.PERSON_POST)]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.UPLOAD_PEOPLE_SHEET)]
         [HttpPost("upload-sheet"), DisableRequestSizeLimit]
         public async Task<ActionResult> UploadSheet()
         {
