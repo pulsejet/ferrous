@@ -82,7 +82,7 @@ namespace Ferrous.Misc
 
             if (id.elevation == (int) ElevationLevels.SuperUser) { return true; }
 
-            return id.locations.Contains(buildingShortName);
+            return id.locations != null && id.locations.Contains(buildingShortName);
         }
 
         public class FerrousIdentity
