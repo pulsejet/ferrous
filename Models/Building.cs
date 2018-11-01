@@ -21,5 +21,9 @@ namespace Ferrous.Models
         public ICollection<Room> Room { get; set; }
 
         public List<Misc.Link> Links;
+
+        public bool hasAuth(System.Security.Claims.ClaimsPrincipal user) {
+            return Ferrous.Misc.Authorization.hasBuildingAuth(user.Identity.Name, Location);
+        }
     }
 }

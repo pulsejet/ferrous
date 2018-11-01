@@ -31,6 +31,7 @@ namespace Ferrous.Controllers
             Building[] buildings = await _context.Building
                                         .Include(m => m.Room)
                                             .ThenInclude(m => m.RoomAllocation)
+                                        .Where(b => b.hasAuth(User))
                                         .ToArrayAsync();
 
             buildings = DataUtilities.GetExtendedBuildings(buildings, id);
@@ -47,6 +48,7 @@ namespace Ferrous.Controllers
                                         .Include(m => m.Room)
                                             .ThenInclude(m => m.RoomAllocation)
                                         .Where(m => m.Room.Any(r => roomIds.Contains(r.RoomId)))
+                                        .Where(b => b.hasAuth(User))
                                         .ToArrayAsync();
 
             buildings = DataUtilities.GetExtendedBuildings(buildings, "mark");
@@ -74,7 +76,7 @@ namespace Ferrous.Controllers
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.BUILDINGS_GET)]
         public Building[] GetBuildingsMin([FromRoute] string id, [FromRoute] int cano)
         {
-            var buildings = _context.Building.ToArray();
+            var buildings = _context.Building.Where(b => b.hasAuth(User)).ToArray();
             foreach (var building in buildings) {
                 (new LinksMaker(User,Url)).FillBuildingsLinks(building, id, cano);
             }
@@ -92,7 +94,9 @@ namespace Ferrous.Controllers
                 return BadRequest(ModelState);
             }
 
-            var building = await _context.Building.Where(m => m.Location == id)
+            var building = await _context.Building
+                .Where(m => m.Location == id)
+                .Where(b => b.hasAuth(User))
                 .Include(m => m.Room)
                 .ThenInclude(m => m.RoomAllocation)
                 .SingleOrDefaultAsync();

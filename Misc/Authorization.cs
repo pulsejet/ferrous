@@ -69,12 +69,29 @@ namespace Ferrous.Misc
             return false;
         }
 
+        public static bool hasBuildingAuth(string username, string buildingShortName)
+        {
+            if (staticIdentities == null) {
+                reloadIdentities();
+            }
+
+            if (username == String.Empty) { return false; }
+
+            FerrousIdentity id = staticIdentities.FirstOrDefault(m => m.username == username);
+            if (id == null) { return false; }
+
+            if (id.elevation == (int) ElevationLevels.SuperUser) { return true; }
+
+            return id.locations.Contains(buildingShortName);
+        }
+
         public class FerrousIdentity
         {
             public string username { get; set; }
             public string salt { get; set; }
             public string password { get; set; }
             public int elevation { get; set; }
+            public List<string> locations { get; set; }
             public ImmutableList<int> privileges { get; set; }
         }
 

@@ -48,6 +48,7 @@ namespace Ferrous.Controllers
             }
 
             var room = await _context.Room.Include(m => m.RoomAllocation)
+                                          .Where(r => r.LocationNavigation.hasAuth(User))
                                           .SingleOrDefaultAsync(m => m.RoomId == id);
 
             if (room == null)
@@ -67,8 +68,9 @@ namespace Ferrous.Controllers
         public async Task<ActionResult> GetRoomList([FromRoute] string clno, [FromRoute] int cano, [FromBody] List<int> ids)
         {
             var rooms = await _context.Room.Include(m => m.RoomAllocation)
-                                          .Where(m => ids.Contains(m.RoomId))
-                                          .ToListAsync();
+                                           .Where(r => r.LocationNavigation.hasAuth(User))
+                                           .Where(m => ids.Contains(m.RoomId))
+                                           .ToListAsync();
 
             if (rooms == null)
             {
@@ -176,6 +178,7 @@ namespace Ferrous.Controllers
             var ids = roomAllocations.Select(ra => ra.RoomId).ToArray();
             Room[] rooms = await _context.Room.Where(m => ids.Contains(m.RoomId))
                                     .Include(m => m.RoomAllocation)
+                                    .Where(r => r.LocationNavigation.hasAuth(User))
                                     .ToArrayAsync();
             if (rooms == null) { return BadRequest(); }
 
@@ -218,6 +221,7 @@ namespace Ferrous.Controllers
         {
             var rooms = await _context.Room.Where(m => ids.Contains(m.RoomId))
                                     .Include(m => m.RoomAllocation)
+                                    .Where(r => r.LocationNavigation.hasAuth(User))
                                     .ToListAsync();
             if (rooms == null) { return BadRequest(); }
 
@@ -300,17 +304,17 @@ namespace Ferrous.Controllers
                         }
 
                         /* Get the room if it exists */
-                        Room room = await _context.Room.SingleOrDefaultAsync(
-                            r => r.Location == hostel && r.RoomName == roomNo);
+                        Room room = await _context.Room.Include(r => r.LocationNavigation)
+                                          .SingleOrDefaultAsync(r => r.Location == hostel && r.RoomName == roomNo);
 
                         /* Check invalid rooms */
-                        if (room == null) {
+                        if (room == null || !room.LocationNavigation.hasAuth(User)) {
                             room = new Room();
                             room.Location = hostel;
                             room.RoomName = roomNo;
                             room.LockNo = lockNo;
                             room.Status = status;
-                            room.Remark = "NOT FOUND";
+                            room.Remark = room == null ? "NOT FOUND" : "NO AUTH";
                             failedRooms.Add(room);
                             continue;
                         }
@@ -359,7 +363,7 @@ namespace Ferrous.Controllers
 
                 /* Fill all rooms worksheet */
                 int row = 1;
-                foreach (var room in _context.Room.ToArray()) {
+                foreach (var room in _context.Room.Where(r => r.LocationNavigation.hasAuth(User)).ToArray()) {
                     allWorkSheet.Cells[row, 1].Value = $"{room.Location}|{room.RoomName}";
                     allWorkSheet.Cells[row, 2].Value = room.RoomId.ToString();
                     allWorkSheet.Cells[row, 3].Value = "YES";
@@ -412,7 +416,7 @@ namespace Ferrous.Controllers
 
                 /* Add hostels list */
                 row = HOSTELS_ROW + 1;
-                foreach (Building building in _context.Building.OrderBy(b => b.Location).ToArray()) {
+                foreach (Building building in _context.Building.Where(b => b.hasAuth(User)).OrderBy(b => b.Location).ToArray()) {
                     workSheet.Cells[row, HOSTELS_COLUMN].Value = building.Location;
                     workSheet.Cells[row, HOSTELS_COLUMN + 1].Value = building.LocationFullName;
                     row++;

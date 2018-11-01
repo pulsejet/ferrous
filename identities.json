@@ -1,26 +1,59 @@
 [
-{
-    "username":"super",
-    "salt":"sh",
-    "password":"EB0AFEF7FC67DF48FB86182FCC0508034A942772CEA6640A2982153B87812042",
-    "elevation":"0",
-    "privileges":[0]
-},
-
-{
-    "username":"cg",
-    "salt":"sh",
-    "password":"EB0AFEF7FC67DF48FB86182FCC0508034A942772CEA6640A2982153B87812042",
-    "elevation":"1",
-    "privileges":[0]
-},
-
-{
-    "username":"coordie",
-    "salt":"dm",
-    "password":"CCD0C34F0039C1BFF6B566486AA6A73FAD2DB3666310B501EDC2FB231F955C0F",
-    "elevation":"2",
-    "privileges":[1, 2, 3, 7, 8, 9, 11, 12, 26, 27, 28, 30, 10001]
-}
-
+  {
+    "username": "super",
+    "salt": "2K",
+    "password": "AF8322E073E6F1EA8366BE74FA5C84233F884A236CD40ACA9302314F9A4B1C8A",
+    "elevation": 0,
+    "locations": [],
+    "privileges": [
+      0
+    ]
+  },
+  {
+    "username": "cg",
+    "salt": "LE",
+    "password": "CEDD85771007A2F3476141C5C093D835D1033F183C072D3D0C29304A18563F4C",
+    "elevation": 1,
+    "locations": [
+      "H13",
+      "H14",
+      "H15A",
+      "H15B",
+      "H15C",
+      "H16C",
+      "H2",
+      "H3",
+      "H4",
+      "H5",
+      "H6",
+      "H7",
+      "H8",
+      "H9"
+    ],
+    "privileges": [
+      0
+    ]
+  },
+  {
+    "username": "coordie",
+    "salt": "8F",
+    "password": "7C3726E5A66226D96FFD1A484BD236B9EF198EC77FCC44553A3F4C6E736C1610",
+    "elevation": 2,
+    "locations": null,
+    "privileges": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      11,
+      12,
+      26,
+      27,
+      28,
+      30,
+      10001
+    ]
+  }
 ]
