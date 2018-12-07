@@ -308,13 +308,19 @@ namespace Ferrous.Controllers
                                           .SingleOrDefaultAsync(r => r.Location == hostel && r.RoomName == roomNo);
 
                         /* Check invalid rooms */
-                        if (room == null || !room.LocationNavigation.hasAuth(User)) {
+                        if (room == null || !room.LocationNavigation.hasAuth(User) || status == -6) {
                             room = new Room();
                             room.Location = hostel;
                             room.RoomName = roomNo;
                             room.LockNo = lockNo;
                             room.Status = status;
-                            room.Remark = room == null ? "NOT FOUND" : "NO AUTH";
+                            if (room == null) {
+                                room.Remark = "$NOT FOUND";
+                            } else if (room.LocationNavigation != null && !room.LocationNavigation.hasAuth(User)) {
+                                room.Remark = "$NO AUTH";
+                            } else if (status == -6) {
+                                room.Remark = "$INVALID STATUS";
+                            }
                             failedRooms.Add(room);
                             continue;
                         }
@@ -457,6 +463,10 @@ namespace Ferrous.Controllers
 
         private int getStatusInt(string status) {
             switch (status.ToUpper()) {
+                case "":
+                    return -5;
+                case null:
+                    return -5;
                 case "UAVL":
                     return 0;
                 case "AVLB":
@@ -466,7 +476,7 @@ namespace Ferrous.Controllers
                 case "MAIT":
                     return 6;
                 default:
-                    return -5;
+                    return -6;
             }
         }
 
