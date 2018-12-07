@@ -410,7 +410,7 @@ namespace Ferrous.Controllers
                 int HOSTELS_ROW = 4;
                 int HOSTELS_COLUMN = 9;
                 workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN].Value = "Code";
-                workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN + 1].Value = "Location";
+                workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN + 1].Value = "Meaning";
                 workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN].Style.Font.Bold = true;
                 workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN + 1].Style.Font.Bold = true;
 
@@ -421,6 +421,19 @@ namespace Ferrous.Controllers
                     workSheet.Cells[row, HOSTELS_COLUMN + 1].Value = building.LocationFullName;
                     row++;
                 }
+
+                /* Enlist possible statuses */
+                row++;
+                workSheet.Cells[row, HOSTELS_COLUMN].Value = getStatusStr(0);
+                workSheet.Cells[row++, HOSTELS_COLUMN + 1].Value = "Unavailable";
+                workSheet.Cells[row, HOSTELS_COLUMN].Value = getStatusStr(1);
+                workSheet.Cells[row++, HOSTELS_COLUMN + 1].Value = "Available";
+                workSheet.Cells[row, HOSTELS_COLUMN].Value = getStatusStr(4);
+                workSheet.Cells[row++, HOSTELS_COLUMN + 1].Value = "Not ready";
+                workSheet.Cells[row, HOSTELS_COLUMN].Value = getStatusStr(6);
+                workSheet.Cells[row++, HOSTELS_COLUMN + 1].Value = "Needs maintainance";
+                workSheet.Cells[row, HOSTELS_COLUMN].Value = getStatusStr(-1);
+                workSheet.Cells[row++, HOSTELS_COLUMN + 1].Value = "Unknown";
 
                 /* Return the file */
                 var stream = new MemoryStream(package.GetAsByteArray());
@@ -450,6 +463,8 @@ namespace Ferrous.Controllers
                     return 1;
                 case "NRDY":
                     return 4;
+                case "MAIT":
+                    return 6;
                 default:
                     return -5;
             }
@@ -463,6 +478,8 @@ namespace Ferrous.Controllers
                     return "AVLB";
                 case 4:
                     return "NRDY";
+                case 6:
+                    return "MAIT";
                 default:
                     return "UNKN";
             }
