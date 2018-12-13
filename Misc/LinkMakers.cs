@@ -62,6 +62,7 @@ namespace Ferrous.Misc
 
                 .SetOptions(User, typeof(ExportController), Url)
                 .AddLink(nameof(ExportController.GetLogs), new {page=1}, "get-logs")
+                .AddLink(nameof(ExportController.Get), null, "export-main")
 
                 /* Add websocket */
                 .AddAbsoluteContentLink(WebSocketHubs.BuildingUpdateHub.BuildingWebsocketUrl, "building_websocket")
