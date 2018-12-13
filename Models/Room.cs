@@ -16,6 +16,7 @@ namespace Ferrous.Models
         public int RoomId { get; set; }
 
         public int Capacity { get; set; }
+        public int Mattresses { get; set; }
         public string Location { get; set; }
         public string LocationExtra { get; set; }
         public string LockNo { get; set; }
