@@ -85,6 +85,11 @@ namespace Ferrous.Misc
                         building.RoomsMaintainance++;
                     }
 
+                    if (room.Status == 8) {
+                        building.CapacityReserved += room.Capacity;
+                        building.RoomsReserved++;
+                    }
+
                     if (room.Status != 1) { continue; }
 
                     building.CapacityEmpty += room.Capacity;

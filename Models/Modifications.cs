@@ -6,11 +6,13 @@
         public int CapacityFilled;
         public int CapacityNotReady;
         public int CapacityMaintainance;
+        public int CapacityReserved;
         public int AlreadyAllocated;
         public int RoomsEmpty = 0;
         public int RoomsFilled = 0;
         public int RoomsNotReady = 0;
         public int RoomsMaintainance;
+        public int RoomsReserved;
         public int RoomsPartial = 0;
         public int RoomsTotal = 0;
     }
