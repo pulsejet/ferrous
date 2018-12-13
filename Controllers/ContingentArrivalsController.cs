@@ -304,6 +304,12 @@ namespace Ferrous.Controllers
         public async Task<IActionResult> PostCAPerson([FromRoute] int cano, [FromBody] CAPerson caPerson)
         {
             caPerson.CANav = await _context.ContingentArrival.SingleOrDefaultAsync(m => m.ContingentArrivalNo == cano);
+
+            // Do not allow changing approved CAs
+            if (caPerson.CANav.Approved) {
+                return Unauthorized();
+            }
+
             _context.CAPerson.Add(caPerson);
 
             Utilities.Log(_context, HttpContext, $"Add person {caPerson.Mino} to subcontingent #{caPerson.CANav.ContingentArrivalNo} {caPerson.CANav.ContingentLeaderNo})", 2, true);
@@ -324,6 +330,11 @@ namespace Ferrous.Controllers
             if (caPerson == null)
             {
                 return NotFound();
+            }
+
+            // Do not allow changing approved CAs
+            if (caPerson.CANav.Approved) {
+                return Unauthorized();
             }
 
             _context.CAPerson.Remove(caPerson);
