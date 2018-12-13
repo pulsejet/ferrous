@@ -320,7 +320,7 @@ namespace Ferrous.Controllers
         [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_PUT)]
         public async Task<IActionResult> DeleteCAPerson([FromRoute] int id)
         {
-            var caPerson = await _context.CAPerson.SingleOrDefaultAsync(m => m.Sno == id);
+            var caPerson = await _context.CAPerson.Include(m => m.CANav).SingleOrDefaultAsync(m => m.Sno == id);
             if (caPerson == null)
             {
                 return NotFound();
