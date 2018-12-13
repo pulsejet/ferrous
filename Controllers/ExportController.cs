@@ -154,10 +154,10 @@ namespace Ferrous.Controllers
         /// <param name="peopleWorksheet">ExcelWorksheet to fill</param>
         void FillPeopleWorksheet(ExcelWorksheet peopleWorksheet)
         {
-            var people = _context.Person.ToList()
+            var people = _context.Person.Include(m => m.allottedCA).ToList()
                     .OrderBy(m => m.ContingentLeaderNo);
 
-            int[] widths = { 11, 25, 45, 4, 11 };
+            int[] widths = { 11, 25, 45, 4, 13, 12 };
             setColumnWidths(widths, peopleWorksheet);
 
             string[] headers = {
@@ -165,7 +165,8 @@ namespace Ferrous.Controllers
                         "Name",
                         "College",
                         "Sex",
-                        "CL No"
+                        "CL No",
+                        "D1 Approved"
                     };
             setColumnHeaders(headers, peopleWorksheet);
 
@@ -197,7 +198,8 @@ namespace Ferrous.Controllers
                     person.Name,
                     person.College,
                     person.Sex,
-                    person.ContingentLeaderNo
+                    person.ContingentLeaderNo,
+                    person.allottedCA != null ? "Y - " + person.allottedCA.ContingentArrivalNo : ""
                 };
                 setRow(cells, i++, peopleWorksheet);
             }
