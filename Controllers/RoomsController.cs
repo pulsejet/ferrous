@@ -391,6 +391,7 @@ namespace Ferrous.Controllers
                     allWorkSheet.Cells[row, 3].Value = "YES";
                     allWorkSheet.Cells[row, 4].Value = getStatusStr(room.Status);
                     allWorkSheet.Cells[row, 5].Value = room.Mattresses;
+                    allWorkSheet.Cells[row, 6].Value = room.Remark;
                     row++;
                 }
 
@@ -433,6 +434,14 @@ namespace Ferrous.Controllers
                 }
                 workSheet.Column(lastColumn).Style.Locked = true;
 
+                /* Show Remark */
+                lastColumn++;
+                workSheet.Cells[1, lastColumn].Value = "Remark";
+                for (int i = 2; i < 200; i++) {
+                    workSheet.Cells[i, lastColumn].Formula = $"IFERROR(VLOOKUP(CONCATENATE(A{i}, \"|\", B{i}), AllRooms!A:F, 6, FALSE), \"\")";
+                }
+                workSheet.Column(lastColumn).Style.Locked = true;
+
                 /* Style first row */
                 workSheet.Row(1).Style.Font.Bold = true;
                 workSheet.Row(1).Style.Locked = true;
@@ -440,7 +449,7 @@ namespace Ferrous.Controllers
 
                 /* Add hostels title */
                 int HOSTELS_ROW = 4;
-                int HOSTELS_COLUMN = 11;
+                int HOSTELS_COLUMN = 12;
                 workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN].Value = "Code";
                 workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN + 1].Value = "Meaning";
                 workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN].Style.Font.Bold = true;
