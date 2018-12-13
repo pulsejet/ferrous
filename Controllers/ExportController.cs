@@ -100,18 +100,19 @@ namespace Ferrous.Controllers
         /// <param name="contingentsWorksheet">Passed worksheet</param>
         async Task<int> FillContingentsWorksheet(ExcelWorksheet contingentsWorksheet)
         {
-            var contingents = await DataUtilities.GetExtendedContingents(_context);
+            var contingents = await DataUtilities.GetExtendedContingents(_context, true);
 
-            int[] widths = { 11, 11, 11, 11, 11, 25 };
+            int[] widths = { 13, 30, 11, 11, 11, 11, 25 };
             setColumnWidths(widths, contingentsWorksheet);
 
-            for (int k = 2; k <= 5; k++) {
+            for (int k = 3; k <= 6; k++) {
                 contingentsWorksheet.Column(k).Style.HorizontalAlignment =
                     ExcelHorizontalAlignment.Right;
             }
 
             string[] headers = {
                 "CL No",
+                "College",
                 "Reg (M)",
                 "Reg (F)",
                 "D1 Approved (M)",
@@ -123,8 +124,19 @@ namespace Ferrous.Controllers
             int rowno = 2;
             foreach (var contingent in contingents)
             {
+                string college = "N/A";
+                if (contingent.Person.Count > 0) {
+                    Person cl = contingent.Person.Where(m => m.Mino.ToUpper() == contingent.ContingentLeaderNo.ToUpper()).FirstOrDefault();
+                    if (cl != null) {
+                        college = cl.College;
+                    } else {
+                        college = "?" + contingent.Person.First().College;
+                    }
+                }
+
                 object[] cells = {
                     contingent.ContingentLeaderNo,
+                    college,
                     IntIfNumber(contingent.Male),
                     IntIfNumber(contingent.Female),
                     IntIfNumber(contingent.ArrivedM),

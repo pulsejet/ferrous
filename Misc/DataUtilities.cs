@@ -12,7 +12,7 @@ namespace Ferrous.Misc
 {
     public static class DataUtilities
     {
-        public async static Task<Contingent[]> GetExtendedContingents(ferrousContext _context)
+        public async static Task<Contingent[]> GetExtendedContingents(ferrousContext _context, bool keepIncludes = false)
         {
             Contingent[] cts = await _context.Contingents
                                         .Include(m => m.Person)
@@ -44,8 +44,11 @@ namespace Ferrous.Misc
                 contingent.Female = RegFemale.ToString();
                 contingent.ArrivedM = ArrivedM.ToString() + ((OnSpotM > 0) ? " + " + OnSpotM : "");
                 contingent.ArrivedF = ArrivedF.ToString() + ((OnSpotF > 0) ? " + " + OnSpotF : "");
-                contingent.Person = new HashSet<Person>();
-                contingent.ContingentArrival = new HashSet<ContingentArrival>();
+
+                if (!keepIncludes) {
+                    contingent.Person = new HashSet<Person>();
+                    contingent.ContingentArrival = new HashSet<ContingentArrival>();
+                }
             });
 
             return cts;
