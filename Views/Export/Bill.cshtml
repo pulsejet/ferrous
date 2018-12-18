@@ -69,11 +69,13 @@
 
         <tbody>
         @foreach(var roomA in @Model.RoomAllocation){
-            <tr>
-                <td>@roomA.Room.Location</td>
-                <td>@roomA.Room.RoomName</td>
-                <td>@roomA.Room.LockNo</td>
-            </tr>
+            @if(roomA.Room.LocationNavigation.Sex != "F") {
+                <tr>
+                    <td>@roomA.Room.Location</td>
+                    <td>@roomA.Room.RoomName</td>
+                    <td>@roomA.Room.LockNo</td>
+                </tr>
+            }
         }
         </tbody>
     </table>
@@ -84,7 +86,9 @@
 
     <ul class="minos">
     @foreach(var person in @Model.CAPeople){
-        <li>@person.Mino</li>
+        @if(person.Sex != "F") {
+            <li>@person.Mino</li>
+        }
     }
     </ul>
 

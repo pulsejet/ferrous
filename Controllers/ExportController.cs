@@ -46,6 +46,7 @@ namespace Ferrous.Controllers
             var contingentArrival = await _context.ContingentArrival
                 .Include(m => m.RoomAllocation)
                     .ThenInclude(m => m.Room)
+                        .ThenInclude(m => m.LocationNavigation)
                 .Include(m => m.CAPeople)
                 .SingleOrDefaultAsync(m => m.ContingentArrivalNo == id);
 
