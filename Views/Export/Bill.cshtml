@@ -3,9 +3,10 @@
 
 @functions {
     int mattress(ContingentArrival ca, string sex) {
+        // FIXME: HANDLE PARTIAL HERE
         int count = 0;
         foreach (RoomAllocation roomA in ca.RoomAllocation) {
-            if (roomA.Room.LocationNavigation.Sex == sex) {
+            if (roomA.Partial < 0 && roomA.Room.LocationNavigation.Sex == sex) {
                 count += roomA.Room.Mattresses;
             }
         }
