@@ -47,6 +47,8 @@ namespace Ferrous.Controllers
                 .Include(m => m.RoomAllocation)
                     .ThenInclude(m => m.Room)
                         .ThenInclude(m => m.LocationNavigation)
+                .Include(m => m.ContingentLeaderNoNavigation)
+                    .ThenInclude(m => m.Person)
                 .Include(m => m.CAPeople)
                 .SingleOrDefaultAsync(m => m.ContingentArrivalNo == id);
 

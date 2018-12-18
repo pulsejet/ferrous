@@ -12,6 +12,15 @@
         }
         return count;
     }
+
+    string clName(ContingentArrival ca) {
+        foreach (Person p in ca.ContingentLeaderNoNavigation.Person) {
+            if (p.Mino == ca.ContingentLeaderNo) {
+                return p.Name;
+            }
+        }
+        return "N/A";
+    }
 }
 
 <html>
@@ -61,7 +70,9 @@
 <body>
     <h1>Room Bill (Boys)</h1>
     <div class="big">
-        Contingent Leader MI Number - <b>@Model.ContingentLeaderNo </b>
+        Contingent Leader Name - @clName(@Model) </b> <br />
+        Contingent Leader MI Number - <b>@Model.ContingentLeaderNo </b><br />
+        Accommodation Collected by - <b>@Model.FillerMiNo</b>
         <br>
 
         Boys (online payment) - <b>@Model.Male</b> <br />
