@@ -25,29 +25,35 @@
             padding-right: 15px;
             text-align: center;
         }
+
+        ul.minos {
+            -webkit-column-count: 3;
+            -moz-column-count: 3;
+            column-count: 3;
+            list-style-type: none;
+            max-width: 315px;
+            padding: 0;
+            margin-top: 0;
+        }
+
+        .big {
+            font-size: 14pt
+        }
+
+        .pagebreak { page-break-before: always; } /* page-break-after works, as well */
     </style>
 </head>
 
 <body>
-    <h1>Room Bill</h1>
-    <div style="font-size: 14pt">
-        Contingent Leader Number - <b>@Model.ContingentLeaderNo </b>
+    <h1>Room Bill (Boys)</h1>
+    <div class="big">
+        Contingent Leader MI Number - <b>@Model.ContingentLeaderNo </b>
         <br>
 
-        Male - <b>@Model.Male
-        @if(Model.MaleOnSpot > 0) {
-            <text>
-                + @Model.MaleOnSpot = @(@Model.Male + @Model.MaleOnSpot)
-            </text>
-        } </b>
-        <br>
+        Boys (online payment) - <b>@Model.Male</b> <br />
+        Boys (on-spot Payment) - <b>@Model.MaleOnSpot</b> <br />
+        Boys (total) - <b>@(@Model.Male + @Model.MaleOnSpot)</b> <br />
 
-        Female - <b>@Model.Female
-        @if(Model.FemaleOnSpot > 0) {
-            <text>
-                + @Model.FemaleOnSpot = @(@Model.Female + @Model.FemaleOnSpot)
-            </text>
-        } </b>
     </div>
 
     <br>
@@ -74,6 +80,14 @@
 
     <br>
 
+    <span class="big">MI Numbers with online payment:</span>
+
+    <ul class="minos">
+    @foreach(var person in @Model.CAPeople){
+        <li>@person.Mino</li>
+    }
+    </ul>
+
     @if(Model.MaleOnSpot > 0 || Model.FemaleOnSpot > 0) {
         <text>
         <h2>On-Spot Payment</h2>
@@ -93,6 +107,9 @@
     }
 
     <br>
-    <span style="color:blue">Arrival Reference: #@Model.ContingentArrivalNo, @Model.CreatedOn</span>
+    <span style="color:blue">Token Number: #@Model.ContingentArrivalNo, @Model.CreatedOn</span>
+
+    <div class="pagebreak"> </div>
+
 </body>
 </html>
