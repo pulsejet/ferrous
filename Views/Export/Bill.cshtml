@@ -1,6 +1,18 @@
 @using Ferrous.Models
 @model Ferrous.Models.ContingentArrival
 
+@functions {
+    int mattress(ContingentArrival ca, string sex) {
+        int count = 0;
+        foreach (RoomAllocation roomA in ca.RoomAllocation) {
+            if (roomA.Room.LocationNavigation.Sex == sex) {
+                count += roomA.Room.Mattresses;
+            }
+        }
+        return count;
+    }
+}
+
 <html>
 
 <head>
@@ -32,8 +44,9 @@
             column-count: 3;
             list-style-type: none;
             max-width: 315px;
-            padding: 0;
+            padding: 3px;
             margin-top: 0;
+            border: 1px solid black;
         }
 
         .big {
@@ -91,6 +104,8 @@
         }
     }
     </ul>
+
+    <span class="big">No. of Mattress: @mattress(@Model, "M")</span>
 
     @if(Model.MaleOnSpot > 0 || Model.FemaleOnSpot > 0) {
         <text>
