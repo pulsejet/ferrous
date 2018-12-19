@@ -21,6 +21,15 @@
         }
         return "N/A";
     }
+
+    bool hasPartial(ContingentArrival ca, string sex) {
+        foreach (RoomAllocation roomA in ca.RoomAllocation.Where(m => m.Room.LocationNavigation.Sex == sex)) {
+            if (roomA.Partial > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 <html>
@@ -100,13 +109,14 @@
             @if(roomA.Room.LocationNavigation.Sex != "F") {
                 <tr>
                     <td>@roomA.Room.Location</td>
-                    <td>@roomA.Room.RoomName</td>
+                    <td>@roomA.Room.RoomName@if(roomA.Partial > 0) {<text>*</text>}</td>
                     <td>@roomA.Room.LockNo</td>
                 </tr>
             }
         }
         </tbody>
     </table>
+    @if(hasPartial(@Model, "M")) {<text>* - shared room <br/></text>}
 
     <br>
 
@@ -143,8 +153,7 @@
 
     <br>
     <span style="color:blue">Token Number: #@Model.ContingentArrivalNo, @Model.CreatedOn</span><br/>
-    <span style="color:blue">Print: @DateTime.Now</span>
-
+    <span style="color:blue">Print: @DateTime.Now</span><br />
 
 
 
@@ -186,13 +195,14 @@
             @if(roomA.Room.LocationNavigation.Sex == "F") {
                 <tr>
                     <td>@roomA.Room.Location</td>
-                    <td>@roomA.Room.RoomName</td>
+                    <td>@roomA.Room.RoomName@if(roomA.Partial > 0) {<text>*</text>}</td>
                     <td>@roomA.Room.LockNo</td>
                 </tr>
             }
         }
         </tbody>
     </table>
+    @if(hasPartial(@Model, "F")) {<text>* - shared room<br/></text>}
 
     <br>
 
@@ -211,7 +221,7 @@
 
     <br><br>
     <span style="color:blue">Token Number: #@Model.ContingentArrivalNo, @Model.CreatedOn</span><br/>
-    <span style="color:blue">Print: @DateTime.Now</span>
+    <span style="color:blue">Print: @DateTime.Now</span> <br />
 
 </body>
 </html>
