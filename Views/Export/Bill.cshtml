@@ -31,20 +31,16 @@
     <title>Room Bill #@Model.ContingentArrivalNo</title>
     <style>
         html, body {
-            font-size: 12pt;
-            font-family: "Times New Roman", Times, serif
+            font-size: 11pt;
         }
 
         table, th, td {
-            font-size: 12pt;
             border: 1px solid black;
             border-collapse: collapse;
         }
 
         th, td {
-            padding: 6px;
-            padding-left: 15px;
-            padding-right: 15px;
+            padding: 1px 15px;
             text-align: center;
         }
 
@@ -60,7 +56,11 @@
         }
 
         .big {
-            font-size: 14pt
+            font-size: 1.1em;
+        }
+
+        .logo {
+            height: 80px;
         }
 
         .pagebreak { page-break-before: always; } /* page-break-after works, as well */
@@ -68,7 +68,10 @@
 </head>
 
 <body>
-    <h1>Room Bill (Boys)</h1>
+
+    <!-- START BOYS -->
+    <img src="/billlogo.svg" class="logo">
+    <h1>Accommodation Bill (Boys)</h1>
     <div class="big">
         Contingent Leader Name - @clName(@Model) </b> <br />
         Contingent Leader MI Number - <b>@Model.ContingentLeaderNo </b><br />
@@ -142,7 +145,73 @@
     <span style="color:blue">Token Number: #@Model.ContingentArrivalNo, @Model.CreatedOn</span><br/>
     <span style="color:blue">Print: @DateTime.Now</span>
 
+
+
+
+
     <div class="pagebreak"> </div>
+
+
+
+
+
+    <!-- START GIRLS -->
+    <img src="/billlogo.svg" class="logo">
+    <h1>Accommodation Bill (Girls)</h1>
+    <div class="big">
+        Contingent Leader Name - @clName(@Model) </b> <br />
+        Contingent Leader MI Number - <b>@Model.ContingentLeaderNo </b><br />
+        Accommodation Collected by - <b>@Model.FillerMiNo</b>
+        <br>
+
+        Girls (online payment) - <b>@Model.Female</b> <br />
+        Girls (on-spot Payment) - <b>@Model.FemaleOnSpot</b> <br />
+        Girls (total) - <b>@(@Model.Female + @Model.FemaleOnSpot)</b> <br />
+
+    </div>
+
+    <br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Room</th>
+                <th>Lock no.</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach(var roomA in @Model.RoomAllocation){
+            @if(roomA.Room.LocationNavigation.Sex == "F") {
+                <tr>
+                    <td>@roomA.Room.Location</td>
+                    <td>@roomA.Room.RoomName</td>
+                    <td>@roomA.Room.LockNo</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+
+    <br>
+
+    <span class="big">MI Numbers with online payment:</span>
+
+    <ul class="minos">
+    @foreach(var person in @Model.CAPeople){
+        @if(person.Sex == "F") {
+            <li>@person.Mino</li>
+        }
+    }
+    </ul>
+
+    <span class="big">No. of Mattress: <b>@mattress(@Model, "F")</b></span>
+    (exluding partial allotments)
+
+    <br><br>
+    <span style="color:blue">Token Number: #@Model.ContingentArrivalNo, @Model.CreatedOn</span><br/>
+    <span style="color:blue">Print: @DateTime.Now</span>
 
 </body>
 </html>
