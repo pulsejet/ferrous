@@ -24,7 +24,7 @@
 
     bool hasPartial(ContingentArrival ca, string sex) {
         foreach (RoomAllocation roomA in ca.RoomAllocation.Where(m => m.Room.LocationNavigation.Sex == sex)) {
-            if (roomA.Partial > 0) {
+            if (roomA.Partial > 0 && roomA.Partial < roomA.Room.Capacity) {
                 return true;
             }
         }
