@@ -52,13 +52,23 @@ namespace Ferrous.Controllers
                 .Include(m => m.CAPeople)
                 .SingleOrDefaultAsync(m => m.ContingentArrivalNo == id);
 
+            if (contingentArrival == null)
+            {
+                return NotFound();
+            }
+
             contingentArrival.RoomAllocation = contingentArrival.RoomAllocation
                     .OrderBy(m => m.Room.RoomName)
                     .OrderBy(m => m.Room.Location).ToArray();
 
-            if (contingentArrival == null)
-            {
-                return NotFound();
+            foreach (RoomAllocation roomA in contingentArrival.RoomAllocation) {
+                if (roomA.Partial > 0) {
+                    roomA.Room = await _context.Room
+                                            .Include(m => m.LocationNavigation)
+                                            .Include(m => m.RoomAllocation)
+                                            .SingleOrDefaultAsync(m => m.RoomId == roomA.Room.RoomId);
+                    roomA.Room.RoomAllocation = roomA.Room.RoomAllocation.OrderBy(m => m.Sno).ToArray();
+                }
             }
 
             return View("Bill", contingentArrival);

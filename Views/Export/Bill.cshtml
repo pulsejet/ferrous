@@ -2,13 +2,34 @@
 @model Ferrous.Models.ContingentArrival
 
 @functions {
-    int mattress(ContingentArrival ca, string sex) {
-        // FIXME: HANDLE PARTIAL HERE
-        int count = 0;
-        foreach (RoomAllocation roomA in ca.RoomAllocation) {
-            if (roomA.Partial < 0 && roomA.Room.LocationNavigation.Sex == sex) {
-                count += roomA.Room.Mattresses;
+    int raMattress(RoomAllocation roomA) {
+        if (roomA.Partial < 0) {
+            return roomA.Room.Mattresses;
+        } else {
+            int leftCount = roomA.Room.Mattresses;
+            foreach (RoomAllocation broomA in roomA.Room.RoomAllocation) {
+                if (broomA.Partial < 0) { return 0; }
+                if (broomA.Sno == roomA.Sno) {
+                    if (roomA.Partial < leftCount) {
+                        return roomA.Partial;
+                    } else {
+                        if (leftCount > 0) {
+                            return leftCount;
+                        }
+                        return 0;
+                    }
+                } else {
+                    leftCount -= broomA.Partial;
+                }
             }
+        }
+        return 0;
+    }
+
+    int mattress(ContingentArrival ca, string sex) {
+        int count = 0;
+        foreach (RoomAllocation roomA in ca.RoomAllocation.Where(m => m.Room.LocationNavigation.Sex == sex)) {
+            count += raMattress(roomA);
         }
         return count;
     }
