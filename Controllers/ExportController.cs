@@ -61,6 +61,8 @@ namespace Ferrous.Controllers
                     .OrderBy(m => m.Room.RoomName)
                     .OrderBy(m => m.Room.Location).ToArray();
 
+            contingentArrival.CAPeople = contingentArrival.CAPeople.OrderBy(m => m.Mino).ToArray();
+
             foreach (RoomAllocation roomA in contingentArrival.RoomAllocation) {
                 if (roomA.Partial > 0) {
                     roomA.Room = await _context.Room

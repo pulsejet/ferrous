@@ -47,7 +47,7 @@
 <span class="big">MI Numbers with online payment:</span>
 
 <ul class="minos">
-@foreach(var person in @Model.CAPeople.OrderBy(m => m.Mino).ToArray()){
+@foreach(var person in @Model.CAPeople){
     @if(person.Sex != "F") {
         <li>@person.Mino</li>
     }
