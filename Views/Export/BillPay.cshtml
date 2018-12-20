@@ -1,0 +1,29 @@
+@model Ferrous.Models.ContingentArrival
+@functions {
+    int amount() {
+        return 2000;
+    }
+}
+
+<br/><br/>
+<b>Amount paid online: </b><br/>
+@Model.Male x &#8377;@amount() = &#8377;@(@Model.Male*amount()) (Male)<br/>
+@Model.Female x &#8377;@amount() = &#8377;@(@Model.Female*amount()) (Female) <br/>
+Total: <b>&#8377;@((@Model.Male + @Model.Female)*amount())</b> <br/>
+
+@if(Model.MaleOnSpot > 0 || Model.FemaleOnSpot > 0) {
+    <text>
+    <b>On-spot payment: </b><br/>
+    <div>
+        @Model.MaleOnSpot x &#8377;2000 = &#8377;@(@Model.MaleOnSpot*2000) (Male)
+        <br>
+        @Model.FemaleOnSpot x &#8377;2000 = &#8377;@(@Model.FemaleOnSpot*2000) (Female)
+    </div>
+
+    <div style="font-size: 1.1em">
+        Total on-spot payment: <b>
+            &#8377;@((@Model.FemaleOnSpot + @Model.MaleOnSpot) * 2000)
+        </b>
+    </div>
+    </text>
+}

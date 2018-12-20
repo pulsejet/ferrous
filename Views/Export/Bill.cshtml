@@ -1,57 +1,6 @@
 @using Ferrous.Models
+@using Ferrous.Misc
 @model Ferrous.Models.ContingentArrival
-
-@functions {
-    int raMattress(RoomAllocation roomA) {
-        if (roomA.Partial < 0) {
-            return roomA.Room.Mattresses;
-        } else {
-            int leftCount = roomA.Room.Mattresses;
-            foreach (RoomAllocation broomA in roomA.Room.RoomAllocation) {
-                if (broomA.Partial < 0) { return 0; }
-                if (broomA.Sno == roomA.Sno) {
-                    if (roomA.Partial < leftCount) {
-                        return roomA.Partial;
-                    } else {
-                        if (leftCount > 0) {
-                            return leftCount;
-                        }
-                        return 0;
-                    }
-                } else {
-                    leftCount -= broomA.Partial;
-                }
-            }
-        }
-        return 0;
-    }
-
-    int mattress(ContingentArrival ca, string sex) {
-        int count = 0;
-        foreach (RoomAllocation roomA in ca.RoomAllocation.Where(m => m.Room.LocationNavigation.Sex == sex)) {
-            count += raMattress(roomA);
-        }
-        return count;
-    }
-
-    string clName(ContingentArrival ca) {
-        foreach (Person p in ca.ContingentLeaderNoNavigation.Person) {
-            if (p.Mino == ca.ContingentLeaderNo) {
-                return p.Name;
-            }
-        }
-        return "N/A";
-    }
-
-    bool hasPartial(ContingentArrival ca, string sex) {
-        foreach (RoomAllocation roomA in ca.RoomAllocation.Where(m => m.Room.LocationNavigation.Sex == sex)) {
-            if (roomA.Partial > 0 && roomA.Partial < roomA.Room.Capacity) {
-                return true;
-            }
-        }
-        return false;
-    }
-}
 
 <html>
 
@@ -60,8 +9,16 @@
 
     <title>Room Bill #@Model.ContingentArrivalNo</title>
     <style>
-        html, body {
-            font-size: 11pt;
+        html, body, table {
+            font-size: 10pt;
+        }
+
+        table {
+            margin-right: 30px;
+        }
+
+        .column {
+            width: auto !important;
         }
 
         table, th, td {
@@ -75,172 +32,59 @@
         }
 
         ul.minos {
-            -webkit-column-count: 3;
-            -moz-column-count: 3;
-            column-count: 3;
+            -webkit-column-count: 10;
+            -moz-column-count: 10;
+            column-count: 10;
             list-style-type: none;
-            max-width: 315px;
+            max-width: 700px;
             padding: 3px;
             margin-top: 0;
             border: 1px solid black;
+            font-size: 0.8em;
         }
 
         .big {
-            font-size: 1.1em;
+            font-size: 1.05em;
+        }
+
+        h1 {
+            font-size: 1.3em;
+            margin-bottom: 4px;
         }
 
         .logo {
-            height: 80px;
+            height: 60px;
         }
 
         .pagebreak { page-break-before: always; } /* page-break-after works, as well */
     </style>
+
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/jquery.columnizer.min.js"></script>
 </head>
 
 <body>
+    @if (@Model.Male + @Model.MaleOnSpot > 0) {
+        @Html.Partial("BillM.cshtml")
+    }
 
-    <!-- START BOYS -->
-    <img src="/billlogo.svg" class="logo">
-    <h1>Accommodation Bill (Boys)</h1>
-    <div class="big">
-        Contingent Leader Name - @clName(@Model) </b> <br />
-        Contingent Leader MI Number - <b>@Model.ContingentLeaderNo </b><br />
-        Accommodation Collected by - <b>@Model.FillerMiNo</b>
-        <br>
+    @if (@Model.Male + @Model.MaleOnSpot > 0 && @Model.Female + @Model.FemaleOnSpot > 0) {
+        <div class="pagebreak"> </div>
+    }
 
-        Boys (online payment) - <b>@Model.Male</b> <br />
-        Boys (on-spot payment) - <b>@Model.MaleOnSpot</b> <br />
-        Boys (total) - <b>@(@Model.Male + @Model.MaleOnSpot)</b> <br />
+    @if (@Model.Female + @Model.FemaleOnSpot > 0) {
+        @Html.Partial("BillF.cshtml")
+    }
 
-    </div>
-
-    <br>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Location</th>
-                <th>Room</th>
-                <th>Lock no.</th>
-            </tr>
-        </thead>
-
-        <tbody>
-        @foreach(var roomA in @Model.RoomAllocation){
-            @if(roomA.Room.LocationNavigation.Sex != "F") {
-                <tr>
-                    <td>@roomA.Room.Location</td>
-                    <td>@roomA.Room.RoomName@if(roomA.Partial > 0) {<text>*</text>}</td>
-                    <td>@roomA.Room.LockNo</td>
-                </tr>
+    <script>
+        $('.col-2').each(function() {
+            var count = $(this).find('tr').length;
+            if (count > 10 && count <= 18) {
+                $(this).columnize({ columns: 2 });
+            } else if (count > 18) {
+                $(this).columnize({ columns: 3 });
             }
-        }
-        </tbody>
-    </table>
-    @if(hasPartial(@Model, "M")) {<text>* - shared room <br/></text>}
-
-    <br>
-
-    <span class="big">MI Numbers with online payment:</span>
-
-    <ul class="minos">
-    @foreach(var person in @Model.CAPeople){
-        @if(person.Sex != "F") {
-            <li>@person.Mino</li>
-        }
-    }
-    </ul>
-
-    <span class="big">No. of Mattress: <b>@mattress(@Model, "M")</b></span>
-
-    @if(Model.MaleOnSpot > 0 || Model.FemaleOnSpot > 0) {
-        <text>
-        <h2>On-Spot Payment</h2>
-        <div style="font-size: 14pt">
-            @Model.MaleOnSpot x &#8377;2000 = <b>&#8377;@(@Model.MaleOnSpot*2000)</b> (M)
-            <br>
-            @Model.FemaleOnSpot x &#8377;2000 = <b>&#8377;@(@Model.FemaleOnSpot*2000)</b> (F)
-        </div>
-        <br>
-
-        <div style="font-size: 16pt">
-            Total: <b>
-                &#8377;@((@Model.FemaleOnSpot + @Model.MaleOnSpot) * 2000)
-            </b>
-        </div>
-        </text>
-    }
-
-    <br>
-    <span style="color:blue">Token Number: #@Model.ContingentArrivalNo, @Model.CreatedOn</span><br/>
-    <span style="color:blue">Print: @DateTime.Now</span><br />
-
-
-
-
-    <div class="pagebreak"> </div>
-
-
-
-
-
-    <!-- START GIRLS -->
-    <img src="/billlogo.svg" class="logo">
-    <h1>Accommodation Bill (Girls)</h1>
-    <div class="big">
-        Contingent Leader Name - @clName(@Model) </b> <br />
-        Contingent Leader MI Number - <b>@Model.ContingentLeaderNo </b><br />
-        Accommodation Collected by - <b>@Model.FillerMiNo</b>
-        <br>
-
-        Girls (online payment) - <b>@Model.Female</b> <br />
-        Girls (on-spot payment) - <b>@Model.FemaleOnSpot</b> <br />
-        Girls (total) - <b>@(@Model.Female + @Model.FemaleOnSpot)</b> <br />
-
-    </div>
-
-    <br>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Location</th>
-                <th>Room</th>
-                <th>Lock no.</th>
-            </tr>
-        </thead>
-
-        <tbody>
-        @foreach(var roomA in @Model.RoomAllocation){
-            @if(roomA.Room.LocationNavigation.Sex == "F") {
-                <tr>
-                    <td>@roomA.Room.Location</td>
-                    <td>@roomA.Room.RoomName@if(roomA.Partial > 0) {<text>*</text>}</td>
-                    <td>@roomA.Room.LockNo</td>
-                </tr>
-            }
-        }
-        </tbody>
-    </table>
-    @if(hasPartial(@Model, "F")) {<text>* - shared room<br/></text>}
-
-    <br>
-
-    <span class="big">MI Numbers with online payment:</span>
-
-    <ul class="minos">
-    @foreach(var person in @Model.CAPeople){
-        @if(person.Sex == "F") {
-            <li>@person.Mino</li>
-        }
-    }
-    </ul>
-
-    <span class="big">No. of Mattress: <b>@mattress(@Model, "F")</b></span>
-
-    <br><br>
-    <span style="color:blue">Token Number: #@Model.ContingentArrivalNo, @Model.CreatedOn</span><br/>
-    <span style="color:blue">Print: @DateTime.Now</span> <br />
-
+        })
+    </script>
 </body>
 </html>

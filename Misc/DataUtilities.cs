@@ -169,5 +169,55 @@ namespace Ferrous.Misc
                 caPerson.Sex = "?";
             }
         }
+
+        public static int raMattress(RoomAllocation roomA) {
+            if (roomA.Partial < 0) {
+                return roomA.Room.Mattresses;
+            } else {
+                int leftCount = roomA.Room.Mattresses;
+                foreach (RoomAllocation broomA in roomA.Room.RoomAllocation) {
+                    if (broomA.Partial < 0) { return 0; }
+                    if (broomA.Sno == roomA.Sno) {
+                        if (roomA.Partial < leftCount) {
+                            return roomA.Partial;
+                        } else {
+                            if (leftCount > 0) {
+                                return leftCount;
+                            }
+                            return 0;
+                        }
+                    } else {
+                        leftCount -= broomA.Partial;
+                    }
+                }
+            }
+            return 0;
+        }
+
+        public static int mattress(ContingentArrival ca, string sex) {
+            int count = 0;
+            foreach (RoomAllocation roomA in ca.RoomAllocation.Where(m => m.Room.LocationNavigation.Sex == sex)) {
+                count += raMattress(roomA);
+            }
+            return count;
+        }
+
+        public static string clName(ContingentArrival ca) {
+            foreach (Person p in ca.ContingentLeaderNoNavigation.Person) {
+                if (p.Mino == ca.ContingentLeaderNo) {
+                    return p.Name;
+                }
+            }
+            return "N/A";
+        }
+
+        public static bool hasPartial(ContingentArrival ca, string sex) {
+            foreach (RoomAllocation roomA in ca.RoomAllocation.Where(m => m.Room.LocationNavigation.Sex == sex)) {
+                if (roomA.Partial > 0 && roomA.Partial < roomA.Room.Capacity) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

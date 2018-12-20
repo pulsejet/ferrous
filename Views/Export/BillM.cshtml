@@ -1,0 +1,72 @@
+@using Ferrous.Models
+@using Ferrous.Misc
+@model Ferrous.Models.ContingentArrival
+
+<img src="/billlogo.svg" class="logo">
+<h1>Accommodation Bill (Boys)</h1>
+<div class="big">
+    Contingent Leader Name - @DataUtilities.clName(@Model) </b> <br />
+    Contingent Leader MI Number - <b>@Model.ContingentLeaderNo </b><br />
+    Accommodation Collected by - <b>@Model.FillerMiNo</b>
+    <br>
+
+    Boys (online payment) - <b>@Model.Male</b> <br />
+    Boys (on-spot payment) - <b>@Model.MaleOnSpot</b> <br />
+    Boys (total) - <b>@(@Model.Male + @Model.MaleOnSpot)</b> <br />
+</div>
+
+<br>
+
+<div class="col-2">
+    <table>
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Room</th>
+                <th>Lock no.</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach(var roomA in @Model.RoomAllocation){
+            @if(roomA.Room.LocationNavigation.Sex != "F") {
+                <tr>
+                    <td>@roomA.Room.Location</td>
+                    <td>@roomA.Room.RoomName@if(roomA.Partial > 0) {<text>*</text>}</td>
+                    <td>@roomA.Room.LockNo</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
+@if(DataUtilities.hasPartial(@Model, "M")) {<text>* - shared room <br/></text>}
+
+<br>
+
+<span class="big">MI Numbers with online payment:</span>
+
+<ul class="minos">
+@foreach(var person in @Model.CAPeople){
+    @if(person.Sex != "F") {
+        <li>@person.Mino</li>
+    }
+}
+<li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li>
+<li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li>
+<li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li>
+<li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li>
+<li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li>
+<li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li>
+<li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li>
+<li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li>
+<li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li><li>MI-VAR-101</li>
+</ul>
+
+<span class="big">No. of Mattress: <b>@DataUtilities.mattress(@Model, "M")</b></span>
+
+@Html.Partial("BillPay.cshtml")
+
+<br>
+<span style="color:blue">Token Number: #@Model.ContingentArrivalNo, @Model.CreatedOn</span><br/>
+<span style="color:blue">Print: @DateTime.Now</span><br />
