@@ -124,6 +124,8 @@ namespace Ferrous.Controllers
             /* Set M/F count from posted data */
             contingentArrival.Male = contingentArrivalPut.Male;
             contingentArrival.Female = contingentArrivalPut.Female;
+            contingentArrival.MaleOnSpotDemand = contingentArrivalPut.MaleOnSpotDemand;
+            contingentArrival.FemaleOnSpotDemand = contingentArrivalPut.FemaleOnSpotDemand;
 
             /* Mark people as done with */
             String[] minos = contingentArrival.CAPeople.Select(cap => cap.Mino).ToArray();
