@@ -318,20 +318,23 @@ namespace Ferrous.Controllers
 
                         /* Check invalid rooms */
                         if (room == null || !room.LocationNavigation.hasAuth(User) || status == -6 || !matrsuccess) {
+                            string rem = "$ERROR";
+                            if (room == null) {
+                                rem = "$NOT FOUND";
+                            } else if (room.LocationNavigation != null && !room.LocationNavigation.hasAuth(User)) {
+                                rem = "$NO AUTH";
+                            } else if (status == -6) {
+                                rem = "$INVALID STATUS";
+                            } else if (!matrsuccess) {
+                                rem = "$INVALID MATTRESSES";
+                            }
+
                             room = new Room();
                             room.Location = hostel;
                             room.RoomName = roomNo;
                             room.LockNo = lockNo;
                             room.Status = status;
-                            if (room == null) {
-                                room.Remark = "$NOT FOUND";
-                            } else if (room.LocationNavigation != null && !room.LocationNavigation.hasAuth(User)) {
-                                room.Remark = "$NO AUTH";
-                            } else if (status == -6) {
-                                room.Remark = "$INVALID STATUS";
-                            } else if (!matrsuccess) {
-                                room.Remark = "$INVALID MATTRESSES";
-                            }
+                            room.Remark = rem;
                             failedRooms.Add(room);
                             continue;
                         }
