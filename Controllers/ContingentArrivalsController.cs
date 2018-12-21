@@ -126,6 +126,7 @@ namespace Ferrous.Controllers
             contingentArrival.Female = contingentArrivalPut.Female;
             contingentArrival.MaleOnSpotDemand = contingentArrivalPut.MaleOnSpotDemand;
             contingentArrival.FemaleOnSpotDemand = contingentArrivalPut.FemaleOnSpotDemand;
+            contingentArrival.Remark = contingentArrivalPut.Remark;
 
             /* Mark people as done with */
             String[] minos = contingentArrival.CAPeople.Select(cap => cap.Mino).ToArray();
