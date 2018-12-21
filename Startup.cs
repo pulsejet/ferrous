@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace Ferrous
 {
@@ -35,6 +36,11 @@ namespace Ferrous
 
             services.AddEntityFrameworkNpgsql().AddDbContext<Models.ferrousContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DatabaseConnectionString")));
+
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(Configuration.GetValue<string>("KeyStore")))
+                .SetApplicationName("Ferrous")
+                .SetDefaultKeyLifetime(System.TimeSpan.FromDays(30));
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
