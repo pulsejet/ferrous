@@ -1,6 +1,10 @@
 @model Ferrous.Models.ContingentArrival
 @functions {
     int amount() {
+        return 1800;
+    }
+
+    int amountOS() {
         return 2000;
     }
 }
@@ -15,17 +19,17 @@ Total: <b>&#8377;@((@Model.Male + @Model.Female)*amount())</b> <br/>
     <text>
     <b>On-spot payment: </b><br/>
     <div>
-        @Model.MaleOnSpot x &#8377;2000 = &#8377;@(@Model.MaleOnSpot*2000) (Male)
+        @Model.MaleOnSpot x &#8377;@amountOS() = &#8377;@(@Model.MaleOnSpot*amountOS()) (Male)
         <br>
-        @Model.FemaleOnSpot x &#8377;2000 = &#8377;@(@Model.FemaleOnSpot*2000) (Female)
+        @Model.FemaleOnSpot x &#8377;@amountOS() = &#8377;@(@Model.FemaleOnSpot*amountOS()) (Female)
     </div>
 
     <div style="font-size: 1.1em">
         Total on-spot payment: <b>
-            &#8377;@((@Model.FemaleOnSpot + @Model.MaleOnSpot) * 2000)
+            &#8377;@((@Model.FemaleOnSpot + @Model.MaleOnSpot) * amountOS())
         </b>
     </div>
     </text>
 }
 
-Total Amount: <b>&#8377;@((@Model.Male + @Model.MaleOnSpot + @Model.Female + @Model.FemaleOnSpot)*amount())</b> <br/>
+Total Amount: <b>&#8377;@((@Model.Male + @Model.Female)*amount() + (@Model.MaleOnSpot + @Model.FemaleOnSpot)*amountOS())</b> <br/>
