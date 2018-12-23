@@ -385,3 +385,18 @@ BEGIN
     VALUES ('20181213064505_mattress', '2.1.0-rtm-30799');
     END IF;
 END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20181223140631_ZeroAllotCA') THEN
+    ALTER TABLE "ContingentArrival" ADD "ZeroAllot" boolean NOT NULL DEFAULT FALSE;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20181223140631_ZeroAllotCA') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20181223140631_ZeroAllotCA', '2.1.0-rtm-30799');
+    END IF;
+END $$;
