@@ -34,6 +34,14 @@ namespace Ferrous.Controllers
             return _context.ContingentArrival;
         }
 
+        // GET: api/ContingentArrivals
+        [HttpGet("desk2queue")]
+        [Authorization(ElevationLevels.CoreGroup, PrivilegeList.CONTINGENTARRIVALS_GET)]
+        public IEnumerable<ContingentArrival> GetDesk2Queue()
+        {
+            return _context.ContingentArrival.Where(m => m.Approved && m.RoomAllocation.Count == 0 && !m.ZeroAllot);
+        }
+
         // DEPRECATED
         // GET: api/ContingentArrivals/byCL/5
         [HttpGet("byCL/{clno}")]

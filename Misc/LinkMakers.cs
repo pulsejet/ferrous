@@ -51,6 +51,7 @@ namespace Ferrous.Misc
                 .SetOptions(User, typeof(ContingentArrivalsController), Url)
                 .AddLink(nameof(ContingentArrivalsController.GetDesk1), null, "desk1", true)
                 .AddLink(nameof(ContingentArrivalsController.GetStats), null, "ca-stats")
+                .AddLink(nameof(ContingentArrivalsController.GetDesk2Queue), null, "desk2queue")
 
                 .SetOptions(User, typeof(ExternalController), Url)
                 .AddLink(nameof(ExternalController.PostForm1), null, "postform1")
