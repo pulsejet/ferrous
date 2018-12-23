@@ -40,6 +40,7 @@ namespace Ferrous.Models
 
         public ICollection<CAPerson> CAPeople { get; set; }
         public bool Approved { get; set; }
+        public bool ZeroAllot { get; set; }
         public string Remark { get; set; }
 
         public List<Misc.Link> Links;

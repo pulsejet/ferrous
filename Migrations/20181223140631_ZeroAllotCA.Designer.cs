@@ -3,15 +3,17 @@ using System;
 using Ferrous.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Ferrous.Migrations
 {
     [DbContext(typeof(ferrousContext))]
-    partial class ferrousContextModelSnapshot : ModelSnapshot
+    [Migration("20181223140631_ZeroAllotCA")]
+    partial class ZeroAllotCA
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
