@@ -219,5 +219,18 @@ namespace Ferrous.Misc
             }
             return false;
         }
+
+        public static string GetContingentCollege(Contingent contingent) {
+            string college = "N/A";
+            if (contingent.Person.Count > 0) {
+                Person cl = contingent.Person.Where(m => m.Mino.ToUpper() == contingent.ContingentLeaderNo.ToUpper()).FirstOrDefault();
+                if (cl != null) {
+                    college = cl.College;
+                } else {
+                    college = "?" + contingent.Person.First().College;
+                }
+            }
+            return college;
+        }
     }
 }

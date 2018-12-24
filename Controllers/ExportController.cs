@@ -143,19 +143,9 @@ namespace Ferrous.Controllers
             int rowno = 2;
             foreach (var contingent in contingents)
             {
-                string college = "N/A";
-                if (contingent.Person.Count > 0) {
-                    Person cl = contingent.Person.Where(m => m.Mino.ToUpper() == contingent.ContingentLeaderNo.ToUpper()).FirstOrDefault();
-                    if (cl != null) {
-                        college = cl.College;
-                    } else {
-                        college = "?" + contingent.Person.First().College;
-                    }
-                }
-
                 object[] cells = {
                     contingent.ContingentLeaderNo,
-                    college,
+                    DataUtilities.GetContingentCollege(contingent),
                     IntIfNumber(contingent.Male),
                     IntIfNumber(contingent.Female),
                     IntIfNumber(contingent.ArrivedM),
@@ -232,7 +222,9 @@ namespace Ferrous.Controllers
         {
             var rooms = _context.Room
                     .Where(m => m.Status != 0 && m.Location == location)
-                    .Include(m => m.RoomAllocation).ToList()
+                    .Include(m => m.RoomAllocation)
+                        .ThenInclude(m => m.ContingentLeaderNoNavigation)
+                    .ToList()
                     .OrderBy(m => m.Location);
 
             int[] widths = { 9, 10, 10, 9, 9, 9, 30, 45, 45 };
@@ -254,31 +246,47 @@ namespace Ferrous.Controllers
             int i = 2;
             foreach (var room in rooms)
             {
-                int Partial = 0;
+                int partialCount = 0;
                 StringBuilder roomAlloc = new StringBuilder();
+                StringBuilder roomAllocCollege = new StringBuilder();
+                bool addPlus = false;
                 foreach (var roomA in room.RoomAllocation)
                 {
+                    partialCount += roomA.Partial;
                     if (roomA.Partial > 0)
                     {
-                        roomAlloc.Append(roomA.ContingentLeaderNo + " - " + roomA.Partial + "; ");
-                        Partial += roomA.Partial;
+                        if (addPlus) {
+                            roomAlloc.Append(" + ");
+                            roomAllocCollege.Append(" + ");
+                        }
+                        roomAlloc.Append($"{roomA.ContingentLeaderNo} ({roomA.Partial})");
+                        roomAllocCollege.Append($"{DataUtilities.GetContingentCollege(roomA.ContingentLeaderNoNavigation)} ({roomA.Partial})");
+                        addPlus = true;
                     }
                     else
                     {
                         roomAlloc.Append(roomA.ContingentLeaderNo);
-                        Partial = -1;
+                        roomAllocCollege.Append(DataUtilities.GetContingentCollege(roomA.ContingentLeaderNoNavigation));
                     }
+                }
+
+                /* Update status with partial count */
+                string status = RoomsController.getStatusStr(room.Status);
+                if (partialCount < 0 || partialCount > room.Capacity) {
+                    status = "FULL";
+                } else if (partialCount > 0 && room.Capacity > partialCount) {
+                    status = "PART";
                 }
 
                 object[] cells = {
                     room.Location,
                     IntIfNumber(room.RoomName),
-                    RoomsController.getStatusStr(room.Status),
+                    status,
                     room.Capacity,
                     room.Mattresses,
                     IntIfNumber(room.LockNo),
                     roomAlloc,
-                    roomAlloc,
+                    roomAllocCollege,
                     room.Remark
                 };
                 setRow(cells, i++, roomsWorksheet);
