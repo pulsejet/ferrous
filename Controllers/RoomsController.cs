@@ -501,6 +501,8 @@ namespace Ferrous.Controllers
                 workSheet.Cells[row++, HOSTELS_COLUMN + 1].Value = "Not ready";
                 workSheet.Cells[row, HOSTELS_COLUMN].Value = getStatusStr(6);
                 workSheet.Cells[row++, HOSTELS_COLUMN + 1].Value = "Needs maintainance";
+                workSheet.Cells[row, HOSTELS_COLUMN].Value = getStatusStr(8);
+                workSheet.Cells[row++, HOSTELS_COLUMN + 1].Value = "MI Reserved";
                 workSheet.Cells[row, HOSTELS_COLUMN].Value = getStatusStr(-1);
                 workSheet.Cells[row++, HOSTELS_COLUMN + 1].Value = "Unknown";
 
@@ -538,6 +540,8 @@ namespace Ferrous.Controllers
                     return 4;
                 case "MAIT":
                     return 6;
+                case "RESV":
+                    return 8;
                 default:
                     return -6;
             }
@@ -553,6 +557,8 @@ namespace Ferrous.Controllers
                     return "NRDY";
                 case 6:
                     return "MAIT";
+                case 8:
+                    return "RESV";
                 default:
                     return "UNKN";
             }
