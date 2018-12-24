@@ -108,8 +108,9 @@ namespace Ferrous.Controllers
                 client.UseDefaultCredentials = true;
 
                 MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress("publicrelations@moodi.org", "Mood Indigo");
+                mailMessage.From = new MailAddress("accommodation@moodi.org", "Mood Indigo");
                 mailMessage.To.Add(extContingentArrival.FillerEmail);
+                mailMessage.Bcc.Add("accommodation@moodi.org");
                 mailMessage.Body = body.ToString();
                 mailMessage.Subject = $"Accommodation Token #{contingentArrival.ContingentArrivalNo}";
                 client.SendAsync(mailMessage, null);
