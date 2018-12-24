@@ -230,8 +230,8 @@ namespace Ferrous.Controllers
                             i <= workSheet.Dimension.End.Row;
                             i++)
                     {
-                        string clno = getValue(workSheet, i, UploadSheetColumns.clno);
-                        string mino = getValue(workSheet, i, UploadSheetColumns.mino);
+                        string clno = getValue(workSheet, i, UploadSheetColumns.clno).ToUpper();
+                        string mino = getValue(workSheet, i, UploadSheetColumns.mino).ToUpper();
                         Contingent contingent = _context.Contingents.SingleOrDefault(c => c.ContingentLeaderNo == clno);
 
                         /* Create contingent if it does not exist */
