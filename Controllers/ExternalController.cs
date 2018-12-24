@@ -84,9 +84,9 @@ namespace Ferrous.Controllers
             try {
                 StringBuilder body = new StringBuilder();
                 body.Append($"Hello {extContingentArrival.FillerMiNo}!\n\n");
-                body.Append($"Your request for accommodation has been registered");
+                body.Append($"Your request for accommodation has been registered ");
                 body.Append($"and the token number allotted to you is {contingentArrival.ContingentArrivalNo}.\n\n");
-                body.Append($"Proceed to Hospitality Desk 1 for further action.");
+                body.Append($"Proceed to Hospitality Desk 1 for further action. ");
                 body.Append($"Keep this token number and ID cards of all members with you availing accommodation ready.\n\n");
 
                 body.Append($"Enlisted below are the details filled by you:\n");
