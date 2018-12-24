@@ -100,7 +100,10 @@ namespace Ferrous.Controllers
                 /* Fill up the package */
                 await FillContingentsWorksheet(package.Workbook.Worksheets.Add("Contingents")).ConfigureAwait(false);
                 FillPeopleWorksheet(package.Workbook.Worksheets.Add("People"));
-                FillRoomsWorksheet(package.Workbook.Worksheets.Add("Rooms"));
+
+                foreach (var hostel in _context.Building.OrderBy(m => m.Location)) {
+                    FillRoomsWorksheet(package.Workbook.Worksheets.Add(hostel.Location), hostel.Location);
+                }
 
                 /* Return the file */
                 var stream = new MemoryStream(package.GetAsByteArray());
@@ -225,10 +228,10 @@ namespace Ferrous.Controllers
         /// Fills the passed ExcelWorksheet with rooms data
         /// </summary>
         /// <param name="roomsWorksheet">ExcelWorksheet to fill</param>
-        void FillRoomsWorksheet(ExcelWorksheet roomsWorksheet)
+        void FillRoomsWorksheet(ExcelWorksheet roomsWorksheet, string location)
         {
             var rooms = _context.Room
-                    .Where(m => m.Status != 0)
+                    .Where(m => m.Status != 0 && m.Location == location)
                     .Include(m => m.RoomAllocation).ToList()
                     .OrderBy(m => m.Location);
 
@@ -261,33 +264,6 @@ namespace Ferrous.Controllers
                     {
                         roomAlloc.Append(roomA.ContingentLeaderNo);
                         Partial = -1;
-                    }
-                }
-
-                if (room.Status == 6 || room.Status == 4 || room.Status == 1)
-                {
-                    roomsWorksheet.Row(i).Style.Fill.PatternType = ExcelFillStyle.Solid;
-
-                    if (room.Status == 4)
-                    {
-                        roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.LightPink);
-                    }
-                    else if (room.Status == 6)
-                    {
-                        roomsWorksheet.Row(i).Style.Font.Color.SetColor(Color.White);
-                        roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.Magenta);
-                    }
-                    else if (room.Status == 1)
-                    {
-                        roomsWorksheet.Row(i).Style.Font.Color.SetColor(Color.White);
-                        if (Partial == 0) {
-                            roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
-                        } else if (Partial < 0) {
-                            roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
-                        } else if (Partial > 0) {
-                            roomsWorksheet.Row(i).Style.Fill.BackgroundColor.SetColor(
-                                room.Capacity - Partial > 0 ? Color.Blue : Color.DarkRed);
-                        }
                     }
                 }
 
