@@ -34,7 +34,7 @@
         @foreach(var entry in @Model){
                 <tr>
                     <td>@entry.Id</td>
-                    <td>@entry.Timestamp</td>
+                    <td>@entry.Timestamp.ToLocalTime()</td>
                     <td>@entry.username</td>
                     <td>@entry.message</td>
                     <td>@entry.level</td>
