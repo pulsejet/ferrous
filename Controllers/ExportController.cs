@@ -235,15 +235,18 @@ namespace Ferrous.Controllers
                     .Include(m => m.RoomAllocation).ToList()
                     .OrderBy(m => m.Location);
 
-            int[] widths = { 11, 11, 15, 4, 6, 45 };
+            int[] widths = { 9, 10, 10, 9, 9, 9, 30, 45, 45 };
             setColumnWidths(widths, roomsWorksheet);
 
             string[] headers = {
                 "Location",
                 "Room",
-                "Allocated",
+                "Status",
                 "Capacity",
+                "Mattresses",
                 "Lock No",
+                "Allocated",
+                "College",
                 "Remark"
             };
             setColumnHeaders(headers, roomsWorksheet);
@@ -270,9 +273,12 @@ namespace Ferrous.Controllers
                 object[] cells = {
                     room.Location,
                     IntIfNumber(room.RoomName),
-                    roomAlloc,
+                    RoomsController.getStatusStr(room.Status),
                     room.Capacity,
+                    room.Mattresses,
                     IntIfNumber(room.LockNo),
+                    roomAlloc,
+                    roomAlloc,
                     room.Remark
                 };
                 setRow(cells, i++, roomsWorksheet);

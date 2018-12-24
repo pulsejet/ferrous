@@ -543,7 +543,7 @@ namespace Ferrous.Controllers
             }
         }
 
-        private string getStatusStr(int? status) {
+        public static string getStatusStr(int? status) {
             switch (status) {
                 case 0:
                     return "UAVL";
