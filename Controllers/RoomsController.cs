@@ -268,7 +268,8 @@ namespace Ferrous.Controllers
             LockNo = 3,
             Status = 4,
             Mattresses = 5,
-            Remark = 6,
+            Capacity = 6,
+            Remark = 7,
         }
 
         [LinkRelation(LinkRelationList.overridden)]
@@ -298,6 +299,7 @@ namespace Ferrous.Controllers
                         string lockNo = getValue(workSheet, i, UploadSheetColumns.LockNo);
                         int status = getStatusInt(getValue(workSheet, i, UploadSheetColumns.Status));
                         bool hasmattresses = getValue(workSheet, i, UploadSheetColumns.Mattresses) != "";
+                        bool hascapacity = getValue(workSheet, i, UploadSheetColumns.Capacity) != "";
                         string remark = getValue(workSheet, i, UploadSheetColumns.Remark);
 
                         /* Check for invalid entries */
@@ -316,8 +318,14 @@ namespace Ferrous.Controllers
                            matrsuccess = Int32.TryParse(getValue(workSheet, i, UploadSheetColumns.Mattresses), out mattresses);
                         }
 
+                        bool capsuccess = true;
+                        int capacity = 0;
+                        if (hascapacity) {
+                           capsuccess = Int32.TryParse(getValue(workSheet, i, UploadSheetColumns.Capacity), out capacity);
+                        }
+
                         /* Check invalid rooms */
-                        if (room == null || !room.LocationNavigation.hasAuth(User) || status == -6 || !matrsuccess) {
+                        if (room == null || !room.LocationNavigation.hasAuth(User) || status == -6 || !matrsuccess || !capsuccess) {
                             string rem = "$ERROR";
                             if (room == null) {
                                 rem = "$NOT FOUND";
@@ -327,6 +335,8 @@ namespace Ferrous.Controllers
                                 rem = "$INVALID STATUS";
                             } else if (!matrsuccess) {
                                 rem = "$INVALID MATTRESSES";
+                            } else if (!capsuccess) {
+                                rem = "$INVALID CAPACITY";
                             }
 
                             room = new Room();
@@ -356,6 +366,11 @@ namespace Ferrous.Controllers
                         /* Update mattresses */
                         if (hasmattresses) {
                             room.Mattresses = mattresses;
+                        }
+
+                        /* Update capacity */
+                        if (hascapacity) {
+                            room.Capacity = capacity;
                         }
 
                         /* Save */
@@ -394,7 +409,8 @@ namespace Ferrous.Controllers
                     allWorkSheet.Cells[row, 3].Value = "YES";
                     allWorkSheet.Cells[row, 4].Value = getStatusStr(room.Status);
                     allWorkSheet.Cells[row, 5].Value = room.Mattresses;
-                    allWorkSheet.Cells[row, 6].Value = room.Remark;
+                    allWorkSheet.Cells[row, 6].Value = room.Capacity;
+                    allWorkSheet.Cells[row, 7].Value = room.Remark;
                     row++;
                 }
 
@@ -410,6 +426,7 @@ namespace Ferrous.Controllers
                 setValue(workSheet, 1, UploadSheetColumns.LockNo);
                 setValue(workSheet, 1, UploadSheetColumns.Status);
                 setValue(workSheet, 1, UploadSheetColumns.Mattresses);
+                setValue(workSheet, 1, UploadSheetColumns.Capacity);
                 setValue(workSheet, 1, UploadSheetColumns.Remark);
 
                 /* Show is valid */
@@ -437,11 +454,19 @@ namespace Ferrous.Controllers
                 }
                 workSheet.Column(lastColumn).Style.Locked = true;
 
+                /* Show mattresses */
+                lastColumn++;
+                workSheet.Cells[1, lastColumn].Value = "Capacity";
+                for (int i = 2; i < 200; i++) {
+                    workSheet.Cells[i, lastColumn].Formula = $"IFERROR(VLOOKUP(CONCATENATE(A{i}, \"|\", B{i}), AllRooms!A:F, 6, FALSE), \"\")";
+                }
+                workSheet.Column(lastColumn).Style.Locked = true;
+
                 /* Show Remark */
                 lastColumn++;
                 workSheet.Cells[1, lastColumn].Value = "Remark";
                 for (int i = 2; i < 200; i++) {
-                    workSheet.Cells[i, lastColumn].Formula = $"IFERROR(VLOOKUP(CONCATENATE(A{i}, \"|\", B{i}), AllRooms!A:F, 6, FALSE), \"\")";
+                    workSheet.Cells[i, lastColumn].Formula = $"IFERROR(VLOOKUP(CONCATENATE(A{i}, \"|\", B{i}), AllRooms!A:G, 7, FALSE), \"\")";
                 }
                 workSheet.Column(lastColumn).Style.Locked = true;
 
@@ -452,7 +477,7 @@ namespace Ferrous.Controllers
 
                 /* Add hostels title */
                 int HOSTELS_ROW = 4;
-                int HOSTELS_COLUMN = 12;
+                int HOSTELS_COLUMN = 14;
                 workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN].Value = "Code";
                 workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN + 1].Value = "Meaning";
                 workSheet.Cells[HOSTELS_ROW, HOSTELS_COLUMN].Style.Font.Bold = true;
