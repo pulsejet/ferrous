@@ -199,13 +199,12 @@ namespace Ferrous.Controllers
 
         private enum UploadSheetColumns {
             name = 1,
-            mino = 2,
-            college = 3,
-            city = 4,
-            purchaser = 5,
-            gender = 6,
-            clno = 7,
-            rem = 8,
+            email = 2,
+            contact = 3,
+            mino = 4,
+            gender = 5,
+            clno = 6,
+            college = 7,
         }
 
         [LinkRelation(LinkRelationList.overridden)]
@@ -253,6 +252,8 @@ namespace Ferrous.Controllers
                             person.Mino = mino;
                             person.College = getValue(workSheet, i, UploadSheetColumns.college);
                             person.Sex = (getValue(workSheet, i, UploadSheetColumns.gender).ToLower().Contains('f')) ? "F" : "M";
+                            person.Email = getValue(workSheet, i, UploadSheetColumns.email);
+                            person.Phone = getValue(workSheet, i, UploadSheetColumns.contact);
                             _context.Person.Add(person);
                             _context.SaveChanges();
                             updatedPeople.Add(person);
