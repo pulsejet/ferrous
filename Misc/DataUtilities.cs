@@ -113,17 +113,20 @@ namespace Ferrous.Misc
                             break;
                         }
 
-                        /* Prevent overfilled rooms from changing stats */
-                        if (roomA.Partial > room.Capacity) {
-                            roomA.Partial = room.Capacity;
-                        }
-
-                        building.CapacityFilled += roomA.Partial;
-                        building.CapacityEmpty -= roomA.Partial;
-
                         if (roomA.ContingentLeaderNo == clno) {
                             building.AlreadyAllocated += roomA.Partial;
                         }
+                    }
+
+                    /* Prevent overfilled rooms from changing stats */
+                    if (partialSum > 0) {
+                        int lostEmpty = partialSum;
+                        if (partialSum > room.Capacity) {
+                            lostEmpty = room.Capacity;
+                        }
+
+                        building.CapacityFilled += partialSum;
+                        building.CapacityEmpty -= lostEmpty;
                     }
 
                     if (room.RoomAllocation.Count > 0) {
