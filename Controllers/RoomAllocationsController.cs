@@ -92,6 +92,12 @@ namespace Ferrous.Controllers
                 }
             }
 
+            RoomAllocation ra = _context.RoomAllocation.Include(m => m.Room)
+                                                        .Where(m => m.Sno == roomAllocation.Sno).FirstOrDefault();
+            if (ra != null) {
+                UpdateLayoutWebSocket(new Room[] {ra.Room});
+            }
+
             return NoContent();
         }
 
