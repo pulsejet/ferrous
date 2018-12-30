@@ -127,8 +127,9 @@ namespace Ferrous.Controllers
                 "On Spot (Male)",
                 "On Spot (Female)",
                 "On Spot (Total)",
-                "Male",
-                "Female"
+                "Online (Male)",
+                "Online (Female)",
+                "Remark"
             };
             setColumnHeaders(headers, casheet);
 
@@ -143,7 +144,8 @@ namespace Ferrous.Controllers
                     IntIfNumber(ca.FemaleOnSpot),
                     IntIfNumber(ca.MaleOnSpot + ca.FemaleOnSpot),
                     IntIfNumber(ca.Male),
-                    IntIfNumber(ca.Female)
+                    IntIfNumber(ca.Female),
+                    ca.Remark
                 };
                 setRow(cells, rowno++, casheet);
             }
