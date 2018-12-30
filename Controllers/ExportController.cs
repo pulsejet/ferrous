@@ -101,6 +101,8 @@ namespace Ferrous.Controllers
                 await FillContingentsWorksheet(package.Workbook.Worksheets.Add("Contingents")).ConfigureAwait(false);
                 FillPeopleWorksheet(package.Workbook.Worksheets.Add("People"));
 
+                await FillCAWorksheet(package.Workbook.Worksheets.Add("Tokens")).ConfigureAwait(false);
+
                 foreach (var hostel in _context.Building.OrderBy(m => m.Location)) {
                     FillRoomsWorksheet(package.Workbook.Worksheets.Add(hostel.Location), hostel.Location);
                 }
@@ -111,6 +113,42 @@ namespace Ferrous.Controllers
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     "export.xlsx");
             }
+        }
+
+        async Task<int> FillCAWorksheet(ExcelWorksheet casheet) {
+            var cas = await _context.ContingentArrival
+                                    .Include(m => m.RoomAllocation)
+                                    .Where(m => m.RoomAllocation.Count > 0 || m.ZeroAllot).ToArrayAsync();
+
+            string[] headers = {
+                "Token No",
+                "CL No",
+                "Desk 1 Approved",
+                "On Spot (Male)",
+                "On Spot (Female)",
+                "On Spot (Total)",
+                "Male",
+                "Female"
+            };
+            setColumnHeaders(headers, casheet);
+
+            int rowno = 2;
+            foreach (var ca in cas)
+            {
+                object[] cells = {
+                    ca.ContingentArrivalNo,
+                    ca.ContingentLeaderNo,
+                    IntIfNumber(ca.Approved),
+                    IntIfNumber(ca.MaleOnSpot),
+                    IntIfNumber(ca.FemaleOnSpot),
+                    IntIfNumber(ca.MaleOnSpot + ca.FemaleOnSpot),
+                    IntIfNumber(ca.Male),
+                    IntIfNumber(ca.Female)
+                };
+                setRow(cells, rowno++, casheet);
+            }
+
+            return 1;
         }
 
         /// <summary>
