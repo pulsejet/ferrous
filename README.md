@@ -11,7 +11,7 @@ Ferrous is just a Hospitality manager!
 One of the biggest hurdles of managing large events which provide on-site accomodation is to properly distribute the available space with optimization to everyone. Ferrous aims to solve this problem by serving as a single platform to take control of everything from registering for accomodations to helping distribute them to guests.
 
 ## Purpose
-Ferrous was originally created as a proof of concept for the Hospitality department of Mood Indigo, the student-organized cultural fest of Indian Institute of Technology, Bombay. The main purpose it serves is to easily provide accomodation to everyone with minimal delay.
+Ferrous was originally created for the Hospitality department of Mood Indigo, the student-organized cultural fest of Indian Institute of Technology, Bombay, and was deployed successfully during Mood Indigo 2018. The main purpose it serves is to easily provide accomodation to thousands of people with minimal delay.
 
 ## Structure
 The server written in ASP.NET Core works as a RESTful API, and is theorotically client independent, though it works closely with [ferrous-client](https://github.com/pulsejet/ferrous-client), which is an Angular 5 PWA. The server provides hyperlinks (HATEOAS) for almost everything and this is the recommended way of routing. Following are the main entities:
