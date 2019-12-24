@@ -517,6 +517,22 @@ namespace Ferrous.Controllers
             }
         }
 
+        [HttpGet("ResetRoomStatus")]
+        [LinkRelation(LinkRelationList.overridden)]
+        [Authorization(ElevationLevels.SuperUser, PrivilegeList.ROOM_CREATE)]
+        public IActionResult ResetRoomStatus()
+        {
+
+            foreach (var room in _context.Room.Where(m => m.Location == "H15B_G")) {
+                // _context.Remove(room);
+                // room.Status = 0;
+                //_context.Update(room);
+            }
+            _context.SaveChanges();
+
+            return Ok("Done");
+        }
+
         private void setValue(ExcelWorksheet workSheet, int i, UploadSheetColumns column) {
             workSheet.Cells[i, (int) column].Value = column.ToString();
         }
