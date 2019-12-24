@@ -238,22 +238,25 @@ namespace Ferrous.Controllers
             return NoContent();
         }
 
-        [HttpGet("CreateRoomRecords/{location}/{start}/{end}/{capacity}")]
+        [HttpGet("CreateRoomRecords/{location}/{start}/{end}/{capacity}/{prefix}")]
         [LinkRelation(LinkRelationList.overridden)]
         [Authorization(ElevationLevels.SuperUser, PrivilegeList.ROOM_CREATE)]
-        public IActionResult CreateRoomRecords([FromRoute] string location, [FromRoute] int start, [FromRoute] int end, [FromRoute] int capacity)
+        public IActionResult CreateRoomRecords([FromRoute] string location, [FromRoute] int start, [FromRoute] int end, [FromRoute] int capacity, [FromRoute] string prefix)
         {
+            if (prefix == "NN") prefix = "";
+
             StringBuilder str = new StringBuilder();
             for (int i = start; i<= end; i++)
             {
-                if (_context.Room.Where(m => m.Location == location && m.RoomName == i.ToString()).Count() > 0)
+                string rn = prefix + i.ToString();
+                if (_context.Room.Where(m => m.Location == location && m.RoomName == rn).Count() > 0)
                 {
-                    str.Append(i.ToString() + " ");
+                    str.Append(rn + " ");
                     continue;
                 }
                 Room room = new Room();
                 room.Location = location;
-                room.RoomName = i.ToString();
+                room.RoomName = rn;
                 room.Capacity = capacity;
                 room.Status = 0;
                 _context.Add(room);
